@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layer1Id">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvDataPointNameId"
+            android:text="DataPointNameText:"
+            android:textSize="15sp"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvDataPointValueId"
+            android:textSize="15sp"
+            android:padding="10dp"/>
+
+        <ImageButton
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvDelButton"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_delete" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/layer2Id"
+        android:layout_below="@+id/layer1Id">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvDataPoint2NameId"
+            android:text="DataPointNameText:"
+            android:textSize="15sp"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvDataPoint2ValueId"
+            android:textSize="15sp"
+            android:padding="10dp"/>
+    </LinearLayout>
+</RelativeLayout>
