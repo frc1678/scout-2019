@@ -3,4 +3,27 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="tv_titleTextSize">24dp</dimen>
+    <dimen name="widgetTextSize_9">9dp</dimen>
+    <dimen name="widgetTextSize_10">10dp</dimen>
+    <dimen name="widgetTextSize_11">11dp</dimen>
+    <dimen name="widgetTextSize_12">12dp</dimen>
+    <dimen name="widgetTextSize_13">13dp</dimen>
+    <dimen name="widgetTextSize_14">14dp</dimen>
+    <dimen name="widgetTextSize_15">15dp</dimen>
+    <dimen name="widgetTextSize_16">16dp</dimen>
+    <dimen name="widgetTextSize_17">17dp</dimen>
+    <dimen name="widgetTextSize_18">18dp</dimen>
+    <dimen name="widgetTextSize_19">19dp</dimen>
+    <dimen name="widgetTextSize_20">20dp</dimen>
+
+    <dimen name="dialogPaddingBetween">4dp</dimen>
+    <dimen name="dialogPaddingOuterEdges">14dp</dimen>
+
+    <dimen name="dialogRadioButtonHeight">80dp</dimen>
+
+    <dimen name="dialogLayoutWidth">400dp</dimen>
+    <dimen name="dialogLayoutHeight">300dp</dimen>
+    <dimen name="dialogLayoutPaddingBottom">10dp</dimen>
 </resources>

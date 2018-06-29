@@ -1,4 +1,36 @@
 <resources>
     <string name="app_name">Scout</string>
     <string name="action_settings">Settings</string>
+    <string name="buttontext_switch">Switch</string>
+    <string name="buttontext_scale">Scale</string>
+    <string name="buttontext_pyramid">Pyramid</string>
+    <string name="buttontext_ftb">FTB</string>
+
+    <string name="tbtnOfftext_platform1">U1</string>
+    <string name="tbtnOntext_platform1"><b><i>1</i></b></string>
+    <string name="tbtnOfftext_platform2">U2</string>
+    <string name="tbtnOntext_platform2"><b><i>2</i></b></string>
+    <string name="tbtnOfftext_platform3">U3</string>
+    <string name="tbtnOntext_platform3"><b><i>3</i></b></string>
+    <string name="tbtnOfftext_platform4">U4</string>
+    <string name="tbtnOntext_platform4"><b><i>4</i></b></string>
+    <string name="tbtnOfftext_platform5">U5</string>
+    <string name="tbtnOntext_platform5"><b><i>5</i></b></string>
+    <string name="tbtnOfftext_platform6">U6</string>
+    <string name="tbtnOntext_platform6"><b><i>6</i></b></string>
+
+    <string name="tbtnOfftext_failure"><b>[FAIL]</b></string>
+    <string name="tbtnOntext_success"><b>[SUCCESS]</b></string>
+
+    <string name="rbtntext_opponentOwned">OPPONENT</string>
+    <string name="rbtntext_balanced">BALANCED</string>
+
+    <string name="rbtntext_layer1"><b>1</b></string>
+    <string name="rbtntext_layer2"><b>2</b></string>
+    <string name="rbtntext_layer3"><b>3</b></string>
+
+    <string name="tv_titleIsAllianceSwitch">Alliance Switch</string>
+    <string name="tv_titleIsOpponentSwitch">Opponent Scale</string>
+    <string name="tv_titleIsAllianceScale">Alliance Switch</string>
+    <string name="tv_titleIsOpponentScale">Opponent Scale</string>
 </resources>

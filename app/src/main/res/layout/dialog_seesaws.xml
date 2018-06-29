@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialogLayoutWidth"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/dialogLayoutPaddingBottom"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/tv_titleTextSize"
+        android:text="UnAssigned Seesaw" />
+
+    <ToggleButton
+        android:id="@+id/tbtn_outcome"
+        android:layout_weight="0.8"
+        android:layout_width="match_parent"
+
+        android:layout_height="@dimen/dialogRadioButtonHeight"
+
+        android:paddingTop="@dimen/dialogPaddingBetween"
+        android:paddingBottom="@dimen/dialogPaddingBetween"
+        android:paddingLeft="@dimen/dialogPaddingOuterEdges"
+        android:paddingRight="@dimen/dialogPaddingOuterEdges"
+        android:textOff="@string/tbtnOfftext_failure"
+        android:textOn="@string/tbtnOntext_success"
+        android:textSize="@dimen/widgetTextSize_20" />
+
+    <RadioGroup
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dialogPaddingBetween"
+        android:paddingBottom="@dimen/dialogPaddingBetween"
+        android:paddingLeft="@dimen/dialogPaddingOuterEdges"
+        android:paddingRight="@dimen/dialogPaddingOuterEdges"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbtn_opponentOwned"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialogRadioButtonHeight"
+            android:text="@string/rbtntext_opponentOwned"
+            android:textSize="@dimen/widgetTextSize_16"
+            android:paddingRight="@dimen/dialogPaddingOuterEdges"/>
+
+        <RadioButton
+            android:id="@+id/rbtn_balanced"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialogRadioButtonHeight"
+            android:text="@string/rbtntext_balanced"
+            android:textSize="@dimen/widgetTextSize_16"/>
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingTop="@dimen/dialogPaddingBetween"
+        android:paddingBottom="@dimen/dialogPaddingBetween"
+        android:paddingLeft="@dimen/dialogPaddingOuterEdges"
+        android:paddingRight="@dimen/dialogPaddingOuterEdges"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbtn_layer1"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialogRadioButtonHeight"
+            android:text="@string/rbtntext_layer1"
+            android:textSize="@dimen/widgetTextSize_16"/>
+
+        <RadioButton
+            android:id="@+id/rbtn_layer2"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialogRadioButtonHeight"
+            android:text="@string/rbtntext_layer2"
+            android:textSize="@dimen/widgetTextSize_16"/>
+
+        <RadioButton
+            android:id="@+id/rbtn_layer3"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialogRadioButtonHeight"
+            android:text="@string/rbtntext_layer3"
+            android:textSize="@dimen/widgetTextSize_16"/>
+    </RadioGroup>
+
+</LinearLayout>
