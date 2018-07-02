@@ -8,10 +8,148 @@
     android:fitsSystemWindows="true"
     tools:context="citruscircuits.scout.A0A">
 
-    <Button
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Click"
-        android:onClick="onClick"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/scout_wallpaper_2" />
+
+    <Button
+        android:id="@+id/btn_accessData"
+        android:layout_width="340dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/normal_button_selector"
+        android:text="Data"
+        android:textColor="@color/normalButtonTextColor"
+        android:textSize="28sp" />
+
+    <Button
+        android:id="@+id/btn_triggerBackupPopup"
+        android:layout_width="340dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/normal_button_selector"
+        android:text="Backups"
+        android:textColor="@color/normalButtonTextColor"
+        android:textSize="28sp" />
+
+    <Button
+        android:id="@+id/btn_triggerScoutIDPopup"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/normal_button_selector"
+        android:text="ID"
+        android:textColor="@color/normalButtonTextColor"
+        android:textSize="32sp" />
+
+    <Button
+        android:id="@+id/btn_triggerScoutNamePopup"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/btn_triggerScoutIDPopup"
+        android:background="@drawable/normal_button_selector"
+        android:text="Name"
+        android:textColor="@color/normalButtonTextColor"
+        android:textSize="26sp" />
+
+    <ImageView
+        android:id="@+id/imgv_cycleNumBackground"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/imgv_cycleNumContentDescription"
+        android:background="@drawable/dashed_background_cyclebutton" />
+
+    <ImageView
+        android:id="@+id/imgv_enterScoutFillBackground"
+        android:layout_width="460dp"
+        android:layout_height="420dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="Drag to Scout"
+        android:background="@drawable/dashed_background_enterscout" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_enterScoutDragFill"
+        android:layout_width="154dp"
+        android:layout_height="140dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="Drag to Scout"
+        android:onClick="onClickStartScouting"
+        android:background="@drawable/expandable_greenselector" />
+
+    <TextView
+        android:id="@+id/tv_announceTeamNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_teamNum"
+        android:layout_toStartOf="@+id/tv_teamNum"
+        android:text="Team :"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/tv_teamNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btn_triggerBackupPopup"
+        android:layout_toStartOf="@+id/imgbtn_enterScoutDragFill"
+        android:text="0000"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/tv_announceMatchNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/et_matchNum"
+        android:layout_toLeftOf="@+id/et_matchNum"
+        android:text="Q:"
+        android:textSize="70sp" />
+
+    <EditText
+        android:id="@+id/et_matchNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imgbtn_enterScoutDragFill"
+        android:layout_toStartOf="@+id/btn_triggerScoutIDPopup"
+        android:hint="#"
+        android:text="000"
+        android:textSize="70sp" />
+
+    <TextView
+        android:id="@+id/tv_announceCycleNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_accessData"
+        android:layout_toLeftOf="@+id/imgv_enterScoutFillBackground"
+        android:text="Cycle "
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/tv_cycleNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_announceCycleNum"
+        android:layout_toRightOf="@+id/tv_announceCycleNum"
+        android:text="#"
+        android:textColor="@color/black"
+        android:textSize="60sp" />
+
+    <TextView
+        android:id="@+id/tv_hintToDragFill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="SCOUT"
+        android:textSize="20sp"/>
 
 </RelativeLayout>

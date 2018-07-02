@@ -33,4 +33,6 @@
     <string name="tv_titleIsOpponentSwitch">Opponent Scale</string>
     <string name="tv_titleIsAllianceScale">Alliance Switch</string>
     <string name="tv_titleIsOpponentScale">Opponent Scale</string>
+
+    <string name="imgv_cycleNumContentDescription">Cycle Number</string>
 </resources>

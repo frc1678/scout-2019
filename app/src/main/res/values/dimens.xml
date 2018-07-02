@@ -23,6 +23,9 @@
 
     <dimen name="dialogRadioButtonHeight">80dp</dimen>
 
+    <dimen name="dialogToggleButtonHeight">180dp</dimen>
+    <dimen name="dialogToggleButtonWidth">360dp</dimen>
+
     <dimen name="dialogLayoutWidth">400dp</dimen>
     <dimen name="dialogLayoutHeight">300dp</dimen>
     <dimen name="dialogLayoutPaddingBottom">10dp</dimen>

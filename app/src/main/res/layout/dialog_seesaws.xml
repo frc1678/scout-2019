@@ -17,16 +17,16 @@
     <ToggleButton
         android:id="@+id/tbtn_outcome"
         android:layout_weight="0.8"
-        android:layout_width="match_parent"
-
-        android:layout_height="@dimen/dialogRadioButtonHeight"
-
+        android:layout_width="@dimen/dialogToggleButtonWidth"
+        android:layout_height="@dimen/dialogToggleButtonHeight"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/tbtn_fail_success_selector"
         android:paddingTop="@dimen/dialogPaddingBetween"
         android:paddingBottom="@dimen/dialogPaddingBetween"
         android:paddingLeft="@dimen/dialogPaddingOuterEdges"
         android:paddingRight="@dimen/dialogPaddingOuterEdges"
-        android:textOff="@string/tbtnOfftext_failure"
-        android:textOn="@string/tbtnOntext_success"
+        android:textOff=""
+        android:textOn=""
         android:textSize="@dimen/widgetTextSize_20" />
 
     <RadioGroup
