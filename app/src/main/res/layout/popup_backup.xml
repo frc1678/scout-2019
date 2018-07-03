@@ -21,6 +21,7 @@
         android:layout_height="100dp"
         android:layout_weight="1"
         android:background="@drawable/popup_button_selector"
+        android:onClick="onClickFileBackup"
         android:text="@string/mitem_fileBackupTitle"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="@dimen/textSize_backups"/>
@@ -31,6 +32,7 @@
         android:layout_height="100dp"
         android:layout_weight="1"
         android:background="@drawable/popup_button_selector"
+        android:onClick="onClickOverrideBackup"
         android:text="@string/mitem_overrideBackupTitle"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="@dimen/textSize_backups"/>
