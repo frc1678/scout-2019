@@ -20,6 +20,12 @@
     <color name="normalButtonPressed">#56E310</color>
     <color name="normalButtonFocused">#66D130</color>
 
+    <color name="popupButtonStroke">#75c88e</color>
+    <color name="popupButtonStart">#e4ffec</color>
+    <color name="popupButtonEnd">#a2fbbd</color>
+    <color name="popupButtonPressed">#96f1b1</color>
+    <color name="popupButtonFocused">#83e19f</color>
+
     <color name="dashedBackgroundStart">#FFEE00</color>
     <color name="dashedBackgroundEnd">#F2BA00</color>
 

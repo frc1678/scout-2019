@@ -8,6 +8,7 @@ import android.widget.ToggleButton;
 import citruscircuits.scout._superActivities.AppTc;
 import citruscircuits.scout._superActivities.DialogMaker;
 
+//Written by the Daemon himself ~ Calvin
 public class A1A extends DialogMaker implements View.OnClickListener{
 
     public Button btn_topLeftSwitch;

@@ -1,16 +1,23 @@
 package citruscircuits.scout._superActivities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import citruscircuits.scout.R;
 
+//Written by the Daemon himself ~ Calvin
 public class AppTc extends AppCompatActivity{
 
-    public void open(Class<? extends Activity> a, boolean finish){
+    public void open(Class<? extends Activity> a, Context c, boolean finish){
         Intent intent = new Intent();
-        intent.setClass(this, a);
+
+        if(c != null){
+            intent.setClass(c, a);
+        }else{
+            intent.setClass(this, a);
+        }
         startActivity(intent);
 
         if(finish){

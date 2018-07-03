@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 
+//Written by the Daemon himself ~ Calvin
 public class OutputManager extends InputManager{
     private static final int DISCOVER_DURATION = 300;
     private static final int REQUEST_BLU = 1;

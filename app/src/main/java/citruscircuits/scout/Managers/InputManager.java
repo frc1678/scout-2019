@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import citruscircuits.scout._superDataClasses.AppCc;
 
+//Written by the Daemon himself ~ Calvin
 public class InputManager {
     //Tasks
     // (1) Store Permanent Data In SDCARD In MainActivity

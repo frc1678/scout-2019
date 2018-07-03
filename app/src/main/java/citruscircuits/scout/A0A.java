@@ -1,5 +1,8 @@
 package citruscircuits.scout;
 
+import android.content.pm.ActivityInfo;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.view.Gravity;
@@ -8,26 +11,54 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import citruscircuits.scout._superActivities.AppTc;
 
+//Written by the Daemon himself ~ Calvin
 public class A0A extends AppTc {
+
+    Button btn_triggerBackupPopup, btn_triggerScoutIDPopup, btn_triggerScoutNamePopup;
+    PopupWindow pw_backupWindow, pw_idWindow, pw_nameWindow;
+
+    LayoutInflater mLayoutInflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
+        pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 340, 300, true);
+        pw_backupWindow.setBackgroundDrawable(new ColorDrawable());
+        btn_triggerBackupPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw_backupWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.LEFT,0, 0);
+            }
+        });
 
     }
 
     public void onClickStartScouting(View view){
-        open(A1A.class, false);
+        open(A1A.class, null,false);
     }
 
+    public void onClickQrBackup(View view) { pw_backupWindow.dismiss(); }
+    public void onClickFileBackup(View view) { pw_backupWindow.dismiss(); }
+    public void onClickOverrideBackup(View view) {
+        pw_backupWindow.dismiss();
+
+    }
 
 //        Button scoutNameButton;
 //        Button scoutIDButton;

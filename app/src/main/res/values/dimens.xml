@@ -29,4 +29,7 @@
     <dimen name="dialogLayoutWidth">400dp</dimen>
     <dimen name="dialogLayoutHeight">300dp</dimen>
     <dimen name="dialogLayoutPaddingBottom">10dp</dimen>
+    <dimen name="textSize_backups">28sp</dimen>
+    <dimen name="textSize_ids">32sp</dimen>
+    <dimen name="textSize_names">26sp</dimen>
 </resources>

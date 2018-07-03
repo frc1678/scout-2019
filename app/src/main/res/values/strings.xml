@@ -35,4 +35,30 @@
     <string name="tv_titleIsOpponentScale">Opponent Scale</string>
 
     <string name="imgv_cycleNumContentDescription">Cycle Number</string>
+
+    <string name="mitem_qrBackupTitle">QR</string>
+    <string name="mitem_fileBackupTitle">Backup</string>
+    <string name="mitem_overrideBackupTitle">Override</string>
+
+    <string name="mitem_name_1">Ben</string>
+    <string name="mitem_name_2">Jason</string>
+    <string name="mitem_name_3">Calvin</string>
+    <string name="mitem_name_4">Emily</string>
+    <string name="mitem_name_5">Sam</string>
+    <string name="mitem_name_6">Carter</string>
+    <string name="mitem_name_7">Justin</string>
+    <string name="mitem_name_8">ScrubTeo</string>
+    <string name="mitem_name_9">Nerd</string>
+    <string name="mitem_name_10">Queing</string>
+
+    <string name="mitem_id_1">1</string>
+    <string name="mitem_id_2">2</string>
+    <string name="mitem_id_3">3</string>
+    <string name="mitem_id_4">4</string>
+    <string name="mitem_id_5">5</string>
+    <string name="mitem_id_6">6</string>
+    <string name="mitem_id_7">7</string>
+    <string name="mitem_id_8">8</string>
+    <string name="mitem_id_9">9</string>
+    <string name="mitem_id_10">10</string>
 </resources>

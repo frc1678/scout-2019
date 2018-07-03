@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/mitem_id_1" android:title="@string/mitem_id_1"></item>
+    <item android:id="@+id/mitem_id_2" android:title="@string/mitem_id_2"></item>
+    <item android:id="@+id/mitem_id_3" android:title="@string/mitem_id_3"></item>
+    <item android:id="@+id/mitem_id_4" android:title="@string/mitem_id_4"></item>
+    <item android:id="@+id/mitem_id_5" android:title="@string/mitem_id_5"></item>
+    <item android:id="@+id/mitem_id_6" android:title="@string/mitem_id_6"></item>
+    <item android:id="@+id/mitem_id_7" android:title="@string/mitem_id_7"></item>
+    <item android:id="@+id/mitem_id_8" android:title="@string/mitem_id_8"></item>
+    <item android:id="@+id/mitem_id_9" android:title="@string/mitem_id_9"></item>
+    <item android:id="@+id/mitem_id_10" android:title="@string/mitem_id_10"></item>
+</menu>

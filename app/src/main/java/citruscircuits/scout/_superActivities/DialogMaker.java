@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import citruscircuits.scout.R;
 
+//Written by the Daemon himself ~ Calvin
 public class DialogMaker extends AppTc{
 
     public void initSeesawDialog(Activity a, boolean isOpponentSeesaw, boolean isScale){

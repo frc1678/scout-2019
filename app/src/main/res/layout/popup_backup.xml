@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="340dp"
+    android:layout_height="300dp"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_qrBackup"
+        android:layout_width="340dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:background="@drawable/popup_button_selector"
+        android:onClick="onClickQrBackup"
+        android:text="@string/mitem_qrBackupTitle"
+        android:textColor="@color/normalButtonTextColor"
+        android:textSize="@dimen/textSize_backups"/>
+
+    <Button
+        android:id="@+id/btn_fileBackup"
+        android:layout_width="340dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:background="@drawable/popup_button_selector"
+        android:text="@string/mitem_fileBackupTitle"
+        android:textColor="@color/normalButtonTextColor"
+        android:textSize="@dimen/textSize_backups"/>
+
+    <Button
+        android:id="@+id/btn_overrideBackup"
+        android:layout_width="340dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:background="@drawable/popup_button_selector"
+        android:text="@string/mitem_overrideBackupTitle"
+        android:textColor="@color/normalButtonTextColor"
+        android:textSize="@dimen/textSize_backups"/>
+
+</LinearLayout>
