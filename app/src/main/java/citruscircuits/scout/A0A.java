@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import citruscircuits.scout._superActivities.DialogMaker;
+import citruscircuits.scout.utils.QRScan;
 
 //Written by the Daemon himself ~ Calvin
 public class A0A extends DialogMaker {
@@ -50,14 +51,16 @@ public class A0A extends DialogMaker {
     }
 
     public void onClickStartScouting(View view){
-        open(A1A.class, null,false);
+        open(A1A.class, null,false, true);
     }
 
     public void onClickQrBackup(View view) {
-        open(QRScan.class, this, false);
+        open(QRScan.class, null, false, true);
         pw_backupWindow.dismiss();
     }
+
     public void onClickFileBackup(View view) { pw_backupWindow.dismiss(); }
+
     public void onClickOverrideBackup(View view) {
         pw_backupWindow.dismiss();
 

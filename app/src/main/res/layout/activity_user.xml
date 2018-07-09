@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/scout_wallpaper_2" />
+        android:background="@drawable/scout_wallpaper_33" />
 
     <Button
         android:id="@+id/btn_accessData"

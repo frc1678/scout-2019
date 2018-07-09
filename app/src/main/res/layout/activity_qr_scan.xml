@@ -1,11 +1,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.dlazaro66.qrcodereaderview.QRCodeReaderView
-        android:id="@+id/qrdecoderview"
-        android:layout_width="500dp"
-        android:layout_height="500dp"
+        android:id="@+id/scan_area"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:layout_width="@dimen/qrCodeReaderViewSide"
+        android:layout_height="@dimen/qrCodeReaderViewSide"
         android:layout_centerInParent="true"
-        android:paddingTop="50dp"/>
+        android:background="@drawable/scan_outline"/>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:background="@android:drawable/ic_menu_revert"
+        android:onClick="onBackClick"/>
 
 </RelativeLayout>

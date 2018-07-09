@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="citruscircuits.scout">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/newscoutlogo"
@@ -22,8 +24,7 @@
         <activity android:name=".A1A"
             android:label="Map" />
 
-        <activity android:name="._superActivities.DialogMaker$QRScan" />
+        <activity android:name=".utils.QRScan" />
 
     </application>
-
 </manifest>

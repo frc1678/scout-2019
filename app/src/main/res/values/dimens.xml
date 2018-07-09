@@ -32,4 +32,5 @@
     <dimen name="textSize_backups">28sp</dimen>
     <dimen name="textSize_ids">32sp</dimen>
     <dimen name="textSize_names">26sp</dimen>
+    <dimen name="qrCodeReaderViewSide">350dp</dimen>
 </resources>

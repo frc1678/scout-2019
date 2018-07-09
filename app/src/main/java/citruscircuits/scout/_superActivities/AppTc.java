@@ -10,7 +10,7 @@ import citruscircuits.scout.R;
 //Written by the Daemon himself ~ Calvin
 public class AppTc extends AppCompatActivity{
 
-    public void open(Class<? extends Activity> a, Context c, boolean finish){
+    public void open(Class<? extends Activity> a, Context c, boolean finish, boolean animate){
         Intent intent = new Intent();
 
         if(c != null){
@@ -24,7 +24,9 @@ public class AppTc extends AppCompatActivity{
             finish();
         }
 
-        openTransition();
+        if(animate){
+            openTransition();
+        }
     }
 
     public void openTransition() {
