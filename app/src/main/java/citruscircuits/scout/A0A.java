@@ -17,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-import citruscircuits.scout._superActivities.AppTc;
+import citruscircuits.scout._superActivities.DialogMaker;
 
 //Written by the Daemon himself ~ Calvin
-public class A0A extends AppTc {
+public class A0A extends DialogMaker {
 
     Button btn_triggerBackupPopup, btn_triggerScoutIDPopup, btn_triggerScoutNamePopup;
     PopupWindow pw_backupWindow, pw_idWindow, pw_nameWindow;
@@ -53,7 +53,10 @@ public class A0A extends AppTc {
         open(A1A.class, null,false);
     }
 
-    public void onClickQrBackup(View view) { pw_backupWindow.dismiss(); }
+    public void onClickQrBackup(View view) {
+        open(QRScan.class, this, false);
+        pw_backupWindow.dismiss();
+    }
     public void onClickFileBackup(View view) { pw_backupWindow.dismiss(); }
     public void onClickOverrideBackup(View view) {
         pw_backupWindow.dismiss();
@@ -125,5 +128,6 @@ public class A0A extends AppTc {
 //                }
 //            });
 //        }
+
 }
 

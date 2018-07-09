@@ -4,15 +4,32 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.PointF;
+import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
+import android.net.ParseException;
 
 import org.json.JSONObject;
 
+import citruscircuits.scout.A0A;
+import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
+import citruscircuits.scout._superDataClasses.AppCc;
+import citruscircuits.scout.utils.AppUtils;
+
+import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 
 //Written by the Daemon himself ~ Calvin
 public class DialogMaker extends AppTc{
@@ -87,6 +104,82 @@ public class DialogMaker extends AppTc{
                     break;
 
             }
+        }
+    }
+
+
+    public static class QRScan extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener {
+
+        QRCodeReaderView qrCodeReader;
+        public String qrString = "";
+        Intent intent;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_qr_scan);
+
+            intent = getIntent();
+
+            qrCodeReader = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
+            qrCodeReader.setOnQRCodeReadListener(this);
+            qrCodeReader.setQRDecodingEnabled(true);
+            qrCodeReader.setTorchEnabled(true);
+            qrCodeReader.setAutofocusInterval(2000L);
+
+            qrCodeReader.setFrontCamera();
+
+            if(InputManager.mScoutID >= 7){
+                qrCodeReader.setBackCamera();
+            }
+        }
+
+        @Override
+        public void onQRCodeRead(String text, PointF[] points) {
+            Intent intent = new Intent(this, A0A.class);
+            qrString = text;
+            String prevQrString = AppCc.getSp("qrString", "");
+
+            try{
+                if(Integer.parseInt(prevQrString.substring(0, prevQrString.indexOf("|"))) > Integer.parseInt(qrString.substring(0, qrString.indexOf("|")))){
+                    AppUtils.makeToast(this, "WRONG CYCLE NUMBER!");
+                    qrString = prevQrString;
+
+                } else if((!qrString.contains("|")) || (Integer.parseInt(prevQrString.substring(0, prevQrString.indexOf("|"))) <= 0)) {
+                    if(!qrString.contains("|")) { AppUtils.makeToast(this, "NO PIPE!"); }
+                    if(Integer.parseInt(prevQrString.substring(0, prevQrString.indexOf("|"))) <= 0) { AppUtils.makeToast(this, "INVALID CYCLE NUM!"); }
+
+                    intent.putExtra("qrObtained", false);
+                    InputManager.cycleNum = Integer.parseInt(qrString.substring(0, qrString.indexOf("|")));
+                    AppCc.setSp("cycle", InputManager.cycleNum);
+                    AppUtils.makeToast(this, "SUCCESS SCAN!");
+                    startActivity(intent);
+                }
+
+                Log.e("CYCLENUMBER!", Integer.parseInt(qrString.substring(0, qrString.indexOf("|"))) + "");
+
+            }catch (ParseException | IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }catch (NullPointerException ne){
+                AppUtils.makeToast(this, "FAIL SCAN!");
+            }
+
+            Log.e("QRSTRING", qrString+"");
+            AppCc.setSp("qrString", qrString);
+            intent.putExtra("qrObtained", true);
+            startActivity(intent);
+        }
+
+        @Override
+        protected void onResume() {
+            super.onResume();
+            qrCodeReader.startCamera();
+        }
+
+        @Override
+        protected void onPause() {
+            super.onPause();
+            qrCodeReader.stopCamera();
         }
     }
 

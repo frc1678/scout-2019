@@ -22,6 +22,8 @@
         <activity android:name=".A1A"
             android:label="Map" />
 
+        <activity android:name="._superActivities.DialogMaker$QRScan" />
+
     </application>
 
 </manifest>

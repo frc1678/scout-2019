@@ -1,5 +1,7 @@
 package citruscircuits.scout.Managers;
 
+import android.content.SharedPreferences;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,8 @@ public class InputManager {
 
     public static int mMatchNum = 0;
     public static int mTeamNum = 0;
+
+    public static int cycleNum = 0;
 
     //Map-Scouting Variables
     public static String mStartingPosition;
