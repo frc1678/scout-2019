@@ -47,7 +47,6 @@ public class A0A extends DialogMaker {
                 pw_backupWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.LEFT,0, 0);
             }
         });
-
     }
 
     public void onClickStartScouting(View view){
@@ -55,7 +54,7 @@ public class A0A extends DialogMaker {
     }
 
     public void onClickQrBackup(View view) {
-        open(QRScan.class, null, false, true);
+        open(QRScan.class, null, false, false);
         pw_backupWindow.dismiss();
     }
 

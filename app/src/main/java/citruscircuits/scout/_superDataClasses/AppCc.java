@@ -3,6 +3,7 @@ package citruscircuits.scout._superDataClasses;
 import android.app.Application;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -14,11 +15,12 @@ public class AppCc extends Application{
 
     public void onCreate(){
         super.onCreate();
-
-        INSTANCE = this;
+        INSTANCE = AppCc.this;
+        Log.e("INSTANCE REF", INSTANCE.toString());
     }
 
     public final static SharedPreferences getSp(){
+        Log.e("INSTANCE REF", INSTANCE.toString());
         return INSTANCE.getSharedPreferences(Cst.SHARED_PREF, Activity.MODE_PRIVATE);
     }
 
