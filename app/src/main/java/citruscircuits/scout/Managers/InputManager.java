@@ -22,13 +22,15 @@ public class InputManager {
     public static JSONObject mRealTimeInputtedData;
 
     //Main Inputs
+    public static String mAllianceColor = "";
+
     public static String mScoutName = "unselected";
     public static int mScoutID = 0;
 
     public static int mMatchNum = 0;
     public static int mTeamNum = 0;
 
-    public static int cycleNum = 0;
+    public static int mCycleNum = 0;
 
     //Map-Scouting Variables
     public static String mStartingPosition;
@@ -64,17 +66,21 @@ public class InputManager {
     public static boolean vaultOpen = false;
 
     public static void storeUserData(){
+        AppCc.setSp("allianceColor", mAllianceColor);
         AppCc.setSp("scoutName", mScoutName);
         AppCc.setSp("scoutID", mScoutID);
         AppCc.setSp("matchNum", mMatchNum);
         AppCc.setSp("teamNum", mTeamNum);
+        AppCc.setSp("cycleNum", mCycleNum);
     }
 
     public static void recoverUserData(){
+        mAllianceColor = AppCc.getSp("allianceColor", "");
         mScoutName = AppCc.getSp("scoutName", "unselected");
         mScoutID = AppCc.getSp("scoutID", 0);
         mMatchNum = AppCc.getSp("matchNum", 0);
         mTeamNum = AppCc.getSp("teamNum", 0);
+        mCycleNum = AppCc.getSp("cycleNum", 0);
     }
 
     //TODO update the correct key input format later

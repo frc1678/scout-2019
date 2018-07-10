@@ -21,6 +21,10 @@ public class AppUtils {
         }
     }
 
+    public static int StringToInt(String s){
+        return Integer.parseInt(s);
+    }
+
     public static void makeToast(Context context, String text, int size){
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);

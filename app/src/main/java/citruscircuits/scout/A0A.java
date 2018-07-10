@@ -1,8 +1,11 @@
 package citruscircuits.scout;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.view.Gravity;
@@ -13,18 +16,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout.utils.QRScan;
 
 //Written by the Daemon himself ~ Calvin
 public class A0A extends DialogMaker {
 
+    public static Drawable dr_redCycle, dr_blueCycle;
+
     Button btn_triggerBackupPopup, btn_triggerScoutIDPopup, btn_triggerScoutNamePopup;
+
+    public static ImageView imgv_cycleBackground;
+
     PopupWindow pw_backupWindow, pw_idWindow, pw_nameWindow;
+
+    public static EditText et_matchNum;
+
+    public static TextView tv_cycleNum, tv_teamNum;
 
     LayoutInflater mLayoutInflater;
 
@@ -35,6 +51,11 @@ public class A0A extends DialogMaker {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        dr_redCycle = getResources().getDrawable(R.drawable.cycle_red_dashed_background);
+        dr_blueCycle = getResources().getDrawable(R.drawable.cycle_blue_dashed_background);
+
+        initViews();
 
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -61,11 +82,41 @@ public class A0A extends DialogMaker {
     public void onClickFileBackup(View view) { pw_backupWindow.dismiss(); }
 
     public void onClickOverrideBackup(View view) {
+        initOverrideDialog(A0A.this);
         pw_backupWindow.dismiss();
+    }
+
+    public void initViews(){
+        imgv_cycleBackground = findViewById(R.id.imgv_cycleNumBackground);
+
+        et_matchNum = findViewById(R.id.et_matchNum);
+
+        tv_cycleNum = findViewById(R.id.tv_cycleNum);
+        tv_teamNum = findViewById(R.id.tv_teamNum);
 
     }
 
-//        Button scoutNameButton;
+    public static void updateUserData(){
+        setCycleBackgroundColor(InputManager.mAllianceColor);
+        et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
+        tv_cycleNum.setText(String.valueOf(InputManager.mCycleNum));
+        tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
+
+        //TODO update scout Name and ID too
+    }
+
+    public static void setCycleBackgroundColor(String color){
+        switch (color){
+            case "Red":
+                imgv_cycleBackground.setBackground(dr_redCycle);
+                break;
+            case "Blue":
+                imgv_cycleBackground.setBackground(dr_blueCycle);
+                break;
+        }
+    }
+
+//        Butt on scoutNameButton;
 //        Button scoutIDButton;
 //        Button backupButton;
 //        PopupWindow popupWindow;

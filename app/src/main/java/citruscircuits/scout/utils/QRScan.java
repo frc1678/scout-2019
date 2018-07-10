@@ -69,11 +69,11 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         }
 
         int cycleNum = 0;
-        try { cycleNum = Integer.parseInt(resultStr.substring(0, resultStr.indexOf("|"))); }
+        try { cycleNum = AppUtils.StringToInt(resultStr.substring(0, resultStr.indexOf("|"))); }
         catch (Exception e){ e.printStackTrace(); }
 
         if(!prevStr.equals("")){
-            int prevCycleNum = Integer.parseInt(prevStr.substring(0, prevStr.indexOf("|")));;
+            int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("|")));;
 
             if(prevCycleNum >= cycleNum){
                 AppUtils.makeToast(this, "QR's CYCLE NUMBER: " + cycleNum + ", Your CYCLE NUMBER: " + prevCycleNum, 50);
@@ -96,7 +96,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             }
         }
 
-        InputManager.cycleNum = cycleNum;
+        InputManager.mCycleNum = cycleNum;
         AppCc.setSp("resultStr", resultStr);
         AppCc.setSp("cycleNum", cycleNum);
 

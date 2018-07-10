@@ -31,4 +31,10 @@
 
     <color name="dragBackgroundStart">#F5FFF5</color>
     <color name="dragBackgroundEnd">#ABD9BD</color>
+
+    <color name="cycle_red_start">#FF819A</color>
+    <color name="cycle_red_end">#CB0000</color>
+
+    <color name="cycle_blue_start">#68DFFF</color>
+    <color name="cycle_blue_end">#000B77</color>
 </resources>

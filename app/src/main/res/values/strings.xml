@@ -61,4 +61,6 @@
     <string name="mitem_id_8">8</string>
     <string name="mitem_id_9">9</string>
     <string name="mitem_id_10">10</string>
+
+    <string name="tv_overrideDialogTitle"><b>Override</b></string>
 </resources>

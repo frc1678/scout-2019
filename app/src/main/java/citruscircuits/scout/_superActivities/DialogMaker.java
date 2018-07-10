@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -39,20 +40,72 @@ public class DialogMaker extends AppTc{
         mSeesawDialog.show();
     }
 
+    public void initOverrideDialog(Activity a){
+        OverrideDialog mOverrideDialog = new OverrideDialog(a);
+        mOverrideDialog.show();
+    }
+
+    public class OverrideDialog extends Dialog {
+
+        private Activity context;
+
+        private EditText et_overrideTeamNum;
+        private ToggleButton tbtn_AllianceColor;
+
+        private String tAllianceColor;
+
+        public OverrideDialog(Activity a){
+            super(a);
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState){
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_override);
+
+            OverrideDialog.this.setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    try{
+                        InputManager.mTeamNum = AppUtils.StringToInt(et_overrideTeamNum.getText().toString());
+                    }catch(Exception e){}
+
+                    if(tbtn_AllianceColor.isChecked()){
+                        InputManager.mAllianceColor = "Red";
+                    }else{
+                        InputManager.mAllianceColor = "Blue";
+                    }
+
+                    InputManager.storeUserData();
+                    A0A.updateUserData();
+                }
+            });
+
+            initViews();
+        }
+
+        public void initViews(){
+            et_overrideTeamNum = findViewById(R.id.et_overrideTeamNum);
+
+            tbtn_AllianceColor = findViewById(R.id.tbtn_alliance_color);
+        }
+    }
+
     public class SeesawDialog extends Dialog implements View.OnClickListener {
 
-        public Activity context;
+        private Activity context;
 
-        public boolean isOpponentSeesaw, isScale;
+        private boolean isOpponentSeesaw, isScale;
 
-        public TextView tv_DialogTitle;
-        public ToggleButton tbtn_Outcome;
-        public RadioButton rbtn_OpponentOwned, rbtn_Balanced,
+        private TextView tv_DialogTitle;
+        private ToggleButton tbtn_Outcome;
+        private RadioButton rbtn_OpponentOwned, rbtn_Balanced,
                     rbtn_Layer1, rbtn_Layer2, rbtn_Layer3;
 
         public JSONObject mSeesawInfo;
 
-        public SeesawDialog(Activity a, boolean isOpponentSeesaw, boolean isScale){
+        private SeesawDialog(Activity a, boolean isOpponentSeesaw, boolean isScale){
             super(a);
             SeesawDialog.this.context = a;
 
@@ -66,6 +119,28 @@ public class DialogMaker extends AppTc{
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.dialog_seesaws);
 
+            initViews();
+        }
+
+        public void onClick(View v){
+            switch (v.getId()) {
+                case R.id.tbtn_outcome:
+                    break;
+                case R.id.rbtn_opponentOwned:
+                    break;
+                case R.id.rbtn_balanced:
+                    break;
+                case R.id.rbtn_layer1:
+                    break;
+                case R.id.rbtn_layer2:
+                    break;
+                case R.id.rbtn_layer3:
+                    break;
+
+            }
+        }
+
+        private void initViews(){
             tv_DialogTitle = (TextView) findViewById(R.id.dialogTitle);
             if(isOpponentSeesaw && isScale){        tv_DialogTitle.setText(R.string.tv_titleIsOpponentScale);}
             else if(!isOpponentSeesaw && isScale){      tv_DialogTitle.setText(R.string.tv_titleIsAllianceScale);}
@@ -87,23 +162,29 @@ public class DialogMaker extends AppTc{
             rbtn_Layer2.setOnClickListener(SeesawDialog.this);
             rbtn_Layer3.setOnClickListener(SeesawDialog.this);
         }
-
-        public void onClick(View v){
-            switch (v.getId()) {
-                case R.id.tbtn_outcome:
-                    break;
-                case R.id.rbtn_opponentOwned:
-                    break;
-                case R.id.rbtn_balanced:
-                    break;
-                case R.id.rbtn_layer1:
-                    break;
-                case R.id.rbtn_layer2:
-                    break;
-                case R.id.rbtn_layer3:
-                    break;
-
-            }
-        }
     }
 }
+
+//public class OverrideDialog extends Dialog implements View.OnClickListener {
+//
+//    public Activity context;
+//
+//    public OverrideDialog(Activity a){
+//        super(a);
+//    }
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState){
+//        super.onCreate(savedInstanceState);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        setContentView(R.layout.dialog_seesaws);
+//
+//    }
+//
+//    public void onClick(View v){
+//        switch (v.getId()) {
+//            case R.id.tbtn_outcome:
+//                break;
+//        }
+//    }
+//}
