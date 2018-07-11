@@ -31,4 +31,8 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         }
     }
 
+
+
+public void toA2A(View view) { open(A2A.class, null, false, false); }
+
 }

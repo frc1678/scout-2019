@@ -271,4 +271,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
 
+
+    <Button
+        android:id="@+id/tempNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEXT"
+        android:onClick="toA2A"/>
+
 </android.support.constraint.ConstraintLayout>

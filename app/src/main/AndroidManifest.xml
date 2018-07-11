@@ -25,6 +25,8 @@
         <activity android:name=".A1A"
             android:label="Map" />
 
+        <activity android:name=".A2A" />
+
         <activity android:name=".utils.QRScan" />
 
     </application>
