@@ -22,7 +22,7 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/normal_button_selector"
+        android:background="@drawable/btn_normal_selector"
         android:text="Data"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="28sp" />
@@ -33,7 +33,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/normal_button_selector"
+        android:background="@drawable/btn_normal_selector"
         android:text="Backups"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="@dimen/textSize_backups" />
@@ -44,7 +44,7 @@
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/normal_button_selector"
+        android:background="@drawable/btn_normal_selector"
         android:text="ID"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="@dimen/textSize_ids" />
@@ -55,7 +55,7 @@
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/btn_triggerScoutIDPopup"
-        android:background="@drawable/normal_button_selector"
+        android:background="@drawable/btn_normal_selector"
         android:text="Name"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="@dimen/textSize_names" />
@@ -146,13 +146,12 @@
         android:text="SCOUT"
         android:textSize="20sp"/>
 
-    <ImageButton
-        android:id="@+id/imgbtn_map_orientation"
+    <Button
+        android:id="@+id/btn_map_orientation"
         android:layout_width="120dp"
         android:layout_height="60dp"
         android:layout_above="@+id/btn_triggerBackupPopup"
         android:layout_alignStart="@+id/imgv_cycleNumBackground"
-        android:background="@drawable/btn_map_orientation_rb"
-        android:onClick="onClickMapOrientation"/>
+        android:background="#ffffff" />
 
 </RelativeLayout>

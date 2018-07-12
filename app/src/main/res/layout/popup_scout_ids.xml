@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="match_parent"
+    android:paddingTop="100dp">
+
+    <ListView
+        android:id="@+id/lv_scoutIds"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="#777777">
+    </ListView>
+
+</LinearLayout>

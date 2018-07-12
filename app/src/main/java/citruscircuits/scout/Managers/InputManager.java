@@ -25,7 +25,7 @@ public class InputManager {
     public static String mAllianceColor = "";
 
     public static String mScoutName = "unselected";
-    public static int mScoutID = 0;
+    public static int mScoutId = 0;
 
     public static int mMatchNum = 0;
     public static int mTeamNum = 0;
@@ -68,7 +68,7 @@ public class InputManager {
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);
         AppCc.setSp("scoutName", mScoutName);
-        AppCc.setSp("scoutID", mScoutID);
+        AppCc.setSp("scoutId", mScoutId);
         AppCc.setSp("matchNum", mMatchNum);
         AppCc.setSp("teamNum", mTeamNum);
         AppCc.setSp("cycleNum", mCycleNum);
@@ -77,10 +77,21 @@ public class InputManager {
     public static void recoverUserData(){
         mAllianceColor = AppCc.getSp("allianceColor", "");
         mScoutName = AppCc.getSp("scoutName", "unselected");
-        mScoutID = AppCc.getSp("scoutID", 0);
+        mScoutId = AppCc.getSp("scoutId", 0);
         mMatchNum = AppCc.getSp("matchNum", 0);
         mTeamNum = AppCc.getSp("teamNum", 0);
         mCycleNum = AppCc.getSp("cycleNum", 0);
+    }
+
+    public static void prepareUserDataForNextMatch(){
+        mAllianceColor = "";
+        //Scout Name Doesn't Change
+        //Scout Id Doesn't Change
+        mMatchNum++;
+        mTeamNum = 0;
+        //Cycle Number Doesn't Change
+
+        storeUserData();
     }
 
     //TODO update the correct key input format later

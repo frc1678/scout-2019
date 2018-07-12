@@ -8,19 +8,26 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +35,7 @@ import android.widget.TextView;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
+import citruscircuits.scout._superDataClasses.Cst;
 import citruscircuits.scout.utils.AppUtils;
 import citruscircuits.scout.utils.QRScan;
 
@@ -37,13 +45,17 @@ public class A0A extends DialogMaker {
     public static Drawable dr_redCycle, dr_blueCycle;
     public Drawable map_orientation_rb, map_orientation_br;
 
-    Button btn_triggerBackupPopup, btn_triggerScoutIDPopup, btn_triggerScoutNamePopup;
+    public static Button btn_triggerBackupPopup, btn_triggerScoutNamePopup, btn_triggerScoutIDPopup;
 
-    public ImageButton imgbtn_mapOrientation;
+    public Button btn_mapOrientation;
 
     public static ImageView imgv_cycleBackground;
 
-    PopupWindow pw_backupWindow, pw_idWindow, pw_nameWindow;
+    PopupWindow pw_backupWindow, pw_nameWindow, pw_idWindow;
+
+    public ListView lv_scoutNames, lv_scoutIds;
+    public ScoutNameListAdapter mScoutNameListAdapter;
+    public ScoutIdListAdapter mScoutIdListAdapter;
 
     public static EditText et_matchNum;
 
@@ -64,21 +76,17 @@ public class A0A extends DialogMaker {
         map_orientation_rb = getResources().getDrawable(R.drawable.btn_map_orientation_rb);
         map_orientation_br = getResources().getDrawable(R.drawable.btn_map_orientation_br);
 
-        initViews();
-
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
-        pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 340, 300, true);
-        pw_backupWindow.setBackgroundDrawable(new ColorDrawable());
-        btn_triggerBackupPopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pw_backupWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.LEFT,0, 0);
-            }
-        });
+        initViews();
+        initPopups();
+        initListeners();
+
+        InputManager.recoverUserData();
+        updateUserData();
     }
 
+    //OnClick Methods
     public void onClickStartScouting(View view){
         open(A1A.class, null,false, true);
     }
@@ -95,45 +103,13 @@ public class A0A extends DialogMaker {
         pw_backupWindow.dismiss();
     }
 
-    public void onClickMapOrientation(View view){
-        if(view.getBackground() == map_orientation_rb){
-            view.setBackground(map_orientation_br);
-            AppCc.setSp("mapOrientation", 1);
-        }else if(view.getBackground() == map_orientation_br){
-            view.setBackground(map_orientation_rb);
-            AppCc.setSp("mapOrientation", 0);
-        }else{
-            AppUtils.makeToast(this, "Orientation Aint Working", 50);
-            return;
-        }
-    }
-
-    public void initViews(){
-        imgbtn_mapOrientation = findViewById(R.id.imgbtn_map_orientation);
-        if(AppCc.getSp("mapOrientation",99) != 99){
-            if(AppCc.getSp("mapOrientation", 99) == 0){
-                imgbtn_mapOrientation.setBackground(map_orientation_rb);
-            }else {
-                imgbtn_mapOrientation.setBackground(map_orientation_br);
-            }
-        }
-
-        imgv_cycleBackground = findViewById(R.id.imgv_cycleNumBackground);
-
-        et_matchNum = findViewById(R.id.et_matchNum);
-
-        tv_cycleNum = findViewById(R.id.tv_cycleNum);
-        tv_teamNum = findViewById(R.id.tv_teamNum);
-
-    }
-
     public static void updateUserData(){
         setCycleBackgroundColor(InputManager.mAllianceColor);
         et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
         tv_cycleNum.setText(String.valueOf(InputManager.mCycleNum));
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
-
-        //TODO update scout Name and ID too
+        btn_triggerScoutNamePopup.setText(InputManager.mScoutName);
+        btn_triggerScoutIDPopup.setText(String.valueOf(InputManager.mScoutId));
     }
 
     public static void setCycleBackgroundColor(String color){
@@ -147,71 +123,208 @@ public class A0A extends DialogMaker {
         }
     }
 
-//        Butt on scoutNameButton;
-//        Button scoutIDButton;
-//        Button backupButton;
-//        PopupWindow popupWindow;
-//        RelativeLayout relativeLayout;
-//        LayoutInflater layoutInflater;
-//        private final MainActivity context=this;
-//        @Override
-//        protected void onCreate (Bundle savedInstanceState){
-//            super.onCreate(savedInstanceState);
-//            setContentView(R.layout.activity_main);
-//            scoutNameButton= (Button) findViewById(R.id.scoutNameButton);
-//            scoutNameButton.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View view){
-//                    PopupMenu namePopupMenu= new PopupMenu(MainActivity.this, scoutNameButton);
-//                    namePopupMenu.getMenuInflater().inflate(R.menu.name_popup_menu, namePopupMenu.getMenu());
-//                    namePopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-//                        @Override
-//                        public boolean onMenuItemClick(MenuItem item){
-//                            scoutNameButton.setText(item.getTitle());
-//                            return true;
-//                        }
-//                    });
-//                    namePopupMenu.show();
-//                }
-//            });
-//            scoutIDButton= (Button) findViewById(R.id.scoutIDButton);
-//            scoutIDButton.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View view){
-//                    PopupMenu idPopupMenu= new PopupMenu(MainActivity.this, scoutIDButton);
-//                    idPopupMenu.getMenuInflater().inflate(R.menu.number_popup_menu, idPopupMenu.getMenu());
-//                    idPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-//                        @Override
-//                        public boolean onMenuItemClick(MenuItem item){
-//                            scoutIDButton.setText(item.getTitle());
-//                            return true;
-//                        }
-//                    });
-//                    idPopupMenu.show();
-//                }
-//            });
-//            backupButton=(Button) findViewById(R.id.backUpButton);
-//            relativeLayout= (RelativeLayout) findViewById(R.id.mainActivity);
-//            backupButton.setOnClickListener(new View.OnClickListener(){
-//                @Override
-//                public void onClick(View view){
-////                    Intent intent=new Intent(MainActivity.this, backupUI.class);
-////                    MainActivity.this.startActivity(intent);
-//                    layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-//                    ViewGroup container= (ViewGroup) layoutInflater.inflate(R.layout.backupbutton,null);
-//                    popupWindow = new PopupWindow(container, 600, 600, true);
-//                    popupWindow.showAtLocation(relativeLayout, Gravity.CENTER, 90, 360);
-//                    container.setOnTouchListener(new View.OnTouchListener(){
-//                        @Override
-//                        public boolean onTouch(View view, MotionEvent motionEvent){
-//                            popupWindow.dismiss();
-//                            return true;
-//                        }
-//                    });
-////Hi Ben
-//                }
-//            });
-//        }
+    public void initViews(){
+        btn_mapOrientation = findViewById(R.id.btn_map_orientation);
+        if(AppCc.getSp("mapOrientation",99) != 99){
+            if(AppCc.getSp("mapOrientation", 99) == 0){
+                btn_mapOrientation.setBackground(map_orientation_rb);
+            }else {
+                btn_mapOrientation.setBackground(map_orientation_br);
+            }
+        }else{
+            AppCc.setSp("mapOrientation", 0);
+            btn_mapOrientation.setBackground(map_orientation_rb);
+        }
 
+        imgv_cycleBackground = findViewById(R.id.imgv_cycleNumBackground);
+
+        et_matchNum = findViewById(R.id.et_matchNum);
+
+        tv_cycleNum = findViewById(R.id.tv_cycleNum);
+        tv_teamNum = findViewById(R.id.tv_teamNum);
+
+    }
+
+    public void initListeners(){
+        btn_mapOrientation.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(AppCc.getSp("mapOrientation",99) != 99){
+                    if(AppCc.getSp("mapOrientation", 99) == 0){
+                        AppCc.setSp("mapOrientation", 1);
+                        btn_mapOrientation.setBackground(map_orientation_br);
+                    }else {
+                        AppCc.setSp("mapOrientation", 0);
+                        btn_mapOrientation.setBackground(map_orientation_rb);
+                    }
+                }else{
+                    AppCc.setSp("mapOrientation", 0);
+                    btn_mapOrientation.setBackground(map_orientation_rb);
+                }
+                return true;
+            }
+        });
+
+        et_matchNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(editable.toString().equals("")){
+                    return;
+                }
+
+                int matchNum = AppUtils.StringToInt(editable.toString());
+
+                InputManager.mMatchNum = matchNum;
+                AppCc.setSp("matchNum", matchNum);
+            }
+        });
+    }
+
+    public void initPopups(){
+        //BACKUP POPUP
+        btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
+        pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 200, 300, true);
+        pw_backupWindow.setBackgroundDrawable(new ColorDrawable());
+        btn_triggerBackupPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw_backupWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.LEFT,0, 0);
+            }
+        });
+
+        //SCOUT NAME POPUP
+        btn_triggerScoutNamePopup = (Button) findViewById(R.id.btn_triggerScoutNamePopup);
+        LinearLayout nameLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_name, null);
+        pw_nameWindow = new PopupWindow(nameLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        pw_nameWindow.setBackgroundDrawable(new ColorDrawable());
+
+        lv_scoutNames = nameLayout.findViewById(R.id.lv_scoutNames);
+        mScoutNameListAdapter = new ScoutNameListAdapter();
+        lv_scoutNames.setAdapter(mScoutNameListAdapter);
+
+        btn_triggerScoutNamePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,100, 0);
+                mScoutNameListAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //SCOUT ID POPUP
+        btn_triggerScoutIDPopup = (Button) findViewById(R.id.btn_triggerScoutIDPopup);
+        LinearLayout idLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_ids, null);
+        pw_idWindow = new PopupWindow(idLayout, 100, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        pw_idWindow.setBackgroundDrawable(new ColorDrawable());
+
+        lv_scoutIds = idLayout.findViewById(R.id.lv_scoutIds);
+        mScoutIdListAdapter = new ScoutIdListAdapter();
+        lv_scoutIds.setAdapter(mScoutIdListAdapter);
+
+        btn_triggerScoutIDPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw_idWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
+                mScoutIdListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public class ScoutNameListAdapter extends BaseAdapter{
+
+        public ScoutNameListAdapter(){
+        }
+
+        @Override
+        public int getCount() {
+            return Cst.SCOUT_NAMES.size();
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return Cst.SCOUT_NAMES.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+            convertView = mLayoutInflater.inflate(R.layout.cell_scout_name, null);
+
+            final String name = getItem(position).toString();
+
+            final Button nameButton = convertView.findViewById(R.id.btn_nameCell);
+            nameButton.setText(name);
+            nameButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputManager.mScoutName = name;
+                    AppCc.setSp("scoutName", name);
+
+                    updateUserData();
+
+                    pw_nameWindow.dismiss();
+                }
+            });
+
+            return convertView;
+        }
+    }
+
+    public class ScoutIdListAdapter extends BaseAdapter{
+
+        public ScoutIdListAdapter(){
+        }
+
+        @Override
+        public int getCount() {
+            return Cst.SCOUT_IDS.size();
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return Cst.SCOUT_IDS.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup) {
+            convertView = mLayoutInflater.inflate(R.layout.cell_scout_id, null);
+
+            final int id = (Integer) getItem(position);
+
+            final Button idButton = convertView.findViewById(R.id.btn_idCell);
+            idButton.setText(String.valueOf(id));
+            idButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputManager.mScoutId = id;
+                    AppCc.setSp("scoutId", id);
+
+                    updateUserData();
+
+                    pw_idWindow.dismiss();
+                }
+            });
+
+            return convertView;
+        }
+    }
 }
 

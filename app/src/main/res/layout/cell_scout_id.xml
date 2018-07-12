@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btn_idCell"
+    android:layout_width="100dp"
+    android:layout_height="70dp"
+    android:background="@drawable/btn_popup_selector"
+    android:text="99"
+    android:textSize="@dimen/textSize_names"/>
