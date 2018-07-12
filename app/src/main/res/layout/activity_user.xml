@@ -18,7 +18,7 @@
 
     <Button
         android:id="@+id/btn_accessData"
-        android:layout_width="340dp"
+        android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -29,7 +29,7 @@
 
     <Button
         android:id="@+id/btn_triggerBackupPopup"
-        android:layout_width="340dp"
+        android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -62,17 +62,27 @@
 
     <ImageView
         android:id="@+id/imgv_cycleNumBackground"
-        android:layout_width="260dp"
-        android:layout_height="260dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@string/imgv_cycleNumContentDescription"
-        android:background="@drawable/cycle_nocolor_dashed_background" />
+        android:background="@drawable/cycle_nocolor_dashed_background"
+        android:contentDescription="@string/imgv_cycleNumContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_cycleNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="0"
+        android:textColor="#ffffff"
+        android:textSize="140sp" />
 
     <ImageView
         android:id="@+id/imgv_enterScoutFillBackground"
-        android:layout_width="460dp"
-        android:layout_height="420dp"
+        android:layout_width="420dp"
+        android:layout_height="400dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:contentDescription="Drag to Scout"
@@ -128,25 +138,6 @@
         android:textSize="70sp" />
 
     <TextView
-        android:id="@+id/tv_announceCycleNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_accessData"
-        android:layout_toLeftOf="@+id/imgv_enterScoutFillBackground"
-        android:text="Cycle "
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/tv_cycleNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tv_announceCycleNum"
-        android:layout_toRightOf="@+id/tv_announceCycleNum"
-        android:text="#"
-        android:textColor="@color/black"
-        android:textSize="60sp" />
-
-    <TextView
         android:id="@+id/tv_hintToDragFill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -154,5 +145,14 @@
         android:layout_alignParentEnd="true"
         android:text="SCOUT"
         android:textSize="20sp"/>
+
+    <ImageButton
+        android:id="@+id/imgbtn_map_orientation"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/btn_triggerBackupPopup"
+        android:layout_alignStart="@+id/imgv_cycleNumBackground"
+        android:background="@drawable/btn_map_orientation_rb"
+        android:onClick="onClickMapOrientation"/>
 
 </RelativeLayout>

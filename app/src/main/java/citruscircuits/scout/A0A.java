@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -25,14 +27,19 @@ import android.widget.TextView;
 
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
+import citruscircuits.scout._superDataClasses.AppCc;
+import citruscircuits.scout.utils.AppUtils;
 import citruscircuits.scout.utils.QRScan;
 
 //Written by the Daemon himself ~ Calvin
 public class A0A extends DialogMaker {
 
     public static Drawable dr_redCycle, dr_blueCycle;
+    public Drawable map_orientation_rb, map_orientation_br;
 
     Button btn_triggerBackupPopup, btn_triggerScoutIDPopup, btn_triggerScoutNamePopup;
+
+    public ImageButton imgbtn_mapOrientation;
 
     public static ImageView imgv_cycleBackground;
 
@@ -54,6 +61,8 @@ public class A0A extends DialogMaker {
 
         dr_redCycle = getResources().getDrawable(R.drawable.cycle_red_dashed_background);
         dr_blueCycle = getResources().getDrawable(R.drawable.cycle_blue_dashed_background);
+        map_orientation_rb = getResources().getDrawable(R.drawable.btn_map_orientation_rb);
+        map_orientation_br = getResources().getDrawable(R.drawable.btn_map_orientation_br);
 
         initViews();
 
@@ -86,7 +95,29 @@ public class A0A extends DialogMaker {
         pw_backupWindow.dismiss();
     }
 
+    public void onClickMapOrientation(View view){
+        if(view.getBackground() == map_orientation_rb){
+            view.setBackground(map_orientation_br);
+            AppCc.setSp("mapOrientation", 1);
+        }else if(view.getBackground() == map_orientation_br){
+            view.setBackground(map_orientation_rb);
+            AppCc.setSp("mapOrientation", 0);
+        }else{
+            AppUtils.makeToast(this, "Orientation Aint Working", 50);
+            return;
+        }
+    }
+
     public void initViews(){
+        imgbtn_mapOrientation = findViewById(R.id.imgbtn_map_orientation);
+        if(AppCc.getSp("mapOrientation",99) != 99){
+            if(AppCc.getSp("mapOrientation", 99) == 0){
+                imgbtn_mapOrientation.setBackground(map_orientation_rb);
+            }else {
+                imgbtn_mapOrientation.setBackground(map_orientation_br);
+            }
+        }
+
         imgv_cycleBackground = findViewById(R.id.imgv_cycleNumBackground);
 
         et_matchNum = findViewById(R.id.et_matchNum);
