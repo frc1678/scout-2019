@@ -1,0 +1,228 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/field_br" />
+
+    <Button
+        android:id="@+id/topleft_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="108dp"
+        android:layout_marginStart="191dp"
+        android:layout_marginTop="77dp"
+        android:text="@string/buttontext_switch"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/bottomleft_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="108dp"
+        android:layout_marginTop="340dp"
+        android:layout_marginStart="191dp"
+        android:text="@string/buttontext_switch"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/top_scale"
+        android:layout_width="115dp"
+        android:layout_height="102dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:text="@string/buttontext_scale"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/bottom_scale"
+        android:layout_width="115dp"
+        android:layout_height="102dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="392dp"
+        android:text="@string/buttontext_scale"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/topright_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="108dp"
+        android:layout_marginStart="681dp"
+        android:layout_marginTop="77dp"
+        android:text="@string/buttontext_switch"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/bottomright_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="108dp"
+        android:layout_marginStart="681dp"
+        android:layout_marginTop="340dp"
+        android:text="@string/buttontext_switch"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/blue_pyramid"
+        android:layout_width="65dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="210dp"
+        android:text="@string/buttontext_pyramid"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/red_pyramid"
+        android:layout_width="65dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="770dp"
+        android:layout_marginTop="210dp"
+        android:text="@string/buttontext_pyramid"
+        android:background="@drawable/rb_selector"/>
+
+    <Button
+        android:id="@+id/ftb"
+        android:layout_width="140dp"
+        android:layout_height="240dp"
+        android:layout_centerInParent="true"
+        android:text="@string/buttontext_ftb"
+        android:background="@drawable/rb_selector"/>
+
+    <ToggleButton
+        android:id="@+id/blue_platform1"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="75dp"
+        android:text="ToggleButton"
+        android:textOff="@string/tbtnOfftext_platform1"
+        android:textOn="@string/tbtnOntext_platform1"
+        android:background="@drawable/tbtn_platform_blue_selector"/>
+
+    <ToggleButton
+        android:id="@+id/blue_platform2"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="137dp"
+        android:text="ToggleButton"
+        android:textOff="@string/tbtnOfftext_platform2"
+        android:textOn="@string/tbtnOntext_platform2"
+        android:background="@drawable/tbtn_platform_blue_selector"/>
+
+    <ToggleButton
+        android:id="@+id/blue_platform3"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="202dp"
+        android:text="ToggleButton"
+        android:textOff="@string/tbtnOfftext_platform3"
+        android:textOn="@string/tbtnOntext_platform3"
+        android:background="@drawable/tbtn_platform_blue_selector"/>
+
+    <ToggleButton
+        android:id="@+id/blue_platform4"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="268dp"
+        android:text="ToggleButton"
+        android:textOff="@string/tbtnOfftext_platform4"
+        android:textOn="@string/tbtnOntext_platform4"
+        android:background="@drawable/tbtn_platform_blue_selector"/>
+
+    <ToggleButton
+        android:id="@+id/blue_platform5"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="330dp"
+        android:text="ToggleButton"
+        android:textOff="@string/tbtnOfftext_platform5"
+        android:textOn="@string/tbtnOntext_platform5"
+        android:background="@drawable/tbtn_platform_blue_selector"/>
+
+    <ToggleButton
+        android:id="@+id/blue_platform6"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="393dp"
+        android:textOff="@string/tbtnOfftext_platform6"
+        android:textOn="@string/tbtnOntext_platform6"
+        android:background="@drawable/tbtn_platform_blue_selector"/>
+
+    <ToggleButton
+        android:id="@+id/red_platform6"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="623dp"
+        android:layout_marginTop="75dp"
+        android:textOff="@string/tbtnOfftext_platform6"
+        android:textOn="@string/tbtnOntext_platform6"
+        android:background="@drawable/tbtn_platform_red_selector"/>
+
+    <ToggleButton
+        android:id="@+id/red_platform5"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="623dp"
+        android:layout_marginTop="137dp"
+        android:textOff="@string/tbtnOfftext_platform5"
+        android:textOn="@string/tbtnOntext_platform5"
+        android:background="@drawable/tbtn_platform_red_selector"/>
+
+    <ToggleButton
+        android:id="@+id/red_platform4"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="623dp"
+        android:layout_marginTop="202dp"
+        android:text="ToggleButton"
+        android:textOff="@string/tbtnOfftext_platform4"
+        android:textOn="@string/tbtnOntext_platform4"
+        android:background="@drawable/tbtn_platform_red_selector"/>
+
+    <ToggleButton
+        android:id="@+id/red_platform3"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="623dp"
+        android:layout_marginTop="268dp"
+        android:text="ToggleButton"
+        android:textOff="@string/tbtnOfftext_platform3"
+        android:textOn="@string/tbtnOntext_platform3"
+        android:background="@drawable/tbtn_platform_red_selector"/>
+
+    <ToggleButton
+        android:id="@+id/red_platform2"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="623dp"
+        android:layout_marginTop="330dp"
+        android:textOff="@string/tbtnOfftext_platform2"
+        android:textOn="@string/tbtnOntext_platform2"
+        android:background="@drawable/tbtn_platform_red_selector"/>
+
+    <ToggleButton
+        android:id="@+id/red_platform1"
+        android:layout_width="52dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="623dp"
+        android:layout_marginTop="393dp"
+        android:textOff="@string/tbtnOfftext_platform1"
+        android:textOn="@string/tbtnOntext_platform1"
+        android:background="@drawable/tbtn_platform_red_selector"/>
+
+
+
+    <Button
+        android:id="@+id/tempNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NEXT"
+        android:onClick="toA2A"/>
+
+</RelativeLayout>
