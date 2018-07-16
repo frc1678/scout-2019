@@ -14,10 +14,10 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_rb);
+        setContentView(R.layout.activity_map_new_br);
 
-        btn_topLeftSwitch = findViewById(R.id.topleft_switch);
-        btn_topLeftSwitch.setOnClickListener(A1A.this);
+//        btn_topLeftSwitch = findViewById(R.id.topleft_switch);
+//        btn_topLeftSwitch.setOnClickListener(A1A.this);
     }
 
     @Override

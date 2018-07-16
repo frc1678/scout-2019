@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_to_teleop"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/tv_auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:text="AUTO"
+            android:textSize="40dp"
+            android:textAlignment="center"/>
+        <Button
+            android:id="@+id/btn_timer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="30dp"
+            android:text="START TIMER"
+            android:textSize="45dp"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@+id/tv_auto"/>
+        <ToggleButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tgbtn_auto_run"
+            android:layout_below="@+id/btn_timer"
+            android:padding="30dp"
+            android:textSize="45dp"
+            android:textOn="AUTO RUN"
+            android:textOff="AUTO RUN"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_to_teleop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TELEOP"
+        android:textSize="40dp"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickTeleop"/>
+</RelativeLayout>
