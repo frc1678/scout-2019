@@ -28,7 +28,8 @@
             android:layout_marginBottom="15dp"
             android:layout_below="@+id/tv_auto"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/auto_blue_selector" />
+            android:background="@drawable/auto_blue_selector"
+            android:onClick="onClickStartTimer"/>
         <ToggleButton
             android:layout_width="290dp"
             android:layout_height="wrap_content"

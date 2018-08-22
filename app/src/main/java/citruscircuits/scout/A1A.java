@@ -1,32 +1,26 @@
 package citruscircuits.scout;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AutoDialog;
-
-import static citruscircuits.scout.A0A.dr_blueCycle;
-import static citruscircuits.scout.A0A.dr_redCycle;
+import citruscircuits.scout.utils.TimerUtil;
 
 //Written by the Daemon himself ~ Calvin
 public class A1A extends DialogMaker implements View.OnClickListener{
 
+    public boolean startTimer = true;
+
     public Button btn_topLeftSwitch;
+    public Button btn_startTimer;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -55,10 +49,21 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         }
 
         transaction.commit();
-        setContentView(R.layout.activity_map_new_br);
+
+        if(TimerUtil.matchTimer != null) {
+            TimerUtil.matchTimer.cancel();
+            TimerUtil.matchTimer = null;
+            TimerUtil.timestamp = 0f;
+            TimerUtil.mTimerView.setText("15");
+            TimerUtil.mActivityView.setText("AUTO");
+            startTimer = true;
+        }
 
 //        btn_topLeftSwitch = findViewById(R.id.topleft_switch);
 //        btn_topLeftSwitch.setOnClickListener(A1A.this);
+
+        TimerUtil.mTimerView = findViewById(R.id.tv_timer);
+        TimerUtil.mActivityView = findViewById(R.id.tv_activity);
     }
 
     @Override
@@ -74,6 +79,38 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT");
         if(fragment != null)
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+    }
+
+    public void onClickStartTimer(View v) {
+        TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
+        btn_startTimer = findViewById(R.id.btn_timer);
+        if(startTimer) {
+            timerUtil.initTimer();
+            btn_startTimer.setText("RESET TIMER");
+            startTimer = false;
+            if(InputManager.mAllianceColor.equals("Red")) {
+                btn_startTimer.setBackgroundResource(R.drawable.auto_reset_red_selector);
+            }
+            else if(InputManager.mAllianceColor.equals("Blue")) {
+                btn_startTimer.setBackgroundResource(R.drawable.auto_reset_blue_selector);
+            }
+        }
+        else if(!startTimer) {
+            Log.i("TIME", String.valueOf(TimerUtil.timestamp));
+            TimerUtil.matchTimer.cancel();
+            TimerUtil.matchTimer = null;
+            TimerUtil.timestamp = 0f;
+            TimerUtil.mTimerView.setText("15");
+            TimerUtil.mActivityView.setText("AUTO");
+            btn_startTimer.setText("START TIMER");
+            startTimer = true;
+            if(InputManager.mAllianceColor.equals("Red")) {
+                btn_startTimer.setBackgroundResource(R.drawable.auto_red_selector);
+            }
+            else if(InputManager.mAllianceColor.equals("Blue")) {
+                btn_startTimer.setBackgroundResource(R.drawable.auto_blue_selector);
+            }
+        }
     }
 
 }
