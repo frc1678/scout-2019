@@ -56,10 +56,16 @@ public class InputManager {
     public static JSONArray alliancePlatformTakenTele = new JSONArray();
     public static JSONArray opponentPlatformTakenTele = new JSONArray();
 
+    public static JSONArray dropTimes = new JSONArray();
+    public static JSONArray incapTimes = new JSONArray();
+    public static JSONArray unincapTimes = new JSONArray();
+
     public static int numGroundPyramidIntakeAuto = 0;
     public static int numGroundPyramidIntakeTele = 0;
     public static int numElevatedPyramidIntakeAuto = 0;
     public static int numElevatedPyramidIntakeTele = 0;
+    public static int numSpill = 0;
+    public static int numFoul = 0;
 
     public static JSONArray vaultDataArray = new JSONArray();
     public static int totalCubesVaulted = 0;
@@ -111,6 +117,10 @@ public class InputManager {
         mRealTimeInputtedData.put("scaleAttemptAuto", autoScaleDataArray);
         mRealTimeInputtedData.put("scaleAttemptTele", teleScaleDataArray);
 
+        mRealTimeInputtedData.put("drop", dropTimes);
+        mRealTimeInputtedData.put("incap", incapTimes);
+        mRealTimeInputtedData.put("unincap", unincapTimes);
+
         mRealTimeInputtedData.put("alliancePlatformIntakeAuto", alliancePlatformTakenAuto);
         mRealTimeInputtedData.put("alliancePlatformIntakeTele", alliancePlatformTakenTele);
         mRealTimeInputtedData.put("opponentPlatformIntakeTele", opponentPlatformTakenTele);
@@ -119,6 +129,9 @@ public class InputManager {
         mRealTimeInputtedData.put("numGroundPyramidIntakeTele", numGroundPyramidIntakeTele);
         mRealTimeInputtedData.put("numElevatedPyramidIntakeAuto", numElevatedPyramidIntakeAuto);
         mRealTimeInputtedData.put("numElevatedPyramidIntakeTele", numElevatedPyramidIntakeTele);
+
+        mRealTimeInputtedData.put("numSpill", numSpill);
+        mRealTimeInputtedData.put("numFoul", numFoul);
 
         mRealTimeMatchData.put(mTeamNum + "Q" + mMatchNum, mRealTimeInputtedData);
         AppCc.setSp("currentMatchDataKey", mTeamNum + "Q" + mMatchNum);

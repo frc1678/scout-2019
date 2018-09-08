@@ -96,25 +96,28 @@
             android:layout_weight="1"
             android:background="@drawable/btn_drop_selector"
             android:text="DROP"
-            android:textSize="30dp" />
+            android:textSize="30dp"
+            android:onClick="onClickDrop"/>
         <Button
             android:id="@+id/btn_spilled"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/btn_spill_selector"
-            android:text="SPILL"
+            android:text="SPILL - 0"
             android:textSize="30dp"
-            android:layout_toRightOf="@+id/btn_dropped"/>
+            android:layout_toRightOf="@+id/btn_dropped"
+            android:onClick="onClickSpill"/>
         <Button
             android:id="@+id/btn_fouled"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/btn_foul_selector"
-            android:text="FOUL"
+            android:text="FOUL- 0"
             android:textSize="30dp"
-            android:layout_toRightOf="@+id/btn_spilled"/>
+            android:layout_toRightOf="@+id/btn_spilled"
+            android:onClick="onClickFoul"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -124,7 +127,8 @@
             android:text="UNDO"
             android:textSize="30dp"
             android:textAlignment="center"
-            android:background="@drawable/btn_undo_selector"/>
+            android:background="@drawable/btn_undo_selector"
+            android:onClick="onClickUndo"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -165,7 +169,8 @@
             android:text="EDIT"
             android:textSize="30dp"
             android:textAlignment="center"
-            android:background="@drawable/btn_edit_selector"/>
+            android:background="@drawable/btn_edit_selector"
+            android:onClick="onClickEdit"/>
         <Button
             android:id="@+id/btn_ftb"
             android:layout_width="match_parent"
@@ -174,7 +179,8 @@
             android:text="FTB"
             android:textSize="30dp"
             android:textAlignment="center"
-            android:background="@drawable/btn_ftb_selector"/>
+            android:background="@drawable/btn_ftb_selector"
+            android:onClick="onClickFTB"/>
         <ToggleButton
             android:id="@+id/tgbtn_incap"
             android:layout_width="match_parent"
@@ -184,7 +190,8 @@
             android:textOff="INCAP"
             android:textSize="30dp"
             android:textAlignment="center"
-            android:background="@drawable/tbtn_incap_selector"/>
+            android:background="@drawable/tbtn_incap_selector"
+            android:onClick="onClickIncap"/>
         <TextView
             android:id="@+id/tv_teamNum"
             android:layout_width="match_parent"
