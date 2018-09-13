@@ -128,7 +128,7 @@
             android:textSize="30dp"
             android:textAlignment="center"
             android:background="@drawable/btn_undo_selector"
-            android:onClick="onClickFoul"/>
+            android:onClick="onClickUndo"/>
     </LinearLayout>
 
     <RelativeLayout

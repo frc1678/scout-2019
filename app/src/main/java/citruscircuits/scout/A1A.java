@@ -171,6 +171,10 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         btn_foul.setText("FOUL - " + InputManager.numFoul);
     }
 
+    public void onClickUndo (View v) {
+
+    }
+
     public void onClickEdit (View v) {
 
     }
