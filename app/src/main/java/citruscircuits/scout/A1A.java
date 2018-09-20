@@ -1,6 +1,7 @@
 package citruscircuits.scout;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +38,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     public Button btn_undo;
     public Button btn_edit;
     public Button btn_ftb;
+    public Button btn_arrow;
 
     public ToggleButton tb_incap;
     public ToggleButton tb_auto_run;
@@ -44,6 +46,14 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public RadioGroup rg_blue_starting_position;
     public RadioGroup rg_red_starting_position;
+
+    public Handler handler = new Handler();
+    public Runnable runnable = new Runnable() {
+        public void run() {
+            btn_arrow.setEnabled(true);
+            btn_arrow.setVisibility(View.VISIBLE);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -93,6 +103,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         btn_undo = findViewById(R.id.btn_undo);
         btn_edit = findViewById(R.id.btn_edit_data);
         btn_ftb = findViewById(R.id.btn_ftb);
+        btn_arrow = findViewById(R.id.btn_arrow);
 
         tb_incap = findViewById(R.id.tgbtn_incap);
         tb_auto_run = findViewById(R.id.tgbtn_auto_run);
@@ -127,9 +138,14 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickStartTimer(View v) {
+        handler.removeCallbacks(runnable);
+        handler.removeCallbacksAndMessages(null);
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
         btn_startTimer = findViewById(R.id.btn_timer);
+        btn_arrow.setEnabled(false);
+        btn_arrow.setVisibility(View.INVISIBLE);
         if(startTimer) {
+            handler.postDelayed(runnable, 150000);
             timerUtil.initTimer();
             btn_startTimer.setText("RESET TIMER");
             startTimer = false;
@@ -141,6 +157,8 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             }
         }
         else if(!startTimer) {
+            handler.removeCallbacks(runnable);
+            handler.removeCallbacksAndMessages(null);
             TimerUtil.matchTimer.cancel();
             TimerUtil.matchTimer = null;
             TimerUtil.timestamp = 0f;
@@ -194,5 +212,9 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             InputManager.unincapTimes.put(TimerUtil.timestamp);
             incapChecked = false;
         }
+    }
+
+    public void onClickDataCheck (View v) {
+        open(A2A.class, null, false, true);
     }
 }
