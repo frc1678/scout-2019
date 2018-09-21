@@ -29,7 +29,6 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public TextView tv_team;
 
-    public Button btn_topLeftSwitch;
     public Button btn_startTimer;
     public Button btn_drop;
     public Button btn_spill;
@@ -91,9 +90,6 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             startTimer = true;
         }
 
-//        btn_topLeftSwitch = findViewById(R.id.topleft_switch);
-//        btn_topLeftSwitch.setOnClickListener(A1A.this);
-
         tv_team = findViewById(R.id.tv_teamNum);
 
         btn_drop = findViewById(R.id.btn_dropped);
@@ -119,11 +115,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     @Override
     public void onClick(View v){
-        switch (v.getId()){
-            case R.id.topleft_switch:
-                initSeesawDialog(this, false, false);
-                break;
-        }
+
     }
 
     public void onClickTeleop(View view) {
