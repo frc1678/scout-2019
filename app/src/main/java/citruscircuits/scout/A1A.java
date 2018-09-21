@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
@@ -60,13 +59,13 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         if(AppCc.getSp("mapOrientation",99) != 99){
             if(AppCc.getSp("mapOrientation", 99) == 0){
-                setContentView(R.layout.activity_map_new_rb);
+                setContentView(R.layout.activity_map_rb);
             }else {
-                setContentView(R.layout.activity_map_new_br);
+                setContentView(R.layout.activity_map_br);
             }
         }else{
             AppCc.setSp("mapOrientation", 0);
-            setContentView(R.layout.activity_map_new_rb);
+            setContentView(R.layout.activity_map_rb);
         }
 
         Fragment fragment = new AutoDialog();
