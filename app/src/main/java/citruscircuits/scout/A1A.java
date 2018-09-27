@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -44,6 +45,13 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public RadioGroup rg_blue_starting_position;
     public RadioGroup rg_red_starting_position;
+
+    public RadioButton rb_blue_right;
+    public RadioButton rb_blue_center;
+    public RadioButton rb_blue_left;
+    public RadioButton rb_red_right;
+    public RadioButton rb_red_center;
+    public RadioButton rb_red_left;
 
     public Handler handler = new Handler();
     public Runnable runnable = new Runnable() {
@@ -106,6 +114,13 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
         rg_blue_starting_position = findViewById(R.id.blue_starting_position);
         rg_red_starting_position = findViewById(R.id.red_starting_position);
+
+        rb_blue_right = findViewById(R.id.blue_starting_position_right);
+        rb_blue_center = findViewById(R.id.blue_starting_position_center);
+        rb_blue_left = findViewById(R.id.blue_starting_position_left);
+        rb_red_right = findViewById(R.id.red_starting_position_right);
+        rb_red_center = findViewById(R.id.red_starting_position_center);
+        rb_red_left = findViewById(R.id.red_starting_position_left);
 
         TimerUtil.mTimerView = findViewById(R.id.tv_timer);
         TimerUtil.mActivityView = findViewById(R.id.tv_activity);
@@ -206,6 +221,15 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickDataCheck (View v) {
+        if(rb_blue_right.isChecked() || rb_red_right.isChecked()) {
+            InputManager.mStartingPosition = "right";
+        }
+        else if(rb_blue_center.isChecked() || rb_red_center.isChecked()) {
+            InputManager.mStartingPosition = "center";
+        }
+        else if(rb_blue_left.isChecked() || rb_red_left.isChecked()) {
+            InputManager.mStartingPosition = "left";
+        }
         open(A2A.class, null, false, true);
     }
 }
