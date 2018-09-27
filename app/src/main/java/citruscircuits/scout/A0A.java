@@ -193,7 +193,7 @@ public class A0A extends DialogMaker {
     public void initPopups(){
         //BACKUP POPUP
         btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
-        pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 200, 300, true);
+        pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 400, 300, true);
         pw_backupWindow.setBackgroundDrawable(new ColorDrawable());
         btn_triggerBackupPopup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,7 +205,7 @@ public class A0A extends DialogMaker {
         //SCOUT NAME POPUP
         btn_triggerScoutNamePopup = (Button) findViewById(R.id.btn_triggerScoutNamePopup);
         LinearLayout nameLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_name, null);
-        pw_nameWindow = new PopupWindow(nameLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        pw_nameWindow = new PopupWindow(nameLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
         pw_nameWindow.setBackgroundDrawable(new ColorDrawable());
 
         lv_scoutNames = nameLayout.findViewById(R.id.lv_scoutNames);
@@ -215,7 +215,7 @@ public class A0A extends DialogMaker {
         btn_triggerScoutNamePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,100, 0);
+                pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,200, 0);
                 mScoutNameListAdapter.notifyDataSetChanged();
             }
         });
@@ -223,7 +223,7 @@ public class A0A extends DialogMaker {
         //SCOUT ID POPUP
         btn_triggerScoutIDPopup = (Button) findViewById(R.id.btn_triggerScoutIDPopup);
         LinearLayout idLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_ids, null);
-        pw_idWindow = new PopupWindow(idLayout, 100, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        pw_idWindow = new PopupWindow(idLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
         pw_idWindow.setBackgroundDrawable(new ColorDrawable());
 
         lv_scoutIds = idLayout.findViewById(R.id.lv_scoutIds);
