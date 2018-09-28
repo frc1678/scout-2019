@@ -204,6 +204,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public void onClickDrop (View v) throws JSONException {
         InputManager.dropTimes.put(TimerUtil.timestamp);
+        shapeCheck = false;
     }
 
     public void onClickSpill (View v) {
