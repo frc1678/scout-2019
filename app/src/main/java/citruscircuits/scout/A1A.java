@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -31,10 +32,16 @@ import static java.lang.String.valueOf;
 //Written by the Daemon himself ~ Calvin
 public class A1A extends DialogMaker implements View.OnClickListener{
 
+    public ImageView iv_field;
+
+    public String field_orientation;
+
     public boolean incapChecked = false;
     public boolean startTimer = true;
     public boolean shapeCheck = false;
     public boolean noShape = false;
+    public boolean tele = false;
+    public boolean field;
 
     public TextView tv_team;
 
@@ -77,56 +84,45 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         if(AppCc.getSp("mapOrientation",99) != 99){
             if(AppCc.getSp("mapOrientation", 99) == 0){
                 setContentView(R.layout.activity_map_rb);
                 overallLayout = findViewById(R.id.fieldrb);
+                field_orientation="rb";
+                if(InputManager.mAllianceColor.equals("Red")){
+                    field = true;
+                }
+                else if(InputManager.mAllianceColor.equals("Blue")){
+                    field = false;
+                }
             }else {
                 setContentView(R.layout.activity_map_br);
                 overallLayout = findViewById(R.id.fieldbr);
+                field_orientation="br";
+                if(InputManager.mAllianceColor.equals("Red")){
+                    field = false;
+                }
+                else if(InputManager.mAllianceColor.equals("Blue")){
+                    field = true;
+                }
             }
         }else{
             AppCc.setSp("mapOrientation", 0);
             setContentView(R.layout.activity_map_rb);
             overallLayout = findViewById(R.id.fieldrb);
+            field_orientation="rb";
+            if(InputManager.mAllianceColor.equals("Red")){
+                field = true;
+            }
+            else if(InputManager.mAllianceColor.equals("Blue")){
+                field = false;
+            }
         }
 
-        Fragment fragment = new AutoDialog();
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        if(InputManager.mAllianceColor.equals("Red")) {
-            transaction.add(R.id.red_auto, fragment, "FRAGMENT");
-        }
-        else if(InputManager.mAllianceColor.equals("Blue")) {
-            transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
-        }
-
-        transaction.commit();
-
-        if(TimerUtil.matchTimer != null) {
-            TimerUtil.matchTimer.cancel();
-            TimerUtil.matchTimer = null;
-            TimerUtil.timestamp = 0f;
-            TimerUtil.mTimerView.setText("15");
-            TimerUtil.mActivityView.setText("AUTO");
-            startTimer = true;
-        }
+        iv_field = findViewById(R.id.imageView);
 
         tv_team = findViewById(R.id.tv_teamNum);
-
-        btn_drop = findViewById(R.id.btn_dropped);
-        btn_spill = findViewById(R.id.btn_spilled);
-        btn_foul = findViewById(R.id.btn_fouled);
-        btn_undo = findViewById(R.id.btn_undo);
-        btn_edit = findViewById(R.id.btn_edit_data);
-        btn_ftb = findViewById(R.id.btn_ftb);
-        btn_arrow = findViewById(R.id.btn_arrow);
-
-        tb_incap = findViewById(R.id.tgbtn_incap);
-        tb_auto_run = findViewById(R.id.tgbtn_auto_run);
-        tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
 
         rg_blue_starting_position = findViewById(R.id.blue_starting_position);
         rg_red_starting_position = findViewById(R.id.red_starting_position);
@@ -138,13 +134,54 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         rb_red_center = findViewById(R.id.red_starting_position_center);
         rb_red_left = findViewById(R.id.red_starting_position_left);
 
+        btn_drop = findViewById(R.id.btn_dropped);
+        btn_spill = findViewById(R.id.btn_spilled);
+        btn_foul = findViewById(R.id.btn_fouled);
+        btn_undo = findViewById(R.id.btn_undo);
+        btn_edit = findViewById(R.id.btn_edit_data);
+        btn_ftb = findViewById(R.id.btn_ftb);
+        btn_arrow = findViewById(R.id.btn_arrow);
+
+        tb_auto_run = findViewById(R.id.tgbtn_auto_run);
+        tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+        tb_incap = findViewById(R.id.tgbtn_incap);
+
         iv = new ImageView(getApplicationContext());
         iv2 = new ImageView(getApplicationContext());
 
         TimerUtil.mTimerView = findViewById(R.id.tv_timer);
         TimerUtil.mActivityView = findViewById(R.id.tv_activity);
 
+        Fragment fragment = new AutoDialog();
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        if(InputManager.mAllianceColor.equals("Red")) {
+            transaction.add(R.id.red_auto, fragment, "FRAGMENT");
+            for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+                rg_blue_starting_position.getChildAt(i).setEnabled(false);
+            }
+        }
+        else if(InputManager.mAllianceColor.equals("Blue")) {
+            transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
+            for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+                rg_red_starting_position.getChildAt(i).setEnabled(false);
+            }
+        }
+
+        transaction.commit();
+
         tv_team.setText(valueOf(InputManager.mTeamNum));
+
+        if(TimerUtil.matchTimer != null) {
+            TimerUtil.matchTimer.cancel();
+            TimerUtil.matchTimer = null;
+            TimerUtil.timestamp = 0f;
+            TimerUtil.mTimerView.setText("15");
+            TimerUtil.mActivityView.setText("AUTO");
+            startTimer = true;
+        }
 
         addTouchListener();
     }
@@ -155,6 +192,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickTeleop(View view) {
+        tele = true;
         for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
             rg_blue_starting_position.getChildAt(i).setEnabled(false);
             rg_red_starting_position.getChildAt(i).setEnabled(false);
@@ -198,6 +236,36 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             }
             else if(InputManager.mAllianceColor.equals("Blue")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_blue_selector);
+            }
+        }
+    }
+
+    public void onClickAutoRunMade (View v) {
+        if(!InputManager.autoRunMade){
+            InputManager.autoRunMade = true;
+        }
+        else if(InputManager.autoRunMade){
+            InputManager.autoRunMade = false;
+        }
+    }
+
+    public void onClickBeginWithCube (View v) {
+        if(!shapeCheck) {
+            shapeCheck = true;
+            if(field_orientation.equals("rb")){
+                iv_field.setImageResource(R.drawable.field_yellow_rb);
+            }
+            else if(field_orientation.equals("br")){
+                iv_field.setImageResource(R.drawable.field_yellow_br);
+            }
+        }
+        else if(shapeCheck) {
+            shapeCheck = false;
+            if(field_orientation.equals("rb")){
+                iv_field.setImageResource(R.drawable.field_rb);
+            }
+            else if(field_orientation.equals("br")){
+                iv_field.setImageResource(R.drawable.field_br);
             }
         }
     }
@@ -269,6 +337,12 @@ public class A1A extends DialogMaker implements View.OnClickListener{
                     int y = (int) motionEvent.getY();
                     if (x<=1700 && y<=930){
                         if (!shapeCheck){
+                            if(field_orientation.equals("rb")){
+                                iv_field.setImageResource(R.drawable.field_yellow_rb);
+                            }
+                            else if(field_orientation.equals("br")){
+                                iv_field.setImageResource(R.drawable.field_yellow_br);
+                            }
                             overallLayout.removeView(iv2);
                             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                                     50,
@@ -276,102 +350,74 @@ public class A1A extends DialogMaker implements View.OnClickListener{
                             //ImageView iv= new ImageView(getApplicationContext());
                             lp.setMargins(x-25, y-40, 0, 0);
                             iv.setLayoutParams(lp);
-                            iv.setImageDrawable(getResources().getDrawable(
-                                    R.drawable.triangle_image));
-                            ((ViewGroup) view).addView(iv);
+                            iv.setImageDrawable(getResources().getDrawable(R.drawable.triangle_image));
                             shapeCheck=true;
+                            Log.d("TELE", valueOf(tele));
+                            Log.d("FIELD", valueOf(field));
                             // overallLayout.removeView(iv);
-                            if (x<=425 && y<=930 && InputManager.mScoutId <=6 || x>75 && x<=285 && y<=575 && InputManager.mScoutId >6){
+                            if (((x<=425 && y<=930 && InputManager.mScoutId <=6) || (x>75 && x<=285 && y<=575 && InputManager.mScoutId >6)) && (tele || (field && !tele))){
                                 Log.d("locationInput","1");
+                                ((ViewGroup) view).addView(iv);
                             }
-                            else if (x>425 && x<=850 && y<=930 && InputManager.mScoutId <=6 || x>285 && x<=575 && y<=575 && InputManager.mScoutId >6){
+                            else if (((x>425 && x<=850 && y<=930 && InputManager.mScoutId <=6 || x>285 && x<=575 && y<=575 && InputManager.mScoutId >6)) && (tele || (field && !tele))){
                                 Log.d("locationInput","2");
+                                ((ViewGroup) view).addView(iv);
                             }
-                            else if (x>850 && x<=1275 && y<=930 && InputManager.mScoutId <=6 || x>575 && x<=865 && y<=575 && InputManager.mScoutId >6){
+                            else if (((x>850 && x<=1275 && y<=930 && InputManager.mScoutId <=6 || x>575 && x<=865 && y<=575 && InputManager.mScoutId >6)) && (tele || (!field && !tele))){
                                 Log.d("locationInput","3");
+                                ((ViewGroup) view).addView(iv);
                             }
-                            else if (x<=1700 && y<=930 && InputManager.mScoutId <=6 || x<=1075 && y<=575 && InputManager.mScoutId >6){
+                            else if (((x>1275 && x<=1700 && y<=930 && InputManager.mScoutId <=6 || x>865 && x<=1075 && y<=575 && InputManager.mScoutId >6)) && (tele || (!field && !tele))){
                                 Log.d("locationInput","4");
+                                ((ViewGroup) view).addView(iv);
                             }
                         }
                         else if (shapeCheck){
+                            if(field_orientation.equals("rb")){
+                                iv_field.setImageResource(R.drawable.field_rb);
+                            }
+                            else if(field_orientation.equals("br")){
+                                iv_field.setImageResource(R.drawable.field_br);
+                            }
                             overallLayout.removeView(iv);
                             RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                                     50,
                                     50);
+                            lp.setMargins(x-25, y-40, 0, 0);
+                            iv2.setLayoutParams(lp);
+                            iv2.setImageDrawable(getResources().getDrawable(
+                                    R.drawable.blackcircle));
                             shapeCheck=false;
                             noShape=true;
-                            if (x>=325 && x<=490 && y>=140 && y<=330 && InputManager.mScoutId <=6 || x>=230 && x<=310 && y>=90 && y<=210 && InputManager.mScoutId >6){
+                            if ((x>=325 && x<=490 && y>=140 && y<=330 && InputManager.mScoutId <=6 || x>=230 && x<=310 && y>=90 && y<=210 && InputManager.mScoutId >6) && (tele || (field && !tele))){
                                 Log.d("locationOutput","Top Left switch");
-                                //ImageView iv = new ImageView(getApplicationContext());
-                                lp.setMargins(x-25, y-40, 0, 0);
-                                iv2.setLayoutParams(lp);
-                                iv2.setImageDrawable(getResources().getDrawable(
-                                        R.drawable.blackcircle));
                                 ((ViewGroup) view).addView(iv2);
                             }
-                            else if (x>=325 && x<=595 && y>=140 && y<=800 && InputManager.mScoutId <=6 || x>=230 && x<=310 && y>=400 && y<=530 && InputManager.mScoutId >6){
+                            else if ((x>=325 && x<=595 && y>=140 && y<=800 && InputManager.mScoutId <=6 || x>=230 && x<=310 && y>=400 && y<=530 && InputManager.mScoutId >6) && (tele || (field && !tele))){
                                 Log.d("locationOutput","Bottom Left switch");
-                                //ImageView iv = new ImageView(getApplicationContext());
-                                lp.setMargins(x-25, y-40, 0, 0);
-                                iv2.setLayoutParams(lp);
-                                iv2.setImageDrawable(getResources().getDrawable(
-                                        R.drawable.blackcircle));
                                 ((ViewGroup) view).addView(iv2);
                             }
-                            else if (x>=1250 && x<=1400 && y>=140 && y<=330 && InputManager.mScoutId <=6 || x>=780 && x<=900 && y>=100 && y<=210 && InputManager.mScoutId >6){
+                            else if ((x>=1250 && x<=1400 && y>=140 && y<=330 && InputManager.mScoutId <=6 || x>=780 && x<=900 && y>=100 && y<=210 && InputManager.mScoutId >6) && (tele || (!field && !tele))){
                                 Log.d("locationOutput","Top Right switch");
-                                //ImageView iv = new ImageView(getApplicationContext());
-                                lp.setMargins(x-25, y-40, 0, 0);
-                                iv2.setLayoutParams(lp);
-                                iv2.setImageDrawable(getResources().getDrawable(
-                                        R.drawable.blackcircle));
                                 ((ViewGroup) view).addView(iv2);
                             }
-                            else if (x>=1250 && x<=1400 && y>=600 && y<=800 && InputManager.mScoutId <=6 || x>=780 && x<=900 && y>=400 && y<=530 && InputManager.mScoutId >6){
+                            else if ((x>=1250 && x<=1400 && y>=600 && y<=800 && InputManager.mScoutId <=6 || x>=780 && x<=900 && y>=400 && y<=530 && InputManager.mScoutId >6) && (tele || (!field && !tele))){
                                 Log.d("locationOutput","Bottom Right switch");
-                                //ImageView iv = new ImageView(getApplicationContext());
-                                lp.setMargins(x-25, y-40, 0, 0);
-                                iv2.setLayoutParams(lp);
-                                iv2.setImageDrawable(getResources().getDrawable(
-                                        R.drawable.blackcircle));
                                 ((ViewGroup) view).addView(iv2);
                             }
                             else if (x>=800 && x<=940 && y>=60 && y<=240 && InputManager.mScoutId <=6 || x>=530 && x<=620 && y>=60 && y<=165 && InputManager.mScoutId >6){
                                 Log.d("locationOutput","Scale Top");
-                                //ImageView iv = new ImageView(getApplicationContext());
-                                lp.setMargins(x-25, y-40, 0, 0);
-                                iv2.setLayoutParams(lp);
-                                iv2.setImageDrawable(getResources().getDrawable(
-                                        R.drawable.blackcircle));
                                 ((ViewGroup) view).addView(iv2);
                             }
                             else if (x>=790 && x<=940 && y>=700 && y<=870 && InputManager.mScoutId <=6 || x>=530 && x<=620 && y>=450 && y<=560 && InputManager.mScoutId >6){
                                 Log.d("locationOutput","Scale Bottom");
-                                //ImageView iv = new ImageView(getApplicationContext());
-                                lp.setMargins(x-25, y-40, 0, 0);
-                                iv2.setLayoutParams(lp);
-                                iv2.setImageDrawable(getResources().getDrawable(
-                                        R.drawable.blackcircle));
                                 ((ViewGroup) view).addView(iv2);
                             }
-                            else if (x>=0 && x<=170 && y>=290 && y<=420 && InputManager.mScoutId <=6 || x>=1530 && x<=1700 && y>=490 && y<=630 && InputManager.mScoutId <=6 || x>=0 && x<=120 && y>=210 && y<=290 && InputManager.mScoutId>6 || x>=1000 && x<=1110 && y>=330 && y<=410 && InputManager.mScoutId>6){
+                            else if ((x>=0 && x<=170 && y>=290 && y<=420 && InputManager.mScoutId <=6 || x>=1530 && x<=1700 && y>=490 && y<=630 && InputManager.mScoutId <=6 || x>=0 && x<=120 && y>=210 && y<=290 && InputManager.mScoutId>6 || x>=1000 && x<=1110 && y>=330 && y<=410 && InputManager.mScoutId>6) && tele){
                                 Log.d("locationOutput","Exchange");
-                                //ImageView iv = new ImageView(getApplicationContext());
-                                lp.setMargins(x-25, y-40, 0, 0);
-                                iv2.setLayoutParams(lp);
-                                iv2.setImageDrawable(getResources().getDrawable(
-                                        R.drawable.blackcircle));
                                 ((ViewGroup) view).addView(iv2);
                             }
-//                            else if (x>=790 && x<=940 && y>=700 && y<=870) {
-//                                Log.d("locationOutput", "Left Portal");
-//                            }
-//                            else if (x>=790 && x<=940 && y>=700 && y<=870) {
-//                                Log.d("locationOutput", "Right Portal");
-//                            }
                         }
-//
                     }
                     //purpose: to locate which quadrant
                 }
