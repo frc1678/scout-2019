@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:orientation="horizontal">
+=======
+    android:orientation="horizontal"
+    android:id="@+id/fieldbr">
+>>>>>>> 8bb6680c9631d06186f420c3673357f206b01d4a
 
     <ImageView
         android:id="@+id/imageView"
