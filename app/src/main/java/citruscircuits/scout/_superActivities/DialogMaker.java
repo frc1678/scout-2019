@@ -35,7 +35,7 @@ import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 //Written by the Daemon himself ~ Calvin
 public class DialogMaker extends AppTc {
 
-public void initOverrideDialog(Activity a) {
+    public void initOverrideDialog(Activity a) {
         OverrideDialog mOverrideDialog = new OverrideDialog(a);
         mOverrideDialog.show();
     }
