@@ -41,10 +41,10 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
-        if(InputManager.mAllianceColor.equals("Red")) {
+        if(InputManager.mAllianceColor.equals("red")) {
             transaction.add(R.id.red_auto, fragment, "FRAGMENT");
         }
-        else if(InputManager.mAllianceColor.equals("Blue")) {
+        else if(InputManager.mAllianceColor.equals("blue")) {
             transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
         }
 
@@ -58,9 +58,6 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             TimerUtil.mActivityView.setText("AUTO");
             startTimer = true;
         }
-
-//        btn_topLeftSwitch = findViewById(R.id.topleft_switch);
-//        btn_topLeftSwitch.setOnClickListener(A1A.this);
 
         TimerUtil.mTimerView = findViewById(R.id.tv_timer);
         TimerUtil.mActivityView = findViewById(R.id.tv_activity);
@@ -88,10 +85,10 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             timerUtil.initTimer();
             btn_startTimer.setText("RESET TIMER");
             startTimer = false;
-            if(InputManager.mAllianceColor.equals("Red")) {
+            if(InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_reset_red_selector);
             }
-            else if(InputManager.mAllianceColor.equals("Blue")) {
+            else if(InputManager.mAllianceColor.equals("blue")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_reset_blue_selector);
             }
         }
@@ -104,10 +101,10 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             TimerUtil.mActivityView.setText("AUTO");
             btn_startTimer.setText("START TIMER");
             startTimer = true;
-            if(InputManager.mAllianceColor.equals("Red")) {
+            if(InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_red_selector);
             }
-            else if(InputManager.mAllianceColor.equals("Blue")) {
+            else if(InputManager.mAllianceColor.equals("blue")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_blue_selector);
             }
         }

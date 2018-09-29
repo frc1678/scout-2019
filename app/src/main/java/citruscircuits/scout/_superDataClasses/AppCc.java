@@ -37,10 +37,10 @@ public class AppCc extends Application{
     }
 
     public static void setSp(String key, String value) {
-        AppCc.getSp().edit().putString(key, value).commit();
+        AppCc.getSp().edit().putString(key, value).apply();
     }
 
     public static void setSp(String key, int value) {
-        AppCc.getSp().edit().putInt(key, value).commit();
+        AppCc.getSp().edit().putInt(key, value).apply();
     }
 }
