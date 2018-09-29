@@ -79,6 +79,8 @@ public class InputManager {
     public static int totalCubesVaulted = 0;
     public static boolean vaultOpen = false;
 
+    public static boolean autoRunMade = false;
+
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);
         AppCc.setSp("scoutName", mScoutName);
