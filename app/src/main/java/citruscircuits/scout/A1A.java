@@ -42,6 +42,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     public boolean noShape = false;
     public boolean tele = false;
     public boolean field;
+    public boolean begin_with_cube = false;
 
     public TextView tv_team;
 
@@ -250,8 +251,9 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickBeginWithCube (View v) {
-        if(!shapeCheck) {
+        if(!begin_with_cube) {
             shapeCheck = true;
+            begin_with_cube=true;
             if(field_orientation.equals("rb")){
                 iv_field.setImageResource(R.drawable.field_yellow_rb);
             }
@@ -259,8 +261,9 @@ public class A1A extends DialogMaker implements View.OnClickListener{
                 iv_field.setImageResource(R.drawable.field_yellow_br);
             }
         }
-        else if(shapeCheck) {
+        else if(begin_with_cube) {
             shapeCheck = false;
+            begin_with_cube=false;
             if(field_orientation.equals("rb")){
                 iv_field.setImageResource(R.drawable.field_rb);
             }
@@ -273,6 +276,13 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     public void onClickDrop (View v) throws JSONException {
         InputManager.dropTimes.put(TimerUtil.timestamp);
         shapeCheck = false;
+        overallLayout.removeView(iv);
+        if(field_orientation.equals("rb")){
+            iv_field.setImageResource(R.drawable.field_rb);
+        }
+        else if(field_orientation.equals("br")){
+            iv_field.setImageResource(R.drawable.field_br);
+        }
     }
 
     public void onClickSpill (View v) {
@@ -354,7 +364,6 @@ public class A1A extends DialogMaker implements View.OnClickListener{
                             shapeCheck=true;
                             Log.d("TELE", valueOf(tele));
                             Log.d("FIELD", valueOf(field));
-                            // overallLayout.removeView(iv);
                             if (((x<=425 && y<=930 && InputManager.mScoutId <=6) || (x>75 && x<=285 && y<=575 && InputManager.mScoutId >6)) && (tele || (field && !tele))){
                                 Log.d("locationInput","1");
                                 ((ViewGroup) view).addView(iv);
