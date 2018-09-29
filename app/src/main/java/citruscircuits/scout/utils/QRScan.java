@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import citruscircuits.scout.A0A;
@@ -97,9 +98,14 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         }
 
         InputManager.mCycleNum = cycleNum;
+        Log.e("QR STRING IN SCAN", resultStr);
+
+        InputManager.mQRString = resultStr;
+
         AppCc.setSp("resultStr", resultStr);
         AppCc.setSp("cycleNum", cycleNum);
 
+        InputManager.fullQRDataProcess();
         open(A0A.class, null, true, false);
     }
 

@@ -36,7 +36,26 @@ import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 public class DialogMaker extends AppTc{
 
     public void initSeesawDialog(Activity a, boolean isOpponentSeesaw, boolean isScale){
-        SeesawDialog mSeesawDialog = new SeesawDialog(a, isOpponentSeesaw, isScale);
+        final SeesawDialog mSeesawDialog = new SeesawDialog(a, isOpponentSeesaw, isScale);
+        mSeesawDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                if(!mSeesawDialog.mSuccess){
+                    if(!(mSeesawDialog.mStatus.equals("")) || !(mSeesawDialog.mLayer == 0)){
+                        //TODO input data
+                    }
+                    else {
+                        AppUtils.makeToast(DialogMaker.this, "No Data was Inputted!", 25);
+                    }
+                }else{
+                    if(!(mSeesawDialog.mStatus.equals("")) && !(mSeesawDialog.mLayer == 0)){
+                        //TODO input data
+                    }else{
+                        AppUtils.makeToast(DialogMaker.this, "No Data was Inputted!", 25);
+                    }
+                }
+            }
+        });
         mSeesawDialog.show();
     }
 
@@ -72,9 +91,9 @@ public class DialogMaker extends AppTc{
                     }catch(Exception e){}
 
                     if(tbtn_AllianceColor.isChecked()){
-                        InputManager.mAllianceColor = "Red";
+                        InputManager.mAllianceColor = "red";
                     }else{
-                        InputManager.mAllianceColor = "Blue";
+                        InputManager.mAllianceColor = "blue";
                     }
 
                     InputManager.storeUserData();
@@ -103,7 +122,9 @@ public class DialogMaker extends AppTc{
         private RadioButton rbtn_OpponentOwned, rbtn_Balanced,
                     rbtn_Layer1, rbtn_Layer2, rbtn_Layer3;
 
-        public JSONObject mSeesawInfo;
+        private boolean mSuccess = false;
+        private String mStatus = "";
+        private int mLayer = 0;
 
         private SeesawDialog(Activity a, boolean isOpponentSeesaw, boolean isScale){
             super(a);
@@ -125,16 +146,22 @@ public class DialogMaker extends AppTc{
         public void onClick(View v){
             switch (v.getId()) {
                 case R.id.tbtn_outcome:
+                    mSuccess = ((ToggleButton) v).isChecked();
                     break;
                 case R.id.rbtn_opponentOwned:
+                    mStatus = "OpponentOwned";
                     break;
                 case R.id.rbtn_balanced:
+                    mStatus = "Balanced";
                     break;
                 case R.id.rbtn_layer1:
+                    mLayer = 1;
                     break;
                 case R.id.rbtn_layer2:
+                    mLayer = 2;
                     break;
                 case R.id.rbtn_layer3:
+                    mLayer = 3;
                     break;
 
             }
@@ -164,27 +191,3 @@ public class DialogMaker extends AppTc{
         }
     }
 }
-
-//public class OverrideDialog extends Dialog implements View.OnClickListener {
-//
-//    public Activity context;
-//
-//    public OverrideDialog(Activity a){
-//        super(a);
-//    }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState){
-//        super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        setContentView(R.layout.dialog_seesaws);
-//
-//    }
-//
-//    public void onClick(View v){
-//        switch (v.getId()) {
-//            case R.id.tbtn_outcome:
-//                break;
-//        }
-//    }
-//}

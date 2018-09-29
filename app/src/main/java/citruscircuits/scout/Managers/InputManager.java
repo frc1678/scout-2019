@@ -1,6 +1,7 @@
 package citruscircuits.scout.Managers;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,13 +10,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import citruscircuits.scout.A0A;
 import citruscircuits.scout._superDataClasses.AppCc;
+import citruscircuits.scout.utils.AppUtils;
 
 //Written by the Daemon himself ~ Calvin
 public class InputManager {
     //Tasks
     // (1) Store Permanent Data In SDCARD In MainActivity
     // (2) Store Temporary Data During Scouting Process
+
+    //QR String
+    public static String mQRString;
+    public static String mScoutLetter;
+    public static int mSPRRanking;
 
     //Match Data Holders
     public static JSONObject mRealTimeMatchData;
@@ -74,6 +82,7 @@ public class InputManager {
         AppCc.setSp("cycleNum", mCycleNum);
     }
 
+    //when storing User DAta dont use variables - just use SP
     public static void recoverUserData(){
         mAllianceColor = AppCc.getSp("allianceColor", "");
         mScoutName = AppCc.getSp("scoutName", "unselected");
@@ -152,5 +161,88 @@ public class InputManager {
         numGroundPyramidIntakeTele = mRealTimeInputtedData.getInt("numGroundPyramidIntakeTele");
         numElevatedPyramidIntakeAuto = mRealTimeInputtedData.getInt("numElevatedPyramidIntakeAuto");
         numElevatedPyramidIntakeTele = mRealTimeInputtedData.getInt("numElevatedPyramidIntakeTele");
+    }
+
+    //Backup method for acquiring scout pre-match data from backupAssignements.txt file
+    public static void getBackupData(){
+        if(mMatchNum > 0){
+            String sortL1key = "match"+mMatchNum;
+            String sortL2key = "scout"+mScoutId;
+
+            try {
+                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("backupAssignments.txt"));
+                backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
+
+                mAllianceColor = backupData.getString("alliance");
+                mTeamNum = backupData.getInt("team");
+
+                A0A.updateUserData();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //Method for acquiring scout pre-match data from QRAssignments.txt
+    public static void fullQRDataProcess(){
+        if(mMatchNum > 0 && mCycleNum >= 0){
+            mSPRRanking = 0;
+
+            String tPrevScoutLetter;
+
+            Log.e("QR Process", "Called");
+
+//            String sortL1key = "matches";
+//            String sortL2key = "match"+mMatchNum;
+            //stands for side sort 1- for sorting other things in the same layer
+            String ssort1L1key = "letters";
+
+            try {
+                String qrDataString = AppUtils.retrieveSDCardFile("QRAssignments.txt");
+
+                JSONObject qrData = new JSONObject(qrDataString);
+                mScoutLetter = qrData.getJSONObject(ssort1L1key).getString(mScoutName);
+
+                if(mQRString != null){
+                    if(mQRString.contains(mScoutLetter)){
+                        mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
+                        tPrevScoutLetter = mScoutLetter;
+
+                        AppCc.setSp("prevScoutLetter", tPrevScoutLetter);
+                    }else{
+                        tPrevScoutLetter = AppCc.getSp("prevScoutLetter", "");
+                        if(!tPrevScoutLetter.equals("")){
+                            mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
+                        }
+                    }
+
+                    AppCc.setSp("sprRanking", mSPRRanking);
+
+                    getQRData();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void getQRData(){
+        String sortL1key = "matches";
+        String sortL2key = "match"+mMatchNum;
+
+        if(mSPRRanking > 0){
+            try {
+                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key).getJSONObject(mSPRRanking+"");
+
+                mAllianceColor = backupData.getString("alliance");
+                mTeamNum = backupData.getInt("team");
+
+                AppCc.setSp("allianceColor", mAllianceColor);
+                AppCc.setSp("teamNum", mTeamNum);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

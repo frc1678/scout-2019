@@ -45,7 +45,7 @@ public class A0A extends DialogMaker {
     public static Drawable dr_redCycle, dr_blueCycle;
     public Drawable map_orientation_rb, map_orientation_br;
 
-    public static Button btn_triggerBackupPopup, btn_triggerScoutNamePopup, btn_triggerScoutIDPopup;
+    public static Button btn_triggerBackupPopup;
 
     public Button btn_mapOrientation;
 
@@ -57,9 +57,10 @@ public class A0A extends DialogMaker {
     public ScoutNameListAdapter mScoutNameListAdapter;
     public ScoutIdListAdapter mScoutIdListAdapter;
 
+    //user data UI
     public static EditText et_matchNum;
-
     public static TextView tv_cycleNum, tv_teamNum;
+    public static Button btn_triggerScoutNamePopup, btn_triggerScoutIDPopup;
 
     LayoutInflater mLayoutInflater;
 
@@ -91,18 +92,6 @@ public class A0A extends DialogMaker {
         open(A1A.class, null,false, true);
     }
 
-    public void onClickQrBackup(View view) {
-        open(QRScan.class, null, false, false);
-        pw_backupWindow.dismiss();
-    }
-
-    public void onClickFileBackup(View view) { pw_backupWindow.dismiss(); }
-
-    public void onClickOverrideBackup(View view) {
-        initOverrideDialog(A0A.this);
-        pw_backupWindow.dismiss();
-    }
-
     public static void updateUserData(){
         setCycleBackgroundColor(InputManager.mAllianceColor);
         et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
@@ -114,10 +103,10 @@ public class A0A extends DialogMaker {
 
     public static void setCycleBackgroundColor(String color){
         switch (color){
-            case "Red":
+            case "red":
                 imgv_cycleBackground.setBackground(dr_redCycle);
                 break;
-            case "Blue":
+            case "blue":
                 imgv_cycleBackground.setBackground(dr_blueCycle);
                 break;
         }
@@ -143,6 +132,19 @@ public class A0A extends DialogMaker {
         tv_cycleNum = findViewById(R.id.tv_cycleNum);
         tv_teamNum = findViewById(R.id.tv_teamNum);
 
+    }
+
+    public void updateUserViews(){
+        try{//TODO make sure that InputManager's recover user data is called when restarting activity
+            et_matchNum.setText(InputManager.mMatchNum);
+            tv_teamNum.setText(InputManager.mTeamNum);
+            tv_cycleNum.setText(InputManager.mCycleNum);
+
+            btn_triggerScoutNamePopup.setText(InputManager.mScoutName);
+            btn_triggerScoutIDPopup.setText(InputManager.mScoutId);
+        }catch(NullPointerException ne){
+            ne.printStackTrace();
+        }
     }
 
     public void initListeners(){
@@ -186,6 +188,8 @@ public class A0A extends DialogMaker {
 
                 InputManager.mMatchNum = matchNum;
                 AppCc.setSp("matchNum", matchNum);
+
+                //TODO update values automatically if in backup/QR mode
             }
         });
     }
@@ -239,6 +243,23 @@ public class A0A extends DialogMaker {
         });
     }
 
+    public void onClickQrBackup(View view) {
+        open(QRScan.class, null, false, false);
+        pw_backupWindow.dismiss();
+    }
+
+    public void onClickFileBackup(View view) {
+        InputManager.getBackupData();
+
+//        updateUserViews();
+        pw_backupWindow.dismiss();
+    }
+
+    public void onClickOverrideBackup(View view) {
+        initOverrideDialog(A0A.this);
+        pw_backupWindow.dismiss();
+    }
+
     public class ScoutNameListAdapter extends BaseAdapter{
 
         public ScoutNameListAdapter(){
@@ -272,6 +293,8 @@ public class A0A extends DialogMaker {
                 public void onClick(View view) {
                     InputManager.mScoutName = name;
                     AppCc.setSp("scoutName", name);
+
+                    InputManager.fullQRDataProcess();
 
                     updateUserData();
 
