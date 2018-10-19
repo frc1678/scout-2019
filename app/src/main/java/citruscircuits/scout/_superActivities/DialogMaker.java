@@ -45,9 +45,8 @@ public class DialogMaker extends AppTc {
         private Activity context;
 
         private EditText et_overrideTeamNum;
-        private ToggleButton tbtn_AllianceColor;
-
-        private String tAllianceColor;
+        private RadioButton rb_red;
+        private RadioButton rb_blue;
 
         public OverrideDialog(Activity a) {
             super(a);
@@ -67,9 +66,9 @@ public class DialogMaker extends AppTc {
                     } catch (Exception e) {
                     }
 
-                    if(tbtn_AllianceColor.isChecked()){
+                    if(rb_red.isChecked()){
                         InputManager.mAllianceColor = "red";
-                    }else{
+                    }else if(rb_blue.isChecked()){
                         InputManager.mAllianceColor = "blue";
                     }
 
@@ -84,7 +83,8 @@ public class DialogMaker extends AppTc {
         public void initViews() {
             et_overrideTeamNum = findViewById(R.id.et_overrideTeamNum);
 
-            tbtn_AllianceColor = findViewById(R.id.tbtn_alliance_color);
+            rb_red = findViewById(R.id.red);
+            rb_blue = findViewById(R.id.blue);
         }
     }
 }

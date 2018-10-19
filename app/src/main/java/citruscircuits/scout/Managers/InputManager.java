@@ -41,7 +41,7 @@ public class InputManager {
     public static int mCycleNum = 0;
 
     //Map-Scouting Variables
-    public static String mStartingPosition;
+    public static String mStartingPosition = "";
 
     public static JSONArray climbDataArray = new JSONArray();
     public static ArrayList<HashMap<String, Object>> climbDataList = new ArrayList<HashMap<String, Object>>();

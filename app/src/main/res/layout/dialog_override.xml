@@ -15,24 +15,43 @@
         android:textColor="@color/black"
         android:textSize="30sp" />
 
-    <ToggleButton
-        android:id="@+id/tbtn_alliance_color"
-        android:layout_width="330dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/dialogTitle"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/tbtn_alliance_color_selector"
-        android:text="ToggleButton"
-        android:textOn=""
-        android:textOff="" />
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialogTitle"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        android:id="@+id/rg_alliance_color">
+        <RadioButton
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/red"
+            android:text="RED"
+            android:textSize="30dp"
+            android:button="@null"
+            android:textAlignment="center"
+            android:layout_margin="5dp"
+            android:padding="30dp"
+            android:background="@drawable/auto_red_background_selector"/>
+        <RadioButton
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/blue"
+            android:text="BLUE"
+            android:textSize="30dp"
+            android:button="@null"
+            android:textAlignment="center"
+            android:layout_margin="5dp"
+            android:padding="30dp"
+            android:background="@drawable/auto_blue_background_selector"/>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/tv_announceTeamNum"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tbtn_alliance_color"
+        android:layout_below="@+id/rg_alliance_color"
         android:paddingLeft="110dp"
         android:text="Team : "
         android:textSize="20sp"/>
