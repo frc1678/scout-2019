@@ -203,15 +203,18 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public void onClickTeleop(View view) {
 
-        tele = true;
+        if(!startTimer) {
 
-        for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
-            rg_blue_starting_position.getChildAt(i).setEnabled(false);
-            rg_red_starting_position.getChildAt(i).setEnabled(false);
+            tele = true;
+
+            for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+                rg_blue_starting_position.getChildAt(i).setEnabled(false);
+                rg_red_starting_position.getChildAt(i).setEnabled(false);
+            }
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT");
+            if (fragment != null)
+                getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT");
-        if(fragment != null)
-            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
     }
 
     public void onClickStartTimer(View v) {
@@ -234,6 +237,8 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             }
         }
         else if(!startTimer) {
+            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+            tb_start_cube.setEnabled(true);
             handler.removeCallbacks(runnable);
             handler.removeCallbacksAndMessages(null);
             TimerUtil.matchTimer.cancel();
@@ -248,6 +253,18 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             }
             else if(InputManager.mAllianceColor.equals("blue")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_blue_selector);
+            }
+            if(field_orientation.equals("rb")){
+                iv_field.setImageResource(R.drawable.field_rb);
+            }
+            else if(field_orientation.equals("br")){
+                iv_field.setImageResource(R.drawable.field_br);
+            }
+            if(shapeCheck) {
+                overallLayout.removeView(iv);
+            }
+            else if(!shapeCheck) {
+                overallLayout.removeView(iv2);
             }
         }
     }
@@ -285,25 +302,30 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickDrop (View v) throws JSONException {
-        InputManager.dropTimes.put(TimerUtil.timestamp);
-        shapeCheck = false;
-        overallLayout.removeView(iv);
-        if(field_orientation.equals("rb")){
-            iv_field.setImageResource(R.drawable.field_rb);
-        }
-        else if(field_orientation.equals("br")){
-            iv_field.setImageResource(R.drawable.field_br);
+        if(shapeCheck && !startTimer) {
+            shapeCheck = false;
+            overallLayout.removeView(iv);
+            if(field_orientation.equals("rb")){
+                iv_field.setImageResource(R.drawable.field_rb);
+            }
+            else if(field_orientation.equals("br")){
+                iv_field.setImageResource(R.drawable.field_br);
+            }
         }
     }
 
     public void onClickSpill (View v) {
-        InputManager.numSpill +=1;
-        btn_spill.setText("SPILL - " + InputManager.numSpill);
+        if(!startTimer) {
+            InputManager.numSpill += 1;
+            btn_spill.setText("SPILL - " + InputManager.numSpill);
+        }
     }
 
     public void onClickFoul (View v) {
-        InputManager.numFoul +=1;
-        btn_foul.setText("FOUL - " + InputManager.numFoul);
+        if(!startTimer) {
+            InputManager.numFoul += 1;
+            btn_foul.setText("FOUL - " + InputManager.numFoul);
+        }
     }
 
     public void onClickUndo (View v) {
@@ -353,7 +375,9 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 //                float y= (int) motionEvent.getY();
 //                String message = String.format("Coordinates:(%.2f,%.2f)",x,y);
 //                Log.d("hello", message);
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && !startTimer) {
+                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+                    tb_start_cube.setEnabled(false);
                     int x = (int) motionEvent.getX();
                     int y = (int) motionEvent.getY();
                     if (x<=1700 && y<=930){
