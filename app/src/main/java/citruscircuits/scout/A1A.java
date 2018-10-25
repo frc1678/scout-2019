@@ -37,6 +37,7 @@ import citruscircuits.scout.utils.TimerUtil;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
+//testing
 public class A1A extends DialogMaker implements View.OnClickListener{
 
     public ImageView iv_field;
