@@ -285,7 +285,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickDrop (View v) throws JSONException {
-        InputManager.dropTimes.put(TimerUtil.timestamp);
+        InputManager.mRealTimeMatchData.put("drop",TimerUtil.timestamp);
         shapeCheck = false;
         overallLayout.removeView(iv);
         if(field_orientation.equals("rb")){
@@ -296,13 +296,15 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         }
     }
 
-    public void onClickSpill (View v) {
-        InputManager.numSpill +=1;
+    public void onClickSpill (View v) throws JSONException {
+        InputManager.mRealTimeMatchData.put("spill",TimerUtil.timestamp);
+        InputManager.numSpill++;
         btn_spill.setText("SPILL - " + InputManager.numSpill);
     }
 
-    public void onClickFoul (View v) {
-        InputManager.numFoul +=1;
+    public void onClickFoul (View v) throws JSONException {
+        InputManager.mRealTimeMatchData.put("scaleFoul",TimerUtil.timestamp);
+        InputManager.numFoul++;
         btn_foul.setText("FOUL - " + InputManager.numFoul);
     }
 
@@ -321,12 +323,12 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     public void onClickIncap (View v) throws JSONException {
         if(!incapChecked) {
             tb_incap.setChecked(true);
-            InputManager.incapTimes.put(TimerUtil.timestamp);
+            InputManager.mRealTimeMatchData.put("beganIncap",TimerUtil.timestamp);
             incapChecked = true;
         }
         else if(incapChecked) {
             tb_incap.setChecked(false);
-            InputManager.unincapTimes.put(TimerUtil.timestamp);
+            InputManager.mRealTimeMatchData.put("endIncap",TimerUtil.timestamp);
             incapChecked = false;
         }
     }

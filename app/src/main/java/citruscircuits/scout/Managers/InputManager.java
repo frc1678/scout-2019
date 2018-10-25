@@ -25,6 +25,9 @@ public class InputManager {
     public static String mScoutLetter;
     public static int mSPRRanking;
 
+    public static int numSpill;
+    public static int numFoul;
+
     //Match Data Holders
     //Below holds match data
     public static JSONObject mRealTimeMatchData;
@@ -48,6 +51,8 @@ public class InputManager {
     public static String mStartingPosition = "";
 
     public static boolean autoRunMade = false;
+
+
 
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);
