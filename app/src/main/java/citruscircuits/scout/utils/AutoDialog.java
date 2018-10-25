@@ -15,10 +15,10 @@ public class AutoDialog extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(InputManager.mAllianceColor.equals("Red")) {
+        if(InputManager.mAllianceColor.equals("red")) {
             view = inflater.inflate(R.layout.activity_auto_red, container, false);
         }
-        else if(InputManager.mAllianceColor.equals("Blue")) {
+        else if(InputManager.mAllianceColor.equals("blue")) {
             view = inflater.inflate(R.layout.activity_auto_blue, container, false);
         }
         return view;

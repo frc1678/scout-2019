@@ -15,13 +15,17 @@ public interface Cst {
 
     List<Integer> SCOUT_IDS = Arrays.asList(1, 2, 3, 4, 5, 6 ,7 , 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 
-    Map<String, String> compressKeys = new HashMap<String, String>() {{
-        //New constants
+    //manual compression keys that aren't separated by commas
+    Map<String, String> noCommaCompressKeys = new HashMap<String, String>() {{
         put("allianceColor", "R");
         put("startingPosition", "P");
         put("startedWCube", "C");
 
         put("autoLineCrossed", "a");
+    }};
+
+    Map<String, String> compressKeys = new HashMap<String, String>() {{
+        //New constants
 
         put("beginIncap", "i");
         put("endIncap", "n");
