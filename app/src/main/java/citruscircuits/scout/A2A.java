@@ -23,6 +23,9 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,7 +75,12 @@ public class A2A extends DialogMaker {
     }
 
     //TODO make sure it works after data is inputted
-    public void onClickUpdateQR(View view) { showMatchQR(OutputManager.compressMatchData(InputManager.mRealTimeInputtedData)); }
+    public void onClickUpdateQR(View view) throws JSONException{
+        InputManager.mRealTimeInputtedData = new JSONObject();
+        InputManager.mRealTimeInputtedData.put(InputManager.matchKey, InputManager.mRealTimeMatchData);
+        Log.e("Match DATA before COMP", InputManager.mRealTimeMatchData.toString());
+        Log.e("Input DATA before COMP", InputManager.mRealTimeInputtedData.toString());
+        showMatchQR(OutputManager.compressMatchData(InputManager.mRealTimeInputtedData)); }
 
     public void onClickEndScouting(View view) { open(A0A.class, null, false, false); }
 

@@ -42,7 +42,7 @@
             android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/auto_blue_selector"
-            android:onClick="onClickAutoRunMade"/>
+            android:onClick="onClickAutoLineCrossed"/>
         <ToggleButton
             android:layout_width="290dp"
             android:layout_height="wrap_content"

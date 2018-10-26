@@ -26,7 +26,8 @@
             android:textSize="40dp"
             android:layout_below="@+id/qrView"
             android:background="@drawable/btn_normal_selector"
-            android:textColor="@color/normalButtonTextColor"/>
+            android:textColor="@color/normalButtonTextColor"
+            android:onClick="onClickUpdateQR"/>
     </RelativeLayout>
 
     <RelativeLayout

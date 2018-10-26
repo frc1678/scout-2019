@@ -30,6 +30,8 @@ import android.widget.ToggleButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
@@ -95,6 +97,8 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        InputManager.initMatchKey();
 
         if(AppCc.getSp("mapOrientation",99) != 99){
             if(AppCc.getSp("mapOrientation", 99) == 0){
@@ -216,14 +220,11 @@ public class A1A extends DialogMaker implements View.OnClickListener{
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
 
-        try {
-            InputManager.mRealTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
-            InputManager.mRealTimeMatchData.put("startingPosition", InputManager.mStartingPosition);
-            InputManager.mRealTimeMatchData.put("startedWCube", startedWCube);
-            InputManager.mRealTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        InputManager.mRealTimeMatchData = new JSONArray();
+        InputManager.mRealTimeMatchData.put(new HashMap<String, String>().put("allianceColor", InputManager.mAllianceColor));
+        InputManager.mRealTimeMatchData.put(new HashMap<String, String>().put("startingPosition", InputManager.mStartingPosition));
+        InputManager.mRealTimeMatchData.put(new HashMap<String, Boolean>().put("startedWCube", startedWCube));
+        InputManager.mRealTimeMatchData.put(new HashMap<String, Boolean>().put("autoLineCrossed", InputManager.autoLineCrossed));
     }
 
     public void onClickStartTimer(View v) {
@@ -252,7 +253,6 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             }
         }
         else if(!startTimer) {
-            InputManager.mRealTimeMatchData = new JSONObject();
             InputManager.numSpill = 0;
             InputManager.numFoul = 0;
             tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -290,7 +290,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         }
     }
 
-    public void onClickautoLineCrossed (View v) {
+    public void onClickAutoLineCrossed (View v) {
         if(!InputManager.autoLineCrossed){
             InputManager.autoLineCrossed = true;
         }
@@ -324,7 +324,8 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public void onClickDrop (View v) throws JSONException {
         if(shapeCheck && !startTimer && !incapChecked) {
-            InputManager.mRealTimeMatchData.put("drop",TimerUtil.timestamp);
+            Log.e("NULLLLLLCHECKKKKKKK", new HashMap<String, Float>().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))).toString());
+            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             shapeCheck = false;
             overallLayout.removeView(iv);
             if(field_orientation.equals("rb")){
@@ -338,7 +339,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public void onClickSpill (View v) throws JSONException {
         if(!startTimer && !incapChecked) {
-            InputManager.mRealTimeMatchData.put("spill", TimerUtil.timestamp);
+            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("spill", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             InputManager.numSpill++;
             btn_spill.setText("SPILL - " + InputManager.numSpill);
         }
@@ -346,7 +347,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public void onClickFoul (View v) throws JSONException {
         if(!startTimer && !incapChecked) {
-            InputManager.mRealTimeMatchData.put("scaleFoul",TimerUtil.timestamp);
+            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("scaleFoul", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             InputManager.numSpill++;
             btn_spill.setText("FOUL - " + InputManager.numSpill);
         }
@@ -373,12 +374,12 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     public void onClickIncap (View v) throws JSONException {
         if(!incapChecked) {
             tb_incap.setChecked(true);
-            InputManager.mRealTimeMatchData.put("beganIncap",TimerUtil.timestamp);
+            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("beganIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             incapChecked = true;
         }
         else if(incapChecked) {
             tb_incap.setChecked(false);
-            InputManager.mRealTimeMatchData.put("endIncap",TimerUtil.timestamp);
+            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("endIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             incapChecked = false;
         }
     }

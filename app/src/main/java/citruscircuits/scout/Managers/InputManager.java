@@ -30,7 +30,7 @@ public class InputManager {
 
     //Match Data Holders
     //Below holds match data
-    public static JSONObject mRealTimeMatchData;
+    public static JSONArray mRealTimeMatchData;
     //Below is finaldata to be inputted to QR
     public static JSONObject mRealTimeInputtedData;
 
@@ -173,4 +173,15 @@ public class InputManager {
             }
         }
     }
+
+    public static void initMatchKey(){
+        matchKey = mTeamNum + "Q" + mMatchNum + "-" + mScoutId;
+    }
+
+//    public static void completeInputData(){
+//        for(int i = 0; i < mRealTimeMatchData.length(); i++){
+//            mRealTimeInputtedData mRealTimeMatchData.get(i);
+//
+//        }
+//    }
 }

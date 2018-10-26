@@ -28,21 +28,23 @@ public class OutputManager extends InputManager{
 
     //TODO Ensure that Alliance Color, Starting Position, Started With Cube, and Auto Line Crossed are recorded in this respective order
     public static String compressMatchData(JSONObject pMatchData) {
-        String compressedData = "";
+        String compressedData = InputManager.matchKey + "|";
 
         try {
             JSONObject matchWOKeyData = pMatchData.getJSONObject(InputManager.matchKey);
             Iterator<?> uncompressedKeys = matchWOKeyData.keys();
 
             while(uncompressedKeys.hasNext()){
+                Log.e("MatchDATA", compressedData);
                 String currentKey = uncompressedKeys.next()+"";
                 String currentValue = matchWOKeyData.get(currentKey)+"";
 
                 if(Cst.noCommaCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)) {
                     if(currentKey.equals("autoLineCrossed")){
-                        compressedData = compressedData + "_" + Cst.noCommaCompressKeys.get(currentKey) + currentValue;
+                        compressedData = compressedData + "_" + Cst.noCommaCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
+                    }else{
+                        compressedData = compressedData + Cst.noCommaCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
                     }
-                    compressedData = compressedData + Cst.noCommaCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
                 }else if(Cst.compressKeys.containsKey(currentKey)){
                     compressedData = compressedData + "," + Cst.compressKeys.get(currentKey) + currentValue;
                 }
