@@ -49,7 +49,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     public boolean noShape = false;
     public boolean tele = false;
     public boolean field = true;
-    public boolean begin_with_cube = false;
+    public boolean startedWCube = false;
 
     public TextView tv_team;
 
@@ -212,6 +212,15 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT");
         if(fragment != null)
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+
+        try {
+            InputManager.mRealTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
+            InputManager.mRealTimeMatchData.put("startingPosition", InputManager.mStartingPosition);
+            InputManager.mRealTimeMatchData.put("startedWCube", startedWCube);
+            InputManager.mRealTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onClickStartTimer(View v) {
@@ -252,19 +261,19 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         }
     }
 
-    public void onClickAutoRunMade (View v) {
-        if(!InputManager.autoRunMade){
-            InputManager.autoRunMade = true;
+    public void onClickautoLineCrossed (View v) {
+        if(!InputManager.autoLineCrossed){
+            InputManager.autoLineCrossed = true;
         }
-        else if(InputManager.autoRunMade){
-            InputManager.autoRunMade = false;
+        else if(InputManager.autoLineCrossed){
+            InputManager.autoLineCrossed = false;
         }
     }
 
     public void onClickBeginWithCube (View v) {
-        if(!begin_with_cube) {
+        if(!startedWCube) {
             shapeCheck = true;
-            begin_with_cube=true;
+            startedWCube=true;
             if(field_orientation.equals("rb")){
                 iv_field.setImageResource(R.drawable.field_yellow_rb);
             }
@@ -272,9 +281,9 @@ public class A1A extends DialogMaker implements View.OnClickListener{
                 iv_field.setImageResource(R.drawable.field_yellow_br);
             }
         }
-        else if(begin_with_cube) {
+        else if(startedWCube) {
             shapeCheck = false;
-            begin_with_cube=false;
+            startedWCube=false;
             if(field_orientation.equals("rb")){
                 iv_field.setImageResource(R.drawable.field_rb);
             }

@@ -49,8 +49,7 @@ public class InputManager {
 
     //Map-Scouting Variables
     public static String mStartingPosition = "";
-
-    public static boolean autoRunMade = false;
+    public static boolean autoLineCrossed = false;
 
 
 
