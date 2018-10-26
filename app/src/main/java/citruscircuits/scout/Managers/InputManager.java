@@ -52,7 +52,6 @@ public class InputManager {
     public static boolean autoLineCrossed = false;
 
 
-
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);
         AppCc.setSp("scoutName", mScoutName);
