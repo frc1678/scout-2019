@@ -50,7 +50,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public boolean incapChecked = false;
     public boolean startTimer = true;
-    public boolean shapeCheck = false;
+    public String currentShape = "";
     public boolean noShape = false;
     public boolean tele = false;
     public boolean field = true;
@@ -221,10 +221,14 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         }
 
         InputManager.mRealTimeMatchData = new JSONArray();
-        InputManager.mRealTimeMatchData.put(new HashMap<String, String>().put("allianceColor", InputManager.mAllianceColor));
-        InputManager.mRealTimeMatchData.put(new HashMap<String, String>().put("startingPosition", InputManager.mStartingPosition));
-        InputManager.mRealTimeMatchData.put(new HashMap<String, Boolean>().put("startedWCube", startedWCube));
-        InputManager.mRealTimeMatchData.put(new HashMap<String, Boolean>().put("autoLineCrossed", InputManager.autoLineCrossed));
+        try {
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("allianceColor", InputManager.mAllianceColor));
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("startingPosition", InputManager.mStartingPosition));
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("startedWCube", startedWCube));
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("autoLineCrossed", InputManager.autoLineCrossed));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onClickStartTimer(View v) {
@@ -240,10 +244,10 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             btn_startTimer.setText("RESET TIMER");
             startTimer = false;
             if(startedWCube) {
-                shapeCheck = true;
+                currentShape = "triangle";
             }
             else if(!startedWCube) {
-                shapeCheck = false;
+                currentShape = "circle";
             }
             if(InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_reset_red_selector);
@@ -266,14 +270,14 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             TimerUtil.mTimerView.setText("15");
             TimerUtil.mActivityView.setText("AUTO");
             btn_startTimer.setText("START TIMER");
-            if(shapeCheck) {
+            if(currentShape.equals("triangle")) {
                 overallLayout.removeView(iv);
             }
-            else if(!shapeCheck) {
+            else if(currentShape.equals("circle")) {
                 overallLayout.removeView(iv2);
             }
             startTimer = true;
-            shapeCheck = false;
+            currentShape = "none";
             startedWCube = false;
             if(InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_red_selector);
@@ -301,7 +305,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public void onClickBeginWithCube (View v) {
         if(!startedWCube) {
-            shapeCheck = true;
+            currentShape = "triangle";
             startedWCube=true;
             if(field_orientation.equals("rb")){
                 iv_field.setImageResource(R.drawable.field_yellow_rb);
@@ -311,7 +315,7 @@ public class A1A extends DialogMaker implements View.OnClickListener{
             }
         }
         else if(startedWCube) {
-            shapeCheck = false;
+            currentShape = "none";
             startedWCube=false;
             if(field_orientation.equals("rb")){
                 iv_field.setImageResource(R.drawable.field_rb);
@@ -323,10 +327,9 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickDrop (View v) throws JSONException {
-        if(shapeCheck && !startTimer && !incapChecked) {
-            Log.e("NULLLLLLCHECKKKKKKK", new HashMap<String, Float>().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))).toString());
-            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
-            shapeCheck = false;
+        if(currentShape.equals("triangle") && !startTimer && !incapChecked) {
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            currentShape = "none";
             overallLayout.removeView(iv);
             if(field_orientation.equals("rb")){
                 iv_field.setImageResource(R.drawable.field_rb);
@@ -339,17 +342,17 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public void onClickSpill (View v) throws JSONException {
         if(!startTimer && !incapChecked) {
-            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("spill", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("spill", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             InputManager.numSpill++;
-            btn_spill.setText("SPILL - " + InputManager.numSpill);
+            btn_spill.setText("SPILL : " + InputManager.numSpill);
         }
     }
 
     public void onClickFoul (View v) throws JSONException {
         if(!startTimer && !incapChecked) {
-            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("scaleFoul", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
-            InputManager.numSpill++;
-            btn_spill.setText("FOUL - " + InputManager.numSpill);
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("scaleFoul", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            InputManager.numFoul++;
+            btn_foul.setText("FOUL : " + InputManager.numFoul);
         }
     }
 
@@ -374,12 +377,12 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     public void onClickIncap (View v) throws JSONException {
         if(!incapChecked) {
             tb_incap.setChecked(true);
-            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("beganIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("beganIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             incapChecked = true;
         }
         else if(incapChecked) {
             tb_incap.setChecked(false);
-            InputManager.mRealTimeMatchData.put(new HashMap<String, Float>().put("endIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            InputManager.mRealTimeMatchData.put(new JSONObject().put("endIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             incapChecked = false;
         }
     }
@@ -402,213 +405,184 @@ public class A1A extends DialogMaker implements View.OnClickListener{
         overallLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-//                float x= (int) motionEvent.getX();
-//                float y= (int) motionEvent.getY();
-//                String message = String.format("Coordinates:(%.2f,%.2f)",x,y);
-//                Log.d("hello", message);
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && !startTimer && !incapChecked) {
                     int x = (int) motionEvent.getX();
                     int y = (int) motionEvent.getY();
                     if (x<=1700 && y<=930){
-                        if (!shapeCheck){
-                            overallLayout.removeView(iv2);
-                            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                                    50,
-                                    50);
-                            //ImageView iv= new ImageView(getApplicationContext());
-                            lp.setMargins(x-25, y-40, 0, 0);
-                            iv.setLayoutParams(lp);
-                            iv.setImageDrawable(getResources().getDrawable(R.drawable.triangle_image));
-                            Log.d("TELE", valueOf(tele));
-                            Log.d("FIELD", valueOf(field));
-                            if (((x>75 && x<=425 && y<=930 && InputManager.mScoutId <=6) || (x>75 && x<=285 && y<=575 && InputManager.mScoutId >6)) && (tele || (field && !tele))){
-                                Log.d("locationInput","1");
-                                shapeCheck=true;
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_br);
-                                }
-                                ((ViewGroup) view).addView(iv);
-                            }
-                            else if (((x>425 && x<=850 && y<=930 && InputManager.mScoutId <=6 || x>285 && x<=575 && y<=575 && InputManager.mScoutId >6)) && (tele || (field && !tele))){
-                                Log.d("locationInput","2");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                shapeCheck=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_br);
-                                }
-                                ((ViewGroup) view).addView(iv);
-                            }
-                            else if (((x>850 && x<=1275 && y<=930 && InputManager.mScoutId <=6 || x>575 && x<=865 && y<=575 && InputManager.mScoutId >6)) && (tele || (!field && !tele))){
-                                Log.d("locationInput","3");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                shapeCheck=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_br);
-                                }
-                                ((ViewGroup) view).addView(iv);
-                            }
-                            else if (((x>1275 && x<=1700 && y<=930 && InputManager.mScoutId <=6 || x>865 && x<=1075 && y<=575 && InputManager.mScoutId >6)) && (tele || (!field && !tele))){
-                                Log.d("locationInput","4");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                shapeCheck=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_yellow_br);
-                                }
-                                ((ViewGroup) view).addView(iv);
-                            }
-                        }
-                        else if (shapeCheck){
-                            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                                    50,
-                                    50);
-                            lp.setMargins(x-25, y-40, 0, 0);
-                            iv2.setLayoutParams(lp);
-                            iv2.setImageDrawable(getResources().getDrawable(
-                                    R.drawable.blackcircle));
-                            if ((x>=325 && x<=490 && y>=140 && y<=330 && InputManager.mScoutId <=6 || x>=230 && x<=310 && y>=90 && y<=210 && InputManager.mScoutId >6) && (tele || (field && !tele))){
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                                50,
+                                50);
+                        lp.setMargins(x-25, y-40, 0, 0);
+                        iv2.setLayoutParams(lp);
+                        iv2.setImageDrawable(getResources().getDrawable(
+                                R.drawable.blackcircle));
+                        if ((x>=325 && x<=490 && y>=140 && y<=330 && InputManager.mScoutId <=6
+                                || x>=230 && x<=310 && y>=90 && y<=210 && InputManager.mScoutId >6)
+                                && (tele || (field && !tele))){
+                            if(currentShape.equals("none") || currentShape.equals("triangle")){
                                 Log.d("locationOutput","Top Left switch");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                overallLayout.removeView(iv);
-                                shapeCheck=false;
-                                noShape=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_br);
-                                }
-                                ((ViewGroup) view).addView(iv2);
+                                initCircle(view);
+                                try{
+                                    if(field_orientation.equals("rb")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }else if(field_orientation.equals("br")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }
+                                }catch(JSONException je){   je.printStackTrace(); }
                             }
-                            else if ((x>=325 && x<=595 && y>=140 && y<=800 && InputManager.mScoutId <=6 || x>=230 && x<=310 && y>=400 && y<=530 && InputManager.mScoutId >6) && (tele || (field && !tele))){
+                            return true;
+                        }
+                        else if ((x>=325 && x<=595 && y>=140 && y<=800 && InputManager.mScoutId <=6
+                                || x>=230 && x<=310 && y>=400 && y<=530 && InputManager.mScoutId >6)
+                                && (tele || (field && !tele))){
+                            if(currentShape.equals("none") || currentShape.equals("triangle")){
                                 Log.d("locationOutput","Bottom Left switch");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                overallLayout.removeView(iv);
-                                shapeCheck=false;
-                                noShape=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_br);
-                                }
-                                ((ViewGroup) view).addView(iv2);
+                                initCircle(view);
+                                try{
+                                    if(field_orientation.equals("rb")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }else if(field_orientation.equals("br")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score6", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }
+                                }catch(JSONException je){   je.printStackTrace(); }
                             }
-                            else if ((x>=1250 && x<=1400 && y>=140 && y<=330 && InputManager.mScoutId <=6 || x>=780 && x<=900 && y>=100 && y<=210 && InputManager.mScoutId >6) && (tele || (!field && !tele))){
+                            return true;
+                        }
+                        else if ((x>=1250 && x<=1400 && y>=140 && y<=330 && InputManager.mScoutId <=6
+                                || x>=780 && x<=900 && y>=100 && y<=210 && InputManager.mScoutId >6)
+                                && (tele || (!field && !tele))){
+                            if(currentShape.equals("none") || currentShape.equals("triangle")){
                                 Log.d("locationOutput","Top Right switch");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                overallLayout.removeView(iv);
-                                shapeCheck=false;
-                                noShape=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_br);
-                                }
-                                ((ViewGroup) view).addView(iv2);
+                                initCircle(view);
+                                try{
+                                    if(field_orientation.equals("rb")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score6", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }else if(field_orientation.equals("br")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }
+                                }catch(JSONException je){   je.printStackTrace(); }
                             }
-                            else if ((x>=1250 && x<=1400 && y>=600 && y<=800 && InputManager.mScoutId <=6 || x>=780 && x<=900 && y>=400 && y<=530 && InputManager.mScoutId >6) && (tele || (!field && !tele))){
+                            return true;
+                        }
+                        else if ((x>=1250 && x<=1400 && y>=600 && y<=800 && InputManager.mScoutId <=6
+                                || x>=780 && x<=900 && y>=400 && y<=530 && InputManager.mScoutId >6)
+                                && (tele || (!field && !tele))){
+                            if(currentShape.equals("none") || currentShape.equals("triangle")){
                                 Log.d("locationOutput","Bottom Right switch");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                overallLayout.removeView(iv);
-                                shapeCheck=false;
-                                noShape=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_br);
-                                }
-                                ((ViewGroup) view).addView(iv2);
+                                initCircle(view);
+                                try{
+                                    if(field_orientation.equals("rb")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }else if(field_orientation.equals("br")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }
+                                }catch(JSONException je){   je.printStackTrace(); }
                             }
-                            else if (x>=800 && x<=940 && y>=60 && y<=240 && InputManager.mScoutId <=6 || x>=530 && x<=620 && y>=60 && y<=165 && InputManager.mScoutId >6){
+                            return true;
+                        }
+                        else if (x>=800 && x<=940 && y>=60 && y<=240 && InputManager.mScoutId <=6
+                                || x>=530 && x<=620 && y>=60 && y<=165 && InputManager.mScoutId >6){
+                            if(currentShape.equals("none") || currentShape.equals("triangle")){
                                 Log.d("locationOutput","Scale Top");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                overallLayout.removeView(iv);
-                                shapeCheck=false;
-                                noShape=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_br);
-                                }
-                                ((ViewGroup) view).addView(iv2);
+                                initCircle(view);
+                                try{
+                                    if(field_orientation.equals("rb")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score5", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }else if(field_orientation.equals("br")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }
+                                }catch(JSONException je){   je.printStackTrace(); }
                             }
-                            else if (x>=790 && x<=940 && y>=700 && y<=870 && InputManager.mScoutId <=6 || x>=530 && x<=620 && y>=450 && y<=560 && InputManager.mScoutId >6){
+                            return true;
+                        }
+                        else if (x>=790 && x<=940 && y>=700 && y<=870 && InputManager.mScoutId <=6
+                                || x>=530 && x<=620 && y>=450 && y<=560 && InputManager.mScoutId >6){
+                            if(currentShape.equals("none") || currentShape.equals("triangle")){
                                 Log.d("locationOutput","Scale Bottom");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                overallLayout.removeView(iv);
-                                shapeCheck=false;
-                                noShape=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_br);
-                                }
-                                ((ViewGroup) view).addView(iv2);
+                                initCircle(view);
+                                try{
+                                    if(field_orientation.equals("rb")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }else if(field_orientation.equals("br")){
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("score5", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                    }
+                                }catch(JSONException je){   je.printStackTrace(); }
                             }
-                            else if ((x>=75 && x<=170 && y>=290 && y<=420 && InputManager.mScoutId <=6 || x>=1530 && x<=1700 && y>=490 && y<=630 && InputManager.mScoutId <=6 || x>=75 && x<=120 && y>=210 && y<=290 && InputManager.mScoutId>6 || x>=1000 && x<=1110 && y>=330 && y<=410 && InputManager.mScoutId>6) && tele){
+                            return true;
+                        }
+                        else if ((x>=75 && x<=170 && y>=290 && y<=420 && InputManager.mScoutId <=6
+                                || x>=1530 && x<=1700 && y>=490 && y<=630 && InputManager.mScoutId <=6
+                                || x>=75 && x<=120 && y>=210 && y<=290 && InputManager.mScoutId>6
+                                || x>=1000 && x<=1110 && y>=330 && y<=410 && InputManager.mScoutId>6) && tele){
+                            if(currentShape.equals("none") || currentShape.equals("triangle")){
                                 Log.d("locationOutput","Exchange");
-                                if(!tele) {
-                                    tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-                                    tb_start_cube.setEnabled(false);
-                                }
-                                overallLayout.removeView(iv);
-                                shapeCheck=false;
-                                noShape=true;
-                                if(field_orientation.equals("rb")){
-                                    iv_field.setImageResource(R.drawable.field_rb);
-                                }
-                                else if(field_orientation.equals("br")){
-                                    iv_field.setImageResource(R.drawable.field_br);
-                                }
-                                ((ViewGroup) view).addView(iv2);
+                                initCircle(view);
+                                try {
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("exchangeScore", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                } catch (JSONException e) {     e.printStackTrace(); }
                             }
+                            return true;
+                        }
+                        //INPUT ZONEZZZZZZZZZZZZZZZZZZZZZZZZ
+                        iv.setLayoutParams(lp);
+                        iv.setImageDrawable(getResources().getDrawable(R.drawable.triangle_image));
+                        Log.d("TELE", valueOf(tele));
+                        Log.d("FIELD", valueOf(field));
+                        if ((((x>75 && x<=425 && y<=930 && InputManager.mScoutId <=6)
+                                || (x>75 && x<=285 && y<=575 && InputManager.mScoutId >6))
+                                && (tele || (field && !tele)))
+                                && (currentShape.equals("none") || currentShape.equals("circle"))){
+                            Log.d("locationInput","1");
+                            initTriangle(view);
+                            try{
+                                if(field_orientation.equals("rb")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }else if(field_orientation.equals("br")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }
+                            }catch(JSONException je){   je.printStackTrace(); }
+                        }
+                        else if ((((x>425 && x<=850 && y<=930 && InputManager.mScoutId <=6
+                                || x>285 && x<=575 && y<=575 && InputManager.mScoutId >6))
+                                && (tele || (field && !tele)))
+                                && (currentShape.equals("none") || currentShape.equals("circle"))){
+                            Log.d("locationInput","2");
+                            initTriangle(view);
+                            try{
+                                if(field_orientation.equals("rb")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }else if(field_orientation.equals("br")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }
+                            }catch(JSONException je){   je.printStackTrace(); }
+                        }
+                        else if ((((x>850 && x<=1275 && y<=930 && InputManager.mScoutId <=6
+                                || x>575 && x<=865 && y<=575 && InputManager.mScoutId >6))
+                                && (tele || (!field && !tele)))
+                                && (currentShape.equals("none") || currentShape.equals("circle"))){
+                            Log.d("locationInput","3");
+                            initTriangle(view);
+                            try{
+                                if(field_orientation.equals("rb")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }else if(field_orientation.equals("br")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }
+                            }catch(JSONException je){   je.printStackTrace(); }
+                        }
+                        else if ((((x>1275 && x<=1700 && y<=930 && InputManager.mScoutId <=6
+                                || x>865 && x<=1075 && y<=575 && InputManager.mScoutId >6))
+                                && (tele || (!field && !tele)))
+                                && (currentShape.equals("none") || currentShape.equals("circle"))){
+                            Log.d("locationInput","4");
+                            initTriangle(view);
+                            try{
+                                if(field_orientation.equals("rb")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }else if(field_orientation.equals("br")){
+                                    InputManager.mRealTimeMatchData.put(new JSONObject().put("intake4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                                }
+                            }catch(JSONException je){   je.printStackTrace(); }
                         }
                     }
                     //purpose: to locate which quadrant
@@ -616,5 +590,37 @@ public class A1A extends DialogMaker implements View.OnClickListener{
                 return false;
             }
         });
+    }
+
+    public void initCircle(View view){
+        if(!tele) {
+            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+            tb_start_cube.setEnabled(false);
+        }
+        overallLayout.removeView(iv);
+        currentShape = "circle";
+        noShape=true;
+        if(field_orientation.equals("rb")){
+            iv_field.setImageResource(R.drawable.field_rb);
+        }
+        else if(field_orientation.equals("br")){
+            iv_field.setImageResource(R.drawable.field_br);
+        }
+        ((ViewGroup) view).addView(iv2);
+    }
+
+    public void initTriangle(View view){
+        if(!tele) {
+            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+            tb_start_cube.setEnabled(false);
+        }
+        currentShape = "triangle";
+        if(field_orientation.equals("rb")){
+            iv_field.setImageResource(R.drawable.field_yellow_rb);
+        }
+        else if(field_orientation.equals("br")){
+            iv_field.setImageResource(R.drawable.field_yellow_br);
+        }
+        ((ViewGroup) view).addView(iv);
     }
 }
