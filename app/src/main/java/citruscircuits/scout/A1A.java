@@ -1,6 +1,9 @@
 package citruscircuits.scout;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -10,8 +13,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
-import android.widget.CompoundButton;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,15 +30,12 @@ import java.util.Map;
 
 import org.json.JSONException;
 
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.ToggleButton;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
@@ -54,11 +55,33 @@ public class A1A extends DialogMaker implements View.OnClickListener{
 
     public boolean incapChecked = false;
     public boolean startTimer = true;
-    public String currentShape = "";
     public boolean noShape = false;
     public boolean tele = false;
     public boolean field = true;
     public boolean startedWCube = false;
+    public boolean liftSelfAttempt;
+    public boolean liftSelfActual;
+    public boolean climbInputted = false;
+
+    public String currentShape = "";
+
+    public Integer numRobotsAttemptedToLift = 0;
+    public Integer numRobotsDidLift = 0;
+
+    public Float ftbStartTime;
+    public Float ftbEndTime;
+
+    public List<String> climbAttemptKeys = Arrays.asList("liftSelf", "otherRobotsLifted");
+    public List<String> climbActualKeys = Arrays.asList("liftSelf", "otherRobotsLifted");
+    public List<String> climbKeys = Arrays.asList("Attempt", "Actual", "startTime", "endTime");
+
+    public List<Object> climbAttemptValues = new ArrayList<>();
+    public List<Object> climbActualValues = new ArrayList<>();
+    public List<Object> climbValues = new ArrayList<>();
+
+    HashMap<String,Object> ftbAttemptData = new HashMap<String, Object>();
+    HashMap<String,Object> ftbActualData = new HashMap<String, Object>();
+    HashMap<String,Object> ftbFinalData = new HashMap<String, Object>();
 
     public TextView tv_team;
 
@@ -470,8 +493,189 @@ public class A1A extends DialogMaker implements View.OnClickListener{
     }
 
     public void onClickFTB (View v) {
-        if(tele && !startTimer && !incapChecked) {
 
+        if(tele && !startTimer && !incapChecked && !climbInputted) {
+            ftbStartTime = Float.valueOf(String.format("%.2f", TimerUtil.timestamp));
+            final Dialog ftbDialog = new Dialog(this);
+            ftbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            final RelativeLayout ftbDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.ftb_dialog, null);
+
+            final AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+
+            final AlertDialog.Builder builder2;
+            builder2 = new AlertDialog.Builder(this);
+
+            builder.setMessage("Did the scouted robot lift itself or another robot with its own mechanism?")
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            ftbEndTime = Float.valueOf(String.format("%.2f", TimerUtil.timestamp));
+
+                            ftbDialog.setContentView(ftbDialogLayout);
+
+                            final TextView tv_attempted = ftbDialogLayout.findViewById(R.id.tv_value_attempted);
+                            final TextView tv_didLift = ftbDialogLayout.findViewById(R.id.tv_didLift_value);
+
+                            Button btn_attemptedPlus = ftbDialogLayout.findViewById(R.id.btn_plus_attempted);
+                            Button btn_attemptedMinus = ftbDialogLayout.findViewById(R.id.btn_minus_attempted);
+                            Button btn_plus = ftbDialogLayout.findViewById(R.id.btn_didLift_plus);
+                            Button btn_minus = ftbDialogLayout.findViewById(R.id.btn_didLift_minus);
+                            Button btn_cancel = ftbDialogLayout.findViewById(R.id.cancelButton);
+                            Button btn_done = ftbDialogLayout.findViewById(R.id.doneButton);
+
+                            btn_attemptedPlus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(numRobotsAttemptedToLift < 2) {
+                                        numRobotsAttemptedToLift ++;
+                                        tv_attempted.setText(String.valueOf(numRobotsAttemptedToLift));
+                                    }
+                                }
+                            });
+
+                            btn_attemptedMinus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(numRobotsAttemptedToLift > 0) {
+                                        numRobotsAttemptedToLift --;
+                                        tv_attempted.setText(String.valueOf(numRobotsAttemptedToLift));
+                                    }
+                                }
+                            });
+
+                            btn_plus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(numRobotsDidLift < 2) {
+                                        numRobotsDidLift ++;
+                                        tv_didLift.setText(String.valueOf(numRobotsDidLift));
+                                    }
+                                }
+                            });
+
+                            btn_minus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(numRobotsDidLift > 0) {
+                                        numRobotsDidLift --;
+                                        tv_didLift.setText(String.valueOf(numRobotsDidLift));
+                                    }
+                                }
+                            });
+
+                            btn_cancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ftbDialog.cancel();
+                                }
+                            });
+
+                            btn_done.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    climbAttemptValues.add(liftSelfAttempt);
+                                    climbAttemptValues.add(numRobotsAttemptedToLift);
+
+                                    climbActualValues.add(liftSelfActual);
+                                    climbActualValues.add(numRobotsDidLift);
+
+                                    ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
+                                    ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
+
+                                    ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
+                                    ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
+
+                                    climbValues.add(ftbAttemptData);
+                                    climbValues.add(ftbActualData);
+                                    climbValues.add(ftbStartTime);
+                                    climbValues.add(ftbEndTime);
+
+                                    ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
+                                    ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
+                                    ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
+                                    ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
+
+                                    try {
+                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("climb", ftbFinalData));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    climbInputted = true;
+
+                                    Log.i("FTB", ftbFinalData.toString());
+
+                                    ftbDialog.dismiss();
+                                }
+                            });
+
+
+                            builder2.setMessage("Did the scouted robot climb/lift itself?")
+                                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            liftSelfAttempt = true;
+                                            liftSelfActual = true;
+
+                                            ftbDialog.show();
+                                        }
+                                    })
+                                    .setNeutralButton("ATTEMPTED TO, BUT FAILED", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            liftSelfAttempt = true;
+                                            liftSelfActual = false;
+
+                                            ftbDialog.show();
+                                        }
+                                    })
+                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int which) {
+                                            liftSelfAttempt = false;
+                                            liftSelfActual = false;
+
+                                            ftbDialog.show();
+                                        }
+                                    })
+                                    .show();
+                                }
+                            })
+
+                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            ftbEndTime = Float.valueOf(String.format("%.2f", TimerUtil.timestamp));
+
+                            climbAttemptValues.add(false);
+                            climbAttemptValues.add(0);
+
+                            climbActualValues.add(false);
+                            climbActualValues.add(0);
+
+                            ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
+                            ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
+
+                            ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
+                            ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
+
+                            climbValues.add(ftbAttemptData);
+                            climbValues.add(ftbActualData);
+                            climbValues.add(ftbStartTime);
+                            climbValues.add(ftbEndTime);
+
+                            ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
+                            ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
+                            ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
+                            ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
+
+                            Log.i("FTB", ftbFinalData.toString());
+
+                            try {
+                                InputManager.mRealTimeMatchData.put(new JSONObject().put("climb", ftbFinalData));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .show();
         }
     }
 
