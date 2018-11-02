@@ -218,6 +218,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
         }
 
+
         transaction.commit();
 
         tv_team.setText(valueOf(InputManager.mTeamNum));
@@ -242,6 +243,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickTeleop(View view) {
+        actionList.clear();
+        actionList.add("invalid");
+        actionList.add("invalid");
+        actionList.add("invalid");
+        actionList.add("teleop");
+        actionList.add("rb");
+        actionDic.put(actionCount, actionList);
+        actionCount++;
         if (!startTimer && (rb_blue_right.isChecked() || rb_red_right.isChecked() || rb_blue_center.isChecked() || rb_red_center.isChecked() || rb_blue_left.isChecked() || rb_red_left.isChecked())) {
             tele = true;
             for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
@@ -430,7 +439,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if (field_orientation.equals("br")) {
                     iv_field.setImageResource(R.drawable.field_br);
                 }
-                triangleParams(Integer.valueOf(actionDic.get(actionCount).get(1).toString()), Integer.valueOf(actionDic.get(actionCount).get(2).toString()));
+//                triangleParams(Integer.valueOf(actionDic.get(actionCount).get(1).toString()), Integer.valueOf(actionDic.get(actionCount).get(2).toString()));
 //                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 //                        50,
 //                        50);
@@ -440,8 +449,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //                overallLayout.addView(iv);
 //                ((ViewGroup) v).addView(iv2);
 
-
             } else if (actionDic.get(actionCount).get(3).equals("circle")) {
+                Log.e("FUN", "check");
                 shapeCheck = true;
                 Log.e("Hello", "Work");
                 overallLayout.removeView(iv2);
@@ -456,7 +465,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //                lp.setMargins(Integer.valueOf(actionDic.get(actionCount).get(1).toString()) - 25, Integer.valueOf(actionDic.get(actionCount).get(2).toString()) - 40, 0, 0);
 //                iv2.setLayoutParams(lp);
 //                iv2.setImageDrawable(getResources().getDrawable(R.drawable.blackcircle));
-                circleParams(Integer.valueOf(actionDic.get(actionCount).get(1).toString()), Integer.valueOf(actionDic.get(actionCount).get(2).toString()));
+//                circleParams(Integer.valueOf(actionDic.get(actionCount).get(1).toString()), Integer.valueOf(actionDic.get(actionCount).get(2).toString()));
 //               ((ViewGroup) v).addView(iv2);
 //                overallLayout.addView(iv2);
             } else if (actionDic.get(actionCount).get(0).equals("drop")) {
@@ -466,6 +475,31 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if (field_orientation.equals("br")) {
                     iv_field.setImageResource(R.drawable.field_yellow_br);
                 }
+            }
+            else if(actionDic.get(actionCount).get(3).equals("teleop")){
+                tele = false;
+                //could fail
+                Fragment fragment = new AutoDialog();
+                btn_startTimer = findViewById(R.id.btn_timer);
+                startTimer=false;
+
+                //stop fail
+
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                if (InputManager.mAllianceColor.equals("red")) {
+                    transaction.add(R.id.red_auto, fragment, "FRAGMENT");
+                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+                        rg_blue_starting_position.getChildAt(i).setEnabled(false);
+                    }
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
+                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+                        rg_red_starting_position.getChildAt(i).setEnabled(false);
+                    }
+                }
+                transaction.commit();
+
             }
         }
     }
@@ -718,13 +752,30 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     if (field_orientation.equals("rb")) {
                                         iv_field.setImageResource(R.drawable.field_yellow_rb);
+
                                     } else if (field_orientation.equals("br")) {
                                         iv_field.setImageResource(R.drawable.field_yellow_br);
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("intake4");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("intake1");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -746,8 +797,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("intake3");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("intake2");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -769,8 +836,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("intake2");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("intake3");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -792,8 +875,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("intake1");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("intake4");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("triangle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("intake4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -825,8 +924,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("score4");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("score1");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -849,8 +964,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("score3");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("score6");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score6", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -873,8 +1004,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("score6");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score6", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("score3");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score3", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -897,8 +1044,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("score1");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score1", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("score4");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score4", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -921,8 +1084,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.add("score5");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score5", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.add("score2");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -945,8 +1122,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                     try {
                                         if (field_orientation.equals("rb")) {
+                                            actionList.clear();
+                                            actionList.add("score2");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("rb");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score2", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         } else if (field_orientation.equals("br")) {
+                                            actionList.clear();
+                                            actionList.add("score5");
+                                            actionList.add(x);
+                                            actionList.add(y);
+                                            actionList.add("circle");
+                                            actionList.add("br");
+                                            actionDic.put(actionCount, actionList);
+                                            actionCount++;
                                             InputManager.mRealTimeMatchData.put(new JSONObject().put("score5", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                         }
                                     } catch (JSONException je) {
@@ -968,6 +1161,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         iv_field.setImageResource(R.drawable.field_br);
                                     }
                                     try {
+                                        actionList.clear();
+                                        actionList.add("exchangescore");
+                                        actionList.add(x);
+                                        actionList.add(y);
+                                        actionList.add("circle");
+                                        actionList.add("no_orientation");
+                                        actionDic.put(actionCount, actionList);
+                                        actionCount++;
                                         InputManager.mRealTimeMatchData.put(new JSONObject().put("exchangeScore", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
