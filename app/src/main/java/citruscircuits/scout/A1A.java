@@ -697,9 +697,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && !startTimer && !incapChecked) {
                         int x = (int) motionEvent.getX();
                         int y = (int) motionEvent.getY();
-                        if (x <= 1700 && y <= 930) {
+                        if (x <= 1700 && y <= 1000 && InputManager.mScoutId <= 6 || x <= 1110 && y <= 610 && InputManager.mScoutId > 6) {
                             if (!shapeCheck) {
-                                overallLayout.removeView(iv2);
                                 RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                                         50,
                                         50);
@@ -709,8 +708,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 iv.setImageDrawable(getResources().getDrawable(R.drawable.triangle_image));
                                 Log.d("TELE", valueOf(tele));
                                 Log.d("FIELD", valueOf(field));
-                                if (((x > 75 && x <= 425 && y <= 930 && InputManager.mScoutId <= 6) || (x > 75 && x <= 285 && y <= 575 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
+                                if (((x > 110 && x <= 500 && InputManager.mScoutId <= 6) || (x > 80 && x <= 320 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
                                     Log.d("locationInput", "1");
+                                    overallLayout.removeView(iv2);
                                     shapeCheck = true;
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -731,8 +731,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv);
-                                } else if (((x > 425 && x <= 850 && y <= 930 && InputManager.mScoutId <= 6 || x > 285 && x <= 575 && y <= 575 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
+                                } else if (((x > 500 && x <= 845 && InputManager.mScoutId <= 6 || x > 320 && x <= 550 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
                                     Log.d("locationInput", "2");
+                                    overallLayout.removeView(iv2);
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
                                         tb_start_cube.setEnabled(false);
@@ -753,8 +754,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv);
-                                } else if (((x > 850 && x <= 1275 && y <= 930 && InputManager.mScoutId <= 6 || x > 575 && x <= 865 && y <= 575 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
+                                } else if (((x > 845 && x <= 1200 && InputManager.mScoutId <= 6 || x > 550 && x <= 800 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
                                     Log.d("locationInput", "3");
+                                    overallLayout.removeView(iv2);
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
                                         tb_start_cube.setEnabled(false);
@@ -775,8 +777,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv);
-                                } else if (((x > 1275 && x <= 1700 && y <= 930 && InputManager.mScoutId <= 6 || x > 865 && x <= 1075 && y <= 575 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
+                                } else if (((x > 1200 && x <= 1580 && InputManager.mScoutId <= 6 || x > 800 && x <= 1040 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
                                     Log.d("locationInput", "4");
+                                    overallLayout.removeView(iv2);
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
                                         tb_start_cube.setEnabled(false);
@@ -806,7 +809,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 iv2.setLayoutParams(lp);
                                 iv2.setImageDrawable(getResources().getDrawable(
                                         R.drawable.blackcircle));
-                                if ((x >= 325 && x <= 490 && y >= 140 && y <= 330 && InputManager.mScoutId <= 6 || x >= 230 && x <= 310 && y >= 90 && y <= 210 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
+                                if ((x >= 400 && x <= 590 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 80 && y <= 225 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
                                     Log.d("locationOutput", "Top Left switch");
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -830,7 +833,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv2);
-                                } else if ((x >= 325 && x <= 595 && y >= 140 && y <= 800 && InputManager.mScoutId <= 6 || x >= 230 && x <= 310 && y >= 400 && y <= 530 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
+                                } else if ((x >= 400 && x <= 590 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 410 && y <= 560 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
                                     Log.d("locationOutput", "Bottom Left switch");
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -854,7 +857,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv2);
-                                } else if ((x >= 1250 && x <= 1400 && y >= 140 && y <= 330 && InputManager.mScoutId <= 6 || x >= 780 && x <= 900 && y >= 100 && y <= 210 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
+                                } else if ((x >= 1110 && x <= 1300 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 80 && y <= 225 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
                                     Log.d("locationOutput", "Top Right switch");
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -878,7 +881,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv2);
-                                } else if ((x >= 1250 && x <= 1400 && y >= 600 && y <= 800 && InputManager.mScoutId <= 6 || x >= 780 && x <= 900 && y >= 400 && y <= 530 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
+                                } else if ((x >= 1110 && x <= 1300 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 410 && y <= 560 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
                                     Log.d("locationOutput", "Bottom Right switch");
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -902,7 +905,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv2);
-                                } else if (x >= 800 && x <= 940 && y >= 60 && y <= 240 && InputManager.mScoutId <= 6 || x >= 530 && x <= 620 && y >= 60 && y <= 165 && InputManager.mScoutId > 6) {
+                                } else if (x >= 760 && x <= 930 && y >= 60 && y <= 300 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 55 && y <= 200 && InputManager.mScoutId > 6) {
                                     Log.d("locationOutput", "Scale Top");
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -926,7 +929,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv2);
-                                } else if (x >= 790 && x <= 940 && y >= 700 && y <= 870 && InputManager.mScoutId <= 6 || x >= 530 && x <= 620 && y >= 450 && y <= 560 && InputManager.mScoutId > 6) {
+                                } else if (x >= 760 && x <= 930 && y >= 650 && y <= 900 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 440 && y <= 600 && InputManager.mScoutId > 6) {
                                     Log.d("locationOutput", "Scale Bottom");
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
@@ -950,7 +953,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                         je.printStackTrace();
                                     }
                                     ((ViewGroup) view).addView(iv2);
-                                } else if ((x >= 75 && x <= 170 && y >= 290 && y <= 420 && InputManager.mScoutId <= 6 || x >= 1530 && x <= 1700 && y >= 490 && y <= 630 && InputManager.mScoutId <= 6 || x >= 75 && x <= 120 && y >= 210 && y <= 290 && InputManager.mScoutId > 6 || x >= 1000 && x <= 1110 && y >= 330 && y <= 410 && InputManager.mScoutId > 6) && tele) {
+                                } else if ((x <= 160 && y >= 250 && y <= 430 && InputManager.mScoutId <= 6 || x >= 1530 && y >= 485 && y <= 695 && InputManager.mScoutId <= 6 || x <= 120 && y >= 170 && y <= 300 && InputManager.mScoutId > 6 || x >= 1000 && y >= 325 && y <= 465 && InputManager.mScoutId > 6) && tele) {
                                     Log.d("locationOutput", "Exchange");
                                     if (!tele) {
                                         tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
