@@ -730,14 +730,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 Log.d("locationOutput", "Scale Bottom");
                                 initShape(view, "score2", "score5", x, y, "circle", iv2, iv, false);
                             }
-                        } else if ((((x <= 160 && y >= 250 && y <= 430 && InputManager.mScoutId <= 6)
+                        } else if (((((x <= 160 && y >= 250 && y <= 430 && InputManager.mScoutId <= 6)
                                 || (x <= 120 && y >= 170 && y <= 300 && InputManager.mScoutId > 6))
                                 && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("red"))
                                 || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("blue")))))
                                 || (((x >= 1530 && y >= 485 && y <= 695 && InputManager.mScoutId <= 6)
-                                || (x <= 120 && y >= 170 && y <= 300 && InputManager.mScoutId > 6))
+                                || (x >= 1030 && y >= 315 && y <= 455 && InputManager.mScoutId > 6))
                                 && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("blue"))
-                                || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("red")))))
+                                || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("red"))))))
                                 && tele) {
                             if(shapeCheck) {
                                 Log.d("locationOutput", "Exchange");
