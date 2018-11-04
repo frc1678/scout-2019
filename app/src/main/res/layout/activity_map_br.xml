@@ -31,26 +31,26 @@
         android:id="@+id/blue_starting_position">
         <RadioButton
             android:id="@+id/blue_starting_position_left"
-            android:layout_width="31dp"
-            android:layout_height="88dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="67dp"
+            android:layout_width="50dp"
+            android:layout_height="111dp"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="11dp"
             android:background="@drawable/rb_starting_position_blue_selector"
             android:button="@null"/>
         <RadioButton
             android:id="@+id/blue_starting_position_center"
-            android:layout_width="31dp"
-            android:layout_height="88dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="64dp"
+            android:layout_width="51dp"
+            android:layout_height="111dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="110dp"
             android:background="@drawable/rb_starting_position_blue_selector"
             android:button="@null"/>
         <RadioButton
             android:id="@+id/blue_starting_position_right"
-            android:layout_width="31dp"
-            android:layout_height="95dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="1dp"
+            android:layout_width="51dp"
+            android:layout_height="111dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="7dp"
             android:background="@drawable/rb_starting_position_blue_selector"
             android:button="@null"/>
     </RadioGroup>
@@ -61,26 +61,26 @@
         android:id="@+id/red_starting_position">
         <RadioButton
             android:id="@+id/red_starting_position_right"
-            android:layout_width="31dp"
-            android:layout_height="95dp"
-            android:layout_marginStart="809dp"
-            android:layout_marginTop="67dp"
+            android:layout_width="50dp"
+            android:layout_height="114dp"
+            android:layout_marginStart="792dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/rb_starting_position_red_selector"
             android:button="@null"/>
         <RadioButton
             android:id="@+id/red_starting_position_center"
-            android:layout_width="31dp"
-            android:layout_height="86dp"
-            android:layout_marginStart="809dp"
-            android:layout_marginTop="0dp"
+            android:layout_width="50dp"
+            android:layout_height="114dp"
+            android:layout_marginStart="792dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/rb_starting_position_red_selector"
             android:button="@null"/>
         <RadioButton
             android:id="@+id/red_starting_position_left"
-            android:layout_width="31dp"
-            android:layout_height="89dp"
-            android:layout_marginStart="809dp"
-            android:layout_marginTop="66dp"
+            android:layout_width="48dp"
+            android:layout_height="108dp"
+            android:layout_marginStart="795dp"
+            android:layout_marginTop="108dp"
             android:background="@drawable/rb_starting_position_red_selector"
             android:button="@null"/>
     </RadioGroup>

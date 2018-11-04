@@ -10,8 +10,10 @@ import java.util.Map;
 public interface Cst {
     String SHARED_PREF = "scout_sp";
 
-    List<String> SCOUT_NAMES = Arrays.asList("Calvin", "Carl", "Noob", "Emily", "Nerd",
-            "Ben", "Jason Guo", "Ashlakabapapamoomoo", "Legend", "God");
+    List<String> SCOUT_NAMES = Arrays.asList("Aakash", "Aidan", "Apurva", "Ariel", "Asha", "Brynne",
+            "Carl", "Carter", "Connor", "Eithne", "Eli", "Ellie", "Emily", "Erik", "Ethan", "Freddy",
+            "Gemma", "Hanson", "Helena", "Jude", "Justin", "Kate", "Louise", "Michael", "Mingyo",
+            "Nathan", "Nick", "Nithmi", "Rachel", "Teo", "Zachary");
 
     List<Integer> SCOUT_IDS = Arrays.asList(1, 2, 3, 4, 5, 6 ,7 , 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 
