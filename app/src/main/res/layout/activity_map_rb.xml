@@ -36,7 +36,8 @@
             android:layout_marginStart="9dp"
             android:layout_marginTop="9dp"
             android:background="@drawable/rb_starting_position_red_selector"
-            android:button="@null"/>
+            android:button="@null"
+            android:onClick="onClickStartingPosition"/>
         <RadioButton
             android:id="@+id/red_starting_position_center"
             android:layout_width="49dp"
@@ -44,7 +45,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="109dp"
             android:background="@drawable/rb_starting_position_red_selector"
-            android:button="@null"/>
+            android:button="@null"
+            android:onClick="onClickStartingPosition"/>
         <RadioButton
             android:id="@+id/red_starting_position_right"
             android:layout_width="48dp"
@@ -52,7 +54,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="7dp"
             android:background="@drawable/rb_starting_position_red_selector"
-            android:button="@null"/>
+            android:button="@null"
+            android:onClick="onClickStartingPosition"/>
     </RadioGroup>
 
     <RadioGroup
@@ -66,7 +69,8 @@
             android:layout_marginStart="792dp"
             android:layout_marginTop="9dp"
             android:background="@drawable/rb_starting_position_blue_selector"
-            android:button="@null"/>
+            android:button="@null"
+            android:onClick="onClickStartingPosition"/>
         <RadioButton
             android:id="@+id/blue_starting_position_center"
             android:layout_width="50dp"
@@ -74,7 +78,8 @@
             android:layout_marginStart="792dp"
             android:layout_marginTop="7dp"
             android:background="@drawable/rb_starting_position_blue_selector"
-            android:button="@null"/>
+            android:button="@null"
+            android:onClick="onClickStartingPosition"/>
         <RadioButton
             android:id="@+id/blue_starting_position_left"
             android:layout_width="50dp"
@@ -82,7 +87,8 @@
             android:layout_marginStart="792dp"
             android:layout_marginTop="111dp"
             android:background="@drawable/rb_starting_position_blue_selector"
-            android:button="@null"/>
+            android:button="@null"
+            android:onClick="onClickStartingPosition"/>
     </RadioGroup>
 
     <LinearLayout

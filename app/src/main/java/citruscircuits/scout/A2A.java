@@ -1,7 +1,9 @@
 package citruscircuits.scout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -134,6 +136,25 @@ public class A2A extends DialogMaker {
         }catch (Exception er){
             Log.e("QrGenerate",er.getMessage());
         }
+    }
+
+    public void onBackPressed() {
+        final Activity activity = this;
+        new AlertDialog.Builder(this)
+                .setTitle("WARNING")
+                .setMessage("GOING BACK WILL CAUSE LOSS OF DATA")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }

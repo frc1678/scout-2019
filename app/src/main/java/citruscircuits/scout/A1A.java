@@ -1,6 +1,7 @@
 package citruscircuits.scout;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -84,6 +85,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     HashMap<String, Object> ftbFinalData = new HashMap<String, Object>();
 
     public TextView tv_team;
+    public TextView tv_starting_position_warning;
 
     public Button btn_startTimer;
     public Button btn_drop;
@@ -240,6 +242,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
+    }
+
+    public void onClickStartingPosition(View view) {
+        tv_starting_position_warning = findViewById(R.id.tv_starting_position_warning);
+        tv_starting_position_warning.setVisibility(View.INVISIBLE);
     }
 
     public void onClickTeleop(View view) {
@@ -683,6 +690,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.mStartingPosition = "left";
         }
         open(A2A.class, null, false, true);
+    }
+
+    public void onBackPressed() {
+        final Activity activity = this;
+        new AlertDialog.Builder(this)
+                .setTitle("WARNING")
+                .setMessage("GOING BACK WILL CAUSE LOSS OF DATA")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @SuppressLint("ClickableViewAccessibility")

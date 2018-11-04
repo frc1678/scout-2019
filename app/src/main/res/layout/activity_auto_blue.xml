@@ -70,7 +70,8 @@
         android:textAlignment="center"
         android:background="@drawable/starting_position_warning_selector"
         android:textColor="#ffffff"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:id="@+id/tv_starting_position_warning"/>
 
     <Button
         android:id="@+id/btn_to_teleop"
