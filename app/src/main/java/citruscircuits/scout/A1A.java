@@ -735,7 +735,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("red"))
                                 || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("blue")))))
                                 || (((x >= 1530 && y >= 485 && y <= 695 && InputManager.mScoutId <= 6)
-                                || (x <= 120 && y >= 170 && y <= 300 && InputManager.mScoutId > 6))
+                                || (x >= 1030 && y >= 315 && y <= 455 && InputManager.mScoutId > 6))
                                 && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("blue"))
                                 || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("red")))))
                                 && tele) {
