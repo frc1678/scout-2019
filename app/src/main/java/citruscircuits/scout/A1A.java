@@ -231,6 +231,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         InputManager.numSpill = 0;
         InputManager.numFoul = 0;
 
+        btn_drop.setEnabled(false);
+
         addTouchListener();
     }
 
@@ -339,6 +341,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickBeginWithCube(View v) {
         if (!startedWCube) {
             shapeCheck = true;
+            btn_drop.setEnabled(true);
             startedWCube = true;
             if (field_orientation.equals("rb")) {
                 iv_field.setImageResource(R.drawable.field_yellow_rb);
@@ -347,6 +350,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
         } else if (startedWCube) {
             shapeCheck = false;
+            btn_drop.setEnabled(false);
             startedWCube = false;
             if (field_orientation.equals("rb")) {
                 iv_field.setImageResource(R.drawable.field_rb);
@@ -357,6 +361,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDrop(View v) throws JSONException {
+        btn_drop.setEnabled(false);
         InputManager.mRealTimeMatchData.put(new JSONObject().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
         shapeCheck = false;
         overallLayout.removeView(iv);
@@ -402,6 +407,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 Log.e("Why does this work", "WHYYYY");
                 overallLayout.removeView(iv);
                 shapeCheck = false;
+                btn_drop.setEnabled(false);
                 noShape = true;
                 if (field_orientation.equals("rb")) {
                     iv_field.setImageResource(R.drawable.field_rb);
@@ -421,6 +427,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             } else if (actionDic.get(actionCount).get(3).equals("circle")) {
                 Log.e("FUN", "check");
                 shapeCheck = true;
+                btn_drop.setEnabled(true);
                 Log.e("Hello", "Work");
                 overallLayout.removeView(iv2);
                 if (field_orientation.equals("rb")) {
@@ -439,6 +446,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //                overallLayout.addView(iv2);
             } else if (actionDic.get(actionCount).get(0).equals("drop")) {
                 shapeCheck = true;
+                btn_drop.setEnabled(true);
                 if (field_orientation.equals("rb")) {
                     iv_field.setImageResource(R.drawable.field_yellow_rb);
                 } else if (field_orientation.equals("br")) {
@@ -786,6 +794,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (!tele) {
             tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
             tb_start_cube.setEnabled(false);
+        }
+        if(!shapeCheck) {
+            btn_drop.setEnabled(false);
+        }
+        else if(shapeCheck) {
+            btn_drop.setEnabled(true);
         }
         overallLayout.removeView(remove);
         if (field_orientation.equals("rb") && !shapeCheck) {
