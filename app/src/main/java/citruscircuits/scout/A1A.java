@@ -232,6 +232,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         InputManager.numFoul = 0;
 
         btn_drop.setEnabled(false);
+        btn_undo.setEnabled(false);
 
         addTouchListener();
     }
@@ -250,6 +251,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionList.add("rb");
         actionDic.put(actionCount, actionList);
         actionCount++;
+        btn_undo.setEnabled(true);
         if (!startTimer) {
             tele = true;
             for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
@@ -298,6 +300,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_start_cube.setChecked(false);
             tb_auto_run.setEnabled(false);
             tb_auto_run.setChecked(false);
+            btn_drop.setEnabled(false);
+            btn_undo.setEnabled(false);
             handler.removeCallbacks(runnable);
             handler.removeCallbacksAndMessages(null);
             TimerUtil.matchTimer.cancel();
@@ -362,6 +366,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDrop(View v) throws JSONException {
         btn_drop.setEnabled(false);
+        btn_undo.setEnabled(true);
         InputManager.mRealTimeMatchData.put(new JSONObject().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
         shapeCheck = false;
         overallLayout.removeView(iv);
@@ -414,16 +419,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if (field_orientation.equals("br")) {
                     iv_field.setImageResource(R.drawable.field_br);
                 }
-//                triangleParams(Integer.valueOf(actionDic.get(actionCount).get(1).toString()), Integer.valueOf(actionDic.get(actionCount).get(2).toString()));
-//                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-//                        50,
-//                        50);
-//                lp.setMargins(Integer.valueOf(actionDic.get(actionCount).get(1).toString()) - 25, Integer.valueOf(actionDic.get(actionCount).get(2).toString()) - 40, 0, 0);
-//                iv.setLayoutParams(lp);
-//                iv.setImageDrawable(getResources().getDrawable(R.drawable.triangle_image));
-//                overallLayout.addView(iv);
-//                ((ViewGroup) v).addView(iv2);
-
             } else if (actionDic.get(actionCount).get(3).equals("circle")) {
                 Log.e("FUN", "check");
                 shapeCheck = true;
@@ -435,15 +430,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if (field_orientation.equals("br")) {
                     iv_field.setImageResource(R.drawable.field_yellow_br);
                 }
-//                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-//                        50,
-//                        50);
-//                lp.setMargins(Integer.valueOf(actionDic.get(actionCount).get(1).toString()) - 25, Integer.valueOf(actionDic.get(actionCount).get(2).toString()) - 40, 0, 0);
-//                iv2.setLayoutParams(lp);
-//                iv2.setImageDrawable(getResources().getDrawable(R.drawable.blackcircle));
-//                circleParams(Integer.valueOf(actionDic.get(actionCount).get(1).toString()), Integer.valueOf(actionDic.get(actionCount).get(2).toString()));
-//               ((ViewGroup) v).addView(iv2);
-//                overallLayout.addView(iv2);
             } else if (actionDic.get(actionCount).get(0).equals("drop")) {
                 shapeCheck = true;
                 btn_drop.setEnabled(true);
@@ -475,7 +461,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                 }
                 transaction.commit();
-
             }
         }
     }
@@ -675,10 +660,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickIncap(View v) throws JSONException {
         if (!incapChecked) {
             tb_incap.setChecked(true);
+            btn_drop.setEnabled(false);
+            btn_undo.setEnabled(false);
             InputManager.mRealTimeMatchData.put(new JSONObject().put("beganIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             incapChecked = true;
         } else if (incapChecked) {
             tb_incap.setChecked(false);
+            if(shapeCheck) {
+                btn_drop.setEnabled(true);
+            }
             InputManager.mRealTimeMatchData.put(new JSONObject().put("endIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             incapChecked = false;
         }
@@ -791,6 +781,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             add.setImageDrawable(getResources().getDrawable(R.drawable.blackcircle));
         }
         shapeCheck = check;
+        btn_undo.setEnabled(true);
         if (!tele) {
             tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
             tb_start_cube.setEnabled(false);
