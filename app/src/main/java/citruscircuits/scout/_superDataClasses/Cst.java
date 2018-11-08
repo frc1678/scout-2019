@@ -35,7 +35,12 @@ public interface Cst {
         put("drop", "d");
         put("spill", "s");
         put("scaleFoul", "f");
-        put("ftb", "e");
+
+        put("climb", "e");
+        put("Attempt", "t");
+        put("Actual", "c");
+        put("liftSelf", "q");
+        put("otherRobotsLifted", "b");
 
         put("intake1", "j");
         put("intake2", "k");
@@ -56,6 +61,7 @@ public interface Cst {
         //New constants
         put("blue", "0");
         put("red", "1");
+        put("", "0");
         put("left", "1");
         put("center", "2");
         put("right", "3");

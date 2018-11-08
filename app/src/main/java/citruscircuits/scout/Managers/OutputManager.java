@@ -29,26 +29,64 @@ public class OutputManager extends InputManager{
     //TODO Ensure that Alliance Color, Starting Position, Started With Cube, and Auto Line Crossed are recorded in this respective order
     public static String compressMatchData(JSONObject pMatchData) {
         String compressedData = InputManager.matchKey + "|";
-
+        //used to make sure that the Qr's header is formatted correctly - aLCFound
+        boolean aLCFound = false;   String aLCKey = ""; String aLCValue = "";
         try {
-            JSONObject matchWOKeyData = pMatchData.getJSONObject(InputManager.matchKey);
-            Iterator<?> uncompressedKeys = matchWOKeyData.keys();
+            JSONArray timeStampData = pMatchData.getJSONArray(InputManager.matchKey);
+            Iterator<?> uncompressedKeys = InputManager.mOneTimeMatchData.keys();
 
             while(uncompressedKeys.hasNext()){
-                Log.e("MatchDATA", compressedData);
                 String currentKey = uncompressedKeys.next()+"";
-                String currentValue = matchWOKeyData.get(currentKey)+"";
+                String currentValue = InputManager.mOneTimeMatchData.get(currentKey)+"";
 
                 if(Cst.noCommaCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)) {
                     if(currentKey.equals("autoLineCrossed")){
-                        compressedData = compressedData + "_" + Cst.noCommaCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
+                        aLCFound = true;
+                        aLCKey = currentKey;
+                        aLCValue = currentValue;
                     }else{
                         compressedData = compressedData + Cst.noCommaCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
                     }
-                }else if(Cst.compressKeys.containsKey(currentKey)){
-                    compressedData = compressedData + "," + Cst.compressKeys.get(currentKey) + currentValue;
                 }
+            }
 
+            if(aLCFound){
+                compressedData = compressedData + Cst.noCommaCompressKeys.get(aLCKey) + Cst.compressValues.get(aLCValue) + "_";
+            }
+
+            for (int i = 0; i < timeStampData.length(); i++) {
+                JSONObject tData = timeStampData.getJSONObject(i);
+
+                String currentKey = tData.keys().next()+"";
+                String currentValue = tData.get(currentKey)+"";
+
+                if(Cst.compressKeys.containsKey(currentKey)){
+                    compressedData = compressedData + Cst.compressKeys.get(currentKey) + currentValue + ",";
+                }
+            }
+
+            if(InputManager.mOneTimeMatchData.has("climb")){
+                String currentKey = "climb";
+                JSONObject currentValue = InputManager.mOneTimeMatchData.getJSONObject(currentKey);
+                String currentKey11 = "Attempt";
+                JSONObject currentValue11 = currentValue.getJSONObject(currentKey11);
+                String currentKey12 = "Actual";
+                JSONObject currentValue12 = currentValue.getJSONObject(currentKey12);
+                String currentKey21 = "liftSelf";
+                String currentKey22 = "otherRobotsLifted";
+
+
+                compressedData = compressedData + Cst.compressKeys.get(currentKey)
+                        + Cst.compressKeys.get(currentKey11) + Cst.compressKeys.get(currentKey21)
+                        + Cst.compressValues.get(currentValue11.getBoolean(currentKey21)+"")
+                        + Cst.compressKeys.get(currentKey22)
+                        + currentValue11.getInt(currentKey22)+""
+                        + Cst.compressKeys.get(currentKey12) + Cst.compressKeys.get(currentKey21)
+                        + Cst.compressValues.get(currentValue12.getBoolean(currentKey21)+"")
+                        + Cst.compressKeys.get(currentKey22)
+                        + currentValue12.getInt(currentKey22)+"";
+
+                Log.e("COMPRESSDATA", compressedData);
             }
         } catch (JSONException e) {
             e.printStackTrace();

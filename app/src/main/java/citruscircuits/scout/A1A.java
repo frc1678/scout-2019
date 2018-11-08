@@ -80,9 +80,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public List<Object> climbActualValues = new ArrayList<>();
     public List<Object> climbValues = new ArrayList<>();
 
-    HashMap<String, Object> ftbAttemptData = new HashMap<String, Object>();
-    HashMap<String, Object> ftbActualData = new HashMap<String, Object>();
-    HashMap<String, Object> ftbFinalData = new HashMap<String, Object>();
+    JSONObject ftbAttemptData = new JSONObject();
+    JSONObject ftbActualData = new JSONObject();
+    JSONObject ftbFinalData = new JSONObject();
 
     public TextView tv_team;
     public TextView tv_starting_position_warning;
@@ -230,6 +230,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
 
         InputManager.mRealTimeMatchData = new JSONArray();
+        InputManager.mOneTimeMatchData = new JSONObject();
         InputManager.numSpill = 0;
         InputManager.numFoul = 0;
 
@@ -271,10 +272,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
 
         try {
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("allianceColor", InputManager.mAllianceColor));
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("startingPosition", InputManager.mStartingPosition));
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("startedWCube", startedWCube));
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("autoLineCrossed", InputManager.autoLineCrossed));
+            InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
+            InputManager.mOneTimeMatchData.put("startingPosition", InputManager.mStartingPosition);
+            InputManager.mOneTimeMatchData.put("startedWCube", startedWCube);
+            InputManager.mOneTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -564,24 +565,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     climbActualValues.add(liftSelfActual);
                                     climbActualValues.add(numRobotsDidLift);
 
-                                    ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-                                    ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-
-                                    ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-                                    ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-
-                                    climbValues.add(ftbAttemptData);
-                                    climbValues.add(ftbActualData);
-                                    climbValues.add(ftbStartTime);
-                                    climbValues.add(ftbEndTime);
-
-                                    ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
-                                    ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
-                                    ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
-                                    ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
-
                                     try {
-                                        InputManager.mRealTimeMatchData.put(new JSONObject().put("climb", ftbFinalData));
+                                        ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
+                                        ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
+
+                                        ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
+                                        ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
+
+                                        climbValues.add(ftbAttemptData);
+                                        climbValues.add(ftbActualData);
+                                        climbValues.add(ftbStartTime);
+                                        climbValues.add(ftbEndTime);
+
+                                        ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
+                                        ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
+                                        ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
+                                        ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
+
+                                        InputManager.mOneTimeMatchData.put("climb", ftbFinalData);
+
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -635,26 +637,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             climbActualValues.add(false);
                             climbActualValues.add(0);
 
-                            ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-                            ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-
-                            ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-                            ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-
-                            climbValues.add(ftbAttemptData);
-                            climbValues.add(ftbActualData);
-                            climbValues.add(ftbStartTime);
-                            climbValues.add(ftbEndTime);
-
-                            ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
-                            ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
-                            ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
-                            ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
-
-                            Log.i("FTB", ftbFinalData.toString());
-
                             try {
-                                InputManager.mRealTimeMatchData.put(new JSONObject().put("climb", ftbFinalData));
+                                ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
+                                ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
+
+                                ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
+                                ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
+
+                                climbValues.add(ftbAttemptData);
+                                climbValues.add(ftbActualData);
+                                climbValues.add(ftbStartTime);
+                                climbValues.add(ftbEndTime);
+
+                                ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
+                                ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
+                                ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
+                                ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
+
+                                Log.i("FTB", ftbFinalData.toString());
+
+                                InputManager.mOneTimeMatchData.put("climb", ftbFinalData);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -667,9 +669,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickIncap(View v) throws JSONException {
         if (!incapChecked) {
             tb_incap.setChecked(true);
+
             btn_drop.setEnabled(false);
             btn_undo.setEnabled(false);
             InputManager.mRealTimeMatchData.put(new JSONObject().put("beganIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+
             incapChecked = true;
         } else if (incapChecked) {
             tb_incap.setChecked(false);

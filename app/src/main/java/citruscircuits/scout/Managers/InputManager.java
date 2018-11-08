@@ -31,6 +31,8 @@ public class InputManager {
     //Match Data Holders
     //Below holds match data
     public static JSONArray mRealTimeMatchData;
+    //keys that only appear once in data
+    public static JSONObject mOneTimeMatchData;
     //Below is finaldata to be inputted to QR
     public static JSONObject mRealTimeInputtedData;
 
