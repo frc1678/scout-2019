@@ -842,7 +842,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionList.add("rb");
                 actionDic.put(actionCount, actionList);
                 actionCount++;
-                InputManager.mRealTimeMatchData.put(new JSONObject().put(position, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                if(TimerUtil.timestamp <= 135 && !tele) {
+                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position, 135));
+                }
+                else if(TimerUtil.timestamp > 135 && tele) {
+                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position, 134.9));
+                }
+                else {
+                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                }
+                Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
             } else if (field_orientation.equals("br")) {
                 actionList.clear();
                 actionList.add(position2);
@@ -852,7 +861,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionList.add("br");
                 actionDic.put(actionCount, actionList);
                 actionCount++;
-                InputManager.mRealTimeMatchData.put(new JSONObject().put(position2, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                if(TimerUtil.timestamp >= 135 && !tele) {
+                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position2, 135));
+                } else if(TimerUtil.timestamp < 135 && tele) {
+                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position2, 134.9));
+                } else {
+                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position2, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                }
+                Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
             }
         } catch (JSONException je) {
             je.printStackTrace();
