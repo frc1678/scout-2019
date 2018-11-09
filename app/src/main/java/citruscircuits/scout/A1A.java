@@ -251,15 +251,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickTeleop(View view) {
-        actionList.clear();
-        actionList.add("invalid");
-        actionList.add("invalid");
-        actionList.add("invalid");
-        actionList.add("teleop");
-        actionList.add("rb");
-        actionDic.put(actionCount, actionList);
-        actionCount++;
-        btn_undo.setEnabled(true);
+//        actionList.clear();
+////        actionList.add("invalid");
+////        actionList.add("invalid");
+////        actionList.add("invalid");
+////        actionList.add("teleop");
+////        actionList.add("rb");
+////        actionDic.put(actionCount, actionList);
+////        actionCount++;
         if (!startTimer) {
             tele = true;
             for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
@@ -446,30 +445,32 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if (field_orientation.equals("br")) {
                     iv_field.setImageResource(R.drawable.field_yellow_br);
                 }
-            } else if (actionDic.get(actionCount).get(3).equals("teleop")) {
-                tele = false;
-                //could fail
-                Fragment fragment = new AutoDialog();
-                btn_startTimer = findViewById(R.id.btn_timer);
-                startTimer = false;
-
-                //stop fail
-
-                FragmentManager fm = getSupportFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                if (InputManager.mAllianceColor.equals("red")) {
-                    transaction.add(R.id.red_auto, fragment, "FRAGMENT");
-                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
-                        rg_blue_starting_position.getChildAt(i).setEnabled(false);
-                    }
-                } else if (InputManager.mAllianceColor.equals("blue")) {
-                    transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
-                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
-                        rg_red_starting_position.getChildAt(i).setEnabled(false);
-                    }
-                }
-                transaction.commit();
             }
+//            else if(actionDic.get(actionCount).get(3).equals("teleop")){
+//                tele = false;
+//                //could fail
+//                Fragment fragment = new AutoDialog();
+//                btn_startTimer = findViewById(R.id.btn_timer);
+//                startTimer=false;
+//
+//                //stop fail
+//
+//                FragmentManager fm = getSupportFragmentManager();
+//                FragmentTransaction transaction = fm.beginTransaction();
+//                if (InputManager.mAllianceColor.equals("red")) {
+//                    transaction.add(R.id.red_auto, fragment, "FRAGMENT");
+//                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+//                        rg_blue_starting_position.getChildAt(i).setEnabled(false);
+//                    }
+//                } else if (InputManager.mAllianceColor.equals("blue")) {
+//                    transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
+//                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+//                        rg_red_starting_position.getChildAt(i).setEnabled(false);
+//                    }
+//                }
+//                transaction.commit();
+//
+//            }
         }
     }
 
