@@ -65,15 +65,6 @@ public class A2A extends DialogMaker {
         et_matchNum.setText(valueOf(InputManager.mMatchNum));
         et_teamNum.setText(valueOf(InputManager.mTeamNum));
 
-        if(InputManager.mStartingPosition.equals("right")) {
-            rb_right_sp.setChecked(true);
-        }
-        else if(InputManager.mStartingPosition.equals("center")) {
-            rb_center_sp.setChecked(true);
-        }
-        else if(InputManager.mStartingPosition.equals("left")) {
-            rb_left_sp.setChecked(true);
-        }
     }
 
     //TODO make sure it works after data is inputted
