@@ -70,10 +70,20 @@
         android:contentDescription="@string/imgv_cycleNumContentDescription" />
 
     <TextView
+        android:id="@+id/tv_cycleName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:text="Cycle Num:"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+    <TextView
         android:id="@+id/tv_cycleNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:text="0"
         android:textColor="#ffffff"

@@ -130,7 +130,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        InputManager.initMatchKey();
+        //InputManager.initMatchKey();
 
         if (AppCc.getSp("mapOrientation", 99) != 99) {
             if (AppCc.getSp("mapOrientation", 99) == 0) {

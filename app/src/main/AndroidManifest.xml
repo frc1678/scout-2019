@@ -29,7 +29,11 @@
             android:label="Map"
             android:screenOrientation="landscape" />
 
-        <activity android:name=".A2A" />
+        <activity android:name=".A2A"
+            android:screenOrientation="landscape" />
+
+        <activity android:name=".A3A"
+            android:screenOrientation="landscape" />
 
         <activity android:name=".utils.QRScan" />
 

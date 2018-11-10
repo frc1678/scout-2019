@@ -234,11 +234,12 @@ public class A0A extends DialogMaker {
         mScoutIdListAdapter = new ScoutIdListAdapter();
         lv_scoutIds.setAdapter(mScoutIdListAdapter);
 
-        btn_triggerScoutIDPopup.setOnClickListener(new View.OnClickListener() {
+        btn_triggerScoutIDPopup.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View view) {
                 pw_idWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
                 mScoutIdListAdapter.notifyDataSetChanged();
+                return true;
             }
         });
     }

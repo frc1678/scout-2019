@@ -4,37 +4,9 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/qrLayout"
-        android:layout_width="350dp"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true">
-        <ImageView
-            android:id="@+id/qrView"
-            android:layout_width="340dp"
-            android:layout_height="340dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
-            android:textAlignment="center"
-            android:layout_centerHorizontal="true"
-            android:background="@color/greenDragShape"/>
-        <Button
-            android:id="@+id/updateQRButton"
-            android:layout_width="340dp"
-            android:layout_height="wrap_content"
-            android:padding="30dp"
-            android:text="UPDATE QR"
-            android:textSize="40dp"
-            android:layout_below="@+id/qrView"
-            android:background="@drawable/btn_normal_selector"
-            android:textColor="@color/normalButtonTextColor"
-            android:onClick="onClickUpdateQR"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="500dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/textLayout"
-        android:layout_toEndOf="@+id/qrLayout"
         android:paddingLeft="10dp">
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -67,6 +39,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/teamLayout"
             android:paddingLeft="100dp"
+            android:paddingBottom="20dp"
             android:layout_below="@+id/matchLayout">
             <TextView
                 android:layout_width="wrap_content"
@@ -115,7 +88,7 @@
         android:textAlignment="center"
         android:rotation="-90"
         android:translationX="440dp"
-        android:onClick="onClickEndScouting"
+        android:onClick="onClickToQR"
         android:textColor="#ffffff"
         android:background="@drawable/send_gradient"/>
 </RelativeLayout>

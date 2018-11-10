@@ -66,4 +66,11 @@
         android:hint="Input Team #"
         android:inputType="number"
         android:maxLength="4"/>
+
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DONE"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

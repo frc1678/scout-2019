@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ public class DialogMaker extends AppTc {
         private EditText et_overrideTeamNum;
         private RadioButton rb_red;
         private RadioButton rb_blue;
+        private Button btn_done;
 
         public OverrideDialog(Activity a) {
             super(a);
@@ -57,6 +59,9 @@ public class DialogMaker extends AppTc {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.dialog_override);
+            this.setCanceledOnTouchOutside(false);
+
+            btn_done = findViewById(R.id.btn_done);
 
             OverrideDialog.this.setOnCancelListener(new OnCancelListener() {
                 @Override
@@ -78,6 +83,13 @@ public class DialogMaker extends AppTc {
             });
 
             initViews();
+
+            btn_done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OverrideDialog.this.cancel();
+                }
+            });
         }
 
         public void initViews() {
