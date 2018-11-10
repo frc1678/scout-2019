@@ -37,6 +37,8 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         qrCodeReader = (QRCodeReaderView) findViewById(R.id.scan_area);
         qrCodeReader.setOnQRCodeReadListener(QRScan.this);
+
+        initCam();
     }
 
     @Override
