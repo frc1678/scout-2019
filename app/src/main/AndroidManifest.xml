@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:screenOrientation="landscape">
+        android:screenOrientation="landscape"
+        android:largeHeap="true">
         <activity
             android:name=".A0A"
             android:label="@string/app_name"
