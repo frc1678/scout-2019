@@ -134,36 +134,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         if (AppCc.getSp("mapOrientation", 99) != 99) {
             if (AppCc.getSp("mapOrientation", 99) == 0) {
-                setContentView(R.layout.activity_map_rb);
-
-                overallLayout = findViewById(R.id.fieldrb);
-                field_orientation = "rb";
-                if (InputManager.mAllianceColor.equals("red")) {
-                    field = true;
-                } else if (InputManager.mAllianceColor.equals("blue")) {
-                    field = false;
-                }
+                mapOrientation(R.layout.activity_map_rb, R.id.fieldrb, "rb", true, false);
             } else {
-                setContentView(R.layout.activity_map_br);
-                overallLayout = findViewById(R.id.fieldbr);
-                field_orientation = "br";
-                if (InputManager.mAllianceColor.equals("red")) {
-                    field = false;
-                } else if (InputManager.mAllianceColor.equals("blue")) {
-                    field = true;
-                }
+                mapOrientation(R.layout.activity_map_br, R.id.fieldbr, "br", false, true);
             }
         } else {
-            AppCc.setSp("mapOrientation", 0);
-            setContentView(R.layout.activity_map_rb);
-
-            overallLayout = findViewById(R.id.fieldrb);
-            field_orientation = "rb";
-            if (InputManager.mAllianceColor.equals("red")) {
-                field = true;
-            } else if (InputManager.mAllianceColor.equals("blue")) {
-                field = false;
-            }
+            mapOrientation(R.layout.activity_map_rb, R.id.fieldrb, "rb", true, false);
         }
 
         iv_field = findViewById(R.id.imageView);
@@ -211,7 +187,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
         } else if (InputManager.mAllianceColor.equals("blue")) {
             transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
-            for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
+            for (int i = 0; i < rg_red_starting_position.getChildCount(); i++) {
                 rg_red_starting_position.getChildAt(i).setEnabled(false);
             }
         }
@@ -285,6 +261,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         handler.removeCallbacksAndMessages(null);
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
         btn_startTimer = findViewById(R.id.btn_timer);
+        btn_drop = findViewById(R.id.btn_dropped);
         tb_auto_run = findViewById(R.id.tgbtn_auto_run);
         btn_arrow.setEnabled(false);
         btn_arrow.setVisibility(View.INVISIBLE);
@@ -298,6 +275,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_reset_red_selector);
             } else if (InputManager.mAllianceColor.equals("blue")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_reset_blue_selector);
+            }
+            if(startedWCube) {
+                btn_drop.setEnabled(true);
             }
         } else if (!startTimer) {
             InputManager.numSpill = 0;
@@ -317,27 +297,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             TimerUtil.mTimerView.setText("15");
             TimerUtil.mActivityView.setText("AUTO");
             btn_startTimer.setText("START TIMER");
-            if(shapeCheck) {
+            if (shapeCheck) {
                 overallLayout.removeView(iv);
-            }
-            else if(!shapeCheck) {
+            } else if (!shapeCheck) {
                 overallLayout.removeView(iv2);
             }
             startTimer = true;
             shapeCheck = false;
             startedWCube = false;
-            if(InputManager.mAllianceColor.equals("red")) {
+            if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_red_selector);
-            }
-            else if(InputManager.mAllianceColor.equals("blue")) {
+            } else if (InputManager.mAllianceColor.equals("blue")) {
                 btn_startTimer.setBackgroundResource(R.drawable.auto_blue_selector);
             }
-            if(field_orientation.equals("rb")){
-                iv_field.setImageResource(R.drawable.field_rb);
-            }
-            else if(field_orientation.equals("br")){
-                iv_field.setImageResource(R.drawable.field_br);
-            }
+            mapChange();
         }
     }
 
@@ -352,29 +325,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickBeginWithCube(View v) {
         if (!startedWCube) {
             shapeCheck = true;
-            btn_drop.setEnabled(true);
-            startedWCube = true;
-            if (field_orientation.equals("rb")) {
-                iv_field.setImageResource(R.drawable.field_yellow_rb);
-            } else if (field_orientation.equals("br")) {
-                iv_field.setImageResource(R.drawable.field_yellow_br);
+            if(!startTimer) {
+                btn_drop.setEnabled(true);
             }
+            startedWCube = true;
+            mapChange();
         } else if (startedWCube) {
             shapeCheck = false;
             btn_drop.setEnabled(false);
             startedWCube = false;
-            if (field_orientation.equals("rb")) {
-                iv_field.setImageResource(R.drawable.field_rb);
-            } else if (field_orientation.equals("br")) {
-                iv_field.setImageResource(R.drawable.field_br);
-            }
+            mapChange();
         }
     }
 
-    public void onClickDrop(View v) throws JSONException {
+    public void onClickDrop(View v) {
+        if(!tele) {
+            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+            tb_start_cube.setEnabled(false);
+        }
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
-        InputManager.mRealTimeMatchData.put(new JSONObject().put("drop", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+        timestamp("drop");
         shapeCheck = false;
         overallLayout.removeView(iv);
         actionList.clear();
@@ -384,16 +355,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionList.add(TimerUtil.timestamp);
         actionDic.put(actionCount, actionList);
         actionCount++;
-        if (field_orientation.equals("rb")) {
-            iv_field.setImageResource(R.drawable.field_rb);
-        } else if (field_orientation.equals("br")) {
-            iv_field.setImageResource(R.drawable.field_br);
-        }
+        mapChange();
     }
 
     public void onClickSpill(View v) throws JSONException {
         if (!startTimer && !incapChecked) {
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("spill", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            timestamp("spill");
             InputManager.numSpill++;
             btn_spill.setText("SPILL - " + InputManager.numSpill);
         }
@@ -401,7 +368,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickFoul(View v) throws JSONException {
         if (!startTimer && !incapChecked) {
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("scaleFoul", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            timestamp("scaleFoul");
             InputManager.numFoul++;
             btn_foul.setText("FOUL - " + InputManager.numFoul);
         }
@@ -421,30 +388,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 shapeCheck = false;
                 btn_drop.setEnabled(false);
                 noShape = true;
-                if (field_orientation.equals("rb")) {
-                    iv_field.setImageResource(R.drawable.field_rb);
-                } else if (field_orientation.equals("br")) {
-                    iv_field.setImageResource(R.drawable.field_br);
-                }
+                mapChange();
             } else if (actionDic.get(actionCount).get(3).equals("circle")) {
                 Log.e("FUN", "check");
                 shapeCheck = true;
                 btn_drop.setEnabled(true);
                 Log.e("Hello", "Work");
                 overallLayout.removeView(iv2);
-                if (field_orientation.equals("rb")) {
-                    iv_field.setImageResource(R.drawable.field_yellow_rb);
-                } else if (field_orientation.equals("br")) {
-                    iv_field.setImageResource(R.drawable.field_yellow_br);
-                }
+                mapChange();
             } else if (actionDic.get(actionCount).get(0).equals("drop")) {
                 shapeCheck = true;
                 btn_drop.setEnabled(true);
-                if (field_orientation.equals("rb")) {
-                    iv_field.setImageResource(R.drawable.field_yellow_rb);
-                } else if (field_orientation.equals("br")) {
-                    iv_field.setImageResource(R.drawable.field_yellow_br);
-                }
+                mapChange();
             }
 //            else if(actionDic.get(actionCount).get(3).equals("teleop")){
 //                tele = false;
@@ -560,38 +515,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             btn_done.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    climbAttemptValues.add(liftSelfAttempt);
-                                    climbAttemptValues.add(numRobotsAttemptedToLift);
-
-                                    climbActualValues.add(liftSelfActual);
-                                    climbActualValues.add(numRobotsDidLift);
-
-                                    try {
-                                        ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-                                        ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-
-                                        ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-                                        ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-
-                                        climbValues.add(ftbAttemptData);
-                                        climbValues.add(ftbActualData);
-                                        climbValues.add(ftbStartTime);
-                                        climbValues.add(ftbEndTime);
-
-                                        ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
-                                        ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
-                                        ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
-                                        ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
-
-                                        InputManager.mOneTimeMatchData.put("climb", ftbFinalData);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    climbInputted = true;
-
-                                    Log.i("FTB", ftbFinalData.toString());
+                                    recordFTB(liftSelfAttempt, numRobotsAttemptedToLift, liftSelfActual, numRobotsDidLift);
 
                                     ftbDialog.dismiss();
                                 }
@@ -632,35 +556,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         public void onClick(DialogInterface dialog, int which) {
                             ftbEndTime = Float.valueOf(String.format("%.2f", TimerUtil.timestamp));
 
-                            climbAttemptValues.add(false);
-                            climbAttemptValues.add(0);
-
-                            climbActualValues.add(false);
-                            climbActualValues.add(0);
-
-                            try {
-                                ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-                                ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-
-                                ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-                                ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-
-                                climbValues.add(ftbAttemptData);
-                                climbValues.add(ftbActualData);
-                                climbValues.add(ftbStartTime);
-                                climbValues.add(ftbEndTime);
-
-                                ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
-                                ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
-                                ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
-                                ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
-
-                                Log.i("FTB", ftbFinalData.toString());
-
-                                InputManager.mOneTimeMatchData.put("climb", ftbFinalData);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            recordFTB(false, 0, false, 0);
                         }
                     })
                     .show();
@@ -673,15 +569,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             btn_drop.setEnabled(false);
             btn_undo.setEnabled(false);
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("beganIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            timestamp("beganIncap");
 
             incapChecked = true;
         } else if (incapChecked) {
             tb_incap.setChecked(false);
-            if(shapeCheck) {
+            if (shapeCheck) {
                 btn_drop.setEnabled(true);
             }
-            InputManager.mRealTimeMatchData.put(new JSONObject().put("endIncap", Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+            timestamp("endIncap");
             incapChecked = false;
         }
     }
@@ -730,32 +626,32 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     int y = (int) motionEvent.getY();
                     if (x <= 1700 && y <= 1000 && InputManager.mScoutId <= 6 || x <= 1110 && y <= 610 && InputManager.mScoutId > 6) {
                         if ((x >= 400 && x <= 590 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 80 && y <= 225 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
-                            if(shapeCheck) {
+                            if (shapeCheck) {
                                 Log.d("locationOutput", "Top Left switch");
                                 initShape(view, "score4", "score1", x, y, "circle", iv2, iv, false);
                             }
                         } else if ((x >= 400 && x <= 590 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 410 && y <= 560 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
-                            if(shapeCheck) {
+                            if (shapeCheck) {
                                 Log.d("locationOutput", "Bottom Left switch");
                                 initShape(view, "score3", "score6", x, y, "circle", iv2, iv, false);
                             }
                         } else if ((x >= 1110 && x <= 1300 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 80 && y <= 225 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
-                            if(shapeCheck) {
+                            if (shapeCheck) {
                                 Log.d("locationOutput", "Top Right switch");
                                 initShape(view, "score6", "score3", x, y, "circle", iv2, iv, false);
                             }
                         } else if ((x >= 1110 && x <= 1300 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 410 && y <= 560 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
-                            if(shapeCheck) {
+                            if (shapeCheck) {
                                 Log.d("locationOutput", "Bottom Right switch");
                                 initShape(view, "score1", "score4", x, y, "circle", iv2, iv, false);
                             }
                         } else if (x >= 760 && x <= 930 && y >= 60 && y <= 300 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 55 && y <= 200 && InputManager.mScoutId > 6) {
-                            if(shapeCheck) {
+                            if (shapeCheck) {
                                 Log.d("locationOutput", "Scale Top");
                                 initShape(view, "score5", "score2", x, y, "circle", iv2, iv, false);
                             }
                         } else if (x >= 760 && x <= 930 && y >= 650 && y <= 900 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 440 && y <= 600 && InputManager.mScoutId > 6) {
-                            if(shapeCheck) {
+                            if (shapeCheck) {
                                 Log.d("locationOutput", "Scale Bottom");
                                 initShape(view, "score2", "score5", x, y, "circle", iv2, iv, false);
                             }
@@ -768,27 +664,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("blue"))
                                 || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("red"))))))
                                 && tele) {
-                            if(shapeCheck) {
+                            if (shapeCheck) {
                                 Log.d("locationOutput", "Exchange");
                                 initShape(view, "exchangeScore", "exchangeScore", x, y, "circle", iv2, iv, false);
                             }
                         } else if (((x > 110 && x <= 500 && InputManager.mScoutId <= 6) || (x > 80 && x <= 320 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
-                            if(!shapeCheck) {
+                            if (!shapeCheck) {
                                 Log.d("locationInput", "1");
                                 initShape(view, "intake4", "intake1", x, y, "triangle", iv, iv2, true);
                             }
                         } else if (((x > 500 && x <= 845 && InputManager.mScoutId <= 6 || x > 320 && x <= 550 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
-                            if(!shapeCheck) {
+                            if (!shapeCheck) {
                                 Log.d("locationInput", "2");
                                 initShape(view, "intake3", "intake2", x, y, "triangle", iv, iv2, true);
                             }
                         } else if (((x > 845 && x <= 1200 && InputManager.mScoutId <= 6 || x > 550 && x <= 800 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
-                            if(!shapeCheck) {
+                            if (!shapeCheck) {
                                 Log.d("locationInput", "3");
                                 initShape(view, "intake2", "intake3", x, y, "triangle", iv, iv2, true);
                             }
                         } else if (((x > 1200 && x <= 1580 && InputManager.mScoutId <= 6 || x > 800 && x <= 1040 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
-                            if(!shapeCheck) {
+                            if (!shapeCheck) {
                                 Log.d("locationInput", "4");
                                 initShape(view, "intake1", "intake4", x, y, "triangle", iv, iv2, true);
                             }
@@ -804,11 +700,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 50,
                 50);
-        lp.setMargins(x-25, y-40, 0, 0);
+        lp.setMargins(x - 25, y - 40, 0, 0);
         add.setLayoutParams(lp);
-        if(add == iv) {
+        if (add == iv) {
             add.setImageDrawable(getResources().getDrawable(R.drawable.triangle_image));
-        } else if(add == iv2) {
+        } else if (add == iv2) {
             add.setImageDrawable(getResources().getDrawable(R.drawable.blackcircle));
         }
         shapeCheck = check;
@@ -817,63 +713,113 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
             tb_start_cube.setEnabled(false);
         }
-        if(!shapeCheck) {
+        if (!shapeCheck) {
             btn_drop.setEnabled(false);
-        }
-        else if(shapeCheck) {
+        } else if (shapeCheck) {
             btn_drop.setEnabled(true);
         }
         overallLayout.removeView(remove);
-        if (field_orientation.equals("rb") && !shapeCheck) {
-            iv_field.setImageResource(R.drawable.field_rb);
-        } else if (field_orientation.equals("br") && !shapeCheck) {
-            iv_field.setImageResource(R.drawable.field_br);
-        } else if (field_orientation.equals("rb") && shapeCheck) {
-            iv_field.setImageResource(R.drawable.field_yellow_rb);
-        } else if (field_orientation.equals("br") && shapeCheck) {
-            iv_field.setImageResource(R.drawable.field_yellow_br);
+        mapChange();
+        if (field_orientation.equals("rb")) {
+            actionList.clear();
+            actionList.add(position);
+            actionList.add(x);
+            actionList.add(y);
+            actionList.add(shape);
+            actionList.add("rb");
+            actionDic.put(actionCount, actionList);
+            actionCount++;
+            timestamp(position);
+            Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
+        } else if (field_orientation.equals("br")) {
+            actionList.clear();
+            actionList.add(position2);
+            actionList.add(x);
+            actionList.add(y);
+            actionList.add(shape);
+            actionList.add("br");
+            actionDic.put(actionCount, actionList);
+            actionCount++;
+            timestamp(position2);
+            Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
         }
+        ((ViewGroup) view).addView(add);
+    }
+
+    //TODO Make Undo a function
+
+    public void timestamp(String datapoint) {
         try {
-            if (field_orientation.equals("rb")) {
-                actionList.clear();
-                actionList.add(position);
-                actionList.add(x);
-                actionList.add(y);
-                actionList.add(shape);
-                actionList.add("rb");
-                actionDic.put(actionCount, actionList);
-                actionCount++;
-                if(TimerUtil.timestamp <= 135 && !tele) {
-                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position, 135));
-                }
-                else if(TimerUtil.timestamp > 135 && tele) {
-                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position, 134.9));
-                }
-                else {
-                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
-                }
-                Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
-            } else if (field_orientation.equals("br")) {
-                actionList.clear();
-                actionList.add(position2);
-                actionList.add(x);
-                actionList.add(y);
-                actionList.add(shape);
-                actionList.add("br");
-                actionDic.put(actionCount, actionList);
-                actionCount++;
-                if(TimerUtil.timestamp >= 135 && !tele) {
-                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position2, 135));
-                } else if(TimerUtil.timestamp < 135 && tele) {
-                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position2, 134.9));
-                } else {
-                    InputManager.mRealTimeMatchData.put(new JSONObject().put(position2, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
-                }
-                Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
+            if (TimerUtil.timestamp <= 135 && !tele) {
+                InputManager.mRealTimeMatchData.put(new JSONObject().put(datapoint, 135));
+            } else if (TimerUtil.timestamp > 135 && tele) {
+                InputManager.mRealTimeMatchData.put(new JSONObject().put(datapoint, 134.9));
+            } else {
+                InputManager.mRealTimeMatchData.put(new JSONObject().put(datapoint, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             }
         } catch (JSONException je) {
             je.printStackTrace();
         }
-        ((ViewGroup) view).addView(add);
+    }
+
+    public void mapOrientation(int map, int fieldOrientation, String field_orientation_given, Boolean field1, Boolean field2) {
+        AppCc.setSp("mapOrientation", 0);
+        setContentView(map);
+        field_orientation = field_orientation_given;
+        overallLayout = findViewById(fieldOrientation);
+        if (InputManager.mAllianceColor.equals("red")) {
+            field = field1;
+        } else if (InputManager.mAllianceColor.equals("blue")) {
+            field = field2;
+        }
+    }
+
+    public void mapChange() {
+        if(shapeCheck) {
+            if (field_orientation.equals("rb")) {
+                iv_field.setImageResource(R.drawable.field_yellow_rb);
+            } else if (field_orientation.equals("br")) {
+                iv_field.setImageResource(R.drawable.field_yellow_br);
+            }
+        }
+        if(!shapeCheck) {
+            if (field_orientation.equals("rb")) {
+                iv_field.setImageResource(R.drawable.field_rb);
+            } else if (field_orientation.equals("br")) {
+                iv_field.setImageResource(R.drawable.field_br);
+            }
+        }
+    }
+
+    public void recordFTB(Boolean attemptBool, Integer attemptNum, Boolean actualBool, Integer actualNum) {
+        climbAttemptValues.add(attemptBool);
+        climbAttemptValues.add(attemptNum);
+
+        climbActualValues.add(actualBool);
+        climbActualValues.add(actualNum);
+
+        try {
+            ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
+            ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
+
+            ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
+            ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
+
+            climbValues.add(ftbAttemptData);
+            climbValues.add(ftbActualData);
+            climbValues.add(ftbStartTime);
+            climbValues.add(ftbEndTime);
+
+            ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
+            ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
+            ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
+            ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        climbInputted = true;
+
+        Log.i("FTB", ftbFinalData.toString());
     }
 }
