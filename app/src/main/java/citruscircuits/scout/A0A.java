@@ -1,8 +1,12 @@
 package citruscircuits.scout;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -12,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,8 +24,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,12 +39,30 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import citruscircuits.scout.Managers.InputManager;
+import citruscircuits.scout.Managers.OutputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout._superDataClasses.Cst;
 import citruscircuits.scout.utils.AppUtils;
 import citruscircuits.scout.utils.QRScan;
+
+import static citruscircuits.scout.utils.AppUtils.readFile;
 
 //Written by the Daemon himself ~ Calvin
 public class A0A extends DialogMaker {
@@ -50,17 +75,20 @@ public class A0A extends DialogMaker {
     public Button btn_mapOrientation;
 
     public static ImageView imgv_cycleBackground;
+    public static ImageView QRImage;
 
-    PopupWindow pw_backupWindow, pw_nameWindow, pw_idWindow;
+    PopupWindow pw_backupWindow, pw_nameWindow, pw_idWindow, pw_resendMatchWindow;
 
-    public ListView lv_scoutNames, lv_scoutIds;
+    public ListView lv_scoutNames, lv_scoutIds, lv_resendMatch;
     public ScoutNameListAdapter mScoutNameListAdapter;
     public ScoutIdListAdapter mScoutIdListAdapter;
 
     //user data UI
     public static EditText et_matchNum;
     public static TextView tv_cycleNum, tv_teamNum;
-    public static Button btn_triggerScoutNamePopup, btn_triggerScoutIDPopup;
+    public static Button btn_triggerScoutNamePopup, btn_triggerScoutIDPopup, btn_triggerResendMatches;
+
+    public ArrayAdapter<String> mResendMatchesArrayAdapter;
 
     LayoutInflater mLayoutInflater;
 
@@ -85,6 +113,9 @@ public class A0A extends DialogMaker {
 
         InputManager.recoverUserData();
         updateUserData();
+
+        updateListView();
+        listenForResendClick();
     }
 
     //OnClick Methods
@@ -242,6 +273,22 @@ public class A0A extends DialogMaker {
                 return true;
             }
         });
+
+        //RESEND MATCHES POPUP
+        btn_triggerResendMatches = (Button) findViewById(R.id.btn_accessData);
+        LinearLayout resendMatchesLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_resend, null);
+        pw_resendMatchWindow = new PopupWindow(resendMatchesLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        pw_resendMatchWindow.setBackgroundDrawable(new ColorDrawable());
+        lv_resendMatch = resendMatchesLayout.findViewById(R.id.lv_resendMatches);
+        mResendMatchesArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        lv_resendMatch.setAdapter(mResendMatchesArrayAdapter);
+        btn_triggerResendMatches.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pw_resendMatchWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.LEFT,0, 0);
+                mResendMatchesArrayAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void onClickQrBackup(View view) {
@@ -304,6 +351,107 @@ public class A0A extends DialogMaker {
             });
 
             return convertView;
+        }
+    }
+
+    public void updateListView() {
+        final File dir;
+        dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
+        if (!dir.mkdir()) {
+            Log.i("File Info", "Failed to make Directory. Unimportant");
+        }
+        final File[] files = dir.listFiles();
+        if(files == null){
+            return;
+        }
+        mResendMatchesArrayAdapter.clear();
+        Log.e("DEBUGGING", files.toString());
+        for (File tmpFile : files) {
+            mResendMatchesArrayAdapter.add(tmpFile.getName());
+        }
+        mResendMatchesArrayAdapter.sort(new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                File lhsFile = new File(dir, lhs);
+                File rhsFile = new File(dir, rhs);
+                Date lhsDate = new Date(lhsFile.lastModified());
+                Date rhsDate = new Date(rhsFile.lastModified());
+                return rhsDate.compareTo(lhsDate);
+            }
+        });
+        mResendMatchesArrayAdapter.notifyDataSetChanged();
+    }
+    public void listenForResendClick(){
+        lv_resendMatch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String name = parent.getItemAtPosition(position).toString();
+                name = android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data/" + name;
+                final String fileName = name;
+                String content = readFile(fileName);
+                openQRDialog(content);
+            }
+        });
+    }
+    public void openQRDialog(String qrString){
+        final Dialog qrDialog = new Dialog(this,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        qrDialog.setCanceledOnTouchOutside(false);
+        qrDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        final LinearLayout qrDialogLayout = (LinearLayout) this.getLayoutInflater().inflate(R.layout.activity_qr_display, null);
+        QRImage = (ImageView) qrDialogLayout.findViewById(R.id.QRCode_Display);
+        displayQR(qrString);
+        Button ok = (Button) qrDialogLayout.findViewById(R.id.okButton);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                qrDialog.dismiss();
+            }
+        });
+        qrDialog.setCanceledOnTouchOutside(false);
+        qrDialog.setContentView(qrDialogLayout);
+        qrDialog.show();
+    }
+    public void displayQR(String qrCode){
+        try {
+            //setting size of qr code
+            WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height = point.y;
+            int smallestDimension = width < height ? width : height;
+            //setting parameters for qr code
+            String charset = "UTF-8"; // or "ISO-8859-1"
+            Map<EncodeHintType, ErrorCorrectionLevel> hintMap =new HashMap<EncodeHintType, ErrorCorrectionLevel>();
+            hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+            createQRCode(qrCode, charset, hintMap, smallestDimension, smallestDimension);
+        } catch (Exception ex) {
+            Log.e("QrGenerate",ex.getMessage());
+        }
+    }
+    public  void createQRCode(String qrCodeData,String charset, Map hintMap, int qrCodeheight, int qrCodewidth){
+        try {
+            //generating qr code in bitmatrix type
+            BitMatrix matrix = new MultiFormatWriter().encode(new String(qrCodeData.getBytes(charset), charset), BarcodeFormat.QR_CODE, qrCodewidth, qrCodeheight, hintMap);
+            //converting bitmatrix to bitmap
+            int width = matrix.getWidth();
+            int height = matrix.getHeight();
+            int[] pixels = new int[width * height];
+            // All are 0, or black, by default
+            for (int y = 0; y < height; y++) {
+                int offset = y * width;
+                for (int x = 0; x < width; x++) {
+                    pixels[offset + x] = matrix.get(x, y) ? Color.BLACK : Color.WHITE;
+                }
+            }
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+            //setting bitmap to image view
+            QRImage.setImageBitmap(null);
+            QRImage.setImageBitmap(bitmap);
+        }catch (Exception er){
+            Log.e("QrGenerate",er.getMessage());
         }
     }
 

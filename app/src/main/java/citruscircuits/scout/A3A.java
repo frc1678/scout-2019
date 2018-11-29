@@ -1,5 +1,6 @@
 package citruscircuits.scout;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -19,6 +20,13 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +55,10 @@ public class A3A extends DialogMaker {
         }
         Log.e("Match DATA before COMP", InputManager.mRealTimeMatchData.toString());
         Log.e("Input DATA before COMP", InputManager.mRealTimeInputtedData.toString());
-        showMatchQR(OutputManager.compressMatchData(InputManager.mRealTimeInputtedData));
+        String qrScoutData = OutputManager.compressMatchData(InputManager.mRealTimeInputtedData);
+        showMatchQR(qrScoutData);
+
+        writeFileOnInternalStorage(("Q" + InputManager.mMatchNum + "_" + new SimpleDateFormat("MM-dd-yyyy-H:mm:ss").format(new Date())), qrScoutData);
     }
 
     public void showMatchQR(String qrString){
@@ -75,7 +86,7 @@ public class A3A extends DialogMaker {
         }
     }
 
-    public  void createQRCode(String qrCodeData,String charset, Map hintMap, int qrCodeheight, int qrCodewidth){
+    public void createQRCode(String qrCodeData,String charset, Map hintMap, int qrCodeheight, int qrCodewidth){
 
         try {
             //generating qr code in bitmatrix type
@@ -99,6 +110,21 @@ public class A3A extends DialogMaker {
             tQRView.setImageBitmap(bitmap);
         }catch (Exception er){
             Log.e("QrGenerate",er.getMessage());
+        }
+    }
+
+    public void writeFileOnInternalStorage(String sFileName, String sBody){
+        File file = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
+        if(!file.exists()){
+            file.mkdir();
+        } try {
+            File gpxfile = new File(file, sFileName);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 

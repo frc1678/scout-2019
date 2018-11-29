@@ -23,6 +23,7 @@ public interface Cst {
         put("allianceColor", "R");
         put("startingPosition", "P");
         put("startedWCube", "C");
+        put("scoutName", "N");
 
         put("autoLineCrossed", "a");
     }};
