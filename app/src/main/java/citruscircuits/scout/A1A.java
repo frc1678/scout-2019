@@ -624,67 +624,70 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && !startTimer && !incapChecked) {
                     int x = (int) motionEvent.getX();
                     int y = (int) motionEvent.getY();
-                    if (x <= 1700 && y <= 1000 && InputManager.mScoutId <= 6 || x <= 1110 && y <= 610 && InputManager.mScoutId > 6) {
-                        if ((x >= 400 && x <= 590 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 80 && y <= 225 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
-                            if (shapeCheck) {
+                    if (x <= 1700 && y <= 1000 && InputManager.mScoutId <= 6 || x <= 1110 && y <= 610 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12|| x<=845 && y<=490 && InputManager.mScoutId >=12 ) {
+                        if ((x >= 400 && x <= 590 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (field && !tele))) {
+                            if(shapeCheck) {
                                 Log.d("locationOutput", "Top Left switch");
                                 initShape(view, "score4", "score1", x, y, "circle", iv2, iv, false);
                             }
-                        } else if ((x >= 400 && x <= 590 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 410 && y <= 560 && InputManager.mScoutId > 6) && (tele || (field && !tele))) {
-                            if (shapeCheck) {
+                        }
+                        else if ((x >= 400 && x <= 590 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (field && !tele))) {
+                            if(shapeCheck) {
                                 Log.d("locationOutput", "Bottom Left switch");
                                 initShape(view, "score3", "score6", x, y, "circle", iv2, iv, false);
                             }
-                        } else if ((x >= 1110 && x <= 1300 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 80 && y <= 225 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
-                            if (shapeCheck) {
+                        } else if ((x >= 1110 && x <= 1300 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (!field && !tele))) {
+                            if(shapeCheck) {
                                 Log.d("locationOutput", "Top Right switch");
                                 initShape(view, "score6", "score3", x, y, "circle", iv2, iv, false);
                             }
-                        } else if ((x >= 1110 && x <= 1300 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 410 && y <= 560 && InputManager.mScoutId > 6) && (tele || (!field && !tele))) {
-                            if (shapeCheck) {
+                        } else if ((x >= 1110 && x <= 1300 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (!field && !tele))) {
+                            if(shapeCheck) {
                                 Log.d("locationOutput", "Bottom Right switch");
                                 initShape(view, "score1", "score4", x, y, "circle", iv2, iv, false);
                             }
-                        } else if (x >= 760 && x <= 930 && y >= 60 && y <= 300 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 55 && y <= 200 && InputManager.mScoutId > 6) {
-                            if (shapeCheck) {
+                        } else if (x >= 760 && x <= 930 && y >= 60 && y <= 300 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 55 && y <= 200 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 375 && x <= 475 && y >= 50 && y <= 180 && InputManager.mScoutId >=12) {
+                            if(shapeCheck) {
                                 Log.d("locationOutput", "Scale Top");
                                 initShape(view, "score5", "score2", x, y, "circle", iv2, iv, false);
                             }
-                        } else if (x >= 760 && x <= 930 && y >= 650 && y <= 900 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 440 && y <= 600 && InputManager.mScoutId > 6) {
-                            if (shapeCheck) {
+                        } else if (x >= 760 && x <= 930 && y >= 650 && y <= 900 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 440 && y <= 600 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 375 && x <= 480 && y >= 350 && y <= 470 && InputManager.mScoutId >=12) {
+                            if(shapeCheck) {
                                 Log.d("locationOutput", "Scale Bottom");
                                 initShape(view, "score2", "score5", x, y, "circle", iv2, iv, false);
                             }
                         } else if (((((x <= 160 && y >= 250 && y <= 430 && InputManager.mScoutId <= 6)
-                                || (x <= 120 && y >= 170 && y <= 300 && InputManager.mScoutId > 6))
+                                || (x <= 120 && y >= 170 && y <= 300 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)
+                                || (x<=90 && y>=150 && y<=250 && InputManager.mScoutId >=12))
                                 && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("red"))
                                 || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("blue")))))
                                 || (((x >= 1530 && y >= 485 && y <= 695 && InputManager.mScoutId <= 6)
-                                || (x >= 1030 && y >= 315 && y <= 455 && InputManager.mScoutId > 6))
+                                || (x >= 1030 && y >= 315 && y <= 455 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)
+                                || (x>=760 && x<=845 && y>=270 && y<=370 && InputManager.mScoutId >=12))
                                 && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("blue"))
                                 || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("red"))))))
                                 && tele) {
-                            if (shapeCheck) {
+                            if(shapeCheck) {
                                 Log.d("locationOutput", "Exchange");
                                 initShape(view, "exchangeScore", "exchangeScore", x, y, "circle", iv2, iv, false);
                             }
-                        } else if (((x > 110 && x <= 500 && InputManager.mScoutId <= 6) || (x > 80 && x <= 320 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
-                            if (!shapeCheck) {
+                        } else if (((x > 110 && x <= 500 && InputManager.mScoutId <= 6) || (x > 80 && x <= 320 && InputManager.mScoutId > 6 && InputManager.mScoutId <12) || (x<=250 && x>=60 && InputManager.mScoutId >=12)) && (tele || (field && !tele))) {
+                            if(!shapeCheck) {
                                 Log.d("locationInput", "1");
                                 initShape(view, "intake4", "intake1", x, y, "triangle", iv, iv2, true);
                             }
-                        } else if (((x > 500 && x <= 845 && InputManager.mScoutId <= 6 || x > 320 && x <= 550 && InputManager.mScoutId > 6)) && (tele || (field && !tele))) {
-                            if (!shapeCheck) {
+                        } else if (((x > 500 && x <= 845 && InputManager.mScoutId <= 6 || x > 320 && x <= 550 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=430 && x>250 && InputManager.mScoutId >=12)) && (tele || (field && !tele))) {
+                            if(!shapeCheck) {
                                 Log.d("locationInput", "2");
                                 initShape(view, "intake3", "intake2", x, y, "triangle", iv, iv2, true);
                             }
-                        } else if (((x > 845 && x <= 1200 && InputManager.mScoutId <= 6 || x > 550 && x <= 800 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
-                            if (!shapeCheck) {
+                        } else if (((x > 845 && x <= 1200 && InputManager.mScoutId <= 6 || x > 550 && x <= 800 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=600 && x>430 && InputManager.mScoutId >=12)) && (tele || (!field && !tele))) {
+                            if(!shapeCheck) {
                                 Log.d("locationInput", "3");
                                 initShape(view, "intake2", "intake3", x, y, "triangle", iv, iv2, true);
                             }
-                        } else if (((x > 1200 && x <= 1580 && InputManager.mScoutId <= 6 || x > 800 && x <= 1040 && InputManager.mScoutId > 6)) && (tele || (!field && !tele))) {
-                            if (!shapeCheck) {
+                        } else if (((x > 1200 && x <= 1580 && InputManager.mScoutId <= 6 || x > 800 && x <= 1040 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=850 && x>600 && InputManager.mScoutId >=12)) && (tele || (!field && !tele))) {
+                            if(!shapeCheck) {
                                 Log.d("locationInput", "4");
                                 initShape(view, "intake1", "intake4", x, y, "triangle", iv, iv2, true);
                             }
