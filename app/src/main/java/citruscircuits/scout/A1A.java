@@ -45,6 +45,7 @@ import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AutoDialog;
 import citruscircuits.scout.utils.TimerUtil;
 
+import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -205,7 +206,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             startTimer = true;
         }
 
-        InputManager.mRealTimeMatchData = new JSONArray();
+        mRealTimeMatchData = new JSONArray();
         InputManager.mOneTimeMatchData = new JSONObject();
         InputManager.numSpill = 0;
         InputManager.numFoul = 0;
@@ -214,6 +215,52 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_undo.setEnabled(false);
 
         addTouchListener();
+
+        btn_spill.setOnLongClickListener((new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                if (!startTimer && !incapChecked && InputManager.numSpill>0) {
+                    int index = -1;
+                    for(int i=0;i<mRealTimeMatchData.length();i++){
+                        try {
+                            String test = mRealTimeMatchData.getString(i);
+                            if(test.contains("spill")) {
+                                index = i;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mRealTimeMatchData.remove(index);
+                    InputManager.numSpill--;
+                    btn_spill.setText("SPILL - " + InputManager.numSpill);
+                }
+                Log.e("LONG CLICK? SPILL", mRealTimeMatchData.toString());
+                return true;
+            }
+        }));
+
+        btn_foul.setOnLongClickListener((new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                if (!startTimer && !incapChecked && InputManager.numFoul>0) {
+                    int index = -1;
+                    for(int i=0;i<mRealTimeMatchData.length();i++){
+                        try {
+                            String test = mRealTimeMatchData.getString(i);
+                            if(test.contains("scaleFoul")) {
+                                index = i;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mRealTimeMatchData.remove(index);
+                    InputManager.numFoul--;
+                    btn_foul.setText("FOUL - " + InputManager.numFoul);
+                }
+                Log.e("LONG CLICK? FOUL", mRealTimeMatchData.toString());
+                return true;
+            }
+        }));
     }
 
     @Override
@@ -733,7 +780,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionDic.put(actionCount, actionList);
             actionCount++;
             timestamp(position);
-            Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
+            Log.d("TIMESTAMP", String.valueOf(mRealTimeMatchData));
         } else if (field_orientation.equals("br")) {
             actionList.clear();
             actionList.add(position2);
@@ -744,7 +791,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionDic.put(actionCount, actionList);
             actionCount++;
             timestamp(position2);
-            Log.d("TIMESTAMP", String.valueOf(InputManager.mRealTimeMatchData));
+            Log.d("TIMESTAMP", String.valueOf(mRealTimeMatchData));
         }
         ((ViewGroup) view).addView(add);
     }
@@ -754,11 +801,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void timestamp(String datapoint) {
         try {
             if (TimerUtil.timestamp <= 135 && !tele) {
-                InputManager.mRealTimeMatchData.put(new JSONObject().put(datapoint, 135));
+                mRealTimeMatchData.put(new JSONObject().put(datapoint, 135));
             } else if (TimerUtil.timestamp > 135 && tele) {
-                InputManager.mRealTimeMatchData.put(new JSONObject().put(datapoint, 134.9));
+                mRealTimeMatchData.put(new JSONObject().put(datapoint, 134.9));
             } else {
-                InputManager.mRealTimeMatchData.put(new JSONObject().put(datapoint, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                mRealTimeMatchData.put(new JSONObject().put(datapoint, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
             }
         } catch (JSONException je) {
             je.printStackTrace();
