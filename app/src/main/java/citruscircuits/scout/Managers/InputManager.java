@@ -1,18 +1,23 @@
 package citruscircuits.scout.Managers;
 
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import citruscircuits.scout.A0A;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AppUtils;
+
+import static citruscircuits.scout._superDataClasses.Cst.SCOUT_NAMES;
 
 //Written by the Daemon himself ~ Calvin
 public class InputManager {
@@ -113,6 +118,62 @@ public class InputManager {
         }
     }
 
+    public static ArrayList<String> getScoutNames() {
+        String sortL1key = "letters";
+        ArrayList<String> finalNamesList = new ArrayList<String>();
+
+        String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
+        String fileName = "QRAssignments.txt";
+
+        File f = new File(filePath,fileName);
+
+        Log.i("FILEEXISTS", f.exists()+"");
+
+        if(f.exists()) {
+            try {
+                JSONObject names = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                names = names.getJSONObject(sortL1key);
+
+                JSONArray namesArray = names.names();
+                ArrayList<String> backupNames = new ArrayList<String>();
+
+                for(int i=0;i<namesArray.length();i++){
+                    String finalNames = namesArray.getString(i);
+                    finalNamesList.add(finalNames);
+                }
+
+                Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
+
+                for(int i=finalNamesList.size()-1;i>0;i--){
+                    if(finalNamesList.get(i).contains("Backup")) {
+                        backupNames.add(finalNamesList.get(i));
+                        finalNamesList.remove(i);
+                    }
+                }
+
+                Collections.sort(backupNames, String.CASE_INSENSITIVE_ORDER);
+
+                JSONArray backupArray = new JSONArray(backupNames);
+
+                for(int i=0;i<backupArray.length();i++){
+                    String moreNames = backupArray.getString(i);
+                    finalNamesList.add(moreNames);
+                }
+
+                Log.i("finalNames", finalNamesList.toString());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if(!f.exists()) {
+            for(int i=1;i<=52;i++) {
+                finalNamesList.add("Backup" + i);
+            }
+        }
+
+        return finalNamesList;
+    }
+
     //Method for acquiring scout pre-match data from QRAssignments.txt
     public static void fullQRDataProcess(){
         if(mMatchNum > 0 && mCycleNum >= 0){
@@ -127,33 +188,45 @@ public class InputManager {
             //stands for side sort 1- for sorting other things in the same layer
             String ssort1L1key = "letters";
 
-            try {
-                String qrDataString = AppUtils.retrieveSDCardFile("QRAssignments.txt");
+            File file = new File("/sdcard/QRAssignments.txt");
 
-                JSONObject qrData = new JSONObject(qrDataString);
-                mScoutLetter = qrData.getJSONObject(ssort1L1key).getString(mScoutName);
+            if(file.exists()) {
+                try {
+                    String qrDataString = AppUtils.retrieveSDCardFile("QRAssignments.txt");
 
-                if(mQRString != null){
-                    if(mQRString.contains(mScoutLetter)){
-                        mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
-                        tPrevScoutLetter = mScoutLetter;
+                    JSONObject qrData = new JSONObject(qrDataString);
+                    mScoutLetter = qrData.getJSONObject(ssort1L1key).getString(mScoutName);
 
-                        AppCc.setSp("prevScoutLetter", tPrevScoutLetter);
-                    }else{
-                        tPrevScoutLetter = AppCc.getSp("prevScoutLetter", "");
-                        if(!tPrevScoutLetter.equals("")){
+                    if (mQRString != null) {
+                        if (mQRString.contains(mScoutLetter)) {
                             mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
+                            tPrevScoutLetter = mScoutLetter;
+
+                            AppCc.setSp("prevScoutLetter", tPrevScoutLetter);
+                        } else {
+                            tPrevScoutLetter = AppCc.getSp("prevScoutLetter", "");
+                            if (!tPrevScoutLetter.equals("")) {
+                                mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
+                            }
                         }
+
+                        AppCc.setSp("sprRanking", mSPRRanking);
+
+                        getQRData();
                     }
-
-                    AppCc.setSp("sprRanking", mSPRRanking);
-
-                    getQRData();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }
+
+            if(!file.exists()) {
+                String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
+                char scoutLetter = alphabet.charAt(nameIndex);
+                mScoutLetter = scoutLetter + "";
             }
         }
+        Log.i("SCOUTLETTER", mScoutLetter);
     }
 
     public static void getQRData(){

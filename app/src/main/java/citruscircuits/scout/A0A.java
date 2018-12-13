@@ -107,6 +107,8 @@ public class A0A extends DialogMaker {
 
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
+        InputManager.getScoutNames();
+
         initViews();
         initPopups();
         initListeners();

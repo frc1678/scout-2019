@@ -6,15 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import citruscircuits.scout.Managers.InputManager;
+
 //Written by the Daemon himself ~ Calvin
 public interface Cst {
     String SHARED_PREF = "scout_sp";
 
-    List<String> SCOUT_NAMES = Arrays.asList("Aakash", "Aidan", "Apurva", "Ariel", "Asha", "Brynne",
-            "Carl", "Carter", "Connor", "Eithne", "Eli", "Ellie Bu", "Ellie K", "Emily", "Erik", "Ethan",
-            "Freddy", "Gemma", "Hanson", "Helena", "Jude", "Justin", "Kate", "Louise", "Michael", "Mingyo",
-            "Nathan", "Nick", "Nithmi", "Penelope", "Rachel", "Sam", "Teo", "Zachary", "Backup 1", "Backup 2",
-            "Backup 3", "Backup 4", "Backup 5", "Backup 6", "Backup 7", "Backup 8", "Backup 9", "Backup 10");
+    List<String> SCOUT_NAMES = InputManager.getScoutNames();
 
     List<Integer> SCOUT_IDS = Arrays.asList(1, 2, 3, 4, 5, 6 ,7 , 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 
