@@ -297,6 +297,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
             InputManager.mOneTimeMatchData.put("startingPosition", InputManager.mStartingPosition);
             InputManager.mOneTimeMatchData.put("startedWCube", startedWCube);
+            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
             InputManager.mOneTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
         } catch (JSONException e) {
             e.printStackTrace();

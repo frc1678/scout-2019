@@ -13,6 +13,8 @@ import java.util.Iterator;
 
 import citruscircuits.scout._superDataClasses.Cst;
 
+import static java.lang.String.valueOf;
+
 //Written by the Daemon himself ~ Calvin
 public class OutputManager extends InputManager{
     private static final int DISCOVER_DURATION = 300;
@@ -28,6 +30,8 @@ public class OutputManager extends InputManager{
 
     //TODO Ensure that Alliance Color, Starting Position, Started With Cube, and Auto Line Crossed are recorded in this respective order
     public static String compressMatchData(JSONObject pMatchData) {
+        fullQRDataProcess();
+
         String compressedData = InputManager.matchKey + "|";
         //used to make sure that the Qr's header is formatted correctly - aLCFound
         boolean aLCFound = false;   String aLCKey = ""; String aLCValue = "";
@@ -38,6 +42,8 @@ public class OutputManager extends InputManager{
             while(uncompressedKeys.hasNext()){
                 String currentKey = uncompressedKeys.next()+"";
                 String currentValue = InputManager.mOneTimeMatchData.get(currentKey)+"";
+
+                Cst.compressValues.put(InputManager.mScoutName, InputManager.mScoutLetter);
 
                 if(Cst.noCommaCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)) {
                     if(currentKey.equals("autoLineCrossed")){

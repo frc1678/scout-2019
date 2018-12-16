@@ -188,9 +188,12 @@ public class InputManager {
             //stands for side sort 1- for sorting other things in the same layer
             String ssort1L1key = "letters";
 
-            File file = new File("/sdcard/QRAssignments.txt");
+            String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
+            String fileName = "QRAssignments.txt";
 
-            if(file.exists()) {
+            File f = new File(filePath,fileName);
+
+            if(f.exists()) {
                 try {
                     String qrDataString = AppUtils.retrieveSDCardFile("QRAssignments.txt");
 
@@ -219,14 +222,13 @@ public class InputManager {
                 }
             }
 
-            if(!file.exists()) {
+            else if(!f.exists()) {
                 String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
                 char scoutLetter = alphabet.charAt(nameIndex);
                 mScoutLetter = scoutLetter + "";
             }
         }
-        Log.i("SCOUTLETTER", mScoutLetter);
     }
 
     public static void getQRData(){

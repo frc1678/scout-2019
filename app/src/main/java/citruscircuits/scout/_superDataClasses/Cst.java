@@ -1,5 +1,7 @@
 package citruscircuits.scout._superDataClasses;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,7 +28,6 @@ public interface Cst {
         put("startingPosition", "P");
         put("startedWCube", "C");
         put("scoutName", "N");
-
         put("autoLineCrossed", "a");
     }};
 
@@ -64,7 +65,6 @@ public interface Cst {
         //New constants
         put("blue", "0");
         put("red", "1");
-        put("", "0");
         put("left", "1");
         put("center", "2");
         put("right", "3");
