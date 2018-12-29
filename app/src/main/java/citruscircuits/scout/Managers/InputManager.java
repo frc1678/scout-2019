@@ -220,9 +220,7 @@ public class InputManager {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-
-            else if(!f.exists()) {
+            } else if(!f.exists()) {
                 String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
                 char scoutLetter = alphabet.charAt(nameIndex);

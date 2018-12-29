@@ -37,7 +37,7 @@ public class AppUtils {
 
     public static void makeToast(Context context, String text, int size){
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setGravity(Gravity.BOTTOM, 0, 50);
         setToastSize(toast, size);
         toast.show();
     }

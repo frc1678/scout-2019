@@ -2,6 +2,8 @@ package citruscircuits.scout.utils;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
@@ -12,15 +14,24 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import citruscircuits.scout.A0A;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
+import citruscircuits.scout._superDataClasses.Cst;
 
 public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeReadListener{
+
+    Spinner name_spinner;
 
     QRCodeReaderView qrCodeReader;
 
@@ -61,6 +72,8 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
+        alertScout();
+
         resultStr = text;
         String prevStr = AppCc.getSp("resultStr", "");
 
@@ -108,7 +121,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         AppCc.setSp("cycleNum", cycleNum);
 
         InputManager.fullQRDataProcess();
-        open(A0A.class, null, true, false);
     }
 
     @Override
@@ -133,5 +145,48 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         }else{
             qrCodeReader.setFrontCamera();
         }
+    }
+
+    public void alertScout(){
+        Log.i("SCOUTNAME", InputManager.mScoutName);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_name_confirmation, null);
+        TextView nameView= (TextView) dialogView.findViewById(R.id.nameView);
+        nameView.setText(InputManager.mScoutName);
+        name_spinner = (Spinner) dialogView.findViewById(R.id.nameList);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, Cst.SCOUT_NAMES);
+        name_spinner.setAdapter(spinnerAdapter);
+        name_spinner.setSelection(((ArrayAdapter<String>)name_spinner.getAdapter()).getPosition(InputManager.mScoutName));
+        name_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
+
+            }
+            public void onNothingSelected(AdapterView<?> parent){
+
+            }
+        });
+
+        if(InputManager.mScoutName != null){
+            nameView.setText(InputManager.mScoutName);
+        }else{
+            nameView.setText("");
+        }
+
+        AlertDialog scoutNameAlertDialog;
+        scoutNameAlertDialog = new AlertDialog.Builder(this)
+                .setView(dialogView)
+                .setTitle("")
+                .setMessage("Are you this person?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        InputManager.mScoutName = name_spinner.getSelectedItem().toString();
+                        AppCc.setSp("scoutName", InputManager.mScoutName);
+                        open(A0A.class, null, true, false);
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create();
+        scoutNameAlertDialog.show();
+        scoutNameAlertDialog.setCanceledOnTouchOutside(false);
     }
 }
