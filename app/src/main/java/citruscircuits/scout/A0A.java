@@ -130,7 +130,7 @@ public class A0A extends DialogMaker {
 
     public static void updateUserData(){
         setCycleBackgroundColor(InputManager.mAllianceColor);
-        et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
+        et_matchNum.setText(String.valueOf(InputManager.mMatchNum + 1));
         tv_cycleNum.setText(String.valueOf(InputManager.mCycleNum));
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         btn_triggerScoutNamePopup.setText(InputManager.mScoutName);
