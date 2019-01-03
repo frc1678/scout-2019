@@ -428,6 +428,23 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionCount = actionCount - 1;
             Log.e("actiondic?!", actionDic.toString());
             actionDic.remove(actionCount + 1);
+            int index = -1;
+            for(int i=0;i<mRealTimeMatchData.length();i++){
+                try {
+                    String hf = mRealTimeMatchData.getString(i);
+                    if(!(hf.contains("scaleFoul") || hf.contains("spill"))) {
+                        index = i;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.e("int?!",String.valueOf(index));
+            Log.e("dic?!", mRealTimeMatchData.toString());
+            mRealTimeMatchData.remove(index);
+            Log.e("dic2?!", mRealTimeMatchData.toString());
+
+
             Log.e("wok", actionDic.get(actionCount).get(3).toString());
             // Log.e("PLZ",actionDic.get(actionCount).get(1).toString() );
             if (actionDic.get(actionCount).get(3).equals("triangle")) {
@@ -449,6 +466,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 btn_drop.setEnabled(true);
                 mapChange();
             }
+            //mRealTimeMatchData
 //            else if(actionDic.get(actionCount).get(3).equals("teleop")){
 //                tele = false;
 //                //could fail
