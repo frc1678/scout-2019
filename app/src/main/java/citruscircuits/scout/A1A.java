@@ -274,7 +274,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickTeleop(View view) {
-//        actionList.clear();
+//                    actionList = new ArrayList<Object>();
 ////        actionList.add("invalid");
 ////        actionList.add("invalid");
 ////        actionList.add("invalid");
@@ -396,7 +396,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         timestamp("drop");
         shapeCheck = false;
         overallLayout.removeView(iv);
-        actionList.clear();
+        actionList = new ArrayList<Object>();
         actionList.add("drop");
         actionList.add("x not matter");
         actionList.add("y not matter");
@@ -425,9 +425,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickUndo(View v) {
         Log.e("jkgg", valueOf(actionCount));
         if (actionCount > 0) {
+            Log.e("actiondic1?!", actionDic.toString());
+
+            Log.e("shapecheck?!", String.valueOf(shapeCheck));
             actionCount = actionCount - 1;
-            Log.e("actiondic?!", actionDic.toString());
             actionDic.remove(actionCount + 1);
+            Log.e("actiondic2?!", actionDic.toString());
+
             int index = -1;
             for(int i=0;i<mRealTimeMatchData.length();i++){
                 try {
@@ -466,7 +470,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 btn_drop.setEnabled(true);
                 mapChange();
             }
-            //mRealTimeMatchData
+            Log.e("actiondic3?!", actionDic.toString());
+
+            Log.e("shapecheck2?!", String.valueOf(shapeCheck));
+
 //            else if(actionDic.get(actionCount).get(3).equals("teleop")){
 //                tele = false;
 //                //could fail
@@ -790,24 +797,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         overallLayout.removeView(remove);
         mapChange();
         if (field_orientation.equals("rb")) {
-            actionList.clear();
+            actionList = new ArrayList<Object>();
             actionList.add(position);
             actionList.add(x);
             actionList.add(y);
             actionList.add(shape);
             actionList.add("rb");
             actionDic.put(actionCount, actionList);
+            Log.e("actiondicR?!", actionDic.toString());
             actionCount++;
             timestamp(position);
             Log.d("TIMESTAMP", String.valueOf(mRealTimeMatchData));
         } else if (field_orientation.equals("br")) {
-            actionList.clear();
+            actionList = new ArrayList<Object>();
             actionList.add(position2);
             actionList.add(x);
             actionList.add(y);
             actionList.add(shape);
             actionList.add("br");
             actionDic.put(actionCount, actionList);
+            Log.e("actiondicT?!", actionDic.toString());
             actionCount++;
             timestamp(position2);
             Log.d("TIMESTAMP", String.valueOf(mRealTimeMatchData));
