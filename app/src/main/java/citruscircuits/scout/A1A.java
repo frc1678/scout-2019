@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.widget.Toast;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,30 +59,32 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean startTimer = true;
     public boolean noShape = false;
     public boolean tele = false;
-    public boolean field = true;
     public boolean startedWCube = false;
     public boolean liftSelfAttempt;
     public boolean liftSelfActual;
     public boolean climbInputted = false;
     public boolean shapeCheck = false;
+    public boolean isMapLeft=false;
 
     public Integer numRobotsAttemptedToLift = 0;
     public Integer numRobotsDidLift = 0;
+    public Integer climbAttemptCounter=0;
+    public Integer climbActualCounter=0;
 
     public Float ftbStartTime;
     public Float ftbEndTime;
 
-    public List<String> climbAttemptKeys = Arrays.asList("liftSelf", "otherRobotsLifted");
-    public List<String> climbActualKeys = Arrays.asList("liftSelf", "otherRobotsLifted");
-    public List<String> climbKeys = Arrays.asList("Attempt", "Actual", "startTime", "endTime");
+    public List<String> climbAttemptKeys = Arrays.asList("self", "robot1", "robot2");
+    public List<String> climbActualKeys = Arrays.asList("self", "robot1", "robot2");
+    public List<String> climbKeys = Arrays.asList("type", "time", "attempted", "actual");
 
-    public List<Object> climbAttemptValues = new ArrayList<>();
-    public List<Object> climbActualValues = new ArrayList<>();
+    public List<Integer> climbAttemptValues = new ArrayList<>();
+    public List<Integer> climbActualValues = new ArrayList<>();
     public List<Object> climbValues = new ArrayList<>();
 
-    JSONObject ftbAttemptData = new JSONObject();
-    JSONObject ftbActualData = new JSONObject();
-    JSONObject ftbFinalData = new JSONObject();
+    JSONObject climbAttemptData = new JSONObject();
+    JSONObject climbActualData = new JSONObject();
+    JSONObject climbFinalData = new JSONObject();
 
     public TextView tv_team;
     public TextView tv_starting_position_warning;
@@ -90,6 +95,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button btn_undo;
     public Button btn_climb;
     public Button btn_arrow;
+
+    public Button zeroI;
+    public Button oneI;
+    public Button twoAI;
+    public Button threeI;
+    public Button twoBI;
+
+    public Button zeroII;
+    public Button oneII;
+    public Button twoAII;
+    public Button threeII;
+    public Button twoBII;
+    public Button spaceOneI;
+    public Button spaceTwoI;
+    public Button spaceThreeI;
+    public Button spaceOneII;
+    public Button spaceTwoII;
+    public Button spaceThreeII;
+
 
     public ToggleButton tb_incap;
     public ToggleButton tb_auto_run;
@@ -104,6 +128,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public RadioButton rb_red_right;
     public RadioButton rb_red_center;
     public RadioButton rb_red_left;
+    public RelativeLayout dialogLayout;
 
     public RelativeLayout overallLayout;
 
@@ -136,26 +161,39 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 if(mAllianceColor.equals("blue")) {
                     iv_field.setImageResource(R.drawable.field_intake_blue_left);
                     field_orientation = "blue_left";
+                    mapOrientation(false,true);
                 } else if(mAllianceColor.equals("red")) {
                     iv_field.setImageResource(R.drawable.field_intake_red_right);
                     field_orientation = "red_right";
+                    mapOrientation(true,false);
+
                 }
             } else {
                 if(mAllianceColor.equals("blue")) {
                     iv_field.setImageResource(R.drawable.field_intake_blue_right);
                     field_orientation = "blue_right";
+                    mapOrientation(true,false);
+
                 } else if(mAllianceColor.equals("red")) {
                     iv_field.setImageResource(R.drawable.field_intake_red_left);
                     field_orientation = "red_left";
+                    mapOrientation(false,true);
+
+
                 }
             }
         } else {
             if(mAllianceColor.equals("blue")) {
                 iv_field.setImageResource(R.drawable.field_intake_blue_right);
                 field_orientation = "blue_right";
+                mapOrientation(true,false);
+
+
             } else if(mAllianceColor.equals("red")) {
                 iv_field.setImageResource(R.drawable.field_intake_red_left);
                 field_orientation = "red_left";
+                mapOrientation(false,true);
+
             }
         }
 
@@ -429,134 +467,261 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //            }
         }
     }
-
-    public void onClickClimb(View v) {
-        if (tele && !startTimer && !incapChecked && !climbInputted) {
-            ftbStartTime = Float.valueOf(String.format("%.2f", TimerUtil.timestamp));
-            final Dialog ftbDialog = new Dialog(this);
-            ftbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            final RelativeLayout ftbDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.ftb_dialog, null);
-
-            final AlertDialog.Builder builder;
-            builder = new AlertDialog.Builder(this);
-
-            final AlertDialog.Builder builder2;
-            builder2 = new AlertDialog.Builder(this);
-
-            builder.setMessage("Did the scouted robot lift itself or another robot with its own mechanism?")
-                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            ftbEndTime = Float.valueOf(String.format("%.2f", TimerUtil.timestamp));
-
-                            ftbDialog.setContentView(ftbDialogLayout);
-
-                            final TextView tv_attempted = ftbDialogLayout.findViewById(R.id.tv_value_attempted);
-                            final TextView tv_didLift = ftbDialogLayout.findViewById(R.id.tv_didLift_value);
-
-                            Button btn_attemptedPlus = ftbDialogLayout.findViewById(R.id.btn_plus_attempted);
-                            Button btn_attemptedMinus = ftbDialogLayout.findViewById(R.id.btn_minus_attempted);
-                            Button btn_plus = ftbDialogLayout.findViewById(R.id.btn_didLift_plus);
-                            Button btn_minus = ftbDialogLayout.findViewById(R.id.btn_didLift_minus);
-                            Button btn_cancel = ftbDialogLayout.findViewById(R.id.cancelButton);
-                            Button btn_done = ftbDialogLayout.findViewById(R.id.doneButton);
-
-                            btn_attemptedPlus.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (numRobotsAttemptedToLift < 2) {
-                                        numRobotsAttemptedToLift++;
-                                        tv_attempted.setText(String.valueOf(numRobotsAttemptedToLift));
-                                    }
-                                }
-                            });
-
-                            btn_attemptedMinus.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (numRobotsAttemptedToLift > 0) {
-                                        numRobotsAttemptedToLift--;
-                                        tv_attempted.setText(String.valueOf(numRobotsAttemptedToLift));
-                                    }
-                                }
-                            });
-
-                            btn_plus.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (numRobotsDidLift < 2) {
-                                        numRobotsDidLift++;
-                                        tv_didLift.setText(String.valueOf(numRobotsDidLift));
-                                    }
-                                }
-                            });
-
-                            btn_minus.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (numRobotsDidLift > 0) {
-                                        numRobotsDidLift--;
-                                        tv_didLift.setText(String.valueOf(numRobotsDidLift));
-                                    }
-                                }
-                            });
-
-                            btn_cancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ftbDialog.cancel();
-                                }
-                            });
-
-                            btn_done.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    recordFTB(liftSelfAttempt, numRobotsAttemptedToLift, liftSelfActual, numRobotsDidLift);
-
-                                    ftbDialog.dismiss();
-                                }
-                            });
-
-
-                            builder2.setMessage("Did the scouted robot climb/lift itself?")
-                                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            liftSelfAttempt = true;
-                                            liftSelfActual = true;
-
-                                            ftbDialog.show();
-                                        }
-                                    })
-                                    .setNeutralButton("ATTEMPTED TO, BUT FAILED", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            liftSelfAttempt = true;
-                                            liftSelfActual = false;
-
-                                            ftbDialog.show();
-                                        }
-                                    })
-                                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int which) {
-                                            liftSelfAttempt = false;
-                                            liftSelfActual = false;
-
-                                            ftbDialog.show();
-                                        }
-                                    })
-                                    .show();
-                        }
-                    })
-
-                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            ftbEndTime = Float.valueOf(String.format("%.2f", TimerUtil.timestamp));
-
-                            recordFTB(false, 0, false, 0);
-                        }
-                    })
-                    .show();
+    public void climbAttemptEdit(Button spaceValue, Integer space){
+        if(climbInputted){
+            if (climbAttemptValues.get(space)==0){
+                spaceValue.setText("None");
+            }else{
+                spaceValue.setText(climbAttemptValues.get(space).toString());
+            }
         }
     }
+    public void climbActualEdit(Button spaceValue, Integer space){
+        if(climbInputted){
+            if (climbActualValues.get(space)==0){
+                spaceValue.setText("None");
+            }else{
+                spaceValue.setText(climbActualValues.get(space).toString());
+            }
+        }
+    }
+
+
+    public void onClickClimb(View v) {
+        final Float climbStartTime=TimerUtil.timestamp;
+        final Dialog climbDialog = new Dialog(this);
+        climbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (isMapLeft){
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.climb_dialog_l, null);
+        }
+        else {
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.climb_dialog_r, null);
+        }
+       climbDialog.setCanceledOnTouchOutside(false);
+       climbDialog.setCancelable(false);
+
+        zeroI= (Button) dialogLayout.findViewById(R.id.zero);
+        oneI= (Button) dialogLayout.findViewById(R.id.one);
+        twoAI= (Button) dialogLayout.findViewById(R.id.twoa);
+        threeI= (Button) dialogLayout.findViewById(R.id.three);
+        twoBI= (Button) dialogLayout.findViewById(R.id.twob);
+        zeroII= (Button) dialogLayout.findViewById(R.id.zeroII);
+        oneII= (Button) dialogLayout.findViewById(R.id.oneII);
+        twoAII= (Button) dialogLayout.findViewById(R.id.twoaII);
+        threeII= (Button) dialogLayout.findViewById(R.id.threeII);
+        twoBII= (Button) dialogLayout.findViewById(R.id.twobII);
+        spaceOneI= (Button) dialogLayout.findViewById(R.id.SpaceOne);
+        spaceTwoI= (Button) dialogLayout.findViewById(R.id.SpaceTwo);
+        spaceThreeI= (Button) dialogLayout.findViewById(R.id.SpaceThree);
+        spaceOneII= (Button) dialogLayout.findViewById(R.id.SpaceOneII);
+        spaceTwoII= (Button) dialogLayout.findViewById(R.id.SpaceTwoII);
+        spaceThreeII= (Button) dialogLayout.findViewById(R.id.SpaceThreeII);
+        final Button cancel= (Button) dialogLayout.findViewById(R.id.cancelButton);
+        final Button done= (Button) dialogLayout.findViewById(R.id.doneButton);
+        spaceChanger(spaceTwoI, spaceThreeI, spaceOneI);
+        spaceChanger(spaceTwoII, spaceThreeII, spaceOneII);
+
+        climbAttemptEdit(spaceOneI,0);
+        climbAttemptEdit(spaceTwoI,1);
+        climbAttemptEdit(spaceThreeI,2);
+        climbActualEdit(spaceOneII,0);
+        climbActualEdit(spaceTwoII,1);
+        climbActualEdit(spaceThreeII,2);
+
+        //this code works if we want to preset values
+//        onClicknoneI(dialogLayout);
+//        onClickoneI(dialogLayout);
+//        onClicktwoAI(dialogLayout);
+//        onClickthreeI(dialogLayout);
+//        onClicktwoBI(dialogLayout);
+//        onClicknoneII(dialogLayout);
+//        onClickoneII(dialogLayout);
+//        onClicktwoAII(dialogLayout);
+//        onClickthreeII(dialogLayout);
+//        onClicktwoBII(dialogLayout);
+//
+//        onClickspaceOneI(dialogLayout);
+//        onClickspaceTwoI(dialogLayout);
+//        onClickspaceThreeI(dialogLayout);
+//
+//        onClickspaceOneII(dialogLayout);
+//        onClickspaceTwoII(dialogLayout);
+//        onClickspaceThreeII(dialogLayout);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                climbActualCounter=0;
+                climbAttemptCounter=0;
+                climbDialog.dismiss();
+            }
+        });
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(spaceOneI.getText().toString().equals(" ") || spaceTwoI.getText().toString().equals(" ") || spaceThreeI.getText().toString().equals(" ") || spaceOneII.getText().toString().equals(" ") || spaceTwoII.getText().toString().equals(" ") || spaceThreeII.getText().toString().equals(" ")){
+                    Toast.makeText(getBaseContext(), "Make Sure You Filled Out All Of The Information!",
+                            Toast.LENGTH_SHORT).show();
+
+                }else{
+                    dataListSendAttempt(spaceOneI.getText().toString(), spaceOneI, 0);
+                    dataListSendAttempt(spaceTwoI.getText().toString(), spaceTwoI, 1);
+                    dataListSendAttempt(spaceThreeI.getText().toString(), spaceThreeI, 2);
+                    dataListSendActual(spaceOneII.getText().toString(), spaceOneII, 0);
+                    dataListSendActual(spaceTwoII.getText().toString(), spaceTwoII, 1);
+                    dataListSendActual(spaceThreeII.getText().toString(), spaceThreeII, 2);
+                    Log.e("wok", climbAttemptValues.toString());
+                    Log.e("wok2", climbActualValues.toString());
+
+                    recordClimb(climbStartTime);
+                    climbActualCounter=0;
+                    climbAttemptCounter=0;
+                    climbDialog.dismiss();
+                }
+            }
+        });
+
+        climbDialog.setContentView(dialogLayout);
+        climbDialog.show();
+
+    }
+    public void onClicknoneI(View v) {
+        climbValuesAttempt("None", climbAttemptCounter);
+        climbAttemptCounter++;
+    }
+    public void onClickoneI(View v) {
+        climbValuesAttempt("1", climbAttemptCounter);
+        climbAttemptCounter++;
+    }
+    public void onClicktwoAI(View v) {
+        climbValuesAttempt("2", climbAttemptCounter);
+        climbAttemptCounter++;
+    }
+    public void onClickthreeI(View v) {
+        climbValuesAttempt("3", climbAttemptCounter);
+        climbAttemptCounter++;
+
+    }
+    public void onClicktwoBI(View v) {
+        climbValuesAttempt("2", climbAttemptCounter);
+        climbAttemptCounter++;
+
+    }
+    public void onClicknoneII(View v) {
+        climbValuesActual("None", climbActualCounter);
+        climbActualCounter++;
+
+    }
+    public void onClickoneII(View v) {
+        climbValuesActual("1", climbActualCounter);
+        climbActualCounter++;
+
+    }
+    public void onClicktwoAII(View v) {
+        climbValuesActual("2", climbActualCounter);
+        climbActualCounter++;
+    }
+    public void onClickthreeII(View v) {
+        climbValuesActual("3", climbActualCounter);
+        climbActualCounter++;
+
+    }
+    public void onClicktwoBII(View v) {
+        climbValuesActual("2", climbActualCounter);
+        climbActualCounter++;
+    }
+
+    public void onClickspaceOneI(View v){
+        climbAttemptCounter=0;
+        spaceChanger(spaceTwoI, spaceThreeI, spaceOneI);
+    }
+    public void onClickspaceTwoI(View v){
+        climbAttemptCounter=1;
+        spaceChanger(spaceOneI, spaceThreeI, spaceTwoI);
+
+    }
+    public void onClickspaceThreeI(View v){
+        climbAttemptCounter=2;
+        spaceChanger(spaceOneI, spaceTwoI, spaceThreeI);
+
+    }
+    public void onClickspaceOneII(View v){
+        climbActualCounter=0;
+        spaceChanger(spaceTwoII, spaceThreeII, spaceOneII);
+    }
+    public void onClickspaceTwoII(View v){
+        climbActualCounter=1;
+        spaceChanger(spaceOneII, spaceThreeII, spaceTwoII);
+
+    }
+    public void onClickspaceThreeII(View v){
+        climbActualCounter=2;
+        spaceChanger(spaceOneII, spaceTwoII, spaceThreeII);
+    }
+    public void spaceChanger(Button whiteA, Button whiteB, Button Yellow){
+        whiteA.setBackgroundColor(Color.WHITE);
+        whiteB.setBackgroundColor(Color.WHITE);
+        Yellow.setBackgroundColor(Color.parseColor("#f6ff6a"));
+    }
+
+    public void climbValuesAttempt(String buttonNumber, Integer climbintA){
+        if (climbintA%3==0 ){
+            spaceOneI.setText(buttonNumber);
+            spaceChanger(spaceOneI, spaceThreeI, spaceTwoI);
+
+        }else if(climbintA%3==1){
+            spaceTwoI.setText(buttonNumber);
+            spaceChanger(spaceOneI, spaceTwoI, spaceThreeI);
+
+        }else if (climbintA%3==2){
+            spaceThreeI.setText(buttonNumber);
+            spaceChanger(spaceTwoI, spaceThreeI, spaceOneI);
+        }
+
+    }
+    public void climbValuesActual(String buttonNumber, Integer climbintB){
+        if(climbintB%3==0){
+            spaceOneII.setText(buttonNumber);
+            spaceChanger(spaceOneII, spaceThreeII, spaceTwoII);
+        }else if(climbintB%3==1){
+            spaceTwoII.setText(buttonNumber);
+            spaceChanger(spaceOneII, spaceTwoII, spaceThreeII);
+        }else if(climbintB%3==2){
+            spaceThreeII.setText(buttonNumber);
+            spaceChanger(spaceTwoII, spaceThreeII, spaceOneII);
+        }
+    }
+    public void dataListSendAttempt(String buttonvalue, Button spaceValueAttempt, Integer listID){
+        if(!climbInputted){
+            if (buttonvalue.equals("None")){
+                climbAttemptValues.add(0);
+            }else{
+                climbAttemptValues.add(Integer.valueOf(spaceValueAttempt.getText().toString()));
+            }
+        }else {
+            if (buttonvalue.equals("None")){
+                climbAttemptValues.set(listID, 0);
+            }else{
+                climbAttemptValues.set(listID, Integer.valueOf(spaceValueAttempt.getText().toString()));
+            }
+        }
+    }
+    public void dataListSendActual(String buttonvalue, Button spaceValueActual, Integer listID){
+        if(!climbInputted){
+            if (buttonvalue.equals("None")){
+                climbActualValues.add(0);
+            }else{
+                climbActualValues.add(Integer.valueOf(spaceValueActual.getText().toString()));
+            }
+        }else {
+            if (buttonvalue.equals("None")){
+                climbActualValues.set(listID, 0);
+            }else{
+                climbActualValues.set(listID, Integer.valueOf(spaceValueActual.getText().toString()));
+            }
+        }
+    }
+
 
     public void onClickIncap(View v) throws JSONException {
         if (!incapChecked) {
@@ -620,23 +785,23 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     int x = (int) motionEvent.getX();
                     int y = (int) motionEvent.getY();
                     if (x <= 1700 && y <= 1000 && InputManager.mScoutId <= 6 || x <= 1110 && y <= 610 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12|| x<=845 && y<=490 && InputManager.mScoutId >=12 ) {
-                        if ((x >= 400 && x <= 590 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (field && !tele))) {
+                        if ((x >= 400 && x <= 590 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (isMapLeft && !tele))) {
                             if(shapeCheck) {
                                 Log.d("locationOutput", "Top Left switch");
                                 initShape(view, "score4", "score1", x, y, "circle", iv2, iv, false);
                             }
                         }
-                        else if ((x >= 400 && x <= 590 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (field && !tele))) {
+                        else if ((x >= 400 && x <= 590 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (isMapLeft && !tele))) {
                             if(shapeCheck) {
                                 Log.d("locationOutput", "Bottom Left switch");
                                 initShape(view, "score3", "score6", x, y, "circle", iv2, iv, false);
                             }
-                        } else if ((x >= 1110 && x <= 1300 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (!field && !tele))) {
+                        } else if ((x >= 1110 && x <= 1300 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (!isMapLeft && !tele))) {
                             if(shapeCheck) {
                                 Log.d("locationOutput", "Top Right switch");
                                 initShape(view, "score6", "score3", x, y, "circle", iv2, iv, false);
                             }
-                        } else if ((x >= 1110 && x <= 1300 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (!field && !tele))) {
+                        } else if ((x >= 1110 && x <= 1300 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (!isMapLeft && !tele))) {
                             if(shapeCheck) {
                                 Log.d("locationOutput", "Bottom Right switch");
                                 initShape(view, "score1", "score4", x, y, "circle", iv2, iv, false);
@@ -666,22 +831,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 Log.d("locationOutput", "Exchange");
                                 initShape(view, "exchangeScore", "exchangeScore", x, y, "circle", iv2, iv, false);
                             }
-                        } else if (((x > 110 && x <= 500 && InputManager.mScoutId <= 6) || (x > 80 && x <= 320 && InputManager.mScoutId > 6 && InputManager.mScoutId <12) || (x<=250 && x>=60 && InputManager.mScoutId >=12)) && (tele || (field && !tele))) {
+                        } else if (((x > 110 && x <= 500 && InputManager.mScoutId <= 6) || (x > 80 && x <= 320 && InputManager.mScoutId > 6 && InputManager.mScoutId <12) || (x<=250 && x>=60 && InputManager.mScoutId >=12)) && (tele || (isMapLeft && !tele))) {
                             if(!shapeCheck) {
                                 Log.d("locationInput", "1");
                                 initShape(view, "intake4", "intake1", x, y, "triangle", iv, iv2, true);
                             }
-                        } else if (((x > 500 && x <= 845 && InputManager.mScoutId <= 6 || x > 320 && x <= 550 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=430 && x>250 && InputManager.mScoutId >=12)) && (tele || (field && !tele))) {
+                        } else if (((x > 500 && x <= 845 && InputManager.mScoutId <= 6 || x > 320 && x <= 550 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=430 && x>250 && InputManager.mScoutId >=12)) && (tele || (isMapLeft && !tele))) {
                             if(!shapeCheck) {
                                 Log.d("locationInput", "2");
                                 initShape(view, "intake3", "intake2", x, y, "triangle", iv, iv2, true);
                             }
-                        } else if (((x > 845 && x <= 1200 && InputManager.mScoutId <= 6 || x > 550 && x <= 800 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=600 && x>430 && InputManager.mScoutId >=12)) && (tele || (!field && !tele))) {
+                        } else if (((x > 845 && x <= 1200 && InputManager.mScoutId <= 6 || x > 550 && x <= 800 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=600 && x>430 && InputManager.mScoutId >=12)) && (tele || (!isMapLeft && !tele))) {
                             if(!shapeCheck) {
                                 Log.d("locationInput", "3");
                                 initShape(view, "intake2", "intake3", x, y, "triangle", iv, iv2, true);
                             }
-                        } else if (((x > 1200 && x <= 1580 && InputManager.mScoutId <= 6 || x > 800 && x <= 1040 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=850 && x>600 && InputManager.mScoutId >=12)) && (tele || (!field && !tele))) {
+                        } else if (((x > 1200 && x <= 1580 && InputManager.mScoutId <= 6 || x > 800 && x <= 1040 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=850 && x>600 && InputManager.mScoutId >=12)) && (tele || (!isMapLeft && !tele))) {
                             if(!shapeCheck) {
                                 Log.d("locationInput", "4");
                                 initShape(view, "intake1", "intake4", x, y, "triangle", iv, iv2, true);
@@ -760,6 +925,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
+    public void mapOrientation(Boolean field1, Boolean field2) {
+        if (InputManager.mAllianceColor.equals("red")) {
+            isMapLeft = field1;
+        } else if (InputManager.mAllianceColor.equals("blue")) {
+            isMapLeft = field2;
+        }
+    }
+
     public void mapChange() {
         if(shapeCheck) {
             if (field_orientation.equals("rb")) {
@@ -777,35 +950,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-    public void recordFTB(Boolean attemptBool, Integer attemptNum, Boolean actualBool, Integer actualNum) {
-        climbAttemptValues.add(attemptBool);
-        climbAttemptValues.add(attemptNum);
-
-        climbActualValues.add(actualBool);
-        climbActualValues.add(actualNum);
-
+    public void recordClimb(float time) {
         try {
-            ftbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-            ftbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-
-            ftbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-            ftbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-
-            climbValues.add(ftbAttemptData);
-            climbValues.add(ftbActualData);
-            climbValues.add(ftbStartTime);
-            climbValues.add(ftbEndTime);
-
-            ftbFinalData.put(climbKeys.get(0), climbValues.get(0));
-            ftbFinalData.put(climbKeys.get(1), climbValues.get(1));
-            ftbFinalData.put(climbKeys.get(2), climbValues.get(2));
-            ftbFinalData.put(climbKeys.get(3), climbValues.get(3));
+            climbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
+            climbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
+            climbAttemptData.put(climbAttemptKeys.get(2), climbAttemptValues.get(2));
+            climbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
+            climbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
+            climbActualData.put(climbActualKeys.get(2), climbActualValues.get(2));
+            climbFinalData.put(climbKeys.get(0), "climb");
+            climbFinalData.put(climbKeys.get(1), time);
+            climbFinalData.put(climbKeys.get(2), climbAttemptData);
+            climbFinalData.put(climbKeys.get(3), climbActualData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         climbInputted = true;
-
-        Log.i("FTB", ftbFinalData.toString());
+        Log.e("Climb", climbFinalData.toString());
     }
 }
