@@ -183,11 +183,11 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_below="@+id/btn_edit_data"
-            android:text="FTB"
+            android:text="Climb"
             android:textSize="30dp"
             android:textAlignment="center"
             android:background="@drawable/btn_ftb_selector"
-            android:onClick="onClickFTB"/>
+            android:onClick="onClickClimb"/>
         <ToggleButton
             android:id="@+id/tgbtn_incap"
             android:layout_width="match_parent"
