@@ -78,8 +78,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public List<String> climbActualKeys = Arrays.asList("self", "robot1", "robot2");
     public List<String> climbKeys = Arrays.asList("type", "time", "attempted", "actual");
 
-    public List<Object> climbAttemptValues = new ArrayList<>();
-    public List<Object> climbActualValues = new ArrayList<>();
+    public List<Integer> climbAttemptValues = new ArrayList<>();
+    public List<Integer> climbActualValues = new ArrayList<>();
     public List<Object> climbValues = new ArrayList<>();
 
     JSONObject climbAttemptData = new JSONObject();
@@ -548,21 +548,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             Toast.LENGTH_SHORT).show();
 
                 }else{
-                    if(!climbInputted){
-                        climbAttemptValues.add(spaceOneI.getText().toString());
-                        climbAttemptValues.add(spaceTwoI.getText().toString());
-                        climbAttemptValues.add(spaceThreeI.getText().toString());
-                        climbActualValues.add(spaceOneII.getText().toString());
-                        climbActualValues.add(spaceTwoII.getText().toString());
-                        climbActualValues.add(spaceThreeII.getText().toString());
-                    }else{
-                        climbAttemptValues.set(0, spaceOneI.getText().toString());
-                        climbAttemptValues.set(1, spaceTwoI.getText().toString());
-                        climbAttemptValues.set(2, spaceThreeI.getText().toString());
-                        climbActualValues.set(0, spaceOneII.getText().toString());
-                        climbActualValues.set(1, spaceTwoII.getText().toString());
-                        climbActualValues.set(2, spaceThreeII.getText().toString());
-                    }
+                    dataListSendAttempt(spaceOneI.getText().toString(), spaceOneI, 0);
+                    dataListSendAttempt(spaceTwoI.getText().toString(), spaceTwoI, 1);
+                    dataListSendAttempt(spaceThreeI.getText().toString(), spaceThreeI, 2);
+                    dataListSendActual(spaceOneII.getText().toString(), spaceOneII, 0);
+                    dataListSendActual(spaceTwoII.getText().toString(), spaceTwoII, 1);
+                    dataListSendActual(spaceThreeII.getText().toString(), spaceThreeII, 2);
                     Log.e("wok", climbAttemptValues.toString());
                     Log.e("wok2", climbActualValues.toString());
 
@@ -683,6 +674,36 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }else if(climbintB%3==2){
             spaceThreeII.setText(buttonNumber);
             spaceChanger(spaceTwoII, spaceThreeII, spaceOneII);
+        }
+    }
+    public void dataListSendAttempt(String buttonvalue, Button spaceValueAttempt, Integer listID){
+        if(!climbInputted){
+            if (buttonvalue.equals("None")){
+                climbAttemptValues.add(0);
+            }else{
+                climbAttemptValues.add(Integer.valueOf(spaceValueAttempt.getText().toString()));
+            }
+        }else {
+            if (buttonvalue.equals("None")){
+                climbAttemptValues.set(listID, 0);
+            }else{
+                climbAttemptValues.set(listID, Integer.valueOf(spaceValueAttempt.getText().toString()));
+            }
+        }
+    }
+    public void dataListSendActual(String buttonvalue, Button spaceValueActual, Integer listID){
+        if(!climbInputted){
+            if (buttonvalue.equals("None")){
+                climbActualValues.add(0);
+            }else{
+                climbActualValues.add(Integer.valueOf(spaceValueActual.getText().toString()));
+            }
+        }else {
+            if (buttonvalue.equals("None")){
+                climbActualValues.set(listID, 0);
+            }else{
+                climbActualValues.set(listID, Integer.valueOf(spaceValueActual.getText().toString()));
+            }
         }
     }
 
