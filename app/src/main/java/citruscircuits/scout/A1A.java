@@ -40,6 +40,7 @@ import citruscircuits.scout.utils.TimerUtil;
 
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
+import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -158,11 +159,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         layoutInflater = (LayoutInflater) A1A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 620, 450, false);
+        if(mScoutId < 9) {
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 620, 450, false);
+        } else {
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 410, 300, false);
+        }
         popup.setOutsideTouchable(false);
         popup.setFocusable(false);
 
-        popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 620, 450, false);
+        if(mScoutId < 9) {
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 620, 450, false);
+        } else {
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 410, 300, false);
+        }
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);
 
@@ -550,24 +559,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     x = (int) motionEvent.getX();
                     y = (int) motionEvent.getY();
 
-                    if(!((field_orientation.contains("right") && x>=1425 && y<615 && y>415) || (field_orientation.contains("left") && x<250 && y<615 && y>415))) {
-                        if(mode.equals("intake")) {
-                            if((field_orientation.contains("left") && x>275 && x<545 && y>340 && y<680) || (field_orientation.contains("right") && x>1145 && x<1425 && y>335 && y<695)) {
-                                mode = "placement";
-                                element = "orange";
-                                if ((y < 510 && field_orientation.contains("right")) || (y>=510 && field_orientation.contains("left"))) {
-                                    zone = "rightDepot";
-                                } else if ((y < 510 && field_orientation.contains("left")) || (y>=510 && field_orientation.contains("right"))) {
-                                    zone = "leftDepot";
-                                }
-                                initShape();
-                            } else {
-                                initPopup(popup);
+                    if(mode.equals("intake")) {
+                        if((((field_orientation.contains("left") && x>275 && x<545) || (field_orientation.contains("right") && x>1145 && x<1425)) && y>340 && y<690 && mScoutId < 9) || (((field_orientation.contains("left") && x>175 && x<360) || (field_orientation.contains("right") && x>775 && x<955)) && y>225 && y<460 && mScoutId >= 9)) {
+                            mode = "placement";
+                            element = "orange";
+                            if ((((y < 510 && field_orientation.contains("right")) || (y>=510 && field_orientation.contains("left"))) && mScoutId < 9) || (((y < 345 && field_orientation.contains("right")) || (y>=345 && field_orientation.contains("left"))) && mScoutId >= 9)) {
+                                zone = "rightDepot";
+                            } else if ((((y < 510 && field_orientation.contains("left")) || (y>=510 && field_orientation.contains("right"))) && mScoutId < 9)  || (((y < 345 && field_orientation.contains("left")) || (y>=345 && field_orientation.contains("right"))) && mScoutId >= 9)) {
+                                zone = "leftDepot";
                             }
+                            initShape();
+                        } else {
+                            initPopup(popup);
                         }
-                        else if(mode.equals("placement")) { //TODO add placement coordinates
-                            initPopup(popup_fail_success);
-                        }
+                    } else if(mode.equals("placement")) { //TODO add placement coordinates
+                        initPopup(popup_fail_success);
                     }
                 }
                 return false;
@@ -715,31 +721,35 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup.dismiss();
         element = givenElement;
 
-        if((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) {
-            if((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) {
+        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9) || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
+            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
                 zone = "leftLoadingStation";
-            } else if((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) {
+            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mScoutId >= 9)) {
                 zone = "rightLoadingStation";
             }
             initPopup(popup_fail_success);
-        } else if((field_orientation.contains("left") && x >= 225) || (field_orientation.contains("right") && x <= 1440)) {
+        } else {
             mode = "placement";
-            if((field_orientation.contains("left") && y>517 && x<=540) || (field_orientation.contains("right") && y<517 && x>=1160)) {
-                zone = "zone1Right";
-            } else if((field_orientation.contains("left") && y>517 && x<=940) || (field_orientation.contains("right") && y<517 && x>=760)) {
-                zone = "zone2Right";
-            } else if((field_orientation.contains("left") && y>517 && x<=1445) || (field_orientation.contains("right") && y<517 && x>=255)) {
-                zone = "zone3Right";
-            } else if((field_orientation.contains("left") && y>517) || (field_orientation.contains("right") && y<517)) {
-                zone = "zone4Right";
-            } else if((field_orientation.contains("left") && y<=517 && x<=540) || (field_orientation.contains("right") && y>=517 && x>=1160)) {
-                zone = "zone1Left";
-            } else if((field_orientation.contains("left") && y<=517 && x<=940) || (field_orientation.contains("right") && y>=517 && x>=760)) {
-                zone = "zone2Left";
-            } else if((field_orientation.contains("left") && y<=517 && x<=1445) || (field_orientation.contains("right") && y>=517 && x>=255)) {
-                zone = "zone3Left";
-            } else if((field_orientation.contains("left") && y<=517) || (field_orientation.contains("right") && y>=517)) {
-                zone = "zone4Left";
+            if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                    zone = "zone1Right";
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                    zone = "zone2Right";
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                    zone = "zone3Right";
+                } else {
+                    zone = "zone4Right";
+                }
+            } else {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                    zone = "zone1Left";
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                    zone = "zone2Left";
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                    zone = "zone3Left";
+                } else {
+                    zone = "zone4Left";
+                }
             }
 
             try {
