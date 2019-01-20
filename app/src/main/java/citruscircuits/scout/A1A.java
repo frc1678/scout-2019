@@ -343,7 +343,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
-        timestamp("drop");
+        timestamp();
         shapeCheck = false;
         overallLayout.removeView(iv_game_element);
         actionList.clear();
@@ -358,7 +358,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickSpill(View v) throws JSONException {
         if (!startTimer && !incapChecked) {
-            timestamp("spill");
+            timestamp();
             InputManager.numSpill++;
             btn_spill.setText("SPILL - " + InputManager.numSpill);
         }
@@ -528,7 +528,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             btn_drop.setEnabled(false);
             btn_undo.setEnabled(false);
-            timestamp("beganIncap");
+            timestamp();
 
             incapChecked = true;
         } else if (incapChecked) {
@@ -536,7 +536,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if (shapeCheck) {
                 btn_drop.setEnabled(true);
             }
-            timestamp("endIncap");
+            timestamp();
             incapChecked = false;
         }
     }
@@ -592,6 +592,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         mode = "intake";
 
+        if(zone.contains("LoadingStation")) {
+            recordLoadingStation(false);
+        }
+
 //        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
 //            initPopup(popup_rocket);
 //        }
@@ -606,6 +610,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mode = "placement";
         } else if(mode.equals("placement")) {
             mode = "intake";
+        }
+
+        if(zone.contains("LoadingStation")) {
+            recordLoadingStation(true);
         }
 
         initShape();
@@ -625,16 +633,29 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup_rocket.dismiss();
     }
 
-    public void timestamp(String datapoint) {
+    public void timestamp() {
         try {
             if ((TimerUtil.timestamp <= 135 && !tele) || (TimerUtil.timestamp > 135 && tele)) {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, String.format("%.2f", TimerUtil.timestamp) + "*"));
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp) + "*"));
             } else {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, String.format("%.2f", TimerUtil.timestamp)));
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp)));
             }
         } catch (JSONException je) {
             je.printStackTrace();
         }
+    }
+
+    public void recordLoadingStation(boolean didSucceed) {
+        try {
+            mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+            timestamp();
+            mRealTimeMatchData.put(new JSONObject().put("piece", element));
+            mRealTimeMatchData.put(new JSONObject().put("zone", zone));
+            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
     public void mapChange() {
@@ -720,6 +741,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             } else if((field_orientation.contains("left") && y<=517) || (field_orientation.contains("right") && y>=517)) {
                 zone = "zone4Left";
             }
+
+            try {
+                mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+                timestamp();
+                mRealTimeMatchData.put(new JSONObject().put("piece", element));
+                mRealTimeMatchData.put(new JSONObject().put("zone", zone));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.i("RECORDING?", mRealTimeMatchData.toString());
             initShape();
         }
     }
