@@ -661,8 +661,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void spaceChanger(Button whiteA, Button whiteB, Button Yellow){
         whiteA.setBackgroundColor(Color.WHITE);
         whiteB.setBackgroundColor(Color.WHITE);
-        Yellow.setBackgroundColor(Color.YELLOW);
-
+        Yellow.setBackgroundColor(Color.parseColor("#f6ff6a"));
     }
 
     public void climbValuesAttempt(String buttonNumber, Integer climbintA){

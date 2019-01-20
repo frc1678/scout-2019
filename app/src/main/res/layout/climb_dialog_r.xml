@@ -138,6 +138,35 @@
             android:textSize="20sp" />
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/attemptDisplayTitle"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/actualDisplay"
+        android:layout_marginStart="45dp"
+        >
+
+        <TextView
+            android:id="@+id/SpaceOneTextI"
+            android:layout_width="75dp"
+            android:layout_height="80sp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Self"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/SpaceTwoTextI"
+            android:layout_width="150dp"
+            android:layout_height="80sp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Other Bots"
+            android:textSize="20sp"
+
+            />
+    </LinearLayout>
 
 
     <TextView
@@ -262,10 +291,35 @@
             android:onClick="onClickspaceThreeII"
             android:background="@drawable/button_border_line"
             android:textSize="20sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/actualDisplayTitle"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/actualDisplay"
+        android:layout_marginStart="320dp"
+        >
 
+        <TextView
+            android:id="@+id/SpaceOneTextII"
+            android:layout_width="75dp"
+            android:layout_height="80sp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Self"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/SpaceTwoTextII"
+            android:layout_width="150dp"
+            android:layout_height="80sp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Other Bots"
+            android:textSize="20sp"
 
-
-
+            />
     </LinearLayout>
 
     <LinearLayout
