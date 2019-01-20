@@ -43,6 +43,7 @@ import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AutoDialog;
 import citruscircuits.scout.utils.TimerUtil;
 
+import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 import static java.lang.String.valueOf;
 
@@ -91,10 +92,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button btn_startTimer;
     public Button btn_drop;
     public Button btn_spill;
-    public Button btn_foul;
     public Button btn_undo;
-    public Button btn_edit;
-    public Button btn_ftb;
+    public Button btn_climb;
     public Button btn_arrow;
 
     public Button zeroI;
@@ -153,50 +152,59 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         //InputManager.initMatchKey();
 
-        if (AppCc.getSp("mapOrientation", 99) != 99) {
-            if (AppCc.getSp("mapOrientation", 99) == 0) {
-                mapOrientation(R.layout.activity_map_rb, R.id.fieldrb, "rb", true, false);
-            } else {
-                mapOrientation(R.layout.activity_map_br, R.id.fieldbr, "br", false, true);
-            }
-        } else {
-            mapOrientation(R.layout.activity_map_rb, R.id.fieldrb, "rb", true, false);
-        }
-        //public void mapOrientation(int map, int fieldOrientation, String field_orientation_given, Boolean field1, Boolean field2) {
-        //        AppCc.setSp("mapOrientation", 0);
-        //        setContentView(map);
-        //        field_orientation = field_orientation_given;
-        //        overallLayout = findViewById(fieldOrientation);
-        //        if (InputManager.mAllianceColor.equals("red")) {
-        //            isMapLeft = field1;
-        //        } else if (InputManager.mAllianceColor.equals("blue")) {
-        //            isMapLeft = field2;
-        //        }
-        //    }
+        setContentView(R.layout.activity_map);
 
         iv_field = findViewById(R.id.imageView);
 
+        if (AppCc.getSp("mapOrientation", 99) != 99) {
+            if (AppCc.getSp("mapOrientation", 99) == 0) {
+                if(mAllianceColor.equals("blue")) {
+                    iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                    field_orientation = "blue_left";
+                    mapOrientation(false,true);
+                } else if(mAllianceColor.equals("red")) {
+                    iv_field.setImageResource(R.drawable.field_intake_red_right);
+                    field_orientation = "red_right";
+                    mapOrientation(true,false);
+
+                }
+            } else {
+                if(mAllianceColor.equals("blue")) {
+                    iv_field.setImageResource(R.drawable.field_intake_blue_right);
+                    field_orientation = "blue_right";
+                    mapOrientation(true,false);
+
+                } else if(mAllianceColor.equals("red")) {
+                    iv_field.setImageResource(R.drawable.field_intake_red_left);
+                    field_orientation = "red_left";
+                    mapOrientation(false,true);
+
+
+                }
+            }
+        } else {
+            if(mAllianceColor.equals("blue")) {
+                iv_field.setImageResource(R.drawable.field_intake_blue_right);
+                field_orientation = "blue_right";
+                mapOrientation(true,false);
+
+
+            } else if(mAllianceColor.equals("red")) {
+                iv_field.setImageResource(R.drawable.field_intake_red_left);
+                field_orientation = "red_left";
+                mapOrientation(false,true);
+
+            }
+        }
+
         tv_team = findViewById(R.id.tv_teamNum);
-
-        rg_blue_starting_position = findViewById(R.id.blue_starting_position);
-        rg_red_starting_position = findViewById(R.id.red_starting_position);
-
-        rb_blue_right = findViewById(R.id.blue_starting_position_right);
-        rb_blue_center = findViewById(R.id.blue_starting_position_center);
-        rb_blue_left = findViewById(R.id.blue_starting_position_left);
-        rb_red_right = findViewById(R.id.red_starting_position_right);
-        rb_red_center = findViewById(R.id.red_starting_position_center);
-        rb_red_left = findViewById(R.id.red_starting_position_left);
 
         btn_drop = findViewById(R.id.btn_dropped);
         btn_spill = findViewById(R.id.btn_spilled);
-        btn_foul = findViewById(R.id.btn_fouled);
         btn_undo = findViewById(R.id.btn_undo);
-        btn_edit = findViewById(R.id.btn_edit_data);
-        btn_ftb = findViewById(R.id.btn_ftb);
         btn_arrow = findViewById(R.id.btn_arrow);
 
-        tb_incap = findViewById(R.id.tgbtn_incap);
+        tb_incap = findViewById(R.id.tbtn_incap);
 
         iv = new ImageView(getApplicationContext());
         iv2 = new ImageView(getApplicationContext());
@@ -204,27 +212,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionDic = new HashMap<Integer, List<Object>>();
         actionList = new ArrayList<Object>();
 
+        overallLayout = findViewById(R.id.field);
+
         TimerUtil.mTimerView = findViewById(R.id.tv_timer);
         TimerUtil.mActivityView = findViewById(R.id.tv_activity);
-
-        Fragment fragment = new AutoDialog();
-
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        if (InputManager.mAllianceColor.equals("red")) {
-            transaction.add(R.id.red_auto, fragment, "FRAGMENT");
-            for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
-                rg_blue_starting_position.getChildAt(i).setEnabled(false);
-            }
-        } else if (InputManager.mAllianceColor.equals("blue")) {
-            transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
-            for (int i = 0; i < rg_red_starting_position.getChildCount(); i++) {
-                rg_red_starting_position.getChildAt(i).setEnabled(false);
-            }
-        }
-
-        transaction.commit();
 
         tv_team.setText(valueOf(InputManager.mTeamNum));
 
@@ -266,29 +257,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_spill.setText("SPILL - " + InputManager.numSpill);
                 }
                 Log.e("LONG CLICK? SPILL", mRealTimeMatchData.toString());
-                return true;
-            }
-        }));
-
-        btn_foul.setOnLongClickListener((new View.OnLongClickListener() {
-            public boolean onLongClick(View v) {
-                if (!startTimer && !incapChecked && InputManager.numFoul>0) {
-                    int index = -1;
-                    for(int i=0;i<mRealTimeMatchData.length();i++){
-                        try {
-                            String test = mRealTimeMatchData.getString(i);
-                            if(test.contains("scaleFoul")) {
-                                index = i;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    mRealTimeMatchData.remove(index);
-                    InputManager.numFoul--;
-                    btn_foul.setText("FOUL - " + InputManager.numFoul);
-                }
-                Log.e("LONG CLICK? FOUL", mRealTimeMatchData.toString());
                 return true;
             }
         }));
@@ -445,14 +413,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-    public void onClickFoul(View v) throws JSONException {
-        if (!startTimer && !incapChecked) {
-            timestamp("scaleFoul");
-            InputManager.numFoul++;
-            btn_foul.setText("FOUL - " + InputManager.numFoul);
-        }
-    }
-
     public void onClickUndo(View v) {
         Log.e("jkgg", valueOf(actionCount));
         if (actionCount > 0) {
@@ -507,13 +467,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //            }
         }
     }
-
-    public void onClickEdit(View v) {
-        if (actionCount > 0) {
-
-        }
-    }
-
 
 
     public void onClickClimb(View v) {
@@ -877,9 +830,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         lp.setMargins(x - 25, y - 40, 0, 0);
         add.setLayoutParams(lp);
         if (add == iv) {
-            add.setImageDrawable(getResources().getDrawable(R.drawable.triangle_image));
+            add.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
         } else if (add == iv2) {
-            add.setImageDrawable(getResources().getDrawable(R.drawable.blackcircle));
+            add.setImageDrawable(getResources().getDrawable(R.drawable.orange));
         }
         shapeCheck = check;
         btn_undo.setEnabled(true);
@@ -936,11 +889,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-    public void mapOrientation(int map, int fieldOrientation, String field_orientation_given, Boolean field1, Boolean field2) {
-        AppCc.setSp("mapOrientation", 0);
-        setContentView(map);
-        field_orientation = field_orientation_given;
-        overallLayout = findViewById(fieldOrientation);
+    public void mapOrientation(Boolean field1, Boolean field2) {
         if (InputManager.mAllianceColor.equals("red")) {
             isMapLeft = field1;
         } else if (InputManager.mAllianceColor.equals("blue")) {
@@ -951,16 +900,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void mapChange() {
         if(shapeCheck) {
             if (field_orientation.equals("rb")) {
-                iv_field.setImageResource(R.drawable.field_yellow_rb);
+                iv_field.setImageResource(R.drawable.field_intake_blue_left);
             } else if (field_orientation.equals("br")) {
-                iv_field.setImageResource(R.drawable.field_yellow_br);
+                iv_field.setImageResource(R.drawable.field_intake_blue_left);
             }
         }
         if(!shapeCheck) {
             if (field_orientation.equals("rb")) {
-                iv_field.setImageResource(R.drawable.field_rb);
+                iv_field.setImageResource(R.drawable.field_intake_blue_left);
             } else if (field_orientation.equals("br")) {
-                iv_field.setImageResource(R.drawable.field_br);
+                iv_field.setImageResource(R.drawable.field_intake_blue_left);
             }
         }
     }
