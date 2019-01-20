@@ -118,6 +118,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public String mode = "intake";
     public String element;
+    public String zone;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -554,6 +555,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             if((field_orientation.contains("left") && x>275 && x<545 && y>340 && y<680) || (field_orientation.contains("right") && x>1145 && x<1425 && y>335 && y<695)) {
                                 mode = "placement";
                                 element = "orange";
+                                if ((y < 510 && field_orientation.contains("right")) || (y>=510 && field_orientation.contains("left"))) {
+                                    zone = "rightDepot";
+                                } else if ((y < 510 && field_orientation.contains("left")) || (y>=510 && field_orientation.contains("right"))) {
+                                    zone = "leftDepot";
+                                }
                                 initShape();
                             } else {
                                 initPopup(popup);
@@ -570,31 +576,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickOrange(View view) {
-        popup.dismiss();
-        element = "orange";
-
-        if((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) {
-            initPopup(popup_fail_success);
-        } else if((field_orientation.contains("left") && x >= 225) || (field_orientation.contains("right") && x <= 1440)) {
-            mode = "placement";
-            initShape();
-        }
+        initIntake("orange");
     }
 
     public void onClickLemon(View view) {
-        popup.dismiss();
-        element = "lemon";
-
-        if((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) {
-            initPopup(popup_fail_success);
-        } else if((field_orientation.contains("left") && x >= 225) || (field_orientation.contains("right") && x <= 1440)) {
-            mode = "placement";
-            initShape();
-        }
-
-        if((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) {
-            initPopup(popup_fail_success);
-        }
+        initIntake("lemon");
     }
 
     public void onClickCancel(View view) {
@@ -641,12 +627,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void timestamp(String datapoint) {
         try {
-            if (TimerUtil.timestamp <= 135 && !tele) {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, 135));
-            } else if (TimerUtil.timestamp > 135 && tele) {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, 134.9));
+            if ((TimerUtil.timestamp <= 135 && !tele) || (TimerUtil.timestamp > 135 && tele)) {
+                mRealTimeMatchData.put(new JSONObject().put(datapoint, String.format("%.2f", TimerUtil.timestamp) + "*"));
             } else {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
+                mRealTimeMatchData.put(new JSONObject().put(datapoint, String.format("%.2f", TimerUtil.timestamp)));
             }
         } catch (JSONException je) {
             je.printStackTrace();
@@ -704,6 +688,40 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         ((ViewGroup) overallLayout).addView(iv_game_element);
 
         mapChange();
+    }
+
+    public void initIntake(String givenElement) {
+        popup.dismiss();
+        element = givenElement;
+
+        if((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) {
+            if((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) {
+                zone = "leftLoadingStation";
+            } else if((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) {
+                zone = "rightLoadingStation";
+            }
+            initPopup(popup_fail_success);
+        } else if((field_orientation.contains("left") && x >= 225) || (field_orientation.contains("right") && x <= 1440)) {
+            mode = "placement";
+            if((field_orientation.contains("left") && y>517 && x<=540) || (field_orientation.contains("right") && y<517 && x>=1160)) {
+                zone = "zone1Right";
+            } else if((field_orientation.contains("left") && y>517 && x<=940) || (field_orientation.contains("right") && y<517 && x>=760)) {
+                zone = "zone2Right";
+            } else if((field_orientation.contains("left") && y>517 && x<=1445) || (field_orientation.contains("right") && y<517 && x>=255)) {
+                zone = "zone3Right";
+            } else if((field_orientation.contains("left") && y>517) || (field_orientation.contains("right") && y<517)) {
+                zone = "zone4Right";
+            } else if((field_orientation.contains("left") && y<=517 && x<=540) || (field_orientation.contains("right") && y>=517 && x>=1160)) {
+                zone = "zone1Left";
+            } else if((field_orientation.contains("left") && y<=517 && x<=940) || (field_orientation.contains("right") && y>=517 && x>=760)) {
+                zone = "zone2Left";
+            } else if((field_orientation.contains("left") && y<=517 && x<=1445) || (field_orientation.contains("right") && y>=517 && x>=255)) {
+                zone = "zone3Left";
+            } else if((field_orientation.contains("left") && y<=517) || (field_orientation.contains("right") && y>=517)) {
+                zone = "zone4Left";
+            }
+            initShape();
+        }
     }
 
     public void initPopup(PopupWindow pw) {
