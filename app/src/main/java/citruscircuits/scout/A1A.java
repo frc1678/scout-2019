@@ -467,6 +467,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //            }
         }
     }
+    public void climbAttemptEdit(Button spaceValue, Integer space){
+        if(climbInputted){
+            if (climbAttemptValues.get(space)==0){
+                spaceValue.setText("None");
+            }else{
+                spaceValue.setText(climbAttemptValues.get(space).toString());
+            }
+        }
+    }
+    public void climbActualEdit(Button spaceValue, Integer space){
+        if(climbInputted){
+            if (climbActualValues.get(space)==0){
+                spaceValue.setText("None");
+            }else{
+                spaceValue.setText(climbActualValues.get(space).toString());
+            }
+        }
+    }
 
 
     public void onClickClimb(View v) {
@@ -503,14 +521,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         spaceChanger(spaceTwoI, spaceThreeI, spaceOneI);
         spaceChanger(spaceTwoII, spaceThreeII, spaceOneII);
 
-        if (climbInputted){
-            spaceOneI.setText(climbAttemptValues.get(0).toString());
-            spaceTwoI.setText(climbAttemptValues.get(1).toString());
-            spaceThreeI.setText(climbAttemptValues.get(2).toString());
-            spaceOneII.setText(climbActualValues.get(0).toString());
-            spaceTwoII.setText(climbActualValues.get(1).toString());
-            spaceThreeII.setText(climbActualValues.get(2).toString());
-        }
+        climbAttemptEdit(spaceOneI,0);
+        climbAttemptEdit(spaceTwoI,1);
+        climbAttemptEdit(spaceThreeI,2);
+        climbActualEdit(spaceOneII,0);
+        climbActualEdit(spaceTwoII,1);
+        climbActualEdit(spaceThreeII,2);
 
         //this code works if we want to preset values
 //        onClicknoneI(dialogLayout);
