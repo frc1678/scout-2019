@@ -61,6 +61,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean liftSelfActual;
     public boolean climbInputted = false;
     public boolean shapeCheck = false;
+    public boolean pw = true;
 
     public Integer numRobotsAttemptedToLift = 0;
     public Integer numRobotsDidLift = 0;
@@ -556,24 +557,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    x = (int) motionEvent.getX();
-                    y = (int) motionEvent.getY();
+                    if(pw) {
+                        x = (int) motionEvent.getX();
+                        y = (int) motionEvent.getY();
 
-                    if(mode.equals("intake")) {
-                        if((((field_orientation.contains("left") && x>275 && x<545) || (field_orientation.contains("right") && x>1145 && x<1425)) && y>340 && y<690 && mScoutId < 9) || (((field_orientation.contains("left") && x>175 && x<360) || (field_orientation.contains("right") && x>775 && x<955)) && y>225 && y<460 && mScoutId >= 9)) {
-                            mode = "placement";
-                            element = "orange";
-                            if ((((y < 510 && field_orientation.contains("right")) || (y>=510 && field_orientation.contains("left"))) && mScoutId < 9) || (((y < 345 && field_orientation.contains("right")) || (y>=345 && field_orientation.contains("left"))) && mScoutId >= 9)) {
-                                zone = "rightDepot";
-                            } else if ((((y < 510 && field_orientation.contains("left")) || (y>=510 && field_orientation.contains("right"))) && mScoutId < 9)  || (((y < 345 && field_orientation.contains("left")) || (y>=345 && field_orientation.contains("right"))) && mScoutId >= 9)) {
-                                zone = "leftDepot";
+                        if(!(((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))) {
+                            if(mode.equals("intake")) {
+                                pw = false;
+                                initPopup(popup);
+                            } else if(mode.equals("placement")) { //TODO add placement coordinates
+                                //initPopup(popup_fail_success);
+                                mode = "intake";
+                                pw = true;
+                                initShape();
                             }
-                            initShape();
-                        } else {
-                            initPopup(popup);
                         }
-                    } else if(mode.equals("placement")) { //TODO add placement coordinates
-                        initPopup(popup_fail_success);
                     }
                 }
                 return false;
@@ -591,6 +589,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickCancel(View view) {
         popup.dismiss();
+        pw = true;
     }
 
     public void onClickFail(View view) {
@@ -601,6 +600,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if(zone.contains("LoadingStation")) {
             recordLoadingStation(false);
         }
+
+        pw = true;
 
 //        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
 //            initPopup(popup_rocket);
@@ -622,6 +623,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             recordLoadingStation(true);
         }
 
+        pw = true;
         initShape();
 
 //        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
@@ -633,6 +635,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickCancelFS(View view) {
         popup_fail_success.dismiss();
+        pw = true;
     }
 
     public void onClickDone(View view) {
@@ -709,7 +712,29 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 100,
                 100);
-        lp.setMargins(x - 25, y - 40, 0, 0);
+        if((y > 900 && mScoutId < 9) || (y > 550 && mScoutId >= 9)) {
+            if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+                lp.setMargins(x + 20, y - 90, 0, 0);
+            } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+                lp.setMargins(x - 100, y - 90, 0, 0);
+            } else {
+                lp.setMargins(x - 25, y - 90, 0, 0);
+            }
+        } else if((y < 85 && mScoutId < 9) || (y < 55 && mScoutId >= 9)) {
+            if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+                lp.setMargins(x + 20, y + 5, 0, 0);
+            } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+                lp.setMargins(x - 100, y + 5, 0, 0);
+            } else {
+                lp.setMargins(x - 25, y + 5, 0, 0);
+            }
+        } else if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+            lp.setMargins(x + 20, y - 40, 0, 0);
+        } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+            lp.setMargins(x - 100, y - 40, 0, 0);
+        } else {
+            lp.setMargins(x - 25, y - 40, 0, 0);
+        }
         iv_game_element.setLayoutParams(lp);
 
         ((ViewGroup) overallLayout).addView(iv_game_element);
@@ -729,6 +754,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             initPopup(popup_fail_success);
         } else {
+            pw = true;
             mode = "placement";
             if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
