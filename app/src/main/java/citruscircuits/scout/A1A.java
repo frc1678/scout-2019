@@ -9,17 +9,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -40,16 +39,18 @@ import java.util.Arrays;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
-import citruscircuits.scout.utils.AutoDialog;
 import citruscircuits.scout.utils.TimerUtil;
 
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
+import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
 //testing
 public class A1A extends DialogMaker implements View.OnClickListener {
+
+    public LayoutInflater layoutInflater;
 
     public ImageView iv_field;
 
@@ -57,13 +58,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public boolean incapChecked = false;
     public boolean startTimer = true;
-    public boolean noShape = false;
     public boolean tele = false;
     public boolean startedWCube = false;
     public boolean liftSelfAttempt;
     public boolean liftSelfActual;
     public boolean climbInputted = false;
     public boolean shapeCheck = false;
+    public boolean pw = true;
     public boolean isMapLeft=false;
 
     public Integer numRobotsAttemptedToLift = 0;
@@ -119,21 +120,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public ToggleButton tb_auto_run;
     public ToggleButton tb_start_cube;
 
-    public RadioGroup rg_blue_starting_position;
-    public RadioGroup rg_red_starting_position;
-
-    public RadioButton rb_blue_right;
-    public RadioButton rb_blue_center;
-    public RadioButton rb_blue_left;
-    public RadioButton rb_red_right;
-    public RadioButton rb_red_center;
-    public RadioButton rb_red_left;
     public RelativeLayout dialogLayout;
-
     public RelativeLayout overallLayout;
 
-    public ImageView iv;
-    public ImageView iv2;
+    public PopupWindow popup = new PopupWindow();
+    public PopupWindow popup_fail_success = new PopupWindow();
+    public PopupWindow popup_rocket = new PopupWindow();
+
+    public ImageView field;
+    public ImageView iv_game_element;
 
     public Handler handler = new Handler();
     public Runnable runnable = new Runnable() {
@@ -146,11 +141,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Map<Integer, List<Object>> actionDic;
     public int actionCount;
 
+    public int x;
+    public int y;
+
+    public String mode = "intake";
+    public String element;
+    public String zone;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //InputManager.initMatchKey();
 
         setContentView(R.layout.activity_map);
 
@@ -159,43 +159,58 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (AppCc.getSp("mapOrientation", 99) != 99) {
             if (AppCc.getSp("mapOrientation", 99) == 0) {
                 if(mAllianceColor.equals("blue")) {
-                    iv_field.setImageResource(R.drawable.field_intake_blue_left);
-                    field_orientation = "blue_left";
-                    mapOrientation(false,true);
-                } else if(mAllianceColor.equals("red")) {
-                    iv_field.setImageResource(R.drawable.field_intake_red_right);
-                    field_orientation = "red_right";
-                    mapOrientation(true,false);
-
-                }
-            } else {
-                if(mAllianceColor.equals("blue")) {
                     iv_field.setImageResource(R.drawable.field_intake_blue_right);
                     field_orientation = "blue_right";
-                    mapOrientation(true,false);
-
+                    isMapLeft = false;
                 } else if(mAllianceColor.equals("red")) {
                     iv_field.setImageResource(R.drawable.field_intake_red_left);
                     field_orientation = "red_left";
-                    mapOrientation(false,true);
-
-
+                    isMapLeft = true;
+                }
+            } else {
+                if(mAllianceColor.equals("blue")) {
+                    iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                    field_orientation = "blue_left";
+                    isMapLeft = true;
+                } else if(mAllianceColor.equals("red")) {
+                    iv_field.setImageResource(R.drawable.field_intake_red_right);
+                    field_orientation = "red_right";
+                    isMapLeft = false;
                 }
             }
         } else {
             if(mAllianceColor.equals("blue")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_right);
-                field_orientation = "blue_right";
-                mapOrientation(true,false);
-
-
+                iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                field_orientation = "blue_left";
+                isMapLeft = true;
             } else if(mAllianceColor.equals("red")) {
-                iv_field.setImageResource(R.drawable.field_intake_red_left);
-                field_orientation = "red_left";
-                mapOrientation(false,true);
-
+                iv_field.setImageResource(R.drawable.field_intake_red_right);
+                field_orientation = "red_right";
+                isMapLeft = false;
             }
         }
+
+        layoutInflater = (LayoutInflater) A1A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        if(mScoutId < 9) {
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 620, 450, false);
+        } else {
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 410, 300, false);
+        }
+        popup.setOutsideTouchable(false);
+        popup.setFocusable(false);
+
+        if(mScoutId < 9) {
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 620, 450, false);
+        } else {
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 410, 300, false);
+        }
+        popup_fail_success.setOutsideTouchable(false);
+        popup_fail_success.setFocusable(false);
+
+        popup_rocket = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 620, 650, false);
+        popup_rocket.setOutsideTouchable(false);
+        popup_rocket.setFocusable(false);
 
         tv_team = findViewById(R.id.tv_teamNum);
 
@@ -206,8 +221,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         tb_incap = findViewById(R.id.tbtn_incap);
 
-        iv = new ImageView(getApplicationContext());
-        iv2 = new ImageView(getApplicationContext());
+        iv_game_element = new ImageView(getApplicationContext());
         actionCount = 0;
         actionDic = new HashMap<Integer, List<Object>>();
         actionList = new ArrayList<Object>();
@@ -267,26 +281,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     }
 
-    public void onClickStartingPosition(View view) {
-        tv_starting_position_warning = findViewById(R.id.tv_starting_position_warning);
-        tv_starting_position_warning.setVisibility(View.INVISIBLE);
-    }
-
     public void onClickTeleop(View view) {
-//        actionList.clear();
-////        actionList.add("invalid");
-////        actionList.add("invalid");
-////        actionList.add("invalid");
-////        actionList.add("teleop");
-////        actionList.add("rb");
-////        actionDic.put(actionCount, actionList);
-////        actionCount++;
         if (!startTimer) {
             tele = true;
-            for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
-                rg_blue_starting_position.getChildAt(i).setEnabled(false);
-                rg_red_starting_position.getChildAt(i).setEnabled(false);
-            }
             Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT");
             if (fragment != null)
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
@@ -344,11 +341,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             TimerUtil.mTimerView.setText("15");
             TimerUtil.mActivityView.setText("AUTO");
             btn_startTimer.setText("START TIMER");
-            if (shapeCheck) {
-                overallLayout.removeView(iv);
-            } else if (!shapeCheck) {
-                overallLayout.removeView(iv2);
-            }
+            overallLayout.removeView(iv_game_element);
             startTimer = true;
             shapeCheck = false;
             startedWCube = false;
@@ -385,88 +378,64 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-    public void onClickDrop(View v) {
-        if(!tele) {
-            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-            tb_start_cube.setEnabled(false);
-        }
-        btn_drop.setEnabled(false);
-        btn_undo.setEnabled(true);
-        timestamp("drop");
-        shapeCheck = false;
-        overallLayout.removeView(iv);
-        actionList.clear();
-        actionList.add("drop");
-        actionList.add("x not matter");
-        actionList.add("y not matter");
-        actionList.add(TimerUtil.timestamp);
-        actionDic.put(actionCount, actionList);
-        actionCount++;
-        mapChange();
-    }
+//    public void onClickDrop(View v) {
+//        if(!tele) {
+//            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+//            tb_start_cube.setEnabled(false);
+//        }
+//        btn_drop.setEnabled(false);
+//        btn_undo.setEnabled(true);
+//        timestamp();
+//        shapeCheck = false;
+//        overallLayout.removeView(iv_game_element);
+//        actionList.clear();
+//        actionList.add("drop");
+//        actionList.add("x not matter");
+//        actionList.add("y not matter");
+//        actionList.add(TimerUtil.timestamp);
+//        actionDic.put(actionCount, actionList);
+//        actionCount++;
+//        mapChange();
+//    }
 
-    public void onClickSpill(View v) throws JSONException {
-        if (!startTimer && !incapChecked) {
-            timestamp("spill");
-            InputManager.numSpill++;
-            btn_spill.setText("SPILL - " + InputManager.numSpill);
-        }
-    }
+//    public void onClickSpill(View v) throws JSONException {
+//        if (!startTimer && !incapChecked) {
+//            timestamp();
+//            InputManager.numSpill++;
+//            btn_spill.setText("SPILL - " + InputManager.numSpill);
+//        }
+//    }
 
-    public void onClickUndo(View v) {
-        Log.e("jkgg", valueOf(actionCount));
-        if (actionCount > 0) {
-            actionCount = actionCount - 1;
-            Log.e("actiondic?!", actionDic.toString());
-            actionDic.remove(actionCount + 1);
-            Log.e("wok", actionDic.get(actionCount).get(3).toString());
-            // Log.e("PLZ",actionDic.get(actionCount).get(1).toString() );
-            if (actionDic.get(actionCount).get(3).equals("triangle")) {
-                Log.e("Why does this work", "WHYYYY");
-                overallLayout.removeView(iv);
-                shapeCheck = false;
-                btn_drop.setEnabled(false);
-                noShape = true;
-                mapChange();
-            } else if (actionDic.get(actionCount).get(3).equals("circle")) {
-                Log.e("FUN", "check");
-                shapeCheck = true;
-                btn_drop.setEnabled(true);
-                Log.e("Hello", "Work");
-                overallLayout.removeView(iv2);
-                mapChange();
-            } else if (actionDic.get(actionCount).get(0).equals("drop")) {
-                shapeCheck = true;
-                btn_drop.setEnabled(true);
-                mapChange();
-            }
-//            else if(actionDic.get(actionCount).get(3).equals("teleop")){
-//                tele = false;
-//                //could fail
-//                Fragment fragment = new AutoDialog();
-//                btn_startTimer = findViewById(R.id.btn_timer);
-//                startTimer=false;
-//
-//                //stop fail
-//
-//                FragmentManager fm = getSupportFragmentManager();
-//                FragmentTransaction transaction = fm.beginTransaction();
-//                if (InputManager.mAllianceColor.equals("red")) {
-//                    transaction.add(R.id.red_auto, fragment, "FRAGMENT");
-//                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
-//                        rg_blue_starting_position.getChildAt(i).setEnabled(false);
-//                    }
-//                } else if (InputManager.mAllianceColor.equals("blue")) {
-//                    transaction.add(R.id.blue_auto, fragment, "FRAGMENT");
-//                    for (int i = 0; i < rg_blue_starting_position.getChildCount(); i++) {
-//                        rg_red_starting_position.getChildAt(i).setEnabled(false);
-//                    }
-//                }
-//                transaction.commit();
-//
+//    public void onClickUndo(View v) {
+//        Log.e("jkgg", valueOf(actionCount));
+//        if (actionCount > 0) {
+//            actionCount = actionCount - 1;
+//            Log.e("actiondic?!", actionDic.toString());
+//            actionDic.remove(actionCount + 1);
+//            Log.e("wok", actionDic.get(actionCount).get(3).toString());
+//            // Log.e("PLZ",actionDic.get(actionCount).get(1).toString() );
+//            if (actionDic.get(actionCount).get(3).equals("triangle")) {
+//                Log.e("Why does this work", "WHYYYY");
+//                overallLayout.removeView(iv);
+//                shapeCheck = false;
+//                btn_drop.setEnabled(false);
+//                noShape = true;
+//                mapChange();
+//            } else if (actionDic.get(actionCount).get(3).equals("circle")) {
+//                Log.e("FUN", "check");
+//                shapeCheck = true;
+//                btn_drop.setEnabled(true);
+//                Log.e("Hello", "Work");
+//                overallLayout.removeView(iv2);
+//                mapChange();
+//            } else if (actionDic.get(actionCount).get(0).equals("drop")) {
+//                shapeCheck = true;
+//                btn_drop.setEnabled(true);
+//                mapChange();
 //            }
-        }
-    }
+//        }
+//    }
+
     public void climbAttemptEdit(Button spaceValue, Integer space){
         if(climbInputted){
             if (climbAttemptValues.get(space)==0){
@@ -677,7 +646,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             spaceThreeI.setText(buttonNumber);
             spaceChanger(spaceTwoI, spaceThreeI, spaceOneI);
         }
-
     }
     public void climbValuesActual(String buttonNumber, Integer climbintB){
         if(climbintB%3==0){
@@ -723,33 +691,289 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
 
-    public void onClickIncap(View v) throws JSONException {
-        if (!incapChecked) {
-            tb_incap.setChecked(true);
+//    public void onClickIncap(View v) throws JSONException {
+//        if (!incapChecked) {
+//            tb_incap.setChecked(true);
+//
+//            btn_drop.setEnabled(false);
+//            btn_undo.setEnabled(false);
+//            timestamp();
+//
+//            incapChecked = true;
+//        } else if (incapChecked) {
+//            tb_incap.setChecked(false);
+//            if (shapeCheck) {
+//                btn_drop.setEnabled(true);
+//            }
+//            timestamp();
+//            incapChecked = false;
+//        }
+//    }
 
-            btn_drop.setEnabled(false);
-            btn_undo.setEnabled(false);
-            timestamp("beganIncap");
+    @SuppressLint("ClickableViewAccessibility")
+    private void addTouchListener() {
+        overallLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if(pw) {
+                        x = (int) motionEvent.getX();
+                        y = (int) motionEvent.getY();
 
-            incapChecked = true;
-        } else if (incapChecked) {
-            tb_incap.setChecked(false);
-            if (shapeCheck) {
-                btn_drop.setEnabled(true);
+                        if(!(((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))) {
+                            if(mode.equals("intake")) {
+                                pw = false;
+                                initPopup(popup);
+                            } else if(mode.equals("placement")) { //TODO add placement coordinates
+                                //initPopup(popup_fail_success);
+                                mode = "intake";
+                                pw = true;
+                                initShape();
+                            }
+                        }
+                    }
+                }
+                return false;
             }
-            timestamp("endIncap");
-            incapChecked = false;
+        });
+    }
+
+    public void onClickOrange(View view) {
+        initIntake("orange");
+    }
+
+    public void onClickLemon(View view) {
+        initIntake("lemon");
+    }
+
+    public void onClickCancel(View view) {
+        popup.dismiss();
+        pw = true;
+    }
+
+    public void onClickFail(View view) {
+        overallLayout.removeView(iv_game_element);
+
+        mode = "intake";
+
+        if(zone.contains("LoadingStation")) {
+            recordLoadingStation(false);
+        }
+
+        pw = true;
+
+//        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
+//            initPopup(popup_rocket);
+//        }
+
+        mapChange();
+
+        popup_fail_success.dismiss();
+    }
+
+    public void onClickSuccess(View view) {
+        if(mode.equals("intake")) {
+            mode = "placement";
+        } else if(mode.equals("placement")) {
+            mode = "intake";
+        }
+
+        if(zone.contains("LoadingStation")) {
+            recordLoadingStation(true);
+        }
+
+        pw = true;
+        initShape();
+
+//        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
+//            initPopup(popup_rocket);
+//        }
+
+        popup_fail_success.dismiss();
+    }
+
+    public void onClickCancelFS(View view) {
+        popup_fail_success.dismiss();
+        pw = true;
+    }
+
+    public void onClickDone(View view) {
+        popup_rocket.dismiss();
+    }
+
+    public void timestamp() {
+        try {
+            if ((TimerUtil.timestamp <= 135 && !tele) || (TimerUtil.timestamp > 135 && tele)) {
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp) + "*"));
+            } else {
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp)));
+            }
+        } catch (JSONException je) {
+            je.printStackTrace();
         }
     }
 
-    public void onClickDataCheck(View v) {
-        if (rb_blue_right.isChecked() || rb_red_right.isChecked()) {
-            InputManager.mStartingPosition = "right";
-        } else if (rb_blue_center.isChecked() || rb_red_center.isChecked()) {
-            InputManager.mStartingPosition = "center";
-        } else if (rb_blue_left.isChecked() || rb_red_left.isChecked()) {
-            InputManager.mStartingPosition = "left";
+    public void recordLoadingStation(boolean didSucceed) {
+        try {
+            mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+            timestamp();
+            mRealTimeMatchData.put(new JSONObject().put("piece", element));
+            mRealTimeMatchData.put(new JSONObject().put("zone", zone));
+            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        Log.i("RECORDING?", mRealTimeMatchData.toString());
+    }
+
+    public void mapChange() {
+        if(element.equals("orange")) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+            if(mode.equals("placement")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                if (field_orientation.contains("left")) {
+                    iv_field.setImageResource(R.drawable.field_placement_orange_left);
+                } else if (field_orientation.contains("right")) {
+                    iv_field.setImageResource(R.drawable.field_placement_orange_right);
+                }
+            }
+        } else if(element.equals("lemon")) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+            if(mode.equals("placement")) {
+                if (field_orientation.contains("left")) {
+                    iv_field.setImageResource(R.drawable.field_placement_lemon_left);
+                } else if (field_orientation.contains("right")) {
+                    iv_field.setImageResource(R.drawable.field_placement_lemon_right);
+                }
+            }
+        } if(mode.equals("intake")) {
+            if(field_orientation.equals("blue_left")) {
+                iv_field.setImageResource(R.drawable.field_intake_blue_left);
+            } else if(field_orientation.equals("blue_right")) {
+                iv_field.setImageResource(R.drawable.field_intake_blue_right);
+            } else if(field_orientation.equals("red_left")) {
+                iv_field.setImageResource(R.drawable.field_intake_red_left);
+            } else if(field_orientation.equals("red_right")) {
+                iv_field.setImageResource(R.drawable.field_intake_red_right);
+            }
+        }
+    }
+
+    public void initShape() {
+        overallLayout.removeView(iv_game_element);
+
+        if(element.equals("orange")) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+        } else if(element.equals("lemon")) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+        }
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                100,
+                100);
+        if((y > 900 && mScoutId < 9) || (y > 550 && mScoutId >= 9)) {
+            if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+                lp.setMargins(x + 20, y - 90, 0, 0);
+            } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+                lp.setMargins(x - 100, y - 90, 0, 0);
+            } else {
+                lp.setMargins(x - 25, y - 90, 0, 0);
+            }
+        } else if((y < 85 && mScoutId < 9) || (y < 55 && mScoutId >= 9)) {
+            if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+                lp.setMargins(x + 20, y + 5, 0, 0);
+            } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+                lp.setMargins(x - 100, y + 5, 0, 0);
+            } else {
+                lp.setMargins(x - 25, y + 5, 0, 0);
+            }
+        } else if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+            lp.setMargins(x + 20, y - 40, 0, 0);
+        } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+            lp.setMargins(x - 100, y - 40, 0, 0);
+        } else {
+            lp.setMargins(x - 25, y - 40, 0, 0);
+        }
+        iv_game_element.setLayoutParams(lp);
+
+        ((ViewGroup) overallLayout).addView(iv_game_element);
+
+        mapChange();
+    }
+
+    public void initIntake(String givenElement) {
+        popup.dismiss();
+        element = givenElement;
+
+        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9) || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
+            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
+                zone = "leftLoadingStation";
+            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mScoutId >= 9)) {
+                zone = "rightLoadingStation";
+            }
+            initPopup(popup_fail_success);
+        } else {
+            pw = true;
+            mode = "placement";
+            if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                    zone = "zone1Right";
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                    zone = "zone2Right";
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                    zone = "zone3Right";
+                } else {
+                    zone = "zone4Right";
+                }
+            } else {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                    zone = "zone1Left";
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                    zone = "zone2Left";
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                    zone = "zone3Left";
+                } else {
+                    zone = "zone4Left";
+                }
+            }
+
+            try {
+                mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+                timestamp();
+                mRealTimeMatchData.put(new JSONObject().put("piece", element));
+                mRealTimeMatchData.put(new JSONObject().put("zone", zone));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.i("RECORDING?", mRealTimeMatchData.toString());
+            initShape();
+        }
+    }
+
+    public void initPopup(PopupWindow pw) {
+        pw.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+    }
+
+    public void recordClimb(float time) {
+        try {
+            climbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
+            climbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
+            climbAttemptData.put(climbAttemptKeys.get(2), climbAttemptValues.get(2));
+            climbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
+            climbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
+            climbActualData.put(climbActualKeys.get(2), climbActualValues.get(2));
+            climbFinalData.put(climbKeys.get(0), "climb");
+            climbFinalData.put(climbKeys.get(1), time);
+            climbFinalData.put(climbKeys.get(2), climbAttemptData);
+            climbFinalData.put(climbKeys.get(3), climbActualData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        climbInputted = true;
+        Log.e("Climb", climbFinalData.toString());
+    }
+
+    public void onClickDataCheck(View v) {
         open(A2A.class, null, false, true);
     }
 
@@ -770,202 +994,5 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void addTouchListener() {
-        overallLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                float x= (int) motionEvent.getX();
-//                float y= (int) motionEvent.getY();
-//                String message = String.format("Coordinates:(%.2f,%.2f)",x,y);
-//                Log.d("hello", message);
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && !startTimer && !incapChecked) {
-                    int x = (int) motionEvent.getX();
-                    int y = (int) motionEvent.getY();
-                    if (x <= 1700 && y <= 1000 && InputManager.mScoutId <= 6 || x <= 1110 && y <= 610 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12|| x<=845 && y<=490 && InputManager.mScoutId >=12 ) {
-                        if ((x >= 400 && x <= 590 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (isMapLeft && !tele))) {
-                            if(shapeCheck) {
-                                Log.d("locationOutput", "Top Left switch");
-                                initShape(view, "score4", "score1", x, y, "circle", iv2, iv, false);
-                            }
-                        }
-                        else if ((x >= 400 && x <= 590 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 270 && x <= 400 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 200 && x <= 300 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (isMapLeft && !tele))) {
-                            if(shapeCheck) {
-                                Log.d("locationOutput", "Bottom Left switch");
-                                initShape(view, "score3", "score6", x, y, "circle", iv2, iv, false);
-                            }
-                        } else if ((x >= 1110 && x <= 1300 && y >= 90 && y <= 330 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 80 && y <= 225 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 70 && y <= 200 && InputManager.mScoutId >=12) && (tele || (!isMapLeft && !tele))) {
-                            if(shapeCheck) {
-                                Log.d("locationOutput", "Top Right switch");
-                                initShape(view, "score6", "score3", x, y, "circle", iv2, iv, false);
-                            }
-                        } else if ((x >= 1110 && x <= 1300 && y >= 620 && y <= 860 && InputManager.mScoutId <= 6 || x >= 750 && x <= 860 && y >= 410 && y <= 560 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 550 && x <= 654 && y >= 326 && y <= 450 && InputManager.mScoutId >=12) && (tele || (!isMapLeft && !tele))) {
-                            if(shapeCheck) {
-                                Log.d("locationOutput", "Bottom Right switch");
-                                initShape(view, "score1", "score4", x, y, "circle", iv2, iv, false);
-                            }
-                        } else if (x >= 760 && x <= 930 && y >= 60 && y <= 300 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 55 && y <= 200 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 375 && x <= 475 && y >= 50 && y <= 180 && InputManager.mScoutId >=12) {
-                            if(shapeCheck) {
-                                Log.d("locationOutput", "Scale Top");
-                                initShape(view, "score5", "score2", x, y, "circle", iv2, iv, false);
-                            }
-                        } else if (x >= 760 && x <= 930 && y >= 650 && y <= 900 && InputManager.mScoutId <= 6 || x >= 510 && x <= 625 && y >= 440 && y <= 600 && InputManager.mScoutId > 6 && InputManager.mScoutId < 12 || x >= 375 && x <= 480 && y >= 350 && y <= 470 && InputManager.mScoutId >=12) {
-                            if(shapeCheck) {
-                                Log.d("locationOutput", "Scale Bottom");
-                                initShape(view, "score2", "score5", x, y, "circle", iv2, iv, false);
-                            }
-                        } else if (((((x <= 160 && y >= 250 && y <= 430 && InputManager.mScoutId <= 6)
-                                || (x <= 120 && y >= 170 && y <= 300 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)
-                                || (x<=90 && y>=150 && y<=250 && InputManager.mScoutId >=12))
-                                && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("red"))
-                                || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("blue")))))
-                                || (((x >= 1530 && y >= 485 && y <= 695 && InputManager.mScoutId <= 6)
-                                || (x >= 1030 && y >= 315 && y <= 455 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)
-                                || (x>=760 && x<=845 && y>=270 && y<=370 && InputManager.mScoutId >=12))
-                                && (((field_orientation.equals("rb") && InputManager.mAllianceColor.equals("blue"))
-                                || (field_orientation.equals("br") && InputManager.mAllianceColor.equals("red"))))))
-                                && tele) {
-                            if(shapeCheck) {
-                                Log.d("locationOutput", "Exchange");
-                                initShape(view, "exchangeScore", "exchangeScore", x, y, "circle", iv2, iv, false);
-                            }
-                        } else if (((x > 110 && x <= 500 && InputManager.mScoutId <= 6) || (x > 80 && x <= 320 && InputManager.mScoutId > 6 && InputManager.mScoutId <12) || (x<=250 && x>=60 && InputManager.mScoutId >=12)) && (tele || (isMapLeft && !tele))) {
-                            if(!shapeCheck) {
-                                Log.d("locationInput", "1");
-                                initShape(view, "intake4", "intake1", x, y, "triangle", iv, iv2, true);
-                            }
-                        } else if (((x > 500 && x <= 845 && InputManager.mScoutId <= 6 || x > 320 && x <= 550 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=430 && x>250 && InputManager.mScoutId >=12)) && (tele || (isMapLeft && !tele))) {
-                            if(!shapeCheck) {
-                                Log.d("locationInput", "2");
-                                initShape(view, "intake3", "intake2", x, y, "triangle", iv, iv2, true);
-                            }
-                        } else if (((x > 845 && x <= 1200 && InputManager.mScoutId <= 6 || x > 550 && x <= 800 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=600 && x>430 && InputManager.mScoutId >=12)) && (tele || (!isMapLeft && !tele))) {
-                            if(!shapeCheck) {
-                                Log.d("locationInput", "3");
-                                initShape(view, "intake2", "intake3", x, y, "triangle", iv, iv2, true);
-                            }
-                        } else if (((x > 1200 && x <= 1580 && InputManager.mScoutId <= 6 || x > 800 && x <= 1040 && InputManager.mScoutId > 6 && InputManager.mScoutId <12)|| (x<=850 && x>600 && InputManager.mScoutId >=12)) && (tele || (!isMapLeft && !tele))) {
-                            if(!shapeCheck) {
-                                Log.d("locationInput", "4");
-                                initShape(view, "intake1", "intake4", x, y, "triangle", iv, iv2, true);
-                            }
-                        }
-                    }
-                }
-                return false;
-            }
-        });
-    }
-
-    public void initShape(View view, String position, String position2, int x, int y, String shape, ImageView add, ImageView remove, boolean check) {
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                50,
-                50);
-        lp.setMargins(x - 25, y - 40, 0, 0);
-        add.setLayoutParams(lp);
-        if (add == iv) {
-            add.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-        } else if (add == iv2) {
-            add.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-        }
-        shapeCheck = check;
-        btn_undo.setEnabled(true);
-        if (!tele) {
-            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-            tb_start_cube.setEnabled(false);
-        }
-        if (!shapeCheck) {
-            btn_drop.setEnabled(false);
-        } else if (shapeCheck) {
-            btn_drop.setEnabled(true);
-        }
-        overallLayout.removeView(remove);
-        mapChange();
-        if (field_orientation.equals("rb")) {
-            actionList.clear();
-            actionList.add(position);
-            actionList.add(x);
-            actionList.add(y);
-            actionList.add(shape);
-            actionList.add("rb");
-            actionDic.put(actionCount, actionList);
-            actionCount++;
-            timestamp(position);
-            Log.d("TIMESTAMP", String.valueOf(mRealTimeMatchData));
-        } else if (field_orientation.equals("br")) {
-            actionList.clear();
-            actionList.add(position2);
-            actionList.add(x);
-            actionList.add(y);
-            actionList.add(shape);
-            actionList.add("br");
-            actionDic.put(actionCount, actionList);
-            actionCount++;
-            timestamp(position2);
-            Log.d("TIMESTAMP", String.valueOf(mRealTimeMatchData));
-        }
-        ((ViewGroup) view).addView(add);
-    }
-
-    //TODO Make Undo a function
-
-    public void timestamp(String datapoint) {
-        try {
-            if (TimerUtil.timestamp <= 135 && !tele) {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, 135));
-            } else if (TimerUtil.timestamp > 135 && tele) {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, 134.9));
-            } else {
-                mRealTimeMatchData.put(new JSONObject().put(datapoint, Float.valueOf(String.format("%.2f", TimerUtil.timestamp))));
-            }
-        } catch (JSONException je) {
-            je.printStackTrace();
-        }
-    }
-
-    public void mapOrientation(Boolean field1, Boolean field2) {
-        if (InputManager.mAllianceColor.equals("red")) {
-            isMapLeft = field1;
-        } else if (InputManager.mAllianceColor.equals("blue")) {
-            isMapLeft = field2;
-        }
-    }
-
-    public void mapChange() {
-        if(shapeCheck) {
-            if (field_orientation.equals("rb")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_left);
-            } else if (field_orientation.equals("br")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_left);
-            }
-        }
-        if(!shapeCheck) {
-            if (field_orientation.equals("rb")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_left);
-            } else if (field_orientation.equals("br")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_left);
-            }
-        }
-    }
-
-    public void recordClimb(float time) {
-        try {
-            climbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-            climbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-            climbAttemptData.put(climbAttemptKeys.get(2), climbAttemptValues.get(2));
-            climbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-            climbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-            climbActualData.put(climbActualKeys.get(2), climbActualValues.get(2));
-            climbFinalData.put(climbKeys.get(0), "climb");
-            climbFinalData.put(climbKeys.get(1), time);
-            climbFinalData.put(climbKeys.get(2), climbAttemptData);
-            climbFinalData.put(climbKeys.get(3), climbActualData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        climbInputted = true;
-        Log.e("Climb", climbFinalData.toString());
     }
 }

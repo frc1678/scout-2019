@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+    <Button
+        android:id="@+id/fail"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:onClick="onClickFail"
+        android:text="FAIL"
+        android:textSize="25dp"
+        android:layout_marginRight="5dp"
+        android:background="#ff9999"/>
+    <Button
+        android:id="@+id/success"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:onClick="onClickSuccess"
+        android:text="SUCCESS"
+        android:textSize="25dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/fail"
+        android:background="#a3ff99"/>
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="CANCEL"
+        android:textSize="25dp"
+        android:layout_below="@+id/fail"
+        android:layout_marginTop="5dp"
+        android:onClick="onClickCancelFS"/>
+</RelativeLayout>
