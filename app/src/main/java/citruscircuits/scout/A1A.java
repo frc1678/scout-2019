@@ -66,11 +66,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean shapeCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+    public boolean didSucceed;
+    public boolean wasDefended;
 
     public Integer numRobotsAttemptedToLift = 0;
     public Integer numRobotsDidLift = 0;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
+    public Integer level;
 
     public Float ftbStartTime;
     public Float ftbEndTime;
@@ -115,7 +118,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button spaceTwoII;
     public Button spaceThreeII;
 
-
     public ToggleButton tb_incap;
     public ToggleButton tb_auto_run;
     public ToggleButton tb_start_cube;
@@ -147,6 +149,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public String mode = "intake";
     public String element;
     public String zone;
+    public String structure;
+    public String side;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -720,15 +724,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
 
+                        pw = false;
+
                         if(!(((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))) {
                             if(mode.equals("intake")) {
-                                pw = false;
                                 initPopup(popup);
-                            } else if(mode.equals("placement")) { //TODO add placement coordinates
-                                //initPopup(popup_fail_success);
-                                mode = "intake";
-                                pw = true;
-                                initShape();
+                            } else if(mode.equals("placement")) { //TODO add placement coordinates, MAYBE CHANGE LOGIC?
+                                initPopup(popup_fail_success);
                             }
                         }
                     }
@@ -757,16 +759,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         mode = "intake";
 
         if(zone.contains("LoadingStation")) {
+            pw = true;
             recordLoadingStation(false);
+
+            mapChange();
+        } else {
+            initPlacement();
         }
-
-        pw = true;
-
-//        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
-//            initPopup(popup_rocket);
-//        }
-
-        mapChange();
 
         popup_fail_success.dismiss();
     }
@@ -780,14 +779,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         if(zone.contains("LoadingStation")) {
             recordLoadingStation(true);
+            pw = true;
+
+            initShape();
+        } else {
+            initPlacement();
         }
-
-        pw = true;
-        initShape();
-
-//        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
-//            initPopup(popup_rocket);
-//        }
 
         popup_fail_success.dismiss();
     }
@@ -905,10 +902,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup.dismiss();
         element = givenElement;
 
-        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9) || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
-            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
+        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9)
+                || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
+            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9)
+                    || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
                 zone = "leftLoadingStation";
-            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mScoutId >= 9)) {
+            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mScoutId < 9)
+                    || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mScoutId >= 9)) {
                 zone = "rightLoadingStation";
             }
             initPopup(popup_fail_success);
@@ -916,21 +916,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             pw = true;
             mode = "placement";
             if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Right";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
                     zone = "zone2Right";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
                     zone = "zone3Right";
                 } else {
                     zone = "zone4Right";
                 }
             } else {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Left";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
                     zone = "zone2Left";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
                     zone = "zone3Left";
                 } else {
                     zone = "zone4Left";
@@ -947,6 +953,46 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             Log.i("RECORDING?", mRealTimeMatchData.toString());
             initShape();
+        }
+    }
+
+    public void initPlacement() {
+        popup_fail_success.dismiss();
+
+        if() { //TODO BOTH ROCKET COORDINATES
+            if() { //TODO RIGHT ROCKET
+                structure = "rightRocket";
+                if(element.equals("lemon")) {
+                    if() { //TODO ROCKET FAR SIDE
+                        side = "far";
+                    } else if() { //TODO ROCKET NEAR SIDE
+                        side = "near";
+                    }
+                }
+            } else if() { //TODO LEFT ROCKET
+                structure = "leftRocket";
+                if(element.equals("lemon")) {
+                    if() { //TODO ROCKET FAR SIDE
+                        side = "far";
+                    } else if() { //TODO ROCKET NEAR SIDE
+                        side = "near";
+                    }
+                }
+            }
+            initPopup(popup_rocket);
+        } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9)
+                || ((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9) {
+            structure = "cargoShip";
+            if((((field_orientation.contains("left") && x < 1130) || (field_orientation.contains("right") && x > 570)) && mScoutId < 9)
+                    || ((field_orientation.contains("left") && x < 750) || (field_orientation.contains("right") && x > 380)) && mScoutId >= 9) {
+                side = "near";
+            } else if((((field_orientation.contains("left") &&  y < 517) || (field_orientation.contains("right") && y > 517)) && mScoutId < 9)
+                    || ((field_orientation.contains("left") &&  y < 345) || (field_orientation.contains("right") && y > 345)) && mScoutId >= 9) {
+                side = "left";
+            } else if((((field_orientation.contains("left") &&  y >= 517) || (field_orientation.contains("right") && y <= 517)) && mScoutId < 9)
+                    || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mScoutId >= 9) {
+                side = "right";
+            }
         }
     }
 
