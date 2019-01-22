@@ -331,7 +331,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_start_cube.setChecked(false);
             tb_auto_run.setEnabled(false);
             tb_auto_run.setChecked(false);
-            btn_drop.setEnabled(false);
+//            btn_drop.setEnabled(false);
             btn_undo.setEnabled(false);
             handler.removeCallbacks(runnable);
             handler.removeCallbacksAndMessages(null);
@@ -378,25 +378,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-//    public void onClickDrop(View v) {
-//        if(!tele) {
-//            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-//            tb_start_cube.setEnabled(false);
-//        }
-//        btn_drop.setEnabled(false);
-//        btn_undo.setEnabled(true);
-//        timestamp();
-//        shapeCheck = false;
-//        overallLayout.removeView(iv_game_element);
-//        actionList.clear();
-//        actionList.add("drop");
-//        actionList.add("x not matter");
-//        actionList.add("y not matter");
-//        actionList.add(TimerUtil.timestamp);
-//        actionDic.put(actionCount, actionList);
-//        actionCount++;
-//        mapChange();
-//    }
+    public void onClickDrop(View v) {
+        if(!tele) {
+            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
+            tb_start_cube.setEnabled(false);
+        }
+        btn_drop.setEnabled(false);
+        btn_undo.setEnabled(true);
+        timestamp();
+        shapeCheck = false;
+        overallLayout.removeView(iv_game_element);
+        actionList.clear();
+        actionList.add("drop");
+        actionList.add("x not matter");
+        actionList.add("y not matter");
+        actionList.add(TimerUtil.timestamp);
+        actionDic.put(actionCount, actionList);
+        actionCount++;
+        mapChange();
+    }
 
 //    public void onClickSpill(View v) throws JSONException {
 //        if (!startTimer && !incapChecked) {
@@ -847,6 +847,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
         } if(mode.equals("intake")) {
+            btn_drop.setEnabled(false);
             if(field_orientation.equals("blue_left")) {
                 iv_field.setImageResource(R.drawable.field_intake_blue_left);
             } else if(field_orientation.equals("blue_right")) {
@@ -904,6 +905,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void initIntake(String givenElement) {
         popup.dismiss();
         element = givenElement;
+        btn_drop.setEnabled(true);
 
         if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9) || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
             if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
