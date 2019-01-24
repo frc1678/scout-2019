@@ -379,23 +379,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDrop(View v) {
-        if(!tele) {
-            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-            tb_start_cube.setEnabled(false);
-        }
+        mode = "intake";
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
-        timestamp();
         shapeCheck = false;
         overallLayout.removeView(iv_game_element);
-        actionList.clear();
-        actionList.add("drop");
-        actionList.add("x not matter");
-        actionList.add("y not matter");
-        actionList.add(TimerUtil.timestamp);
-        actionDic.put(actionCount, actionList);
-        actionCount++;
+        try {
+            mRealTimeMatchData.put(new JSONObject().put("type", "drop"));
+            timestamp();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
         mapChange();
+//        actionList.clear();
+//        actionList.add("drop");
+//        actionList.add("x not matter");
+//        actionList.add("y not matter");
+//        actionList.add(TimerUtil.timestamp);
+//        actionDic.put(actionCount, actionList);
+//        actionCount++;
     }
 
 //    public void onClickSpill(View v) throws JSONException {
