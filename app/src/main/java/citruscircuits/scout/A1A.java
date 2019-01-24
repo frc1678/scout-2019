@@ -783,6 +783,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         if(zone.contains("LoadingStation")) {
             recordLoadingStation(true);
+            btn_drop.setEnabled(true);
         }
 
         pw = true;
@@ -908,7 +909,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void initIntake(String givenElement) {
         popup.dismiss();
         element = givenElement;
-        btn_drop.setEnabled(true);
 
         if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9) || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
             if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
@@ -920,6 +920,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         } else {
             pw = true;
             mode = "placement";
+            btn_drop.setEnabled(true);
             if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Right";
