@@ -254,7 +254,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         btn_spill.setOnLongClickListener((new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                if (!startTimer && !incapChecked && InputManager.numSpill>0) {
+                if (InputManager.numSpill>0) {
                     int index = -1;
                     for(int i=0;i<mRealTimeMatchData.length();i++){
                         try {
@@ -270,7 +270,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     InputManager.numSpill--;
                     btn_spill.setText("SPILL - " + InputManager.numSpill);
                 }
-                Log.e("LONG CLICK? SPILL", mRealTimeMatchData.toString());
+                Log.e("LONG", mRealTimeMatchData.toString());
                 return true;
             }
         }));
@@ -401,13 +401,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //        actionCount++;
     }
 
-//    public void onClickSpill(View v) throws JSONException {
+    public void onClickSpill(View v) throws JSONException {
 //        if (!startTimer && !incapChecked) {
-//            timestamp();
-//            InputManager.numSpill++;
-//            btn_spill.setText("SPILL - " + InputManager.numSpill);
-//        }
+        timestamp();
+        InputManager.numSpill++;
+        btn_spill.setText("SPILL - " + InputManager.numSpill);
+        try {
+            mRealTimeMatchData.put(new JSONObject().put("type", "spill"));
+            timestamp();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("LONG", mRealTimeMatchData.toString());
 //    }
+    }
 
 //    public void onClickUndo(View v) {
 //        Log.e("jkgg", valueOf(actionCount));
