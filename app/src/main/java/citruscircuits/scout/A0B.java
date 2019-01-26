@@ -14,10 +14,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superDataClasses.AppCc;
 
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
+//import static citruscircuits.scout.Managers.InputManager.mHabStartingPositionLevel;
 import static java.lang.String.valueOf;
 
 
@@ -48,6 +52,8 @@ public class A0B extends DialogMaker {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         arrowNext= findViewById(R.id.btn_arrow);
+        InputManager.mOneTimeMatchData = new JSONObject();
+
         if ( AppCc.getSp("mapOrientation", 99) != 0){
             Log.e("wok", "prer");
             if(mAllianceColor.equals("red")){
@@ -250,6 +256,7 @@ public void defineVariables(){
                     InputManager.mPreload = "none";
                 }
                 InputManager.isNoShow=false;
+
                 open(A1A.class, null, false, true);
 
             }
@@ -262,11 +269,24 @@ public void defineVariables(){
             InputManager.isNoShow=true;
             open(A2A.class, null, false, true);
         }
+
         Log.e("wok1",InputManager.mHabStartingPositionOrientation);
         Log.e("wok2",String.valueOf(InputManager.mHabStartingPositionLevel));
         Log.e("wok3",String.valueOf(InputManager.mDriverStartingPosition));
         Log.e("wok4",InputManager.mPreload);
         Log.e("wok5",String.valueOf(InputManager.isNoShow));
+        try{
+            Log.e("wok123", String.valueOf(InputManager.mHabStartingPositionLevel));
+            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
+            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
+            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
+            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
+            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e("wokDic", InputManager.mOneTimeMatchData.toString());
     }
 
 }
