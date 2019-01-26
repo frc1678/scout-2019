@@ -151,7 +151,7 @@
         android:layout_above="@+id/btn_arrow"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="21dp"
-        android:textOff="Show"
+        android:textOff="No Show"
         android:textOn="No Show"
         android:textSize="25dp"
         android:onClick="onClickShowUp"

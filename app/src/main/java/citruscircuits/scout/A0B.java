@@ -69,20 +69,20 @@ public class A0B extends DialogMaker {
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerTwoB.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
-                driverRight.setBackgroundResource(R.drawable.starting_position_red_selector);
-                driverCenter.setBackgroundResource(R.drawable.starting_position_red_selector);
-                driverLeft.setBackgroundResource(R.drawable.starting_position_red_selector);
+                driverRight.setBackgroundResource(R.drawable.driver_red);
+                driverCenter.setBackgroundResource(R.drawable.driver_red);
+                driverLeft.setBackgroundResource(R.drawable.driver_red);
             } else if (mAllianceColor.equals("blue")){
                 setContentView(R.layout.activity_pregame_l);
                 defineVariables();
                 Log.e("wok", "bluer");
-                iv_hab.setImageResource(R.drawable.blue_hab_r);
+                iv_hab.setImageResource(R.drawable.blue_hab_l);
                 driverRight.setText("B3");
                 driverCenter.setText("B2");
                 driverLeft.setText("B1");
-                driverRight.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                driverCenter.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                driverLeft.setBackgroundResource(R.drawable.starting_position_blue_selector);
+                driverRight.setBackgroundResource(R.drawable.driver_blue);
+                driverCenter.setBackgroundResource(R.drawable.driver_blue);
+                driverLeft.setBackgroundResource(R.drawable.driver_blue);
                 layerOneA.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneB.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneC.setBackgroundResource(R.drawable.starting_position_blue_selector);
@@ -101,9 +101,9 @@ public class A0B extends DialogMaker {
                 driverCenter.setText("R2");
                 driverLeft.setText("R1");
 
-                driverRight.setBackgroundResource(R.drawable.starting_position_red_selector);
-                driverCenter.setBackgroundResource(R.drawable.starting_position_red_selector);
-                driverLeft.setBackgroundResource(R.drawable.starting_position_red_selector);
+                driverRight.setBackgroundResource(R.drawable.driver_red);
+                driverCenter.setBackgroundResource(R.drawable.driver_red);
+                driverLeft.setBackgroundResource(R.drawable.driver_red);
                 layerOneA.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerOneB.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerOneC.setBackgroundResource(R.drawable.starting_position_red_selector);
@@ -115,14 +115,14 @@ public class A0B extends DialogMaker {
                 defineVariables();
 
                 Log.e("wok", "bluel");
-                iv_hab.setImageResource(R.drawable.blue_hab_l);
+                iv_hab.setImageResource(R.drawable.blue_hab_r);
                 driverRight.setText("B3");
                 driverCenter.setText("B2");
                 driverLeft.setText("B1");
 
-                driverRight.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                driverCenter.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                driverLeft.setBackgroundResource(R.drawable.starting_position_blue_selector);
+                driverRight.setBackgroundResource(R.drawable.driver_blue);
+                driverCenter.setBackgroundResource(R.drawable.driver_blue);
+                driverLeft.setBackgroundResource(R.drawable.driver_blue);
                 layerOneA.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneB.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneC.setBackgroundResource(R.drawable.starting_position_blue_selector);
