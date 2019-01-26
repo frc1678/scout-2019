@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -68,6 +69,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean isMapLeft=false;
     public boolean didSucceed;
     public boolean wasDefended;
+    public boolean shotOutOfField;
 
     public Integer numRobotsAttemptedToLift = 0;
     public Integer numRobotsDidLift = 0;
@@ -77,6 +79,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public Float ftbStartTime;
     public Float ftbEndTime;
+    public Float time;
 
     public List<String> climbAttemptKeys = Arrays.asList("self", "robot1", "robot2");
     public List<String> climbActualKeys = Arrays.asList("self", "robot1", "robot2");
@@ -124,11 +127,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public RelativeLayout dialogLayout;
     public RelativeLayout overallLayout;
+    public RelativeLayout placementDialogLayout;
+
+    public RadioButton fail;
+    public RadioButton success;
+
+    public RadioButton level1;
+    public RadioButton level2;
+    public RadioButton level3;
+
+    public ToggleButton tb_wasDefended;
+    public ToggleButton tb_shotOutOfField;
 
     public PopupWindow popup = new PopupWindow();
     public PopupWindow popup_fail_success = new PopupWindow();
-    public PopupWindow popup_rocket = new PopupWindow();
-    public PopupWindow popup_cargo_ship = new PopupWindow();
 
     public ImageView field;
     public ImageView iv_game_element;
@@ -152,6 +164,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public String zone;
     public String structure;
     public String side;
+
+    public Dialog placementDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -212,22 +226,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);
-
-        if(mScoutId < 9) {
-            popup_rocket = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 650, 650, false);
-        } else {
-            popup_rocket = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 450, 600, false);
-        }
-        popup_rocket.setOutsideTouchable(false);
-        popup_rocket.setFocusable(false);
-
-        if(mScoutId < 9) {
-            popup_cargo_ship = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 650, 650, false);
-        } else {
-            popup_cargo_ship = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 450, 600, false);
-        }
-        popup_cargo_ship.setOutsideTouchable(false);
-        popup_cargo_ship.setFocusable(false);
 
         tv_team = findViewById(R.id.tv_teamNum);
 
@@ -737,6 +735,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
 
+                        time = TimerUtil.timestamp;
+
                         if(!(((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))) {
                             if(mode.equals("intake")) {
                                 pw = false;
@@ -807,17 +807,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
     }
 
-    public void onClickDone(View view) {
-        initShape();
-        popup_rocket.dismiss();
-    }
-
-    public void timestamp() {
+    public void timestamp(Float givenTime) {
         try {
-            if ((TimerUtil.timestamp <= 135 && !tele) || (TimerUtil.timestamp > 135 && tele)) {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp) + "*"));
+            if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime) + "*"));
             } else {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp)));
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime)));
             }
         } catch (JSONException je) {
             je.printStackTrace();
@@ -827,7 +822,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void recordLoadingStation(boolean didSucceed) {
         try {
             mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
-            timestamp();
+            timestamp(time);
             mRealTimeMatchData.put(new JSONObject().put("piece", element));
             mRealTimeMatchData.put(new JSONObject().put("zone", zone));
             mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
@@ -837,16 +832,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
-    public void recordPlacement(Boolean didSucceed, Boolean wasDefended, String structure, String side, Integer level) { //TODO REDO HOW didSucceed is recorded
+    public void recordPlacement() {
         try {
             mRealTimeMatchData.put(new JSONObject().put("type", "placement"));
-            timestamp();
+            timestamp(time);
             mRealTimeMatchData.put(new JSONObject().put("piece", element));
             mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
             mRealTimeMatchData.put(new JSONObject().put("wasDefended", wasDefended));
             mRealTimeMatchData.put(new JSONObject().put("structure", structure));
             mRealTimeMatchData.put(new JSONObject().put("side", side));
             if(structure.contains("Rocket")) {
+                shotOutOfField = tb_shotOutOfField.isChecked();
+                if(level1.isChecked()) {
+                    level = 1;
+                } else if(level2.isChecked()) {
+                    level = 2;
+                } else if(level3.isChecked()) {
+                    level = 3;
+                }
+                if(!didSucceed) {
+                    mRealTimeMatchData.put(new JSONObject().put("shotOutOfField", shotOutOfField));
+                }
                 mRealTimeMatchData.put(new JSONObject().put("level", level));
             }
         } catch (JSONException e) {
@@ -977,7 +983,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             try {
                 mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
-                timestamp();
+                timestamp(time);
                 mRealTimeMatchData.put(new JSONObject().put("piece", element));
                 mRealTimeMatchData.put(new JSONObject().put("zone", zone));
             } catch (JSONException e) {
@@ -989,8 +995,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void initPlacement() {
-        popup_fail_success.dismiss();
+        placementDialog = new Dialog(this);
 
+        placementDialog.setCanceledOnTouchOutside(false);
+        placementDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //ROCKET LEFT (bottom, right, green): y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9
         //ROCKET RIGHT (top, right, green): y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9
 
@@ -1030,7 +1038,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     side = "near";
                 }
             }
-            initPopup(popup_rocket);
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_rocket, null);
+
+            tb_shotOutOfField = placementDialogLayout.findViewById(R.id.shotOutOfField);
+
+            level1 = placementDialogLayout.findViewById(R.id.radio_3);
+            level2 = placementDialogLayout.findViewById(R.id.radio_2);
+            level3 = placementDialogLayout.findViewById(R.id.radio_1);
         } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9)
                 || ((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9) {
             structure = "cargoShip";
@@ -1044,30 +1058,39 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mScoutId >= 9) {
                 side = "right";
             }
-            initPopup(popup_cargo_ship);
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_cargo_ship, null);
         }
-        Log.i("ROCKET!!", structure + side);
+        fail = placementDialogLayout.findViewById(R.id.fail);
+        success = placementDialogLayout.findViewById(R.id.success);
+
+
+
+        placementDialog.setContentView(placementDialogLayout);
+        placementDialog.show();
     }
 
     public void onClickCancelCS(View view) {
         pw = true;
-        popup_cargo_ship.dismiss();
+        placementDialog.dismiss();
     }
 
     public void onClickDoneCS(View view) {
         recordPlacement();
+        mode = "intake";
         initShape();
-        popup_cargo_ship.dismiss();
+        placementDialog.dismiss();
     }
 
     public void onClickCancelRocket(View view) {
         pw = true;
+        placementDialog.dismiss();
     }
 
     public void onClickDoneRocket(View View) {
         recordPlacement();
+        mode = "intake";
         initShape();
-        popup_cargo_ship.dismiss();
+        placementDialog.dismiss();
     }
 
     public void initPopup(PopupWindow pw) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="#ffffff">
     <RadioGroup
         android:id="@+id/rg_fail_success"
@@ -10,23 +10,21 @@
         android:orientation="horizontal" >
         <RadioButton
             android:id="@+id/fail"
-            android:layout_width="300dp"
-            android:layout_height="150dp"
-            android:onClick="onClickFailRocket"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
             android:text="FAIL"
             android:textSize="25dp"
-            android:layout_marginRight="5dp"
+            android:layout_margin="5dp"
             android:background="@drawable/cargo_ship_fail_selector"
             android:button="@null"
             android:textAlignment="center"/>
         <RadioButton
             android:id="@+id/success"
-            android:layout_width="300dp"
-            android:layout_height="150dp"
-            android:onClick="onClickSuccessRocket"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
             android:text="SUCCESS"
             android:textSize="25dp"
-            android:layout_marginLeft="5dp"
+            android:layout_margin="5dp"
             android:layout_toEndOf="@+id/fail"
             android:background="@drawable/cargo_ship_success_selector"
             android:button="@null"
@@ -34,7 +32,7 @@
     </RadioGroup >
     <RadioGroup
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true"
@@ -68,39 +66,40 @@
     </RadioGroup>
     <ToggleButton
         android:id="@+id/wasDefended"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="70dp"
-        android:layout_below="@id/radio"
         android:layout_margin="10dp"
         android:textOn="WAS DEFENDED"
         android:textOff="WAS DEFENDED"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:layout_below="@id/radio"/>
     <ToggleButton
         android:id="@+id/shotOutOfField"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="70dp"
-        android:layout_below="@+id/wasDefended"
         android:layout_margin="10dp"
+        android:layout_toEndOf="@+id/wasDefended"
+        android:layout_below="@id/radio"
         android:textOn="SHOT OUT OF FIELD"
         android:textOff="SHOT OUT OF FIELD"
         android:textSize="20dp"/>
     <Button
         android:id="@+id/cancel"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="100dp"
         android:text="CANCEL"
         android:textSize="25dp"
         android:layout_below="@+id/shotOutOfField"
-        android:layout_marginTop="5dp"
-        android:onClick="onClickCancelRocket"/>
+        android:layout_margin="5dp"
+        android:onClick="onClickCancelRocket" />
     <Button
         android:id="@+id/done"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="100dp"
         android:text="DONE"
         android:textSize="25dp"
         android:layout_toEndOf="@+id/cancel"
         android:layout_below="@+id/shotOutOfField"
-        android:layout_marginTop="5dp"
-        android:onClick="onClickDoneRocket"/>
+        android:layout_margin="5dp"
+        android:onClick="onClickDoneRocket" />
 </RelativeLayout>

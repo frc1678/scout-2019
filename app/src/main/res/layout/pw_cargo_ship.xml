@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="#ffffff">
     <RadioGroup
         android:id="@+id/rg_fail_success"
@@ -11,23 +11,21 @@
         android:orientation="horizontal" >
         <RadioButton
             android:id="@+id/fail"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:onClick="onClickFailCS"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
             android:text="FAIL"
             android:textSize="25dp"
-            android:layout_marginRight="5dp"
+            android:layout_margin="5dp"
             android:background="@drawable/cargo_ship_fail_selector"
             android:button="@null"
             android:textAlignment="center"/>
         <RadioButton
             android:id="@+id/success"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:onClick="onClickSuccessCS"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
             android:text="SUCCESS"
             android:textSize="25dp"
-            android:layout_marginLeft="5dp"
+            android:layout_margin="5dp"
             android:layout_toEndOf="@+id/fail"
             android:background="@drawable/cargo_ship_success_selector"
             android:button="@null"
@@ -37,28 +35,28 @@
         android:id="@+id/wasDefended"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_below="@+id/rg_fail_success"
         android:layout_margin="10dp"
         android:textOn="WAS DEFENDED"
         android:textOff="WAS DEFENDED"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:layout_below="@+id/rg_fail_success"/>
     <Button
         android:id="@+id/cancel"
-        android:layout_width="155dp"
+        android:layout_width="200dp"
         android:layout_height="100dp"
         android:text="CANCEL"
         android:textSize="25dp"
         android:layout_below="@+id/wasDefended"
-        android:layout_marginTop="5dp"
-        android:onClick="onClickCancelCS"/>
+        android:layout_margin="5dp"
+        android:onClick="onClickCancelCS" />
     <Button
         android:id="@+id/done"
-        android:layout_width="155dp"
+        android:layout_width="200dp"
         android:layout_height="100dp"
         android:text="DONE"
         android:textSize="25dp"
         android:layout_toEndOf="@+id/cancel"
         android:layout_below="@+id/wasDefended"
-        android:layout_marginTop="5dp"
-        android:onClick="onClickDoneCS"/>
+        android:layout_margin="5dp"
+        android:onClick="onClickDoneCS" />
 </RelativeLayout>
