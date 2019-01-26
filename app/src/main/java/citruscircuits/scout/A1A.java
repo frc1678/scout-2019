@@ -737,7 +737,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                         time = TimerUtil.timestamp;
 
-                        if(!(((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))) {
+                        if(!((((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))
+                                || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mScoutId < 9)
+                                || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mScoutId >= 9))) {
                             if(mode.equals("intake")) {
                                 pw = false;
                                 initPopup(popup);
@@ -1063,8 +1065,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         fail = placementDialogLayout.findViewById(R.id.fail);
         success = placementDialogLayout.findViewById(R.id.success);
 
-
-
         placementDialog.setContentView(placementDialogLayout);
         placementDialog.show();
     }
@@ -1075,10 +1075,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneCS(View view) {
-        recordPlacement();
-        mode = "intake";
-        initShape();
-        placementDialog.dismiss();
+        if(fail.isChecked() || success.isChecked()) {
+            recordPlacement();
+            mode = "intake";
+            initShape();
+            placementDialog.dismiss();
+        } else {
+            Toast.makeText(getBaseContext(), "Please input fail/success!",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onClickCancelRocket(View view) {
@@ -1087,10 +1092,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneRocket(View View) {
-        recordPlacement();
-        mode = "intake";
-        initShape();
-        placementDialog.dismiss();
+        if(fail.isChecked() || success.isChecked()) {
+            recordPlacement();
+            mode = "intake";
+            initShape();
+            placementDialog.dismiss();
+        } else {
+            Toast.makeText(getBaseContext(), "Please input fail/success and/or level!",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void initPopup(PopupWindow pw) {
