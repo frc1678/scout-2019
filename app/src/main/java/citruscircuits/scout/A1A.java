@@ -294,7 +294,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         try {
             InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
-            InputManager.mOneTimeMatchData.put("startingPosition", InputManager.mStartingPosition);
             InputManager.mOneTimeMatchData.put("startedWCube", startedWCube);
             InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
             InputManager.mOneTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
@@ -743,13 +742,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDataCheck(View v) {
-        if (rb_blue_right.isChecked() || rb_red_right.isChecked()) {
-            InputManager.mStartingPosition = "right";
-        } else if (rb_blue_center.isChecked() || rb_red_center.isChecked()) {
-            InputManager.mStartingPosition = "center";
-        } else if (rb_blue_left.isChecked() || rb_red_left.isChecked()) {
-            InputManager.mStartingPosition = "left";
-        }
         open(A2A.class, null, false, true);
     }
 

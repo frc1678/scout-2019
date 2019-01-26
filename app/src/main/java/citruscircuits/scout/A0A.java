@@ -125,7 +125,7 @@ public class A0A extends DialogMaker {
 
     //OnClick Methods
     public void onClickStartScouting(View view){
-        open(A1A.class, null,false, true);
+        open(A0B.class, null,false, true);
     }
 
     public static void updateUserData(){
