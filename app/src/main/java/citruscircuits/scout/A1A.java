@@ -1111,7 +1111,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneRocket(View View) {
-        if(fail.isChecked() || success.isChecked()) {
+        if((fail.isChecked() || success.isChecked())
+                && (level1.isChecked() || level2.isChecked() || level3.isChecked())) {
             recordPlacement();
             mode = "intake";
             initShape();

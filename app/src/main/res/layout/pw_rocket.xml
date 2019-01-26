@@ -45,26 +45,32 @@
             android:id="@+id/radio_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LEVEL 3"
+            android:text="   LEVEL 3   "
             android:layout_gravity="start"
-            android:textSize="20dp"
-            android:padding="5dp"/>
+            android:textSize="30dp"
+            android:padding="15dp"
+            android:button="@null"
+            android:background="@drawable/level_selector" />
         <RadioButton
             android:id="@+id/radio_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LEVEL 2"
+            android:text="   LEVEL 2   "
             android:layout_gravity="start"
-            android:textSize="20dp"
-            android:padding="5dp"/>
+            android:textSize="30dp"
+            android:padding="15dp"
+            android:button="@null"
+            android:background="@drawable/level_selector"/>
         <RadioButton
             android:id="@+id/radio_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LEVEL 1"
+            android:text="   LEVEL 1   "
             android:layout_gravity="start"
-            android:textSize="20dp"
-            android:padding="5dp"/>
+            android:textSize="30dp"
+            android:padding="15dp"
+            android:button="@null"
+            android:background="@drawable/level_selector"/>
     </RadioGroup>
     <ToggleButton
         android:id="@+id/wasDefended"
@@ -74,7 +80,8 @@
         android:textOn="WAS DEFENDED"
         android:textOff="WAS DEFENDED"
         android:textSize="20dp"
-        android:layout_below="@id/radio"/>
+        android:layout_below="@id/radio"
+        android:background="@drawable/placement_toggle_selector"/>
     <ToggleButton
         android:id="@+id/shotOutOfField"
         android:layout_width="240dp"
@@ -85,7 +92,8 @@
         android:textOn="SHOT OUT OF FIELD"
         android:textOff="SHOT OUT OF FIELD"
         android:textSize="20dp"
-        android:enabled="false"/>
+        android:enabled="false"
+        android:background="@drawable/placement_toggle_selector"/>
     <Button
         android:id="@+id/cancel"
         android:layout_width="250dp"
