@@ -33,12 +33,13 @@
     </RadioGroup >
     <ToggleButton
         android:id="@+id/wasDefended"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="70dp"
         android:layout_margin="10dp"
         android:textOn="WAS DEFENDED"
         android:textOff="WAS DEFENDED"
         android:textSize="20dp"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/rg_fail_success"/>
     <Button
         android:id="@+id/cancel"
