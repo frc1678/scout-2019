@@ -1010,6 +1010,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         placementDialog.setCanceledOnTouchOutside(false);
         placementDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         //ROCKET LEFT (bottom, right, green): y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9
         //ROCKET RIGHT (top, right, green): y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9
 
@@ -1056,6 +1057,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             level1 = placementDialogLayout.findViewById(R.id.radio_3);
             level2 = placementDialogLayout.findViewById(R.id.radio_2);
             level3 = placementDialogLayout.findViewById(R.id.radio_1);
+
+            if(element.equals("lemon")) {
+                tb_shotOutOfField.setVisibility(View.INVISIBLE);
+
+                level1.setBackgroundResource(R.drawable.level_selector_lemon);
+                level2.setBackgroundResource(R.drawable.level_selector_lemon);
+                level3.setBackgroundResource(R.drawable.level_selector_lemon);
+            } else if(element.equals("orange")) {
+                tb_shotOutOfField.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
+
+                level1.setBackgroundResource(R.drawable.level_selector_orange);
+                level2.setBackgroundResource(R.drawable.level_selector_orange);
+                level3.setBackgroundResource(R.drawable.level_selector_orange);
+            }
         } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9)
                 || ((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9) {
             structure = "cargoShip";
@@ -1076,6 +1091,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         tb_wasDefended = placementDialogLayout.findViewById(R.id.wasDefended);
 
+        if(element.equals("lemon")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.placement_lemon_toggle_selector);
+        } else if(element.equals("orange")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
+        }
+
         placementDialog.setContentView(placementDialogLayout);
         placementDialog.show();
     }
@@ -1086,6 +1107,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickSuccessRocket(View view) {
         tb_shotOutOfField.setEnabled(false);
+        tb_shotOutOfField.setChecked(false);
     }
 
     public void onClickCancelCS(View view) {
