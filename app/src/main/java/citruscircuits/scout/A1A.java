@@ -724,12 +724,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
 
-                        pw = false;
-
                         if(!(((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))) {
                             if(mode.equals("intake")) {
+                                pw = false;
                                 initPopup(popup);
-                            } else if(mode.equals("placement")) { //TODO add placement coordinates, MAYBE CHANGE LOGIC?
+                            } else if(mode.equals("placement") && (((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
+                                    || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
+                                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
+                                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
+                                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
+                                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
+                                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)
+                                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)
+                                    || (((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9))
+                                    || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9))){
+                                pw = false;
                                 initPopup(popup_fail_success);
                             }
                         }
@@ -779,7 +788,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         if(zone.contains("LoadingStation")) {
             recordLoadingStation(true);
-            pw = true;
 
             initShape();
         } else {
@@ -795,6 +803,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDone(View view) {
+        initShape();
         popup_rocket.dismiss();
     }
 
@@ -817,6 +826,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mRealTimeMatchData.put(new JSONObject().put("piece", element));
             mRealTimeMatchData.put(new JSONObject().put("zone", zone));
             mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("RECORDING?", mRealTimeMatchData.toString());
+    }
+
+    public void recordPlacement(Boolean didSucceed, Boolean wasDefended, String structure, String side, Integer level) { //TODO REDO HOW didSucceed is recorded
+        try {
+            mRealTimeMatchData.put(new JSONObject().put("type", "placement"));
+            timestamp();
+            mRealTimeMatchData.put(new JSONObject().put("piece", element));
+            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+            mRealTimeMatchData.put(new JSONObject().put("wasDefended", wasDefended));
+            mRealTimeMatchData.put(new JSONObject().put("structure", structure));
+            mRealTimeMatchData.put(new JSONObject().put("side", side));
+            if(structure.contains("Rocket")) {
+                mRealTimeMatchData.put(new JSONObject().put("level", level));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -857,6 +884,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void initShape() {
+        pw = true;
         overallLayout.removeView(iv_game_element);
 
         if(element.equals("orange")) {
@@ -913,7 +941,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             initPopup(popup_fail_success);
         } else {
-            pw = true;
             mode = "placement";
             if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
@@ -959,24 +986,43 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void initPlacement() {
         popup_fail_success.dismiss();
 
-        if() { //TODO BOTH ROCKET COORDINATES
-            if() { //TODO RIGHT ROCKET
+        //ROCKET LEFT (bottom, right, green): y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9
+        //ROCKET RIGHT (top, right, green): y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9
+
+        //ROCKET RIGHT (bottom, left, green): y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9
+        //ROCKET LEFT (top, left, green): y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9
+
+        //ROCKET LEFT (bottom, right, black): y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9
+        //ROCKET RIGHT (top, right, black): y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9
+
+        //ROCKET RIGHT (bottom, left, black): y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9
+        //ROCKET LEFT (bottom, left, black): y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9
+
+
+        if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
+                || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
+                || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
+                || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
+                || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
+                || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
+                || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)
+                || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)) {
+            if((y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
+                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
+                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
+                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)) {
                 structure = "rightRocket";
-                if(element.equals("lemon")) {
-                    if() { //TODO ROCKET FAR SIDE
-                        side = "far";
-                    } else if() { //TODO ROCKET NEAR SIDE
-                        side = "near";
-                    }
-                }
-            } else if() { //TODO LEFT ROCKET
+            } else if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
+                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
+                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
+                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)) {
                 structure = "leftRocket";
-                if(element.equals("lemon")) {
-                    if() { //TODO ROCKET FAR SIDE
-                        side = "far";
-                    } else if() { //TODO ROCKET NEAR SIDE
-                        side = "near";
-                    }
+            }
+            if(element.equals("lemon")) {
+                if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mScoutId < 9) || (((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mScoutId >= 9)) {
+                    side = "far";
+                } else if((((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mScoutId < 9) || (((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mScoutId >= 9)) {
+                    side = "near";
                 }
             }
             initPopup(popup_rocket);
@@ -993,7 +1039,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mScoutId >= 9) {
                 side = "right";
             }
+            initShape();
         }
+        Log.i("ROCKET!!", structure + side);
     }
 
     public void initPopup(PopupWindow pw) {
