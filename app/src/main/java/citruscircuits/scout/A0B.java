@@ -42,35 +42,17 @@ public class A0B extends DialogMaker {
 
     public Button arrowNext;
     public ImageView iv_hab;
-    public boolean showUpBool;
 
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        driverStart=findViewById(R.id.driver_starting_position);
-//        driverCenter=findViewById(R.id.driver_center);
-//        driverLeft=findViewById(R.id.driver_left);
-//        driverRight=findViewById(R.id.driver_right);
         arrowNext= findViewById(R.id.btn_arrow);
         if ( AppCc.getSp("mapOrientation", 99) != 0){
-            setContentView(R.layout.activity_pregame_r);
-            iv_hab = findViewById(R.id.imageView);
-            driverStart=findViewById(R.id.driver_starting_position);
-            driverCenter=findViewById(R.id.driver_center);
-            driverLeft=findViewById(R.id.driver_left);
-            driverRight=findViewById(R.id.driver_right);
-            hab= findViewById(R.id.hab);
-            habSub1=findViewById(R.id.innerhab1);
-            habSub2=findViewById(R.id.innerhab2);
-
-            layerTwoA= findViewById(R.id.LayerTwoA);
-            layerTwoB= findViewById(R.id.LayerTwoB);
-            layerOneA= findViewById(R.id.LayerOneA);
-            layerOneB= findViewById(R.id.LayerOneB);
-            layerOneC= findViewById(R.id.LayerOneC);
             Log.e("wok", "prer");
             if(mAllianceColor.equals("red")){
+                setContentView(R.layout.activity_pregame_r);
+                defineVariables();
                 iv_hab.setImageResource(R.drawable.red_hab_r);
                 driverRight.setText("R3");
                 driverCenter.setText("R2");
@@ -85,6 +67,8 @@ public class A0B extends DialogMaker {
                 driverCenter.setBackgroundResource(R.drawable.starting_position_red_selector);
                 driverLeft.setBackgroundResource(R.drawable.starting_position_red_selector);
             } else if (mAllianceColor.equals("blue")){
+                setContentView(R.layout.activity_pregame_l);
+                defineVariables();
                 Log.e("wok", "bluer");
                 iv_hab.setImageResource(R.drawable.blue_hab_r);
                 driverRight.setText("B3");
@@ -101,22 +85,10 @@ public class A0B extends DialogMaker {
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_blue_selector);
             }
         }else if ( AppCc.getSp("mapOrientation", 99) == 0){
-            setContentView(R.layout.activity_pregame_l);
-            iv_hab = findViewById(R.id.imageView);
-            driverStart=findViewById(R.id.driver_starting_position);
-            driverCenter=findViewById(R.id.driver_center);
-            driverLeft=findViewById(R.id.driver_left);
-            driverRight=findViewById(R.id.driver_right);
-            hab= findViewById(R.id.hab);
-            habSub1=findViewById(R.id.innerhab1);
-            habSub2=findViewById(R.id.innerhab2);
-            layerTwoA= findViewById(R.id.LayerTwoA);
-            layerTwoB= findViewById(R.id.LayerTwoB);
-            layerOneA= findViewById(R.id.LayerOneA);
-            layerOneB= findViewById(R.id.LayerOneB);
-            layerOneC= findViewById(R.id.LayerOneC);
             Log.e("wok", "prel");
             if(mAllianceColor.equals("red")){
+                setContentView(R.layout.activity_pregame_l);
+                defineVariables();
                 Log.e("wok", "redl");
                 iv_hab.setImageResource(R.drawable.red_hab_l);
                 driverRight.setText("R3");
@@ -133,6 +105,9 @@ public class A0B extends DialogMaker {
                 layerTwoB.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
             } else if (mAllianceColor.equals("blue")){
+                setContentView(R.layout.activity_pregame_r);
+                defineVariables();
+
                 Log.e("wok", "bluel");
                 iv_hab.setImageResource(R.drawable.blue_hab_l);
                 driverRight.setText("B3");
@@ -150,19 +125,8 @@ public class A0B extends DialogMaker {
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_blue_selector);
             }
         }
-        preloadGroup=findViewById(R.id.preload);
-        preloadCargo= findViewById(R.id.preloadCargo);
-        preloadPanel= findViewById(R.id.preloadPanel);
-        preloadNone= findViewById(R.id.preloadNone);
-        showUp= findViewById(R.id.showedUp);
-
+        preloadNone.setChecked(true);
     }
-//    public void onClickHabLevel(View view){
-//
-//    }
-//    public void onClickStartingPosition (View view){
-//
-//    }
 
 public void onClickShowUp(View view){
         if (showUp.isChecked()){
@@ -193,6 +157,26 @@ public void onClickShowUp(View view){
         }
 
 }
+public void defineVariables(){
+    iv_hab = findViewById(R.id.imageView);
+    driverStart=findViewById(R.id.driver_starting_position);
+    driverCenter=findViewById(R.id.driver_center);
+    driverLeft=findViewById(R.id.driver_left);
+    driverRight=findViewById(R.id.driver_right);
+    hab= findViewById(R.id.hab);
+    habSub1=findViewById(R.id.innerhab1);
+    habSub2=findViewById(R.id.innerhab2);
+    layerTwoA= findViewById(R.id.LayerTwoA);
+    layerTwoB= findViewById(R.id.LayerTwoB);
+    layerOneA= findViewById(R.id.LayerOneA);
+    layerOneB= findViewById(R.id.LayerOneB);
+    layerOneC= findViewById(R.id.LayerOneC);
+    preloadGroup=findViewById(R.id.preload);
+    preloadCargo= findViewById(R.id.preloadCargo);
+    preloadPanel= findViewById(R.id.preloadPanel);
+    preloadNone= findViewById(R.id.preloadNone);
+    showUp= findViewById(R.id.showedUp);
+    }
     public void onClickHabOneA(View v){
         Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
