@@ -835,6 +835,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void recordPlacement() {
+        if(fail.isChecked()) {
+            didSucceed = false;
+        } else if(success.isChecked()) {
+            didSucceed = true;
+        }
+
+        wasDefended = tb_wasDefended.isChecked();
+
         try {
             mRealTimeMatchData.put(new JSONObject().put("type", "placement"));
             timestamp(time);
@@ -852,7 +860,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if(level3.isChecked()) {
                     level = 3;
                 }
-                if(!didSucceed) {
+                if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
+                    shotOutOfField = tb_shotOutOfField.isChecked();
                     mRealTimeMatchData.put(new JSONObject().put("shotOutOfField", shotOutOfField));
                 }
                 mRealTimeMatchData.put(new JSONObject().put("level", level));
@@ -1065,8 +1074,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         fail = placementDialogLayout.findViewById(R.id.fail);
         success = placementDialogLayout.findViewById(R.id.success);
 
+        tb_wasDefended = placementDialogLayout.findViewById(R.id.wasDefended);
+
         placementDialog.setContentView(placementDialogLayout);
         placementDialog.show();
+    }
+
+    public void onClickFailRocket(View view) {
+        tb_shotOutOfField.setEnabled(true);
+    }
+
+    public void onClickSuccessRocket(View view) {
+        tb_shotOutOfField.setEnabled(false);
     }
 
     public void onClickCancelCS(View view) {
