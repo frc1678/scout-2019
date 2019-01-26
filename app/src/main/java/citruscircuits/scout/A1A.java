@@ -128,6 +128,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public PopupWindow popup = new PopupWindow();
     public PopupWindow popup_fail_success = new PopupWindow();
     public PopupWindow popup_rocket = new PopupWindow();
+    public PopupWindow popup_cargo_ship = new PopupWindow();
 
     public ImageView field;
     public ImageView iv_game_element;
@@ -212,9 +213,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);
 
-        popup_rocket = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 620, 650, false);
+        if(mScoutId < 9) {
+            popup_rocket = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 650, 650, false);
+        } else {
+            popup_rocket = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 450, 600, false);
+        }
         popup_rocket.setOutsideTouchable(false);
         popup_rocket.setFocusable(false);
+
+        if(mScoutId < 9) {
+            popup_cargo_ship = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 650, 650, false);
+        } else {
+            popup_cargo_ship = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 450, 600, false);
+        }
+        popup_cargo_ship.setOutsideTouchable(false);
+        popup_cargo_ship.setFocusable(false);
 
         tv_team = findViewById(R.id.tv_teamNum);
 
@@ -739,7 +752,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     || (((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9))
                                     || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9))){
                                 pw = false;
-                                initPopup(popup_fail_success);
+                                initPlacement();
                             }
                         }
                     }
@@ -767,14 +780,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         mode = "intake";
 
-        if(zone.contains("LoadingStation")) {
-            pw = true;
-            recordLoadingStation(false);
+        pw = true;
+        recordLoadingStation(false);
 
-            mapChange();
-        } else {
-            initPlacement();
-        }
+        mapChange();
 
         popup_fail_success.dismiss();
     }
@@ -786,13 +795,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mode = "intake";
         }
 
-        if(zone.contains("LoadingStation")) {
-            recordLoadingStation(true);
+        recordLoadingStation(true);
 
-            initShape();
-        } else {
-            initPlacement();
-        }
+        initShape();
 
         popup_fail_success.dismiss();
     }
@@ -1039,9 +1044,30 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mScoutId >= 9) {
                 side = "right";
             }
-            initShape();
+            initPopup(popup_cargo_ship);
         }
         Log.i("ROCKET!!", structure + side);
+    }
+
+    public void onClickCancelCS(View view) {
+        pw = true;
+        popup_cargo_ship.dismiss();
+    }
+
+    public void onClickDoneCS(View view) {
+        recordPlacement();
+        initShape();
+        popup_cargo_ship.dismiss();
+    }
+
+    public void onClickCancelRocket(View view) {
+        pw = true;
+    }
+
+    public void onClickDoneRocket(View View) {
+        recordPlacement();
+        initShape();
+        popup_cargo_ship.dismiss();
     }
 
     public void initPopup(PopupWindow pw) {
