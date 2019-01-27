@@ -291,7 +291,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         try {
             InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
-            InputManager.mOneTimeMatchData.put("startingPosition", InputManager.mStartingPosition);
             InputManager.mOneTimeMatchData.put("startedWCube", startedWCube);
             InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
             InputManager.mOneTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
@@ -699,7 +698,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
         }
     }
-
 
 //    public void onClickIncap(View v) throws JSONException {
 //        if (!incapChecked) {
