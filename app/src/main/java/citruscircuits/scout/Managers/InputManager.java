@@ -60,10 +60,11 @@ public class InputManager {
     public static Integer mDriverStartingPosition = 0;
     public static String mPreload = "";
     public static boolean isNoShow= false;
-
-
-    public static boolean autoLineCrossed = false;
-
+    public static Integer mTimerStarted = 0;
+    public static boolean mCrossedHabLine = false;
+    public static String mAppVersion = "0.1";
+    public static String mAssignmentMode = "";
+    public static Integer mAssignmentFileTimestamp = 0;
 
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);

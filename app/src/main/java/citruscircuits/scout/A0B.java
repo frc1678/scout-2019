@@ -260,33 +260,12 @@ public void defineVariables(){
                 open(A1A.class, null, false, true);
 
             }
-
-
-
         }
         //go to next activity
         else if(showUp.isChecked()){
             InputManager.isNoShow=true;
             open(A2A.class, null, false, true);
         }
-
-        Log.e("wok1",InputManager.mHabStartingPositionOrientation);
-        Log.e("wok2",String.valueOf(InputManager.mHabStartingPositionLevel));
-        Log.e("wok3",String.valueOf(InputManager.mDriverStartingPosition));
-        Log.e("wok4",InputManager.mPreload);
-        Log.e("wok5",String.valueOf(InputManager.isNoShow));
-        try{
-            Log.e("wok123", String.valueOf(InputManager.mHabStartingPositionLevel));
-            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
-            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
-            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
-            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
-            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
-
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.e("wokDic", InputManager.mOneTimeMatchData.toString());
     }
 
 }

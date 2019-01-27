@@ -28,13 +28,14 @@ public class OutputManager extends InputManager{
         activity.startActivityForResult(discoveryIntent, REQUEST_BLU);
     }
 
-    //TODO Ensure that Alliance Color, Starting Position, Started With Cube, and Auto Line Crossed are recorded in this respective order
     public static String compressMatchData(JSONObject pMatchData) {
         fullQRDataProcess();
 
         String compressedData = InputManager.matchKey + "|";
         //used to make sure that the Qr's header is formatted correctly - aLCFound
-        boolean aLCFound = false;   String aLCKey = ""; String aLCValue = "";
+        boolean aLCFound = false;
+        String aLCKey = "";
+        String aLCValue = "";
         try {
             JSONArray timeStampData = pMatchData.getJSONArray(InputManager.matchKey);
             Iterator<?> uncompressedKeys = InputManager.mOneTimeMatchData.keys();

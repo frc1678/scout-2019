@@ -307,10 +307,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
 
         try {
-            InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
-            InputManager.mOneTimeMatchData.put("startedWCube", startedWCube);
+            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
+            InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
+            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
+            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
+            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
+            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
+            InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
             InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
-            InputManager.mOneTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
+            InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
+            InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
+            InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -371,10 +378,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickAutoLineCrossed(View v) {
-        if (!InputManager.autoLineCrossed) {
-            InputManager.autoLineCrossed = true;
-        } else if (InputManager.autoLineCrossed) {
-            InputManager.autoLineCrossed = false;
+        if (!InputManager.mCrossedHabLine) {
+            InputManager.mCrossedHabLine = true;
+        } else if (InputManager.mCrossedHabLine) {
+            InputManager.mCrossedHabLine = false;
         }
     }
 
