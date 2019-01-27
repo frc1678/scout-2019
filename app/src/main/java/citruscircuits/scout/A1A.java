@@ -89,6 +89,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public List<Integer> climbActualValues = new ArrayList<>();
     public List<Object> climbValues = new ArrayList<>();
 
+    public Map<String, Object> compressionDic;
+
     JSONObject climbAttemptData = new JSONObject();
     JSONObject climbActualData = new JSONObject();
     JSONObject climbFinalData = new JSONObject();
@@ -817,27 +819,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void timestamp(Float givenTime) {
-        try {
-            if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime) + "*"));
-            } else {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime)));
-            }
-        } catch (JSONException je) {
-            je.printStackTrace();
+        if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
+            compressionDic.put("time", String.format("%.2f", givenTime) + "*");
+        } else {
+            compressionDic.put("time", String.format("%.2f", givenTime));
         }
     }
 
     public void recordLoadingStation(boolean didSucceed) {
-        try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
-            timestamp(time);
-            mRealTimeMatchData.put(new JSONObject().put("piece", element));
-            mRealTimeMatchData.put(new JSONObject().put("zone", zone));
-            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        compressionDic = new HashMap<String, Object>();
+
+        compressionDic.put("type", "intake");
+        timestamp(time);
+        compressionDic.put("piece", element);
+        compressionDic.put("zone", zone);
+        compressionDic.put("didSucceed", didSucceed);
+
+        mRealTimeMatchData.put(compressionDic);
+
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
@@ -850,33 +849,34 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         wasDefended = tb_wasDefended.isChecked();
 
-        try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "placement"));
-            timestamp(time);
-            mRealTimeMatchData.put(new JSONObject().put("piece", element));
-            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
-            mRealTimeMatchData.put(new JSONObject().put("wasDefended", wasDefended));
-            mRealTimeMatchData.put(new JSONObject().put("structure", structure));
-            if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
-                mRealTimeMatchData.put(new JSONObject().put("side", side));
-            }
-            if(structure.contains("Rocket")) {
-                if(level1.isChecked()) {
-                    level = 1;
-                } else if(level2.isChecked()) {
-                    level = 2;
-                } else if(level3.isChecked()) {
-                    level = 3;
-                }
-                if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
-                    shotOutOfField = tb_shotOutOfField.isChecked();
-                    mRealTimeMatchData.put(new JSONObject().put("shotOutOfField", shotOutOfField));
-                }
-                mRealTimeMatchData.put(new JSONObject().put("level", level));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        compressionDic = new HashMap<String, Object>();
+
+        compressionDic.put("type", "placement");
+        timestamp(time);
+        compressionDic.put("piece", element);
+        compressionDic.put("didSucceed", didSucceed);
+        compressionDic.put("wasDefended", wasDefended);
+        compressionDic.put("structure", structure);
+        if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
+            compressionDic.put("side", side);
         }
+        if(structure.contains("Rocket")) {
+            if(level1.isChecked()) {
+                level = 1;
+            } else if(level2.isChecked()) {
+                level = 2;
+            } else if(level3.isChecked()) {
+                level = 3;
+            }
+            if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
+                shotOutOfField = tb_shotOutOfField.isChecked();
+                compressionDic.put("shotOutOfField", shotOutOfField);
+            }
+            compressionDic.put("level", level);
+        }
+
+        mRealTimeMatchData.put(compressionDic);
+
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
@@ -1002,14 +1002,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
 
-            try {
-                mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
-                timestamp(time);
-                mRealTimeMatchData.put(new JSONObject().put("piece", element));
-                mRealTimeMatchData.put(new JSONObject().put("zone", zone));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            compressionDic = new HashMap<String, Object>();
+
+            compressionDic.put("type", "intake");
+            timestamp(time);
+            compressionDic.put("piece", element);
+            compressionDic.put("zone", zone);
+
+            mRealTimeMatchData.put(compressionDic);
+
             Log.i("RECORDING?", mRealTimeMatchData.toString());
             initShape();
         }
