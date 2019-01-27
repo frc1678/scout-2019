@@ -863,7 +863,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 mRealTimeMatchData.put(new JSONObject().put("side", side));
             }
             if(structure.contains("Rocket")) {
-                shotOutOfField = tb_shotOutOfField.isChecked();
                 if(level1.isChecked()) {
                     level = 1;
                 } else if(level2.isChecked()) {
