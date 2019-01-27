@@ -483,6 +483,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 
     public void onClickClimb(View v) {
+        time = TimerUtil.timestamp;
+
         final Float climbStartTime=TimerUtil.timestamp;
         final Dialog climbDialog = new Dialog(this);
         climbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1182,6 +1184,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void recordClimb(float time) {
+        compressionDic = new JSONObject();
         try {
             climbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
             climbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
@@ -1193,11 +1196,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             climbFinalData.put(climbKeys.get(1), time);
             climbFinalData.put(climbKeys.get(2), climbAttemptData);
             climbFinalData.put(climbKeys.get(3), climbActualData);
+
+            compressionDic.put("type", "climb");
+            timestamp(time);
+            compressionDic.put("attempted", climbAttemptData);
+            compressionDic.put("actual", climbActualData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
+
         climbInputted = true;
-        Log.e("Climb", climbFinalData.toString());
+        Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
     public void onClickDataCheck(View v) {
