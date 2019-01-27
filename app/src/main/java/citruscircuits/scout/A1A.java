@@ -89,7 +89,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public List<Integer> climbActualValues = new ArrayList<>();
     public List<Object> climbValues = new ArrayList<>();
 
-    public Map<String, Object> compressionDic;
+    public JSONObject compressionDic;
 
     JSONObject climbAttemptData = new JSONObject();
     JSONObject climbActualData = new JSONObject();
@@ -820,20 +820,32 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void timestamp(Float givenTime) {
         if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
-            compressionDic.put("time", String.format("%.2f", givenTime) + "*");
+            try {
+                compressionDic.put("time", String.format("%.2f", givenTime) + "*");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         } else {
-            compressionDic.put("time", String.format("%.2f", givenTime));
+            try {
+                compressionDic.put("time", String.format("%.2f", givenTime));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void recordLoadingStation(boolean didSucceed) {
-        compressionDic = new HashMap<String, Object>();
+        compressionDic = new JSONObject();
 
-        compressionDic.put("type", "intake");
-        timestamp(time);
-        compressionDic.put("piece", element);
-        compressionDic.put("zone", zone);
-        compressionDic.put("didSucceed", didSucceed);
+        try {
+            compressionDic.put("type", "intake");
+            timestamp(time);
+            compressionDic.put("piece", element);
+            compressionDic.put("zone", zone);
+            compressionDic.put("didSucceed", didSucceed);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         mRealTimeMatchData.put(compressionDic);
 
@@ -849,30 +861,35 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         wasDefended = tb_wasDefended.isChecked();
 
-        compressionDic = new HashMap<String, Object>();
+        compressionDic = new JSONObject();
 
-        compressionDic.put("type", "placement");
-        timestamp(time);
-        compressionDic.put("piece", element);
-        compressionDic.put("didSucceed", didSucceed);
-        compressionDic.put("wasDefended", wasDefended);
-        compressionDic.put("structure", structure);
-        if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
-            compressionDic.put("side", side);
-        }
-        if(structure.contains("Rocket")) {
-            if(level1.isChecked()) {
-                level = 1;
-            } else if(level2.isChecked()) {
-                level = 2;
-            } else if(level3.isChecked()) {
-                level = 3;
+        try {
+            compressionDic.put("type", "placement");
+            timestamp(time);
+            compressionDic.put("piece", element);
+            compressionDic.put("didSucceed", didSucceed);
+            compressionDic.put("wasDefended", wasDefended);
+            compressionDic.put("structure", structure);
+
+            if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
+                compressionDic.put("side", side);
             }
-            if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
-                shotOutOfField = tb_shotOutOfField.isChecked();
-                compressionDic.put("shotOutOfField", shotOutOfField);
+            if(structure.contains("Rocket")) {
+                if(level1.isChecked()) {
+                    level = 1;
+                } else if(level2.isChecked()) {
+                    level = 2;
+                } else if(level3.isChecked()) {
+                    level = 3;
+                }
+                if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
+                    shotOutOfField = tb_shotOutOfField.isChecked();
+                    compressionDic.put("shotOutOfField", shotOutOfField);
+                }
+                compressionDic.put("level", level);
             }
-            compressionDic.put("level", level);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         mRealTimeMatchData.put(compressionDic);
@@ -1002,12 +1019,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
 
-            compressionDic = new HashMap<String, Object>();
+            compressionDic = new JSONObject();
 
-            compressionDic.put("type", "intake");
-            timestamp(time);
-            compressionDic.put("piece", element);
-            compressionDic.put("zone", zone);
+            try {
+                compressionDic.put("type", "intake");
+                timestamp(time);
+                compressionDic.put("piece", element);
+                compressionDic.put("zone", zone);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             mRealTimeMatchData.put(compressionDic);
 
