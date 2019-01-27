@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/auto_blue_background_selector">
+    android:background="@drawable/storm_blue_background_selector">
 
     <RelativeLayout
         android:layout_width="400dp"
@@ -10,11 +10,11 @@
         android:layout_above="@+id/btn_to_teleop"
         android:layout_centerHorizontal="true">
         <TextView
-            android:id="@+id/tv_auto"
+            android:id="@+id/tv_storm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:text="AUTO"
+            android:text="STORM"
             android:textSize="25dp"
             android:textAlignment="center"
             android:textColor="#000b77"/>
@@ -26,51 +26,37 @@
             android:text="START TIMER"
             android:textSize="30dp"
             android:layout_marginBottom="15dp"
-            android:layout_below="@+id/tv_auto"
+            android:layout_below="@+id/tv_storm"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/auto_blue_selector"
+            android:background="@drawable/storm_blue_selector"
             android:onClick="onClickStartTimer"/>
         <ToggleButton
             android:layout_width="290dp"
             android:layout_height="wrap_content"
-            android:id="@+id/tgbtn_auto_run"
+            android:id="@+id/tgbtn_storm_run"
             android:layout_below="@+id/btn_timer"
             android:padding="15dp"
             android:textSize="25dp"
-            android:textOn="AUTO RUN MADE"
-            android:textOff="AUTO RUN NOT MADE"
+            android:textOn="HAB LINE CROSSED"
+            android:textOff="HAB LINE CROSSED"
             android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/auto_blue_selector"
-            android:onClick="onClickAutoLineCrossed"
+            android:background="@drawable/storm_blue_selector"
+            android:onClick="onClickHabLineCrossed"
             android:enabled="false"/>
         <ToggleButton
             android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:id="@+id/tgbtn_start_with_cube"
-            android:layout_below="@+id/tgbtn_auto_run"
+            android:layout_below="@+id/tgbtn_storm_run"
             android:padding="15dp"
             android:textSize="25dp"
             android:textOn="BEGAN W/ CUBE"
             android:textOff="BEGAN W/OUT CUBE"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/auto_blue_selector"
+            android:background="@drawable/storm_blue_selector"
             android:onClick="onClickBeginWithCube"/>
     </RelativeLayout>
-
-    <TextView
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_to_teleop"
-        android:text="⚠ INPUT START POSITION"
-        android:layout_centerHorizontal="true"
-        android:padding="15dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="25dp"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:id="@+id/tv_starting_position_warning"/>
 
     <Button
         android:id="@+id/btn_to_teleop"
@@ -81,5 +67,5 @@
         android:padding="10dp"
         android:layout_alignParentBottom="true"
         android:onClick="onClickTeleop"
-        android:background="@drawable/auto_blue_selector" />
+        android:background="@drawable/storm_blue_selector" />
 </RelativeLayout>

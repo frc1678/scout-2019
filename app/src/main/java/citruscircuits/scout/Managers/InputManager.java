@@ -62,7 +62,7 @@ public class InputManager {
     public static boolean isNoShow= false;
 
 
-    public static boolean autoLineCrossed = false;
+    public static boolean habLineCrossed = false;
 
 
     public static void storeUserData(){

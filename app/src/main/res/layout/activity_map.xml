@@ -15,12 +15,12 @@
         android:src="@drawable/field_intake_blue_left"/>
 
     <FrameLayout
-        android:id="@+id/left_auto"
+        android:id="@+id/left_storm"
         android:layout_width="130dp"
         android:layout_height="470dp" />
 
     <FrameLayout
-        android:id="@+id/right_auto"
+        android:id="@+id/right_storm"
         android:layout_width="130dp"
         android:layout_height="470dp"
         android:layout_marginStart="720dp"/>

@@ -33,7 +33,7 @@
             android:textAlignment="center"
             android:layout_margin="5dp"
             android:padding="30dp"
-            android:background="@drawable/auto_red_background_selector"/>
+            android:background="@drawable/storm_red_background_selector"/>
         <RadioButton
             android:layout_width="140dp"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             android:textAlignment="center"
             android:layout_margin="5dp"
             android:padding="30dp"
-            android:background="@drawable/auto_blue_background_selector"/>
+            android:background="@drawable/storm_blue_background_selector"/>
     </RadioGroup>
 
     <TextView
