@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -66,14 +67,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean shapeCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+    public boolean didSucceed;
+    public boolean wasDefended;
+    public boolean shotOutOfField;
 
     public Integer numRobotsAttemptedToLift = 0;
     public Integer numRobotsDidLift = 0;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
+    public Integer level;
 
     public Float ftbStartTime;
     public Float ftbEndTime;
+    public Float time;
 
     public List<String> climbAttemptKeys = Arrays.asList("self", "robot1", "robot2");
     public List<String> climbActualKeys = Arrays.asList("self", "robot1", "robot2");
@@ -115,17 +121,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button spaceTwoII;
     public Button spaceThreeII;
 
-
     public ToggleButton tb_incap;
     public ToggleButton tb_auto_run;
     public ToggleButton tb_start_cube;
 
     public RelativeLayout dialogLayout;
     public RelativeLayout overallLayout;
+    public RelativeLayout placementDialogLayout;
+
+    public RadioButton fail;
+    public RadioButton success;
+
+    public RadioButton level1;
+    public RadioButton level2;
+    public RadioButton level3;
+
+    public ToggleButton tb_wasDefended;
+    public ToggleButton tb_shotOutOfField;
 
     public PopupWindow popup = new PopupWindow();
     public PopupWindow popup_fail_success = new PopupWindow();
-    public PopupWindow popup_rocket = new PopupWindow();
 
     public ImageView field;
     public ImageView iv_game_element;
@@ -147,6 +162,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public String mode = "intake";
     public String element;
     public String zone;
+    public String structure;
+    public String side;
+
+    public Dialog placementDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -207,10 +226,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);
-
-        popup_rocket = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_rocket, null), 620, 650, false);
-        popup_rocket.setOutsideTouchable(false);
-        popup_rocket.setFocusable(false);
 
         tv_team = findViewById(R.id.tv_teamNum);
 
@@ -385,7 +400,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         overallLayout.removeView(iv_game_element);
         try {
             mRealTimeMatchData.put(new JSONObject().put("type", "drop"));
-            timestamp();
+            timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -402,12 +417,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickSpill(View v) throws JSONException {
 //        if (!startTimer && !incapChecked) {
-        timestamp();
+        timestamp(TimerUtil.timestamp);
         InputManager.numSpill++;
         btn_spill.setText("SPILL - " + InputManager.numSpill);
         try {
             mRealTimeMatchData.put(new JSONObject().put("type", "spill"));
-            timestamp();
+            timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -728,15 +743,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
 
-                        if(!(((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))) {
+                        time = TimerUtil.timestamp;
+
+                        if(!((((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))
+                                || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mScoutId < 9)
+                                || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mScoutId >= 9))) {
                             if(mode.equals("intake")) {
                                 pw = false;
                                 initPopup(popup);
-                            } else if(mode.equals("placement")) { //TODO add placement coordinates
-                                //initPopup(popup_fail_success);
-                                mode = "intake";
-                                pw = true;
-                                initShape();
+                            } else if(mode.equals("placement") && (((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
+                                    || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
+                                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
+                                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
+                                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
+                                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
+                                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)
+                                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)
+                                    || (((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9))
+                                    || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9))){
+                                pw = false;
+                                initPlacement();
                             }
                         }
                     }
@@ -764,15 +790,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         mode = "intake";
 
-        if(zone.contains("LoadingStation")) {
-            recordLoadingStation(false);
-        }
-
         pw = true;
-
-//        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
-//            initPopup(popup_rocket);
-//        }
+        recordLoadingStation(false);
 
         mapChange();
 
@@ -785,18 +804,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         } else if(mode.equals("placement")) {
             mode = "intake";
         }
+        recordLoadingStation(true);
 
-        if(zone.contains("LoadingStation")) {
-            recordLoadingStation(true);
-            btn_drop.setEnabled(true);
-        }
-
-        pw = true;
         initShape();
-
-//        if((x <= 1125 && x >= 870 && y <= 275 && y >= 50) || (x <= 1125 && x >= 870 && y <= 980 && y >= 760)) {
-//            initPopup(popup_rocket);
-//        }
 
         popup_fail_success.dismiss();
     }
@@ -806,16 +816,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
     }
 
-    public void onClickDone(View view) {
-        popup_rocket.dismiss();
-    }
-
-    public void timestamp() {
+    public void timestamp(Float givenTime) {
         try {
-            if ((TimerUtil.timestamp <= 135 && !tele) || (TimerUtil.timestamp > 135 && tele)) {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp) + "*"));
+            if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime) + "*"));
             } else {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", TimerUtil.timestamp)));
+                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime)));
             }
         } catch (JSONException je) {
             je.printStackTrace();
@@ -825,10 +831,49 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void recordLoadingStation(boolean didSucceed) {
         try {
             mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
-            timestamp();
+            timestamp(time);
             mRealTimeMatchData.put(new JSONObject().put("piece", element));
             mRealTimeMatchData.put(new JSONObject().put("zone", zone));
             mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("RECORDING?", mRealTimeMatchData.toString());
+    }
+
+    public void recordPlacement() {
+        if(fail.isChecked()) {
+            didSucceed = false;
+        } else if(success.isChecked()) {
+            didSucceed = true;
+        }
+
+        wasDefended = tb_wasDefended.isChecked();
+
+        try {
+            mRealTimeMatchData.put(new JSONObject().put("type", "placement"));
+            timestamp(time);
+            mRealTimeMatchData.put(new JSONObject().put("piece", element));
+            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+            mRealTimeMatchData.put(new JSONObject().put("wasDefended", wasDefended));
+            mRealTimeMatchData.put(new JSONObject().put("structure", structure));
+            if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
+                mRealTimeMatchData.put(new JSONObject().put("side", side));
+            }
+            if(structure.contains("Rocket")) {
+                if(level1.isChecked()) {
+                    level = 1;
+                } else if(level2.isChecked()) {
+                    level = 2;
+                } else if(level3.isChecked()) {
+                    level = 3;
+                }
+                if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
+                    shotOutOfField = tb_shotOutOfField.isChecked();
+                    mRealTimeMatchData.put(new JSONObject().put("shotOutOfField", shotOutOfField));
+                }
+                mRealTimeMatchData.put(new JSONObject().put("level", level));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -870,6 +915,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void initShape() {
+        pw = true;
         overallLayout.removeView(iv_game_element);
 
         if(element.equals("orange")) {
@@ -915,33 +961,41 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup.dismiss();
         element = givenElement;
 
-        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9) || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
-            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
+        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9)
+                || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
+            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9)
+                    || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
                 zone = "leftLoadingStation";
-            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mScoutId < 9) || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mScoutId >= 9)) {
+            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mScoutId < 9)
+                    || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mScoutId >= 9)) {
                 zone = "rightLoadingStation";
             }
             initPopup(popup_fail_success);
         } else {
-            pw = true;
             mode = "placement";
             btn_drop.setEnabled(true);
             if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Right";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
                     zone = "zone2Right";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
                     zone = "zone3Right";
                 } else {
                     zone = "zone4Right";
                 }
             } else {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Left";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
                     zone = "zone2Left";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9) || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9)
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
                     zone = "zone3Left";
                 } else {
                     zone = "zone4Left";
@@ -950,7 +1004,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             try {
                 mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
-                timestamp();
+                timestamp(time);
                 mRealTimeMatchData.put(new JSONObject().put("piece", element));
                 mRealTimeMatchData.put(new JSONObject().put("zone", zone));
             } catch (JSONException e) {
@@ -958,6 +1012,146 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             Log.i("RECORDING?", mRealTimeMatchData.toString());
             initShape();
+        }
+    }
+
+    public void initPlacement() {
+        placementDialog = new Dialog(this);
+
+        placementDialog.setCanceledOnTouchOutside(false);
+        placementDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //ROCKET LEFT (bottom, right, green): y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9
+        //ROCKET RIGHT (top, right, green): y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9
+
+        //ROCKET RIGHT (bottom, left, green): y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9
+        //ROCKET LEFT (top, left, green): y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9
+
+        //ROCKET LEFT (bottom, right, black): y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9
+        //ROCKET RIGHT (top, right, black): y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9
+
+        //ROCKET RIGHT (bottom, left, black): y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9
+        //ROCKET LEFT (bottom, left, black): y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9
+
+
+        if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
+                || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
+                || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
+                || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
+                || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
+                || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
+                || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)
+                || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)) {
+            if((y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
+                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
+                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
+                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)) {
+                structure = "rightRocket";
+            } else if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
+                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
+                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
+                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)) {
+                structure = "leftRocket";
+            }
+            if(element.equals("lemon")) {
+                if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mScoutId < 9) || (((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mScoutId >= 9)) {
+                    side = "far";
+                } else if((((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mScoutId < 9) || (((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mScoutId >= 9)) {
+                    side = "near";
+                }
+            }
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_rocket, null);
+
+            tb_shotOutOfField = placementDialogLayout.findViewById(R.id.shotOutOfField);
+
+            level1 = placementDialogLayout.findViewById(R.id.radio_3);
+            level2 = placementDialogLayout.findViewById(R.id.radio_2);
+            level3 = placementDialogLayout.findViewById(R.id.radio_1);
+
+            if(element.equals("lemon")) {
+                tb_shotOutOfField.setVisibility(View.INVISIBLE);
+
+                level1.setBackgroundResource(R.drawable.level_selector_lemon);
+                level2.setBackgroundResource(R.drawable.level_selector_lemon);
+                level3.setBackgroundResource(R.drawable.level_selector_lemon);
+            } else if(element.equals("orange")) {
+                tb_shotOutOfField.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
+
+                level1.setBackgroundResource(R.drawable.level_selector_orange);
+                level2.setBackgroundResource(R.drawable.level_selector_orange);
+                level3.setBackgroundResource(R.drawable.level_selector_orange);
+            }
+        } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9)
+                || ((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9) {
+            structure = "cargoShip";
+            if((((field_orientation.contains("left") && x < 1130) || (field_orientation.contains("right") && x > 570)) && mScoutId < 9)
+                    || ((field_orientation.contains("left") && x < 750) || (field_orientation.contains("right") && x > 380)) && mScoutId >= 9) {
+                side = "near";
+            } else if((((field_orientation.contains("left") &&  y < 517) || (field_orientation.contains("right") && y > 517)) && mScoutId < 9)
+                    || ((field_orientation.contains("left") &&  y < 345) || (field_orientation.contains("right") && y > 345)) && mScoutId >= 9) {
+                side = "left";
+            } else if((((field_orientation.contains("left") &&  y >= 517) || (field_orientation.contains("right") && y <= 517)) && mScoutId < 9)
+                    || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mScoutId >= 9) {
+                side = "right";
+            }
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_cargo_ship, null);
+        }
+        fail = placementDialogLayout.findViewById(R.id.fail);
+        success = placementDialogLayout.findViewById(R.id.success);
+
+        tb_wasDefended = placementDialogLayout.findViewById(R.id.wasDefended);
+
+        if(element.equals("lemon")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.placement_lemon_toggle_selector);
+        } else if(element.equals("orange")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
+        }
+
+        placementDialog.setContentView(placementDialogLayout);
+        placementDialog.show();
+    }
+
+    public void onClickFailRocket(View view) {
+        tb_shotOutOfField.setEnabled(true);
+    }
+
+    public void onClickSuccessRocket(View view) {
+        tb_shotOutOfField.setEnabled(false);
+        tb_shotOutOfField.setChecked(false);
+    }
+
+    public void onClickCancelCS(View view) {
+        pw = true;
+        placementDialog.dismiss();
+    }
+
+    public void onClickDoneCS(View view) {
+        if(fail.isChecked() || success.isChecked()) {
+            recordPlacement();
+            mode = "intake";
+            initShape();
+            placementDialog.dismiss();
+        } else {
+            Toast.makeText(getBaseContext(), "Please input fail/success!",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onClickCancelRocket(View view) {
+        pw = true;
+        placementDialog.dismiss();
+    }
+
+    public void onClickDoneRocket(View View) {
+        if((fail.isChecked() || success.isChecked())
+                && (level1.isChecked() || level2.isChecked() || level3.isChecked())) {
+            recordPlacement();
+            mode = "intake";
+            initShape();
+            placementDialog.dismiss();
+        } else {
+            Toast.makeText(getBaseContext(), "Please input fail/success and/or level!",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

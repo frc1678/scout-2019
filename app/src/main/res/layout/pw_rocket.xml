@@ -1,69 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="#ffffff">
     <RadioGroup
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:layout_alignParentTop="true"
-        android:id="@+id/radio"
-        android:padding="20dp">
-        <RadioButton
-            android:id="@+id/radio_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LEVEL 3"
-            android:layout_gravity="start"
-            android:textSize="20dp"
-            android:padding="5dp"/>
-        <RadioButton
-            android:id="@+id/radio_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LEVEL 2"
-            android:layout_gravity="start"
-            android:textSize="20dp"
-            android:padding="5dp"/>
-        <RadioButton
-            android:id="@+id/radio_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LEVEL 1"
-            android:layout_gravity="start"
-            android:textSize="20dp"
-            android:padding="5dp"/>
-    </RadioGroup>
-    <CheckBox
-        android:id="@+id/checkbox_2"
+        android:id="@+id/rg_fail_success"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/radio"
-        android:text="WAS DEFENDED"
-        android:textSize="20dp"
-        android:gravity="start"
-        android:layout_margin="10dp"/>
-    <CheckBox
-        android:id="@+id/checkbox_3"
+        android:orientation="horizontal" >
+        <RadioButton
+            android:id="@+id/fail"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:text="FAIL"
+            android:textSize="25dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/cargo_ship_fail_selector"
+            android:button="@null"
+            android:textAlignment="center"
+            android:onClick="onClickFailRocket"/>
+        <RadioButton
+            android:id="@+id/success"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:text="SUCCESS"
+            android:textSize="25dp"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@+id/fail"
+            android:background="@drawable/cargo_ship_success_selector"
+            android:button="@null"
+            android:textAlignment="center"
+            android:onClick="onClickSuccessRocket"/>
+    </RadioGroup >
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/checkbox_2"
-        android:text="SHOT OUT OF FIELD"
-        android:textSize="20dp"
-        android:gravity="start"
-        android:layout_margin="10dp"/>
+        android:id="@+id/layout"
+        android:layout_below="@+id/rg_fail_success">
+        <RadioGroup
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radio"
+            android:padding="20dp"
+            android:layout_margin="20dp">
+            <RadioButton
+                android:id="@+id/radio_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="   LEVEL 3   "
+                android:layout_gravity="start"
+                android:textSize="30dp"
+                android:padding="15dp"
+                android:button="@null" />
+            <RadioButton
+                android:id="@+id/radio_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="   LEVEL 2   "
+                android:layout_gravity="start"
+                android:textSize="30dp"
+                android:padding="15dp"
+                android:button="@null" />
+            <RadioButton
+                android:id="@+id/radio_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="   LEVEL 1   "
+                android:layout_gravity="start"
+                android:textSize="30dp"
+                android:padding="15dp"
+                android:button="@null" />
+        </RadioGroup>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/radio"
+            android:layout_centerVertical="true">
+            <ToggleButton
+                android:id="@+id/wasDefended"
+                android:layout_width="240dp"
+                android:layout_height="70dp"
+                android:layout_margin="10dp"
+                android:textOn="WAS DEFENDED"
+                android:textOff="WAS DEFENDED"
+                android:textSize="20dp" />
+            <ToggleButton
+                android:id="@+id/shotOutOfField"
+                android:layout_width="240dp"
+                android:layout_height="70dp"
+                android:layout_margin="10dp"
+                android:textOn="SHOT OUT OF FIELD"
+                android:textOff="SHOT OUT OF FIELD"
+                android:textSize="20dp"
+                android:enabled="false"
+                android:layout_below="@id/wasDefended" />
+        </RelativeLayout>
+    </RelativeLayout>
     <Button
-        android:id="@+id/button_id4"
-        android:layout_height="100dp"
-        android:layout_width="match_parent"
+        android:id="@+id/cancel"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:text="CANCEL"
+        android:textSize="25dp"
+        android:layout_below="@+id/layout"
+        android:layout_margin="5dp"
+        android:onClick="onClickCancelRocket" />
+    <Button
+        android:id="@+id/done"
+        android:layout_width="250dp"
+        android:layout_height="70dp"
         android:text="DONE"
         android:textSize="25dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/checkbox_3"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:onClick="onClickDone"/>
+        android:layout_toEndOf="@+id/cancel"
+        android:layout_below="@+id/layout"
+        android:layout_margin="5dp"
+        android:onClick="onClickDoneRocket" />
 </RelativeLayout>
