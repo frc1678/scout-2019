@@ -427,15 +427,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickSpill(View v) throws JSONException {
 //        if (!startTimer && !incapChecked) {
-        timestamp(TimerUtil.timestamp);
         InputManager.numSpill++;
         btn_spill.setText("SPILL - " + InputManager.numSpill);
+        compressionDic = new JSONObject();
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "spill"));
+            compressionDic.put("type", "spill");
             timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
         Log.i("LONG", mRealTimeMatchData.toString());
 //    }
     }
