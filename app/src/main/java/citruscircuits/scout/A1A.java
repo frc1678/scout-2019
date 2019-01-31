@@ -318,6 +318,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
             InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
             InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
+            InputManager.mOneTimeMatchData.put("sandstormEndPosition", InputManager.mSandstormEndPosition);
         } catch (JSONException e) {
             e.printStackTrace();
         }
