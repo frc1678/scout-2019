@@ -759,6 +759,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             twoPieces = (RadioButton) dialogLayout.findViewById(R.id.radio_button07);
             doneButton2 = (Button) dialogLayout.findViewById(R.id.okayButton);
             cancelIncap = (Button) dialogLayout.findViewById(R.id.cancelIncapButton);
+            btn_climb = (Button) findViewById(R.id.btn_climb);
 
             cancelIncap.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -788,7 +789,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                         if (tippedOver.isChecked()) {
                             pw = false;
-//                            btn_climb.setEnabled(false);
+                            btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
                             try {
@@ -798,7 +799,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             }
                         } if (emergencyStop.isChecked()) {
                             pw = false;
-//                            btn_climb.setEnabled(false);
+                            btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
                             try {
@@ -808,7 +809,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             }
                         } if (stuckHab.isChecked()) {
                             pw = false;
-//                            btn_climb.setEnabled(false);
+                            btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
                             try {
@@ -818,7 +819,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             }
                         } if (stuckObject.isChecked()) {
                             pw = false;
-//                            btn_climb.setEnabled(false);
+                            btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
                             try {
@@ -828,7 +829,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             }
                         } if (noControl.isChecked()) {
                             pw = false;
-//                            btn_climb.setEnabled(false);
+                            btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
                             try {
@@ -909,6 +910,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_incap.setChecked(false);
             mapChange();
             incapChecked = false;
+            btn_climb.setEnabled(true);
             try {
                 mRealTimeMatchData.put(new JSONObject().put("type", "unimpaired"));
                 timestamp(TimerUtil.timestamp);
