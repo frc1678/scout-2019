@@ -773,6 +773,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             doneButton2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    popup_fail_success.dismiss();
+                    popup.dismiss();
 
                     if (tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked() || brokenMechanism.isChecked() || twoPieces.isChecked()) {
 
