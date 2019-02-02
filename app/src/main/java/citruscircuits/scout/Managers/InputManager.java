@@ -55,7 +55,13 @@ public class InputManager {
     public static int mCycleNum = 0;
 
     //Map-Scouting Variables
-    public static String mStartingPosition = "";
+    public static String mHabStartingPositionOrientation = "";
+    public static Integer mHabStartingPositionLevel= 0;
+    public static Integer mDriverStartingPosition = 0;
+    public static String mPreload = "";
+    public static boolean isNoShow= false;
+
+
     public static boolean autoLineCrossed = false;
 
 

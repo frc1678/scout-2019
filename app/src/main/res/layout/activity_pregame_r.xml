@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:id="@+id/preFieldl">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="625dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/hab"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+         />
+
+    <RadioGroup
+        android:id="@+id/hab"
+        android:layout_width="wrap_content"
+        android:layout_height="625dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="40dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        >
+        <RadioGroup
+            android:id="@+id/innerhab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <RadioButton
+                android:id="@+id/LayerOneC"
+                android:layout_width="312dp"
+                android:layout_height="174dp"
+                android:button="@null"
+                android:text="1"
+                android:textAlignment="center"
+                android:textSize="80sp"
+                android:onClick="onClickHabOneC"
+                />
+
+            <RadioButton
+                android:id="@+id/LayerOneB"
+                android:layout_width="312dp"
+                android:layout_height="178dp"
+                android:button="@null"
+                android:text="1"
+                android:textAlignment="center"
+                android:textSize="80sp"
+                android:onClick="onClickHabOneB"
+
+                />
+
+            <RadioButton
+                android:id="@+id/LayerOneA"
+                android:layout_width="312dp"
+                android:layout_height="175dp"
+                android:button="@null"
+                android:text="1"
+                android:textAlignment="center"
+                android:textSize="80sp"
+                android:onClick="onClickHabOneA"
+
+                />
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/innerhab2"
+            >
+            <RadioButton
+                android:id="@+id/LayerTwoB"
+                android:layout_width="313dp"
+                android:layout_height="174dp"
+                android:button="@null"
+                android:paddingBottom="5dp"
+                android:text="2"
+                android:textSize="80sp"
+                android:textAlignment="center"
+                android:onClick="onClickHabTwoB"
+                />
+
+            <RadioButton
+                android:id="@+id/LayerTwoA"
+                android:layout_width="313dp"
+                android:layout_height="174dp"
+                android:button="@null"
+                android:layout_marginTop="174dp"
+                android:text="2"
+                android:textAlignment="center"
+                android:textSize="80sp"
+                android:onClick="onClickHabTwoA"
+                />
+        </RadioGroup>
+
+    </RadioGroup>
+    <RadioGroup
+        android:id="@+id/driver_starting_position"
+        android:layout_width="115dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="155dp"
+        >
+
+        <RadioButton
+            android:id="@+id/driver_right"
+            android:layout_width="115dp"
+            android:layout_height="170dp"
+            android:button="@null"
+            android:text="Right"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <RadioButton
+            android:id="@+id/driver_center"
+            android:layout_width="115dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="6dp"
+            android:button="@null"
+            android:text="Center"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            />
+
+        <RadioButton
+            android:id="@+id/driver_left"
+            android:layout_width="115dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="6dp"
+            android:button="@null"
+            android:text="Left"
+            android:textAlignment="center"
+            android:textSize="30sp"
+
+            />
+    </RadioGroup>
+
+    <ToggleButton
+        android:id="@+id/showedUp"
+        android:layout_width="108dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/btn_arrow"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="21dp"
+        android:textOff="No Show"
+        android:textOn="No Show"
+        android:textSize="25dp"
+        android:onClick="onClickShowUp"
+        />
+
+    <TextView
+        android:id="@+id/preloadTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="44dp"
+        android:text="Preload"
+        android:textSize="20dp"
+
+        />
+
+    <RadioGroup
+        android:id="@+id/preload"
+        android:layout_width="108dp"
+        android:layout_height="280dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/showedUp"
+        android:layout_marginTop="38dp">
+
+        <RadioButton
+            android:id="@+id/preloadCargo"
+            android:layout_width="108dp"
+            android:layout_height="90dp"
+            android:background="@drawable/cargo_selector"
+            android:button="@null"
+            android:text="Cargo"
+            android:textAlignment="center"
+            android:textSize="25sp" />
+
+        <RadioButton
+            android:id="@+id/preloadPanel"
+            android:layout_width="108dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/panel_selector"
+            android:button="@null"
+            android:text="Panel"
+            android:textAlignment="center"
+            android:textSize="25sp" />
+
+        <RadioButton
+            android:id="@+id/preloadNone"
+            android:layout_width="108dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/no_preload_selector"
+            android:button="@null"
+            android:text="None"
+            android:textAlignment="center"
+            android:textSize="25sp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_arrow"
+        android:layout_width="148dp"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/arrow"
+        android:onClick="onClickDataCheck"
+        android:textAlignment="center" />
+
+</RelativeLayout>
