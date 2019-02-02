@@ -23,7 +23,6 @@
         android:layout_below="@+id/incapTypes">
         <RadioButton
             android:id="@+id/radio_button01"
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tipped Over"
@@ -31,7 +30,7 @@
             />
         <RadioButton
             android:id="@+id/radio_button02"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Emergency Stop"
@@ -39,7 +38,7 @@
             />
         <RadioButton
             android:id="@+id/radio_button03"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stuck on Hab"
@@ -47,7 +46,7 @@
             />
         <RadioButton
             android:id="@+id/radio_button04"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Stuck on Object"
@@ -55,7 +54,7 @@
             />
         <RadioButton
             android:id="@+id/radio_button05"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No Control"
@@ -63,7 +62,7 @@
             />
         <RadioButton
             android:id="@+id/radio_button06"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Broken Mechanism"
@@ -71,7 +70,7 @@
             />
         <RadioButton
             android:id="@+id/radio_button07"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Two Game Pieces"
@@ -90,7 +89,7 @@
             android:layout_weight="1"
             android:layout_height="70dp"
             android:text= "Cancel"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:layout_below="@+id/radioGroup00"
             android:layout_margin="15dp"
             android:id= "@+id/cancelIncapButton"
@@ -101,7 +100,7 @@
             android:layout_weight="1"
             android:layout_height="70dp"
             android:text= "Done"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:layout_below="@+id/radioGroup00"
             android:layout_margin="15dp"
             android:id= "@+id/okayButton"
