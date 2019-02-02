@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -67,6 +69,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean shapeCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+
+    public boolean incapMap = false;
+
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
@@ -155,12 +160,28 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public int y;
 
     public String mode = "intake";
-    public String element;
-    public String zone;
+    public String element = "";
+    public String zone = "";
+    public String incaptype = "";
+
+    public TextView incapTypes;
+    public RadioGroup incapOptions;
+    public RadioButton tippedOver;
+    public RadioButton emergencyStop;
+    public RadioButton stuckHab;
+    public RadioButton stuckObject;
+    public RadioButton noControl;
+    public RadioButton brokenMechanism;
+    public RadioButton twoPieces;
+    public Button doneButton2;
+    public Button cancelIncap;
+
+
     public String structure;
     public String side;
 
     public Dialog placementDialog;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -703,24 +724,200 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-//    public void onClickIncap(View v) throws JSONException {
-//        if (!incapChecked) {
-//            tb_incap.setChecked(true);
-//
-//            btn_drop.setEnabled(false);
-//            btn_undo.setEnabled(false);
-//            timestamp();
-//
-//            incapChecked = true;
-//        } else if (incapChecked) {
-//            tb_incap.setChecked(false);
-//            if (shapeCheck) {
-//                btn_drop.setEnabled(true);
-//            }
-//            timestamp();
-//            incapChecked = false;
-//        }
-//    }
+    public void onClickIncap(View v) throws JSONException {
+
+        if (!incapChecked) {
+            tb_incap.setChecked(true);
+            incapMap=true;
+
+            final Dialog incapDialog = new Dialog(this);
+            incapDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.incap, null);
+            incapDialog.setCanceledOnTouchOutside(false);
+            incapDialog.setCancelable(false);
+
+            incapTypes = (TextView) dialogLayout.findViewById(R.id.incapTypes);
+            incapOptions = (RadioGroup) dialogLayout.findViewById(R.id.radioGroup00);
+            tippedOver = (RadioButton) dialogLayout.findViewById(R.id.radio_button01);
+            emergencyStop = (RadioButton) dialogLayout.findViewById(R.id.radio_button02);
+            stuckHab = (RadioButton) dialogLayout.findViewById(R.id.radio_button03);
+            stuckObject = (RadioButton) dialogLayout.findViewById(R.id.radio_button04);
+            noControl = (RadioButton) dialogLayout.findViewById(R.id.radio_button05);
+            brokenMechanism = (RadioButton) dialogLayout.findViewById(R.id.radio_button06);
+            twoPieces = (RadioButton) dialogLayout.findViewById(R.id.radio_button07);
+            doneButton2 = (Button) dialogLayout.findViewById(R.id.okayButton);
+            cancelIncap = (Button) dialogLayout.findViewById(R.id.cancelIncapButton);
+            btn_climb = (Button) findViewById(R.id.btn_climb);
+
+            cancelIncap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    incapDialog.dismiss();
+                    tb_incap.setChecked(false);
+                    incapMap = false;
+                    incapChecked = false;
+                    }
+                    });
+
+            doneButton2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popup_fail_success.dismiss();
+                    popup.dismiss();
+
+                    if (tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked() || brokenMechanism.isChecked() || twoPieces.isChecked()) {
+
+                        compressionDic = new JSONObject();
+
+                        try {
+                            compressionDic.put("type", "incap");
+                            timestamp(TimerUtil.timestamp);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()) {
+                            pw = false;
+                            btn_climb.setEnabled(false);
+                            btn_drop.setEnabled(false);
+                            btn_spill.setEnabled(false);
+
+                            if (tippedOver.isChecked()) {
+                                try {
+                                    compressionDic.put("cause", "tippedOver");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (emergencyStop.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "emergencyStop");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (stuckHab.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "stuckOnHab");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (stuckObject.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "stuckOnObject");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (noControl.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "noControl");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else if (brokenMechanism.isChecked()) {
+                            incaptype = "brokenMechanism";
+                            mapChange();
+                            try {
+                                compressionDic.put("cause", "brokenMechanism");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else if (twoPieces.isChecked()) {
+                            incaptype = "twoGamePieces";
+                            mapChange();
+                            try {
+                                compressionDic.put("cause", "twoGamePieces");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        mRealTimeMatchData.put(compressionDic);
+
+                        if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()){
+                            if(mode.equals("intake")) {
+                                if (field_orientation.equals("blue_left")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_left);
+                                } else if (field_orientation.equals("blue_right")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_right);
+                                } else if (field_orientation.equals("red_left")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_left);
+                                } else if (field_orientation.equals("red_right")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_right);
+                                }
+                            }
+
+                            else if(element.equals("lemon") && !mode.equals("incap")) {
+                                if(mode.equals("placement")) {
+                                    if (field_orientation.contains("left")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_lemon_left);
+                                    } else if (field_orientation.contains("right")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_lemon_right);
+                                    }
+                                }
+                            }
+                            else if(element.equals("orange") && !mode.equals("incap")) {
+                                if(mode.equals("placement")) {
+                                    if (field_orientation.contains("left")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_orange_left);
+                                    } else if (field_orientation.contains("right")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_orange_right);
+                                    }
+                                }
+                            }
+                        }
+                        incapDialog.dismiss();
+                    }
+                    else {
+                        Toast.makeText(getBaseContext(), "Please input an incap type!!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+                                           });
+            incapDialog.setContentView(dialogLayout);
+            incapDialog.show();
+
+            incapChecked = true;
+        }
+
+        else if (incapChecked) {
+            compressionDic = new JSONObject();
+
+            incaptype = " ";
+            incapMap=false;
+            pw = true;
+            btn_drop.setEnabled(true);
+            btn_spill.setEnabled(true);
+            tb_incap.setChecked(false);
+            mapChange();
+            incapChecked = false;
+            btn_climb.setEnabled(true);
+            try {
+                compressionDic.put("type", "unincap");
+                timestamp(TimerUtil.timestamp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mRealTimeMatchData.put(compressionDic);
+        }
+        Log.i("AAAAH", mRealTimeMatchData.toString());
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private void addTouchListener() {
@@ -904,7 +1101,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.field_placement_lemon_right);
                 }
             }
-        } if(mode.equals("intake")) {
+        } if(mode.equals("intake")&& !incapMap) {
             btn_drop.setEnabled(false);
             if(field_orientation.equals("blue_left")) {
                 iv_field.setImageResource(R.drawable.field_intake_blue_left);
@@ -914,6 +1111,38 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 iv_field.setImageResource(R.drawable.field_intake_red_left);
             } else if(field_orientation.equals("red_right")) {
                 iv_field.setImageResource(R.drawable.field_intake_red_right);
+            }
+        } if (incaptype.equals("brokenMechanism") || incaptype.equals("twoGamePieces")){
+             if(element.equals("lemon")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+                if(mode.equals("placement")) {
+                    if (field_orientation.contains("left")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_lemon_left);
+                    }if (field_orientation.contains("right")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_lemon_right);
+                    }
+                }
+            }if(element.equals("orange")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                if(mode.equals("placement")) {
+                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                    if (field_orientation.contains("left")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_orange_left);
+                    } else if (field_orientation.contains("right")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_orange_right);
+                    }
+                }
+            }if(mode.equals("intake")&& incapMap) {
+                btn_drop.setEnabled(false);
+                if(field_orientation.equals("blue_left")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_blue_left);
+                } else if(field_orientation.equals("blue_right")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_blue_right);
+                } else if(field_orientation.equals("red_left")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_red_left);
+                } else if(field_orientation.equals("red_right")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_red_right);
+                }
             }
         }
     }

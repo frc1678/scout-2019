@@ -32,6 +32,7 @@ public interface Cst {
         put("isNoShow", "f");
         put("timerStarted", "g");
         put("currentCycle", "h");
+        put("scoutID", "j");
         put("scoutName", "k");
         put("appVersion", "m");
         put("assignmentMode", "n");

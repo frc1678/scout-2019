@@ -54,11 +54,12 @@ public class OutputManager extends InputManager{
                     }else{
                         compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue) + ",";
                     }
+                } else if(Cst.initialCompressKeys.containsKey(currentKey)) {
+                    compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + currentValue + ",";
                 }
             }
 
             if(aLCFound){
-                Log.i("MADEIT", "MADEIT");
                 compressedData = compressedData + Cst.initialCompressKeys.get(aLCKey) + Cst.compressValues.get(aLCValue) + "_";
             }
 
