@@ -65,7 +65,7 @@ public class InputManager {
     public static String mAppVersion = "0.1";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
-    public static String mSandstormEndPosition = "";
+    public static String mSandstormEndPosition = "zone1Left";
 
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);

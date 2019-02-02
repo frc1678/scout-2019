@@ -71,29 +71,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean wasDefended;
     public boolean shotOutOfField;
 
-    public Integer numRobotsAttemptedToLift = 0;
-    public Integer numRobotsDidLift = 0;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
     public Integer level;
 
-    public Float ftbStartTime;
-    public Float ftbEndTime;
     public Float time;
 
-    public List<String> climbAttemptKeys = Arrays.asList("self", "robot1", "robot2");
-    public List<String> climbActualKeys = Arrays.asList("self", "robot1", "robot2");
-    public List<String> climbKeys = Arrays.asList("type", "time", "attempted", "actual");
+    public List<String> climbAttemptKeys = Arrays.asList("D", "E", "F");
+    public List<String> climbActualKeys = Arrays.asList("D", "E", "F");
 
     public List<Integer> climbAttemptValues = new ArrayList<>();
     public List<Integer> climbActualValues = new ArrayList<>();
-    public List<Object> climbValues = new ArrayList<>();
 
     public JSONObject compressionDic;
 
-    JSONObject climbAttemptData = new JSONObject();
-    JSONObject climbActualData = new JSONObject();
-    JSONObject climbFinalData = new JSONObject();
+    String climbAttemptData;
+    String climbActualData;
 
     public TextView tv_team;
     public TextView tv_starting_position_warning;
@@ -815,13 +808,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void timestamp(Float givenTime) {
         if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
             try {
-                compressionDic.put("time", String.format("%.2f", givenTime) + "*");
+                compressionDic.put("time", String.format("%.1f", givenTime) + "*");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                compressionDic.put("time", String.format("%.2f", givenTime));
+                compressionDic.put("time", String.format("%.1f", givenTime));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -1178,16 +1171,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void recordClimb(float time) {
         compressionDic = new JSONObject();
         try {
-            climbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-            climbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-            climbAttemptData.put(climbAttemptKeys.get(2), climbAttemptValues.get(2));
-            climbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-            climbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-            climbActualData.put(climbActualKeys.get(2), climbActualValues.get(2));
-            climbFinalData.put(climbKeys.get(0), "climb");
-            climbFinalData.put(climbKeys.get(1), time);
-            climbFinalData.put(climbKeys.get(2), climbAttemptData);
-            climbFinalData.put(climbKeys.get(3), climbActualData);
+            climbAttemptData = "{" + climbAttemptKeys.get(0) + climbAttemptValues.get(0) + ";" + climbAttemptKeys.get(1) + climbAttemptValues.get(1) + ";" + climbAttemptKeys.get(2) + climbAttemptValues.get(2) + "}";
+            climbActualData = "{" + climbActualKeys.get(0) + climbActualValues.get(0) + ";" + climbActualKeys.get(1) + climbActualValues.get(1) + ";" + climbActualKeys.get(2) + climbActualValues.get(2) + "}";
 
             compressionDic.put("type", "climb");
             timestamp(time);
