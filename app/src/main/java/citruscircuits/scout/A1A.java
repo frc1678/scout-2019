@@ -305,23 +305,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if (fragment != null)
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-
-        try {
-            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
-            InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
-            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
-            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
-            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
-            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
-            InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
-            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
-            InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
-            InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
-            InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
-            InputManager.mOneTimeMatchData.put("sandstormEndPosition", InputManager.mSandstormEndPosition);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void onClickStartTimer(View v) {
@@ -1220,6 +1203,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDataCheck(View v) {
+        try {
+            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
+            InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
+            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
+            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
+            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
+            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
+            InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
+            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
+            InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
+            InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
+            InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
+            InputManager.mOneTimeMatchData.put("sandstormEndPosition", InputManager.mSandstormEndPosition);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         open(A2A.class, null, false, true);
     }
 

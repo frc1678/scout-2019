@@ -58,43 +58,57 @@ public class OutputManager extends InputManager{
             }
 
             if(aLCFound){
+                Log.i("MADEIT", "MADEIT");
                 compressedData = compressedData + Cst.initialCompressKeys.get(aLCKey) + Cst.compressValues.get(aLCValue) + "_";
             }
 
             for (int i = 0; i < timeStampData.length(); i++) {
                 JSONObject tData = timeStampData.getJSONObject(i);
 
-                String currentKey = tData.keys().next()+"";
-                String currentValue = tData.get(currentKey)+"";
+                String compressedDic = "";
 
-                if(Cst.compressKeys.containsKey(currentKey)){
-                    compressedData = compressedData + Cst.compressKeys.get(currentKey) + currentValue + ",";
+                Iterator<?> tDataKeys = tData.keys();
+
+                while(tDataKeys.hasNext()){
+                    String currentKey = tDataKeys.next()+"";
+                    String currentValue = tData.get(currentKey)+"";
+
+                    Log.i("CURRENTVALUE", currentValue);
+
+                    if(Cst.compressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)){
+                        compressedDic = compressedDic + Cst.compressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
+                        Log.i("CURRENTVALUES1", compressedDic);
+                    } else if(Cst.compressKeys.containsKey(currentKey)) {
+                        compressedDic = compressedDic + Cst.compressKeys.get(currentKey) + currentValue;
+                        Log.i("CURRENTVALUES2", compressedDic);
+                    }
                 }
+                compressedData = compressedData + compressedDic + ",";
             }
 
-            if(InputManager.mOneTimeMatchData.has("climb")){
-                String currentKey = "climb";
-                JSONObject currentValue = InputManager.mOneTimeMatchData.getJSONObject(currentKey);
-                String currentKey11 = "Attempt";
-                JSONObject currentValue11 = currentValue.getJSONObject(currentKey11);
-                String currentKey12 = "Actual";
-                JSONObject currentValue12 = currentValue.getJSONObject(currentKey12);
-                String currentKey21 = "liftSelf";
-                String currentKey22 = "otherRobotsLifted";
-
-
-                compressedData = compressedData + Cst.compressKeys.get(currentKey)
-                        + Cst.compressKeys.get(currentKey11) + Cst.compressKeys.get(currentKey21)
-                        + Cst.compressValues.get(currentValue11.getBoolean(currentKey21)+"")
-                        + Cst.compressKeys.get(currentKey22)
-                        + currentValue11.getInt(currentKey22)+""
-                        + Cst.compressKeys.get(currentKey12) + Cst.compressKeys.get(currentKey21)
-                        + Cst.compressValues.get(currentValue12.getBoolean(currentKey21)+"")
-                        + Cst.compressKeys.get(currentKey22)
-                        + currentValue12.getInt(currentKey22)+"";
-
-                Log.e("COMPRESSDATA", compressedData);
-            }
+//            if(InputManager.mOneTimeMatchData.has("climb")){
+//                String currentKey = "climb";
+//                JSONObject currentValue = InputManager.mOneTimeMatchData.getJSONObject(currentKey);
+//                String currentKey11 = "Attempt";
+//                JSONObject currentValue11 = currentValue.getJSONObject(currentKey11);
+//                String currentKey12 = "Actual";
+//                JSONObject currentValue12 = currentValue.getJSONObject(currentKey12);
+//                String currentKey21 = "liftSelf";
+//                String currentKey22 = "otherRobotsLifted";
+//
+//
+//                compressedData = compressedData + Cst.compressKeys.get(currentKey)
+//                        + Cst.compressKeys.get(currentKey11) + Cst.compressKeys.get(currentKey21)
+//                        + Cst.compressValues.get(currentValue11.getBoolean(currentKey21)+"")
+//                        + Cst.compressKeys.get(currentKey22)
+//                        + currentValue11.getInt(currentKey22)+""
+//                        + Cst.compressKeys.get(currentKey12) + Cst.compressKeys.get(currentKey21)
+//                        + Cst.compressValues.get(currentValue12.getBoolean(currentKey21)+"")
+//                        + Cst.compressKeys.get(currentKey22)
+//                        + currentValue12.getInt(currentKey22)+"";
+//
+//                Log.e("COMPRESSDATA", compressedData);
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
