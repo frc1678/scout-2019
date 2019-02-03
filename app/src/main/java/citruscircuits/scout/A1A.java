@@ -400,17 +400,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDrop(View v) {
+        compressionDic = new JSONObject();
         mode = "intake";
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
         shapeCheck = false;
         overallLayout.removeView(iv_game_element);
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "drop"));
+            compressionDic.put("type", "drop");
             timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
         Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
         mapChange();
 //        actionList.clear();
@@ -1426,6 +1428,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
             InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
             InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
+            InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
             InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
             InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
             InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);

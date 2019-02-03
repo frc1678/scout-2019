@@ -35,7 +35,7 @@ public class InputManager {
 
     //Match Data Holders
     //Below holds match data
-    public static JSONArray mRealTimeMatchData;
+    public static JSONArray mRealTimeMatchData = new JSONArray();
     //keys that only appear once in data
     public static JSONObject mOneTimeMatchData;
     //Below is finaldata to be inputted to QR
@@ -65,7 +65,7 @@ public class InputManager {
     public static String mAppVersion = "0.1";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
-    public static String mSandstormEndPosition = "zone1Left";
+    public static String mSandstormEndPosition = "";
 
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);

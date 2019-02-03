@@ -47,20 +47,16 @@ public class OutputManager extends InputManager{
                 Cst.compressValues.put(InputManager.mScoutName, InputManager.mScoutLetter);
 
                 if(Cst.initialCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)) {
-                    if(currentKey.equals("sandstormEndPosition")){
-                        aLCFound = true;
-                        aLCKey = currentKey;
-                        aLCValue = currentValue;
-                    }else{
-                        compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue) + ",";
-                    }
-                } else if(Cst.initialCompressKeys.containsKey(currentKey)) {
+                    compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue) + ",";
+                } else if(Cst.initialCompressKeys.containsKey(currentKey) && !(currentValue.equals("") || currentValue.equals("0"))) {
                     compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + currentValue + ",";
                 }
             }
 
-            if(aLCFound){
-                compressedData = compressedData + Cst.initialCompressKeys.get(aLCKey) + Cst.compressValues.get(aLCValue) + "_";
+            compressedData = compressedData + "_";
+
+            if(isNoShow) {
+                compressedData = compressedData + ",";
             }
 
             for (int i = 0; i < timeStampData.length(); i++) {

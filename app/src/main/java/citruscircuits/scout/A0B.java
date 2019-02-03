@@ -215,9 +215,9 @@ public void defineVariables(){
 
         if (!showUp.isChecked()){
             if((!layerOneA.isChecked() && !layerOneB.isChecked() && !layerOneC.isChecked()&& !layerTwoA.isChecked()
-                    && !layerTwoB.isChecked()) || (!driverRight.isChecked() && !driverCenter.isChecked() && !driverLeft.isChecked())
-                    || ( !preloadCargo.isChecked()&& !preloadPanel.isChecked() && !preloadNone.isChecked())){
-                Toast.makeText(getBaseContext(), "Make Sure You Filled Out All Of The Information!",
+                        && !layerTwoB.isChecked()) || (!driverRight.isChecked() && !driverCenter.isChecked() && !driverLeft.isChecked())
+                        || ( !preloadCargo.isChecked()&& !preloadPanel.isChecked() && !preloadNone.isChecked())){
+                    Toast.makeText(getBaseContext(), "Make Sure You Filled Out All Of The Information!",
                         Toast.LENGTH_SHORT).show();
             }else {
                 if (layerTwoA.isChecked()) {
@@ -264,6 +264,27 @@ public void defineVariables(){
         //go to next activity
         else if(showUp.isChecked()){
             InputManager.isNoShow=true;
+            InputManager.mDriverStartingPosition = 0;
+            InputManager.mPreload = "";
+            InputManager.mHabStartingPositionLevel = 0;
+            InputManager.mHabStartingPositionOrientation = "";
+            try {
+                InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
+                InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
+                InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
+                InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
+                InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
+                InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
+                InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
+                InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
+                InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
+                InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
+                InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
+                InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
+                InputManager.mOneTimeMatchData.put("sandstormEndPosition", InputManager.mSandstormEndPosition);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             open(A2A.class, null, false, true);
         }
     }
