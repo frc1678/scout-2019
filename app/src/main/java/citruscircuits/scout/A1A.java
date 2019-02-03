@@ -230,16 +230,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         if(mTabletType.equals("green")) {
             popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 620, 450, false);
-        } else {
+        } else if(mTabletType.equals("black")) {
             popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 410, 300, false);
+        } else if(mTabletType.equals("fire")) {
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 310, 250, false);
         }
         popup.setOutsideTouchable(false);
         popup.setFocusable(false);
 
         if(mTabletType.equals("green")) {
             popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 620, 450, false);
-        } else {
+        } else if(mTabletType.equals("black")) {
             popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 410, 300, false);
+        } else if(mTabletType.equals("fire")) {
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 310, 250, false);
         }
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);

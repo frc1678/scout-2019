@@ -98,8 +98,6 @@ public class A0A extends DialogMaker {
 
     public ArrayAdapter<String> mResendMatchesArrayAdapter;
 
-    public RadioButton rb_greenTablet, rb_blackTablet, rb_fireTablet;
-
     LayoutInflater mLayoutInflater;
 
     @Override
@@ -118,10 +116,6 @@ public class A0A extends DialogMaker {
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         tabletDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.dialog_tablet_type, null);
-
-        rb_greenTablet = tabletDialogLayout.findViewById(R.id.green_tablet);
-        rb_blackTablet = tabletDialogLayout.findViewById(R.id.black_tablet);
-        rb_fireTablet = tabletDialogLayout.findViewById(R.id.fire_tablet);
 
         InputManager.getScoutNames();
 
@@ -509,30 +503,13 @@ public class A0A extends DialogMaker {
 
                     updateUserData();
 
+                    initTabletTypeDialog(A0A.this);
+
                     pw_idWindow.dismiss();
-
-                    tabletDialog = new Dialog(context);
-                    tabletDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    tabletDialog.setContentView(tabletDialogLayout);
-
-                    tabletDialog.show();
                 }
             });
 
             return convertView;
-        }
-    }
-
-    public void onClickTabletDone(View view) {
-        if(rb_greenTablet.isChecked()) {
-            InputManager.mTabletType = "green";
-            tabletDialog.dismiss();
-        } else if(rb_blackTablet.isChecked()) {
-            InputManager.mTabletType = "black";
-            tabletDialog.dismiss();
-        } else if(rb_fireTablet.isChecked()) {
-            InputManager.mTabletType = "fire";
-            tabletDialog.dismiss();
         }
     }
 }
