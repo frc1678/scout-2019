@@ -47,6 +47,7 @@ import citruscircuits.scout.utils.TimerUtil;
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
+import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -227,7 +228,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         layoutInflater = (LayoutInflater) A1A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        if(mScoutId < 9) {
+        if(mTabletType.equals("green")) {
             popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 620, 450, false);
         } else {
             popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 410, 300, false);
@@ -235,7 +236,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup.setOutsideTouchable(false);
         popup.setFocusable(false);
 
-        if(mScoutId < 9) {
+        if(mTabletType.equals("green")) {
             popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 620, 450, false);
         } else {
             popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 410, 300, false);
@@ -933,22 +934,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                         time = TimerUtil.timestamp;
 
-                        if(!((((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))
-                                || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mScoutId < 9)
-                                || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mScoutId >= 9))) {
+                        if(!((((x > 1700 || y > 985) && mTabletType.equals("green")) || ((x > 1130 || y > 660) && mTabletType.equals("black")))
+                                || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mTabletType.equals("green"))
+                                || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mTabletType.equals("black")))) {
                             if(mode.equals("intake")) {
                                 pw = false;
                                 initPopup(popup);
-                            } else if(mode.equals("placement") && (((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
-                                    || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
-                                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
-                                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
-                                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
-                                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
-                                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)
-                                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)
-                                    || (((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9))
-                                    || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9))){
+                            } else if(mode.equals("placement") && (((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green"))
+                                    || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mTabletType.equals("green"))
+                                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mTabletType.equals("green"))
+                                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mTabletType.equals("green"))
+                                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mTabletType.equals("black"))
+                                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mTabletType.equals("black"))
+                                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mTabletType.equals("black"))
+                                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mTabletType.equals("black"))
+                                    || (((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mTabletType.equals("green")))
+                                    || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mTabletType.equals("black")))){
                                 pw = false;
                                 initPlacement();
                             }
@@ -1162,25 +1163,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 100,
                 100);
-        if((y > 900 && mScoutId < 9) || (y > 550 && mScoutId >= 9)) {
-            if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+        if((y > 900 && mTabletType.equals("green")) || (y > 550 && mTabletType.equals("black"))) {
+            if((x < 40 && mTabletType.equals("green")) || (x < 25 && mTabletType.equals("black"))) {
                 lp.setMargins(x + 20, y - 90, 0, 0);
-            } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+            } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 && mTabletType.equals("black"))) {
                 lp.setMargins(x - 100, y - 90, 0, 0);
             } else {
                 lp.setMargins(x - 25, y - 90, 0, 0);
             }
-        } else if((y < 85 && mScoutId < 9) || (y < 55 && mScoutId >= 9)) {
-            if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+        } else if((y < 85 && mTabletType.equals("green")) || (y < 55 && mTabletType.equals("black"))) {
+            if((x < 40 && mTabletType.equals("green")) || (x < 25 && mTabletType.equals("black"))) {
                 lp.setMargins(x + 20, y + 5, 0, 0);
-            } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+            } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 && mTabletType.equals("black"))) {
                 lp.setMargins(x - 100, y + 5, 0, 0);
             } else {
                 lp.setMargins(x - 25, y + 5, 0, 0);
             }
-        } else if((x < 40 && mScoutId < 9) || (x < 25 && mScoutId >= 9)) {
+        } else if((x < 40 && mTabletType.equals("green")) || (x < 25 && mTabletType.equals("black"))) {
             lp.setMargins(x + 20, y - 40, 0, 0);
-        } else if((x > 1650 && mScoutId < 9) || (x > 1090 && mScoutId >= 9)) {
+        } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 && mTabletType.equals("black"))) {
             lp.setMargins(x - 100, y - 40, 0, 0);
         } else {
             lp.setMargins(x - 25, y - 40, 0, 0);
@@ -1196,41 +1197,42 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup.dismiss();
         element = givenElement;
 
-        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mScoutId < 9)
-                || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mScoutId >= 9)) {
-            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mScoutId < 9)
-                    || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mScoutId >= 9)) {
+        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
+                || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mTabletType.equals("black"))) {
+            if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mTabletType.equals("green"))
+                    || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mTabletType.equals("black"))) {
                 zone = "leftLoadingStation";
-            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mScoutId < 9)
-                    || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mScoutId >= 9)) {
+            } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mTabletType.equals("green"))
+                    || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mTabletType.equals("black"))) {
                 zone = "rightLoadingStation";
             }
             initPopup(popup_fail_success);
         } else {
             mode = "placement";
             btn_drop.setEnabled(true);
-            if((y>517 && mScoutId < 9 && field_orientation.contains("left")) || (y<=517 && mScoutId < 9 && field_orientation.contains("right")) || (y>345 && mScoutId >= 9 && field_orientation.contains("left")) && (y<=345 && mScoutId >= 9 && field_orientation.contains("right"))) {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
-                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+            if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
+                    || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) && (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))) {
                     zone = "zone1Right";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9)
-                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
                     zone = "zone2Right";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9)
-                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
                     zone = "zone3Right";
                 } else {
                     zone = "zone4Right";
                 }
             } else {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
-                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
+                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))) {
                     zone = "zone1Left";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mScoutId < 9)
-                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
                     zone = "zone2Left";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mScoutId < 9)
-                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mScoutId >= 9)) {
+                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
                     zone = "zone3Left";
                 } else {
                     zone = "zone4Left";
@@ -1262,42 +1264,50 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         placementDialog.setCanceledOnTouchOutside(false);
         placementDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        //ROCKET LEFT (bottom, right, green): y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9
-        //ROCKET RIGHT (top, right, green): y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9
+        //ROCKET LEFT (bottom, right, green): y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green")
+        //ROCKET RIGHT (top, right, green): y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mTabletType.equals("green")
 
-        //ROCKET RIGHT (bottom, left, green): y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9
-        //ROCKET LEFT (top, left, green): y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9
+        //ROCKET RIGHT (bottom, left, green): y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mTabletType.equals("green")
+        //ROCKET LEFT (top, left, green): y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mTabletType.equals("green")
 
-        //ROCKET LEFT (bottom, right, black): y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9
-        //ROCKET RIGHT (top, right, black): y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9
+        //ROCKET LEFT (bottom, right, black): y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mTabletType.equals("black")
+        //ROCKET RIGHT (top, right, black): y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mTabletType.equals("black")
 
-        //ROCKET RIGHT (bottom, left, black): y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9
-        //ROCKET LEFT (bottom, left, black): y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9
+        //ROCKET RIGHT (bottom, left, black): y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mTabletType.equals("black")
+        //ROCKET LEFT (bottom, left, black): y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mTabletType.equals("black")
+
+        //ROCKET LEFT (bottom, right, black): y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mTabletType.equals("black")
+        //ROCKET RIGHT (top, right, black): y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mTabletType.equals("black")
+
+        //ROCKET RIGHT (bottom, left, black): y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mTabletType.equals("black")
+        //ROCKET LEFT (bottom, left, black): y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mTabletType.equals("black")
 
 
-        if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
-                || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
-                || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
-                || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
-                || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
-                || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
-                || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)
-                || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)) {
-            if((y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mScoutId < 9)
-                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mScoutId < 9)
-                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mScoutId >= 9)
-                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mScoutId >= 9)) {
+        if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green"))
+                || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mTabletType.equals("green"))
+                || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mTabletType.equals("green"))
+                || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mTabletType.equals("green"))
+                || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mTabletType.equals("black"))
+                || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mTabletType.equals("black"))
+                || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mTabletType.equals("black"))
+                || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mTabletType.equals("black"))) {
+            if((y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mTabletType.equals("green"))
+                    || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mTabletType.equals("green"))
+                    || (y < 4.625 * x - 2346.875 && y < -4.625 * x + 3550 && y < 220 && field_orientation.contains("right") && mTabletType.equals("black"))
+                    || (y > -4.625 * x + 2361.25 && y > 4.625 * x - 2217.5 && y > 465 && field_orientation.contains("left") && mTabletType.equals("black"))) {
                 structure = "rightRocket";
-            } else if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mScoutId < 9)
-                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mScoutId < 9)
-                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mScoutId >= 9)
-                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mScoutId >= 9)) {
+            } else if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green"))
+                    || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mTabletType.equals("green"))
+                    || (y > -4.625 * x + 3031.875 && y > 4.625 * x - 2865 && y > 465 && field_orientation.contains("right") && mTabletType.equals("black"))
+                    || (y < 4.625 * x - 1671.25 && y < -4.625 * x + 2907.5 && y < 220 && field_orientation.contains("left") && mTabletType.equals("black"))) {
                 structure = "leftRocket";
             }
             if(element.equals("lemon")) {
-                if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mScoutId < 9) || (((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mScoutId >= 9)) {
+                if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mTabletType.equals("green"))
+                        || (((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mTabletType.equals("black"))) {
                     side = "far";
-                } else if((((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mScoutId < 9) || (((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mScoutId >= 9)) {
+                } else if((((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mTabletType.equals("green"))
+                        || (((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mTabletType.equals("black"))) {
                     side = "near";
                 }
             }
@@ -1322,17 +1332,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 level2.setBackgroundResource(R.drawable.level_selector_orange);
                 level3.setBackgroundResource(R.drawable.level_selector_orange);
             }
-        } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mScoutId < 9)
-                || ((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mScoutId >= 9) {
+        } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mTabletType.equals("green"))
+                || ((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mTabletType.equals("black")) {
             structure = "cargoShip";
-            if((((field_orientation.contains("left") && x < 1130) || (field_orientation.contains("right") && x > 570)) && mScoutId < 9)
-                    || ((field_orientation.contains("left") && x < 750) || (field_orientation.contains("right") && x > 380)) && mScoutId >= 9) {
+            if((((field_orientation.contains("left") && x < 1130) || (field_orientation.contains("right") && x > 570)) && mTabletType.equals("green"))
+                    || ((field_orientation.contains("left") && x < 750) || (field_orientation.contains("right") && x > 380)) && mTabletType.equals("black")) {
                 side = "near";
-            } else if((((field_orientation.contains("left") &&  y < 517) || (field_orientation.contains("right") && y > 517)) && mScoutId < 9)
-                    || ((field_orientation.contains("left") &&  y < 345) || (field_orientation.contains("right") && y > 345)) && mScoutId >= 9) {
+            } else if((((field_orientation.contains("left") &&  y < 517) || (field_orientation.contains("right") && y > 517)) && mTabletType.equals("green"))
+                    || ((field_orientation.contains("left") &&  y < 345) || (field_orientation.contains("right") && y > 345)) && mTabletType.equals("black")) {
                 side = "left";
-            } else if((((field_orientation.contains("left") &&  y >= 517) || (field_orientation.contains("right") && y <= 517)) && mScoutId < 9)
-                    || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mScoutId >= 9) {
+            } else if((((field_orientation.contains("left") &&  y >= 517) || (field_orientation.contains("right") && y <= 517)) && mTabletType.equals("green"))
+                    || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mTabletType.equals("black")) {
                 side = "right";
             }
             placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_cargo_ship, null);
