@@ -76,28 +76,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean wasDefended;
     public boolean shotOutOfField;
 
-
-    public Integer numRobotsAttemptedToLift = 0;
-    public Integer numRobotsDidLift = 0;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
     public Integer level;
 
-    public Float ftbStartTime;
-    public Float ftbEndTime;
     public Float time;
 
-    public List<String> climbAttemptKeys = Arrays.asList("self", "robot1", "robot2");
-    public List<String> climbActualKeys = Arrays.asList("self", "robot1", "robot2");
-    public List<String> climbKeys = Arrays.asList("type", "time", "attempted", "actual");
+    public List<String> climbAttemptKeys = Arrays.asList("D", "E", "F");
+    public List<String> climbActualKeys = Arrays.asList("D", "E", "F");
 
     public List<Integer> climbAttemptValues = new ArrayList<>();
     public List<Integer> climbActualValues = new ArrayList<>();
-    public List<Object> climbValues = new ArrayList<>();
 
-    JSONObject climbAttemptData = new JSONObject();
-    JSONObject climbActualData = new JSONObject();
-    JSONObject climbFinalData = new JSONObject();
+    public JSONObject compressionDic;
+
+    String climbAttemptData;
+    String climbActualData;
 
     public TextView tv_team;
     public TextView tv_starting_position_warning;
@@ -168,7 +162,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public String mode = "intake";
     public String element = "";
     public String zone = "";
-    public String incaptype = " ";
+    public String incaptype = "";
 
     public TextView incapTypes;
     public RadioGroup incapOptions;
@@ -325,15 +319,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if (fragment != null)
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-
-        try {
-            InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
-            InputManager.mOneTimeMatchData.put("startedWCube", startedWCube);
-            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
-            InputManager.mOneTimeMatchData.put("autoLineCrossed", InputManager.autoLineCrossed);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void onClickStartTimer(View v) {
@@ -391,10 +376,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickAutoLineCrossed(View v) {
-        if (!InputManager.autoLineCrossed) {
-            InputManager.autoLineCrossed = true;
-        } else if (InputManager.autoLineCrossed) {
-            InputManager.autoLineCrossed = false;
+        if (!InputManager.mCrossedHabLine) {
+            InputManager.mCrossedHabLine = true;
+        } else if (InputManager.mCrossedHabLine) {
+            InputManager.mCrossedHabLine = false;
         }
     }
 
@@ -415,17 +400,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDrop(View v) {
+        compressionDic = new JSONObject();
         mode = "intake";
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
         shapeCheck = false;
         overallLayout.removeView(iv_game_element);
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "drop"));
+            compressionDic.put("type", "drop");
             timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
         Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
         mapChange();
 //        actionList.clear();
@@ -439,15 +426,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickSpill(View v) throws JSONException {
 //        if (!startTimer && !incapChecked) {
-        timestamp(TimerUtil.timestamp);
         InputManager.numSpill++;
         btn_spill.setText("SPILL - " + InputManager.numSpill);
+        compressionDic = new JSONObject();
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "spill"));
+            compressionDic.put("type", "spill");
             timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
         Log.i("LONG", mRealTimeMatchData.toString());
 //    }
     }
@@ -503,6 +491,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 
     public void onClickClimb(View v) {
+        time = TimerUtil.timestamp;
+
         final Float climbStartTime=TimerUtil.timestamp;
         final Dialog climbDialog = new Dialog(this);
         climbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -779,81 +769,88 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                     if (tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked() || brokenMechanism.isChecked() || twoPieces.isChecked()) {
 
+                        compressionDic = new JSONObject();
+
                         try {
-                            mRealTimeMatchData.put(new JSONObject().put("type", "impaired"));
+                            compressionDic.put("type", "incap");
                             timestamp(TimerUtil.timestamp);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        if (tippedOver.isChecked()) {
+                        if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()) {
                             pw = false;
                             btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
-                            try {
-                                mRealTimeMatchData.put(new JSONObject().put("cause", "tippedOver"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
+                            if (tippedOver.isChecked()) {
+                                try {
+                                    compressionDic.put("cause", "tippedOver");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (emergencyStop.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "emergencyStop");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (stuckHab.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "stuckOnHab");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (stuckObject.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "stuckOnObject");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (noControl.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "noControl");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } if (emergencyStop.isChecked()) {
-                            pw = false;
-                            btn_climb.setEnabled(false);
-                            btn_drop.setEnabled(false);
-                            btn_spill.setEnabled(false);
-                            try {
-                                mRealTimeMatchData.put(new JSONObject().put("cause", "emergencyStop"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } if (stuckHab.isChecked()) {
-                            pw = false;
-                            btn_climb.setEnabled(false);
-                            btn_drop.setEnabled(false);
-                            btn_spill.setEnabled(false);
-                            try {
-                                mRealTimeMatchData.put(new JSONObject().put("cause", "stuckOnHab"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } if (stuckObject.isChecked()) {
-                            pw = false;
-                            btn_climb.setEnabled(false);
-                            btn_drop.setEnabled(false);
-                            btn_spill.setEnabled(false);
-                            try {
-                                mRealTimeMatchData.put(new JSONObject().put("cause", "stuckOnObject"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } if (noControl.isChecked()) {
-                            pw = false;
-                            btn_climb.setEnabled(false);
-                            btn_drop.setEnabled(false);
-                            btn_spill.setEnabled(false);
-                            try {
-                                mRealTimeMatchData.put(new JSONObject().put("cause", "noControl"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } if (brokenMechanism.isChecked()) {
+                        } else if (brokenMechanism.isChecked()) {
                             incaptype = "brokenMechanism";
                             mapChange();
                             try {
-                                mRealTimeMatchData.put(new JSONObject().put("cause", "brokenMechanism"));
+                                compressionDic.put("cause", "brokenMechanism");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                        } if (twoPieces.isChecked()) {
-                            incaptype = "twoPieces";
+                        } else if (twoPieces.isChecked()) {
+                            incaptype = "twoGamePieces";
                             mapChange();
                             try {
-                                mRealTimeMatchData.put(new JSONObject().put("cause", "twoPieces"));
+                                compressionDic.put("cause", "twoGamePieces");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+
+                        mRealTimeMatchData.put(compressionDic);
 
                         if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()){
                             if(mode.equals("intake")) {
@@ -868,7 +865,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 }
                             }
 
-                            else if(element.equals("lemon") && !mode.equals("impaired")) {
+                            else if(element.equals("lemon") && !mode.equals("incap")) {
                                 if(mode.equals("placement")) {
                                     if (field_orientation.contains("left")) {
                                         iv_field.setImageResource(R.drawable.gray_field_placement_lemon_left);
@@ -877,7 +874,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     }
                                 }
                             }
-                            else if(element.equals("orange") && !mode.equals("impaired")) {
+                            else if(element.equals("orange") && !mode.equals("incap")) {
                                 if(mode.equals("placement")) {
                                     if (field_orientation.contains("left")) {
                                         iv_field.setImageResource(R.drawable.gray_field_placement_orange_left);
@@ -902,6 +899,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
 
         else if (incapChecked) {
+            compressionDic = new JSONObject();
+
             incaptype = " ";
             incapMap=false;
             pw = true;
@@ -912,11 +911,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             incapChecked = false;
             btn_climb.setEnabled(true);
             try {
-                mRealTimeMatchData.put(new JSONObject().put("type", "unimpaired"));
+                compressionDic.put("type", "unincap");
                 timestamp(TimerUtil.timestamp);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            mRealTimeMatchData.put(compressionDic);
         }
         Log.i("AAAAH", mRealTimeMatchData.toString());
     }
@@ -1005,27 +1005,36 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void timestamp(Float givenTime) {
-        try {
-            if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime) + "*"));
-            } else {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime)));
+        if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
+            try {
+                compressionDic.put("time", String.format("%.1f", givenTime) + "*");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException je) {
-            je.printStackTrace();
+        } else {
+            try {
+                compressionDic.put("time", String.format("%.1f", givenTime));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void recordLoadingStation(boolean didSucceed) {
+        compressionDic = new JSONObject();
+
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+            compressionDic.put("type", "intake");
             timestamp(time);
-            mRealTimeMatchData.put(new JSONObject().put("piece", element));
-            mRealTimeMatchData.put(new JSONObject().put("zone", zone));
-            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+            compressionDic.put("piece", element);
+            compressionDic.put("zone", zone);
+            compressionDic.put("didSucceed", didSucceed);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mRealTimeMatchData.put(compressionDic);
+
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
@@ -1038,15 +1047,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         wasDefended = tb_wasDefended.isChecked();
 
+        compressionDic = new JSONObject();
+
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "placement"));
+            compressionDic.put("type", "placement");
             timestamp(time);
-            mRealTimeMatchData.put(new JSONObject().put("piece", element));
-            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
-            mRealTimeMatchData.put(new JSONObject().put("wasDefended", wasDefended));
-            mRealTimeMatchData.put(new JSONObject().put("structure", structure));
+            compressionDic.put("piece", element);
+            compressionDic.put("didSucceed", didSucceed);
+            compressionDic.put("wasDefended", wasDefended);
+            compressionDic.put("structure", structure);
+
             if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
-                mRealTimeMatchData.put(new JSONObject().put("side", side));
+                compressionDic.put("side", side);
             }
             if(structure.contains("Rocket")) {
                 if(level1.isChecked()) {
@@ -1058,13 +1070,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
                 if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
                     shotOutOfField = tb_shotOutOfField.isChecked();
-                    mRealTimeMatchData.put(new JSONObject().put("shotOutOfField", shotOutOfField));
+                    compressionDic.put("shotOutOfField", shotOutOfField);
                 }
-                mRealTimeMatchData.put(new JSONObject().put("level", level));
+                compressionDic.put("level", level);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mRealTimeMatchData.put(compressionDic);
+
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
@@ -1099,7 +1114,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             } else if(field_orientation.equals("red_right")) {
                 iv_field.setImageResource(R.drawable.field_intake_red_right);
             }
-        } if (incaptype.equals("brokenMechanism") || incaptype.equals("twoPieces")){
+        } if (incaptype.equals("brokenMechanism") || incaptype.equals("twoGamePieces")){
              if(element.equals("lemon")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
                 if(mode.equals("placement")) {
@@ -1194,7 +1209,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         } else {
             mode = "placement";
             btn_drop.setEnabled(true);
-            if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
+            if((y>517 && mScoutId < 9 && field_orientation.contains("left")) || (y<=517 && mScoutId < 9 && field_orientation.contains("right")) || (y>345 && mScoutId >= 9 && field_orientation.contains("left")) && (y<=345 && mScoutId >= 9 && field_orientation.contains("right"))) {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
                         || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Right";
@@ -1222,15 +1237,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
 
+            compressionDic = new JSONObject();
+
             try {
-                mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+                compressionDic.put("type", "intake");
                 timestamp(time);
-                mRealTimeMatchData.put(new JSONObject().put("piece", element));
-                mRealTimeMatchData.put(new JSONObject().put("zone", zone));
+                compressionDic.put("piece", element);
+                compressionDic.put("zone", zone);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            mRealTimeMatchData.put(compressionDic);
+
             Log.i("RECORDING?", mRealTimeMatchData.toString());
+            Log.i("ZONE", zone);
             initShape();
         }
     }
@@ -1380,25 +1401,42 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void recordClimb(float time) {
+        compressionDic = new JSONObject();
         try {
-            climbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-            climbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-            climbAttemptData.put(climbAttemptKeys.get(2), climbAttemptValues.get(2));
-            climbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-            climbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-            climbActualData.put(climbActualKeys.get(2), climbActualValues.get(2));
-            climbFinalData.put(climbKeys.get(0), "climb");
-            climbFinalData.put(climbKeys.get(1), time);
-            climbFinalData.put(climbKeys.get(2), climbAttemptData);
-            climbFinalData.put(climbKeys.get(3), climbActualData);
+            climbAttemptData = "{" + climbAttemptKeys.get(0) + climbAttemptValues.get(0) + ";" + climbAttemptKeys.get(1) + climbAttemptValues.get(1) + ";" + climbAttemptKeys.get(2) + climbAttemptValues.get(2) + "}";
+            climbActualData = "{" + climbActualKeys.get(0) + climbActualValues.get(0) + ";" + climbActualKeys.get(1) + climbActualValues.get(1) + ";" + climbActualKeys.get(2) + climbActualValues.get(2) + "}";
+
+            compressionDic.put("type", "climb");
+            timestamp(time);
+            compressionDic.put("attempted", climbAttemptData);
+            compressionDic.put("actual", climbActualData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
+
         climbInputted = true;
-        Log.e("Climb", climbFinalData.toString());
+        Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
     public void onClickDataCheck(View v) {
+        try {
+            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
+            InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
+            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
+            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
+            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
+            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
+            InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
+            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
+            InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
+            InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
+            InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
+            InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
+            InputManager.mOneTimeMatchData.put("sandstormEndPosition", InputManager.mSandstormEndPosition);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         open(A2A.class, null, false, true);
     }
 
