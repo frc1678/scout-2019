@@ -48,6 +48,7 @@ public class InputManager {
 
     public static String mScoutName = "unselected";
     public static int mScoutId = 0;
+    public static String mTabletType = "unselected";
 
     public static int mMatchNum = 0;
     public static int mTeamNum = 0;

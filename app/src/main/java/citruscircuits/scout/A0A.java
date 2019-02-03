@@ -524,7 +524,16 @@ public class A0A extends DialogMaker {
     }
 
     public void onClickTabletDone(View view) {
-
+        if(rb_greenTablet.isChecked()) {
+            InputManager.mTabletType = "green";
+            tabletDialog.dismiss();
+        } else if(rb_blackTablet.isChecked()) {
+            InputManager.mTabletType = "black";
+            tabletDialog.dismiss();
+        } else if(rb_fireTablet.isChecked()) {
+            InputManager.mTabletType = "fire";
+            tabletDialog.dismiss();
+        }
     }
 }
 
