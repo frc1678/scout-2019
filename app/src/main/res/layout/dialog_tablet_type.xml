@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="650dp"
+    android:layout_height="220dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="400dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="Tablet Type"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialogTitle"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true"
+        android:id="@+id/rg_alliance_color">
+        <RadioButton
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/green_tablet"
+            android:text="GREEN CASE"
+            android:textSize="20dp"
+            android:button="@null"
+            android:textAlignment="center"
+            android:layout_margin="5dp"
+            android:padding="30dp"
+            android:background="@drawable/green_case_selector"/>
+        <RadioButton
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/black_tablet"
+            android:text="BLACK CASE"
+            android:textSize="20dp"
+            android:button="@null"
+            android:textAlignment="center"
+            android:layout_margin="5dp"
+            android:padding="30dp"
+            android:background="@drawable/black_case_selector"/>
+        <RadioButton
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/fire_tablet"
+            android:text="FIRE"
+            android:textSize="20dp"
+            android:button="@null"
+            android:textAlignment="center"
+            android:layout_margin="5dp"
+            android:padding="30dp"
+            android:background="@drawable/fire_selector"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DONE"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickTabletDone"/>
+</RelativeLayout>

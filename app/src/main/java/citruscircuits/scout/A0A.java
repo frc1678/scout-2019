@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -69,6 +70,10 @@ import static citruscircuits.scout.utils.AppUtils.readFile;
 
 //Written by the Daemon himself ~ Calvin
 public class A0A extends DialogMaker {
+    public Dialog tabletDialog;
+    public RelativeLayout tabletDialogLayout;
+
+    public Context context;
 
     public static Drawable dr_redCycle, dr_blueCycle;
     public Drawable map_orientation_rb, map_orientation_br;
@@ -93,6 +98,8 @@ public class A0A extends DialogMaker {
 
     public ArrayAdapter<String> mResendMatchesArrayAdapter;
 
+    public RadioButton rb_greenTablet, rb_blackTablet, rb_fireTablet;
+
     LayoutInflater mLayoutInflater;
 
     @Override
@@ -109,6 +116,12 @@ public class A0A extends DialogMaker {
         map_orientation_br = getResources().getDrawable(R.drawable.btn_map_orientation_br);
 
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        tabletDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.dialog_tablet_type, null);
+
+        rb_greenTablet = tabletDialogLayout.findViewById(R.id.green_tablet);
+        rb_blackTablet = tabletDialogLayout.findViewById(R.id.black_tablet);
+        rb_fireTablet = tabletDialogLayout.findViewById(R.id.fire_tablet);
 
         InputManager.getScoutNames();
 
@@ -497,11 +510,21 @@ public class A0A extends DialogMaker {
                     updateUserData();
 
                     pw_idWindow.dismiss();
+
+                    tabletDialog = new Dialog(context);
+                    tabletDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    tabletDialog.setContentView(tabletDialogLayout);
+
+                    tabletDialog.show();
                 }
             });
 
             return convertView;
         }
+    }
+
+    public void onClickTabletDone(View view) {
+
     }
 }
 
