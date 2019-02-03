@@ -55,10 +55,6 @@ public class OutputManager extends InputManager{
 
             compressedData = compressedData + "_";
 
-            if(isNoShow) {
-                compressedData = compressedData + ",";
-            }
-
             for (int i = 0; i < timeStampData.length(); i++) {
                 JSONObject tData = timeStampData.getJSONObject(i);
 
