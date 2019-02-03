@@ -1209,7 +1209,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         } else {
             mode = "placement";
             btn_drop.setEnabled(true);
-            if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
+            if((y>517 && mScoutId < 9 && field_orientation.contains("left")) || (y<=517 && mScoutId < 9 && field_orientation.contains("right")) || (y>345 && mScoutId >= 9 && field_orientation.contains("left")) && (y<=345 && mScoutId >= 9 && field_orientation.contains("right"))) {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
                         || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Right";
@@ -1251,6 +1251,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mRealTimeMatchData.put(compressionDic);
 
             Log.i("RECORDING?", mRealTimeMatchData.toString());
+            Log.i("ZONE", zone);
             initShape();
         }
     }
