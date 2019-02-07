@@ -49,7 +49,7 @@ public class A3A extends DialogMaker {
 
         InputManager.mRealTimeInputtedData = new JSONObject();
         try {
-            InputManager.mRealTimeInputtedData.put(InputManager.matchKey, InputManager.mRealTimeMatchData);
+            InputManager.mRealTimeInputtedData.put(InputManager.matchKey, (InputManager.mRealTimeMatchData));
         } catch (JSONException e) {
             e.printStackTrace();
         }
