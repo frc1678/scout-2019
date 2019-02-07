@@ -938,9 +938,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                         time = TimerUtil.timestamp;
 
-                        if(!((((x > 1700 || y > 985) && mTabletType.equals("green")) || ((x > 1130 || y > 660) && mTabletType.equals("black")))
+                        if(!((((x > 1700 || y > 985) && mTabletType.equals("green")) || ((x > 1130 || y > 660) && mTabletType.equals("black")) || ((x > 850 || y > 490) && mTabletType.equals("fire")))
                                 || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mTabletType.equals("green"))
-                                || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mTabletType.equals("black")))) { //TODO ADD DEAD ZONES ON FIRES
+                                || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mTabletType.equals("black")))
+                                || ((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && y > 210 && y < 305 && mTabletType.equals("fire")) {
                             if(mode.equals("intake")) {
                                 pw = false;
                                 initPopup(popup);
@@ -957,7 +958,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     || (y > -4.5 * x + 1722.5 && y > 4.5 * x - 1607.5 && y > 350 && field_orientation.contains("left") && mTabletType.equals("fire"))
                                     || (y < 4.5 * x - 1207.5 && y < -4.5 * x + 2122.5 && y < 165 && field_orientation.contains("left") && mTabletType.equals("fire"))
                                     || (((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mTabletType.equals("green")))
-                                    || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mTabletType.equals("black")))){
+                                    || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mTabletType.equals("black")))
+                                    || (((field_orientation.contains("left") && x > 470 && x < 720) || (field_orientation.contains("right") && x > 130 && x < 380)) && y > 225 && y < 565 && mTabletType.equals("fire"))){
                                 pw = false;
                                 initPlacement();
                             }
@@ -1206,12 +1208,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         element = givenElement;
 
         if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
-                || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mTabletType.equals("black"))) {
+                || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mTabletType.equals("black"))
+                || (((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && mTabletType.equals("fire"))) {
             if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mTabletType.equals("green"))
-                    || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mTabletType.equals("black"))) {
+                    || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mTabletType.equals("black"))
+                    || (((field_orientation.contains("left") && y<=220) || (field_orientation.contains("right") && y>=280)) && mTabletType.equals("fire"))) {
                 zone = "leftLoadingStation";
             } else if((((field_orientation.contains("right") && y<=415) || (field_orientation.contains("left") && y>=615)) && mTabletType.equals("green"))
-                    || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mTabletType.equals("black"))) {
+                    || (((field_orientation.contains("right") && y<=280) || (field_orientation.contains("left") && y>=410)) && mTabletType.equals("black"))
+                    || (((field_orientation.contains("right") && y<=220) || (field_orientation.contains("left") && y>=280)) && mTabletType.equals("fire"))) {
                 zone = "rightLoadingStation";
             }
             initPopup(popup_fail_success);
@@ -1219,28 +1224,35 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mode = "placement";
             btn_drop.setEnabled(true);
             if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
-                    || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) && (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))) {
+                    || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) && (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))
+                    || (y>260 && mTabletType.equals("fire") && field_orientation.contains("left")) && (y<=260 && mTabletType.equals("fire") && field_orientation.contains("right"))) {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))) {
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 130) || (field_orientation.contains("right") && x >= 720)) && mTabletType.equals("fire"))) {
                     zone = "zone1Right";
                 } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 470) || (field_orientation.contains("right") && x >= 380)) && mTabletType.equals("fire"))) {
                     zone = "zone2Right";
                 } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 125)) && mTabletType.equals("fire"))) {
                     zone = "zone3Right";
                 } else {
                     zone = "zone4Right";
                 }
             } else {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))) {
+                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 130) || (field_orientation.contains("right") && x >= 720)) && mTabletType.equals("fire"))) {
                     zone = "zone1Left";
                 } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
+                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 470) || (field_orientation.contains("right") && x >= 380)) && mTabletType.equals("fire"))) {
                     zone = "zone2Left";
                 } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
+                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 125)) && mTabletType.equals("fire"))) {
                     zone = "zone3Left";
                 } else {
                     zone = "zone4Left";
@@ -1320,10 +1332,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             if(element.equals("lemon")) {
                 if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mTabletType.equals("green"))
-                        || (((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mTabletType.equals("black"))) {
+                        || (((x >= 493 && field_orientation.contains("left")) || (x <= 640 && field_orientation.contains("right"))) && mTabletType.equals("black"))
+                        || (((x >= 370 && field_orientation.contains("left")) || (x <= 480 && field_orientation.contains("right"))) && mTabletType.equals("fire"))) {
                     side = "far";
                 } else if((((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mTabletType.equals("green"))
-                        || (((x < 740 && field_orientation.contains("left")) || (x > 960 && field_orientation.contains("right"))) && mTabletType.equals("black"))) {
+                        || (((x < 493 && field_orientation.contains("left")) || (x > 640 && field_orientation.contains("right"))) && mTabletType.equals("black"))
+                        || (((x >= 370 && field_orientation.contains("left")) || (x <= 480 && field_orientation.contains("right"))) && mTabletType.equals("fire"))) {
                     side = "near";
                 }
             }
@@ -1349,16 +1363,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 level3.setBackgroundResource(R.drawable.level_selector_orange);
             }
         } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mTabletType.equals("green"))
-                || ((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mTabletType.equals("black")) {
+                || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mTabletType.equals("black"))
+                || (((field_orientation.contains("left") && x > 470 && x < 720) || (field_orientation.contains("right") && x > 130 && x < 380)) && y > 225 && y < 565 && mTabletType.equals("fire"))) {
             structure = "cargoShip";
             if((((field_orientation.contains("left") && x < 1130) || (field_orientation.contains("right") && x > 570)) && mTabletType.equals("green"))
-                    || ((field_orientation.contains("left") && x < 750) || (field_orientation.contains("right") && x > 380)) && mTabletType.equals("black")) {
+                    || (((field_orientation.contains("left") && x < 750) || (field_orientation.contains("right") && x > 380)) && mTabletType.equals("black"))
+                    || (((field_orientation.contains("left") && x < 565) || (field_orientation.contains("right") && x > 285)) && mTabletType.equals("fire"))) {
                 side = "near";
             } else if((((field_orientation.contains("left") &&  y < 517) || (field_orientation.contains("right") && y > 517)) && mTabletType.equals("green"))
-                    || ((field_orientation.contains("left") &&  y < 345) || (field_orientation.contains("right") && y > 345)) && mTabletType.equals("black")) {
+                    || (((field_orientation.contains("left") &&  y < 345) || (field_orientation.contains("right") && y > 345)) && mTabletType.equals("black"))
+                    || (((field_orientation.contains("left") && y < 260) || (field_orientation.contains("right") && y > 260)) && mTabletType.equals("fire"))) {
                 side = "left";
             } else if((((field_orientation.contains("left") &&  y >= 517) || (field_orientation.contains("right") && y <= 517)) && mTabletType.equals("green"))
-                    || ((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mTabletType.equals("black")) {
+                    || (((field_orientation.contains("left") &&  y >= 345) || (field_orientation.contains("right") && y <= 345)) && mTabletType.equals("black"))
+                    || (((field_orientation.contains("left") && y >= 260) || (field_orientation.contains("right") && y <= 260)) && mTabletType.equals("fire"))){
                 side = "right";
             }
             placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_cargo_ship, null);
