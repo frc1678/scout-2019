@@ -103,10 +103,21 @@
             android:background="@drawable/btn_climb"
             android:onClick="onClickClimb"/>
         <ToggleButton
-            android:id="@+id/tbtn_incap"
+            android:id="@+id/tbtn_defense"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_below="@+id/btn_climb"
+            android:textOn="DEF"
+            android:textOff="DEF"
+            android:textSize="30dp"
+            android:textAlignment="center"
+            android:background="@drawable/btn_defense"
+            android:onClick="onClickDefense"/>
+        <ToggleButton
+            android:id="@+id/tbtn_incap"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@+id/tbtn_defense"
             android:textOn="INCAP"
             android:textOff="INCAP"
             android:textSize="30dp"
