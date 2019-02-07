@@ -790,6 +790,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
+                            tb_defense.setEnabled(false);
                             if (tippedOver.isChecked()) {
                                 try {
                                     compressionDic.put("cause", "tippedOver");
