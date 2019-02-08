@@ -140,6 +140,7 @@ public class DialogMaker extends AppTc {
                     }
 
                     InputManager.storeUserData();
+                    AppCc.setSp("tabletType", InputManager.mTabletType);
                     A0A.updateUserData();
                 }
             });
