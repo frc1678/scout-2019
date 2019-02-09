@@ -494,6 +494,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickStartTimer(View v) {
+        pw=false;
         handler.removeCallbacks(runnable);
         handler.removeCallbacksAndMessages(null);
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
@@ -501,7 +502,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_drop = findViewById(R.id.btn_dropped);
 //        tb_hab_run = findViewById(R.id.tgbtn_storm_run);
         if (startTimer) {
-            pw=true;
             handler.postDelayed(runnable, 150000);
             timerUtil.initTimer();
             btn_startTimer.setText("RESET TIMER");
@@ -537,8 +537,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_startTimer.setText("START TIMER");
             overallLayout.removeView(iv_game_element);
             popup.dismiss();
+            popup_fail_success.dismiss();
             startTimer = true;
             timerCheck = false;
+            preload();
 
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
@@ -554,9 +556,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         if (!InputManager.habLineCrossed) {
             InputManager.habLineCrossed = true;
+            pw=true;
 
         } else if (InputManager.habLineCrossed) {
             InputManager.habLineCrossed = false;
+            pw=false;
         }
     }
 
@@ -1090,7 +1094,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    if( pw && timerCheck) {
+                    if(pw && timerCheck) {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
                         Log.e("Xcoordinate", String.valueOf(x));
