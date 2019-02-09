@@ -69,6 +69,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean shapeCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+    public boolean defensePw = false;
 
     public boolean incapMap = false;
 
@@ -979,15 +980,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickOrange(View view) {
         initIntake("orange");
+        defensePw = false;
     }
 
     public void onClickLemon(View view) {
         initIntake("lemon");
+        defensePw = false;
     }
 
     public void onClickCancel(View view) {
         popup.dismiss();
         pw = true;
+        defensePw = false;
     }
 
     public void onClickFail(View view) {
@@ -1444,11 +1448,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void initPopup(PopupWindow pwvar) {
         if (defenseMap && (((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mScoutId < 9)
-                || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mScoutId >= 9)){
+                || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mScoutId >= 9) && (!defensePw)){
             pwvar.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
             pw = true;
+            defensePw = true;
         } else if (!defenseMap){
             pwvar.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+            pw = false;
+        }
+        if (defensePw){
             pw = false;
         }
 
