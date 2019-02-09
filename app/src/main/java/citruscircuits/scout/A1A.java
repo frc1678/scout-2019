@@ -500,8 +500,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //        btn_startTimer = findViewById(R.id.btn_timer);
         btn_drop = findViewById(R.id.btn_dropped);
 //        tb_hab_run = findViewById(R.id.tgbtn_storm_run);
-        btn_arrow.setEnabled(false);
-        btn_arrow.setVisibility(View.INVISIBLE);
         if (startTimer) {
             pw=true;
             handler.postDelayed(runnable, 150000);
