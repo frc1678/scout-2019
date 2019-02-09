@@ -28,13 +28,14 @@ public class OutputManager extends InputManager{
         activity.startActivityForResult(discoveryIntent, REQUEST_BLU);
     }
 
-    //TODO Ensure that Alliance Color, Starting Position, Started With Cube, and Auto Line Crossed are recorded in this respective order
     public static String compressMatchData(JSONObject pMatchData) {
         fullQRDataProcess();
 
         String compressedData = InputManager.matchKey + "|";
         //used to make sure that the Qr's header is formatted correctly - aLCFound
-        boolean aLCFound = false;   String aLCKey = ""; String aLCValue = "";
+        boolean aLCFound = false;
+        String aLCKey = "";
+        String aLCValue = "";
         try {
             JSONArray timeStampData = pMatchData.getJSONArray(InputManager.matchKey);
             Iterator<?> uncompressedKeys = InputManager.mOneTimeMatchData.keys();
@@ -45,54 +46,33 @@ public class OutputManager extends InputManager{
 
                 Cst.compressValues.put(InputManager.mScoutName, InputManager.mScoutLetter);
 
-                if(Cst.noCommaCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)) {
-                    if(currentKey.equals("autoLineCrossed")){
-                        aLCFound = true;
-                        aLCKey = currentKey;
-                        aLCValue = currentValue;
-                    }else{
-                        compressedData = compressedData + Cst.noCommaCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
-                    }
+                if(Cst.initialCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)) {
+                    compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue) + ",";
+                } else if(Cst.initialCompressKeys.containsKey(currentKey) && !(currentValue.equals("") || currentValue.equals("0"))) {
+                    compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + currentValue + ",";
                 }
             }
 
-            if(aLCFound){
-                compressedData = compressedData + Cst.noCommaCompressKeys.get(aLCKey) + Cst.compressValues.get(aLCValue) + "_";
-            }
+            compressedData = compressedData + "_";
 
             for (int i = 0; i < timeStampData.length(); i++) {
                 JSONObject tData = timeStampData.getJSONObject(i);
 
-                String currentKey = tData.keys().next()+"";
-                String currentValue = tData.get(currentKey)+"";
+                String compressedDic = "";
 
-                if(Cst.compressKeys.containsKey(currentKey)){
-                    compressedData = compressedData + Cst.compressKeys.get(currentKey) + currentValue + ",";
+                Iterator<?> tDataKeys = tData.keys();
+
+                while(tDataKeys.hasNext()){
+                    String currentKey = tDataKeys.next()+"";
+                    String currentValue = tData.get(currentKey)+"";
+
+                    if(Cst.compressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)){
+                        compressedDic = compressedDic + Cst.compressKeys.get(currentKey) + Cst.compressValues.get(currentValue);
+                    } else if(Cst.compressKeys.containsKey(currentKey)) {
+                        compressedDic = compressedDic + Cst.compressKeys.get(currentKey) + currentValue;
+                    }
                 }
-            }
-
-            if(InputManager.mOneTimeMatchData.has("climb")){
-                String currentKey = "climb";
-                JSONObject currentValue = InputManager.mOneTimeMatchData.getJSONObject(currentKey);
-                String currentKey11 = "Attempt";
-                JSONObject currentValue11 = currentValue.getJSONObject(currentKey11);
-                String currentKey12 = "Actual";
-                JSONObject currentValue12 = currentValue.getJSONObject(currentKey12);
-                String currentKey21 = "liftSelf";
-                String currentKey22 = "otherRobotsLifted";
-
-
-                compressedData = compressedData + Cst.compressKeys.get(currentKey)
-                        + Cst.compressKeys.get(currentKey11) + Cst.compressKeys.get(currentKey21)
-                        + Cst.compressValues.get(currentValue11.getBoolean(currentKey21)+"")
-                        + Cst.compressKeys.get(currentKey22)
-                        + currentValue11.getInt(currentKey22)+""
-                        + Cst.compressKeys.get(currentKey12) + Cst.compressKeys.get(currentKey21)
-                        + Cst.compressValues.get(currentValue12.getBoolean(currentKey21)+"")
-                        + Cst.compressKeys.get(currentKey22)
-                        + currentValue12.getInt(currentKey22)+"";
-
-                Log.e("COMPRESSDATA", compressedData);
+                compressedData = compressedData + compressedDic + ",";
             }
         } catch (JSONException e) {
             e.printStackTrace();

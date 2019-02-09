@@ -25,6 +25,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -79,6 +81,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean timerCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+
+    public boolean incapMap = false;
+
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
@@ -86,30 +91,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean doneStormChecker=false;
     public boolean isElementUsedForRobot=false;
 
-    public Integer numRobotsAttemptedToLift = 0;
-    public Integer numRobotsDidLift = 0;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
     public Integer level;
     public Integer undoX;
     public Integer undoY;
 
-    public Float ftbStartTime;
-    public Float ftbEndTime;
     public Float time;
     public Long epicTime;
 
-    public List<String> climbAttemptKeys = Arrays.asList("self", "robot1", "robot2");
-    public List<String> climbActualKeys = Arrays.asList("self", "robot1", "robot2");
-    public List<String> climbKeys = Arrays.asList("type", "time", "attempted", "actual");
+    public List<String> climbAttemptKeys = Arrays.asList("D", "E", "F");
+    public List<String> climbActualKeys = Arrays.asList("D", "E", "F");
 
     public List<Integer> climbAttemptValues = new ArrayList<>();
     public List<Integer> climbActualValues = new ArrayList<>();
-    public List<Object> climbValues = new ArrayList<>();
 
-    JSONObject climbAttemptData = new JSONObject();
-    JSONObject climbActualData = new JSONObject();
-    JSONObject climbFinalData = new JSONObject();
+    public JSONObject compressionDic;
+
+    String climbAttemptData;
+    String climbActualData;
 
     public TextView tv_team;
     public TextView tv_starting_position_warning;
@@ -177,8 +177,23 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public int y;
 
     public String mode = "intake";
-    public String element;
-    public String zone;
+    public String element = "";
+    public String zone = "";
+    public String incaptype = "";
+
+    public TextView incapTypes;
+    public RadioGroup incapOptions;
+    public RadioButton tippedOver;
+    public RadioButton emergencyStop;
+    public RadioButton stuckHab;
+    public RadioButton stuckObject;
+    public RadioButton noControl;
+    public RadioButton brokenMechanism;
+    public RadioButton twoPieces;
+    public Button doneButton2;
+    public Button cancelIncap;
+
+
     public String structure;
     public String side;
 
@@ -194,6 +209,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Fragment fragmentCancel;
     public FragmentTransaction transactionCancel;
     public FragmentManager fmCancel;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -529,7 +546,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mapChange();
         }
         Log.e("timerCheck",String.valueOf(InputManager.timerChecked));
-
     }
 
     public void onClickHabLineCrossed(View v) {
@@ -545,17 +561,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 
     public void onClickDrop(View v) {
+        compressionDic = new JSONObject();
         mode = "intake";
         modeIsIntake=true;
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
         overallLayout.removeView(iv_game_element);
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "drop"));
+            compressionDic.put("type", "drop");
             timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
         Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
         mapChange();
 //        actionList.clear();
@@ -569,15 +587,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickSpill(View v) throws JSONException {
 //        if (!startTimer && !incapChecked) {
-        timestamp(TimerUtil.timestamp);
         InputManager.numSpill++;
         btn_spill.setText("SPILL - " + InputManager.numSpill);
+        compressionDic = new JSONObject();
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "spill"));
+            compressionDic.put("type", "spill");
             timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
         Log.i("LONG", mRealTimeMatchData.toString());
 //    }
     }
@@ -633,6 +652,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 
     public void onClickClimb(View v) {
+        time = TimerUtil.timestamp;
+
         final Float climbStartTime=TimerUtil.timestamp;
         final Dialog climbDialog = new Dialog(this);
         climbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -866,24 +887,200 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-//    public void onClickIncap(View v) throws JSONException {
-//        if (!incapChecked) {
-//            tb_incap.setChecked(true);
-//
-//            btn_drop.setEnabled(false);
-//            btn_undo.setEnabled(false);
-//            timestamp();
-//
-//            incapChecked = true;
-//        } else if (incapChecked) {
-//            tb_incap.setChecked(false);
-//            if (shapeCheck) {
-//                btn_drop.setEnabled(true);
-//            }
-//            timestamp();
-//            incapChecked = false;
-//        }
-//    }
+    public void onClickIncap(View v) throws JSONException {
+
+        if (!incapChecked) {
+            tb_incap.setChecked(true);
+            incapMap=true;
+
+            final Dialog incapDialog = new Dialog(this);
+            incapDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.incap, null);
+            incapDialog.setCanceledOnTouchOutside(false);
+            incapDialog.setCancelable(false);
+
+            incapTypes = (TextView) dialogLayout.findViewById(R.id.incapTypes);
+            incapOptions = (RadioGroup) dialogLayout.findViewById(R.id.radioGroup00);
+            tippedOver = (RadioButton) dialogLayout.findViewById(R.id.radio_button01);
+            emergencyStop = (RadioButton) dialogLayout.findViewById(R.id.radio_button02);
+            stuckHab = (RadioButton) dialogLayout.findViewById(R.id.radio_button03);
+            stuckObject = (RadioButton) dialogLayout.findViewById(R.id.radio_button04);
+            noControl = (RadioButton) dialogLayout.findViewById(R.id.radio_button05);
+            brokenMechanism = (RadioButton) dialogLayout.findViewById(R.id.radio_button06);
+            twoPieces = (RadioButton) dialogLayout.findViewById(R.id.radio_button07);
+            doneButton2 = (Button) dialogLayout.findViewById(R.id.okayButton);
+            cancelIncap = (Button) dialogLayout.findViewById(R.id.cancelIncapButton);
+            btn_climb = (Button) findViewById(R.id.btn_climb);
+
+            cancelIncap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    incapDialog.dismiss();
+                    tb_incap.setChecked(false);
+                    incapMap = false;
+                    incapChecked = false;
+                    }
+                    });
+
+            doneButton2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popup_fail_success.dismiss();
+                    popup.dismiss();
+
+                    if (tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked() || brokenMechanism.isChecked() || twoPieces.isChecked()) {
+
+                        compressionDic = new JSONObject();
+
+                        try {
+                            compressionDic.put("type", "incap");
+                            timestamp(TimerUtil.timestamp);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()) {
+                            pw = false;
+                            btn_climb.setEnabled(false);
+                            btn_drop.setEnabled(false);
+                            btn_spill.setEnabled(false);
+
+                            if (tippedOver.isChecked()) {
+                                try {
+                                    compressionDic.put("cause", "tippedOver");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (emergencyStop.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "emergencyStop");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (stuckHab.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "stuckOnHab");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (stuckObject.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "stuckOnObject");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (noControl.isChecked()) {
+                                pw = false;
+                                btn_climb.setEnabled(false);
+                                btn_drop.setEnabled(false);
+                                btn_spill.setEnabled(false);
+                                try {
+                                    compressionDic.put("cause", "noControl");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else if (brokenMechanism.isChecked()) {
+                            incaptype = "brokenMechanism";
+                            mapChange();
+                            try {
+                                compressionDic.put("cause", "brokenMechanism");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else if (twoPieces.isChecked()) {
+                            incaptype = "twoGamePieces";
+                            mapChange();
+                            try {
+                                compressionDic.put("cause", "twoGamePieces");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        mRealTimeMatchData.put(compressionDic);
+
+                        if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()){
+                            if(mode.equals("intake")) {
+                                if (field_orientation.equals("blue_left")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_left);
+                                } else if (field_orientation.equals("blue_right")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_right);
+                                } else if (field_orientation.equals("red_left")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_left);
+                                } else if (field_orientation.equals("red_right")) {
+                                    iv_field.setImageResource(R.drawable.gray_field_intake_right);
+                                }
+                            }
+
+                            else if(element.equals("lemon") && !mode.equals("incap")) {
+                                if(mode.equals("placement")) {
+                                    if (field_orientation.contains("left")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_lemon_left);
+                                    } else if (field_orientation.contains("right")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_lemon_right);
+                                    }
+                                }
+                            }
+                            else if(element.equals("orange") && !mode.equals("incap")) {
+                                if(mode.equals("placement")) {
+                                    if (field_orientation.contains("left")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_orange_left);
+                                    } else if (field_orientation.contains("right")) {
+                                        iv_field.setImageResource(R.drawable.gray_field_placement_orange_right);
+                                    }
+                                }
+                            }
+                        }
+                        incapDialog.dismiss();
+                    }
+                    else {
+                        Toast.makeText(getBaseContext(), "Please input an incap type!!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+                                           });
+            incapDialog.setContentView(dialogLayout);
+            incapDialog.show();
+
+            incapChecked = true;
+        }
+
+        else if (incapChecked) {
+            compressionDic = new JSONObject();
+
+            incaptype = " ";
+            incapMap=false;
+            pw = true;
+            btn_drop.setEnabled(true);
+            btn_spill.setEnabled(true);
+            tb_incap.setChecked(false);
+            mapChange();
+            incapChecked = false;
+            btn_climb.setEnabled(true);
+            try {
+                compressionDic.put("type", "unincap");
+                timestamp(TimerUtil.timestamp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mRealTimeMatchData.put(compressionDic);
+        }
+        Log.i("AAAAH", mRealTimeMatchData.toString());
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private void addTouchListener() {
@@ -1006,27 +1203,36 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void timestamp(Float givenTime) {
-        try {
-            if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime) + "*"));
-            } else {
-                mRealTimeMatchData.put(new JSONObject().put("time", String.format("%.2f", givenTime)));
+        if ((givenTime <= 135 && !tele) || (givenTime > 135 && tele)) {
+            try {
+                compressionDic.put("time", String.format("%.1f", givenTime) + "*");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException je) {
-            je.printStackTrace();
+        } else {
+            try {
+                compressionDic.put("time", String.format("%.1f", givenTime));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void recordLoadingStation(boolean didSucceed) {
+        compressionDic = new JSONObject();
+
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+            compressionDic.put("type", "intake");
             timestamp(time);
-            mRealTimeMatchData.put(new JSONObject().put("piece", element));
-            mRealTimeMatchData.put(new JSONObject().put("zone", zone));
-            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
+            compressionDic.put("piece", element);
+            compressionDic.put("zone", zone);
+            compressionDic.put("didSucceed", didSucceed);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mRealTimeMatchData.put(compressionDic);
+
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
@@ -1039,15 +1245,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         wasDefended = tb_wasDefended.isChecked();
 
+        compressionDic = new JSONObject();
+
         try {
-            mRealTimeMatchData.put(new JSONObject().put("type", "placement"));
+            compressionDic.put("type", "placement");
             timestamp(time);
-            mRealTimeMatchData.put(new JSONObject().put("piece", element));
-            mRealTimeMatchData.put(new JSONObject().put("didSucceed", didSucceed));
-            mRealTimeMatchData.put(new JSONObject().put("wasDefended", wasDefended));
-            mRealTimeMatchData.put(new JSONObject().put("structure", structure));
+            compressionDic.put("piece", element);
+            compressionDic.put("didSucceed", didSucceed);
+            compressionDic.put("wasDefended", wasDefended);
+            compressionDic.put("structure", structure);
+
             if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
-                mRealTimeMatchData.put(new JSONObject().put("side", side));
+                compressionDic.put("side", side);
             }
             if(structure.contains("Rocket")) {
                 if(level1.isChecked()) {
@@ -1059,55 +1268,94 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
                 if(!didSucceed && (tb_shotOutOfField.isEnabled())) {
                     shotOutOfField = tb_shotOutOfField.isChecked();
-                    mRealTimeMatchData.put(new JSONObject().put("shotOutOfField", shotOutOfField));
+                    compressionDic.put("shotOutOfField", shotOutOfField);
                 }
-                mRealTimeMatchData.put(new JSONObject().put("level", level));
+                compressionDic.put("level", level);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mRealTimeMatchData.put(compressionDic);
+
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
     public void mapChange() {
-            Log.e("ahhhhh", mode);
-            Log.e("ahhhhh", element);
+        Log.e("ahhhhh", mode);
+        Log.e("ahhhhh", element);
 
-            //startedWObject
-            if(element.equals("orange")) {
+        //startedWObject
+        if (element.equals("orange")) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+            if (mode.equals("placement")) {
+                Log.e("ahhhhh", "placementorange");
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                if(mode.equals("placement")) {
-                    Log.e("ahhhhh", "placementorange");
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                    if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.field_placement_orange_left);
-                    } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.field_placement_orange_right);
-                    }
-                }
-            } else if(element.equals("lemon")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-                if(mode.equals("placement")) {
-                    Log.e("ahhhhh", "placementlemon");
-                    if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.field_placement_lemon_left);
-                    } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.field_placement_lemon_right);
-                    }
-                }
-            } if(mode.equals("intake")) {
-                btn_drop.setEnabled(false);
-                if(field_orientation.equals("blue_left")) {
-                    iv_field.setImageResource(R.drawable.field_intake_blue_left);
-                } else if(field_orientation.equals("blue_right")) {
-                    iv_field.setImageResource(R.drawable.field_intake_blue_right);
-                } else if(field_orientation.equals("red_left")) {
-                    iv_field.setImageResource(R.drawable.field_intake_red_left);
-                } else if(field_orientation.equals("red_right")) {
-                    iv_field.setImageResource(R.drawable.field_intake_red_right);
+                if (field_orientation.contains("left")) {
+                    iv_field.setImageResource(R.drawable.field_placement_orange_left);
+                } else if (field_orientation.contains("right")) {
+                    iv_field.setImageResource(R.drawable.field_placement_orange_right);
                 }
             }
-
+        } else if (element.equals("lemon")) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+            if (mode.equals("placement")) {
+                Log.e("ahhhhh", "placementlemon");
+                if (field_orientation.contains("left")) {
+                    iv_field.setImageResource(R.drawable.field_placement_lemon_left);
+                } else if (field_orientation.contains("right")) {
+                    iv_field.setImageResource(R.drawable.field_placement_lemon_right);
+                }
+            }
+        }
+        if (mode.equals("intake") && !incapMap) {
+            btn_drop.setEnabled(false);
+            if (field_orientation.equals("blue_left")) {
+                iv_field.setImageResource(R.drawable.field_intake_blue_left);
+            } else if (field_orientation.equals("blue_right")) {
+                iv_field.setImageResource(R.drawable.field_intake_blue_right);
+            } else if (field_orientation.equals("red_left")) {
+                iv_field.setImageResource(R.drawable.field_intake_red_left);
+            } else if (field_orientation.equals("red_right")) {
+                iv_field.setImageResource(R.drawable.field_intake_red_right);
+            }
+        }
+        if (incaptype.equals("brokenMechanism") || incaptype.equals("twoGamePieces")) {
+            if (element.equals("lemon")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+                if (mode.equals("placement")) {
+                    if (field_orientation.contains("left")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_lemon_left);
+                    }
+                    if (field_orientation.contains("right")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_lemon_right);
+                    }
+                }
+            }
+            if (element.equals("orange")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                if (mode.equals("placement")) {
+                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                    if (field_orientation.contains("left")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_orange_left);
+                    } else if (field_orientation.contains("right")) {
+                        iv_field.setImageResource(R.drawable.faded_field_placement_orange_right);
+                    }
+                }
+            }
+            if (mode.equals("intake") && incapMap) {
+                btn_drop.setEnabled(false);
+                if (field_orientation.equals("blue_left")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_blue_left);
+                } else if (field_orientation.equals("blue_right")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_blue_right);
+                } else if (field_orientation.equals("red_left")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_red_left);
+                } else if (field_orientation.equals("red_right")) {
+                    iv_field.setImageResource(R.drawable.faded_field_intake_red_right);
+                }
+            }
+        }
     }
 
     public void initShape() {
@@ -1235,7 +1483,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mode = "placement";
             modeIsIntake=false;
             btn_drop.setEnabled(true);
-            if((y>517 && mScoutId < 9) || (y>345 && mScoutId >= 9)) {
+            if((y>517 && mScoutId < 9 && field_orientation.contains("left")) || (y<=517 && mScoutId < 9 && field_orientation.contains("right")) || (y>345 && mScoutId >= 9 && field_orientation.contains("left")) && (y<=345 && mScoutId >= 9 && field_orientation.contains("right"))) {
                 if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mScoutId < 9)
                         || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mScoutId >= 9)) {
                     zone = "zone1Right";
@@ -1263,15 +1511,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
 
+            compressionDic = new JSONObject();
+
             try {
-                mRealTimeMatchData.put(new JSONObject().put("type", "intake"));
+                compressionDic.put("type", "intake");
                 timestamp(time);
-                mRealTimeMatchData.put(new JSONObject().put("piece", element));
-                mRealTimeMatchData.put(new JSONObject().put("zone", zone));
+                compressionDic.put("piece", element);
+                compressionDic.put("zone", zone);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            mRealTimeMatchData.put(compressionDic);
+
             Log.i("RECORDING?", mRealTimeMatchData.toString());
+            Log.i("ZONE", zone);
             initShape();
         }
     }
@@ -1463,25 +1717,42 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void recordClimb(float time) {
+        compressionDic = new JSONObject();
         try {
-            climbAttemptData.put(climbAttemptKeys.get(0), climbAttemptValues.get(0));
-            climbAttemptData.put(climbAttemptKeys.get(1), climbAttemptValues.get(1));
-            climbAttemptData.put(climbAttemptKeys.get(2), climbAttemptValues.get(2));
-            climbActualData.put(climbActualKeys.get(0), climbActualValues.get(0));
-            climbActualData.put(climbActualKeys.get(1), climbActualValues.get(1));
-            climbActualData.put(climbActualKeys.get(2), climbActualValues.get(2));
-            climbFinalData.put(climbKeys.get(0), "climb");
-            climbFinalData.put(climbKeys.get(1), time);
-            climbFinalData.put(climbKeys.get(2), climbAttemptData);
-            climbFinalData.put(climbKeys.get(3), climbActualData);
+            climbAttemptData = "{" + climbAttemptKeys.get(0) + climbAttemptValues.get(0) + ";" + climbAttemptKeys.get(1) + climbAttemptValues.get(1) + ";" + climbAttemptKeys.get(2) + climbAttemptValues.get(2) + "}";
+            climbActualData = "{" + climbActualKeys.get(0) + climbActualValues.get(0) + ";" + climbActualKeys.get(1) + climbActualValues.get(1) + ";" + climbActualKeys.get(2) + climbActualValues.get(2) + "}";
+
+            compressionDic.put("type", "climb");
+            timestamp(time);
+            compressionDic.put("attempted", climbAttemptData);
+            compressionDic.put("actual", climbActualData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        mRealTimeMatchData.put(compressionDic);
+
         climbInputted = true;
-        Log.e("Climb", climbFinalData.toString());
+        Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
     public void onClickDataCheck(View v) {
+        try {
+            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
+            InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
+            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
+            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
+            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
+            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
+            InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
+            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
+            InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
+            InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
+            InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
+            InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
+            InputManager.mOneTimeMatchData.put("sandstormEndPosition", InputManager.mSandstormEndPosition);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         open(A2A.class, null, false, true);
     }
 

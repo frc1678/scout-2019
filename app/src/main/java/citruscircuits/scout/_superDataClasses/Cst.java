@@ -23,56 +23,89 @@ public interface Cst {
     List<Integer> SCOUT_IDS = Arrays.asList(1, 2, 3, 4, 5, 6 ,7 , 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 
     //manual compression keys that aren't separated by commas
-    Map<String, String> noCommaCompressKeys = new HashMap<String, String>() {{
-        put("allianceColor", "R");
-        put("startingPosition", "P");
-        put("startedWCube", "C");
-        put("scoutName", "N");
-        put("autoLineCrossed", "a");
+    Map<String, String> initialCompressKeys = new HashMap<String, String>() {{
+        put("startingLevel", "a");
+        put("crossedHabLine", "b");
+        put("startingLocation", "c");
+        put("preload", "d");
+        put("driverStation", "e");
+        put("isNoShow", "f");
+        put("timerStarted", "g");
+        put("currentCycle", "h");
+        put("scoutID", "j");
+        put("scoutName", "k");
+        put("appVersion", "m");
+        put("assignmentMode", "n");
+        put("assignmentFileTimestamp", "p");
+        put("sandstormEndPosition", "G");
     }};
 
     Map<String, String> compressKeys = new HashMap<String, String>() {{
         //New constants
 
-        put("beginIncap", "i");
-        put("endIncap", "n");
-        put("drop", "d");
-        put("spill", "s");
-        put("scaleFoul", "f");
+        put("type", "r");
+        put("time", "s");
 
-        put("climb", "e");
-        put("Attempt", "t");
-        put("Actual", "c");
-        put("liftSelf", "q");
-        put("otherRobotsLifted", "b");
+        put("piece", "t");
+        put("zone", "u");
+        put("didSucceed", "v");
+        put("wasDefended", "w");
+        put("structure", "x");
+        put("side", "y");
+        put("shotOutOfField", "H");
+        put("level", "z");
 
-        put("intake1", "j");
-        put("intake2", "k");
-        put("intake3", "l");
-        put("intake4", "m");
+        put("cause", "A");
 
-        put("exchangeScore", "x");
-        put("score1", "u");
-        put("score2", "t");
-        put("score3", "v");
-        put("score4", "w");
-        put("score5", "y");
-        put("score6", "z");
+        put("attempted", "B");
+        put("actual", "C");
+        put("self", "D");
+        put("robot1", "E");
+        put("robot2", "F");
     }};
 
     //replace with new datapoints
     Map<String, String> compressValues = new HashMap<String, String>() {{
         //New constants
-        put("blue", "0");
-        put("red", "1");
-        put("left", "1");
-        put("center", "2");
-        put("right", "3");
-        put("false", "0");
-        put("true", "1");
+        put("true", "T");
+        put("false", "F");
+        put("left", "A");
+        put("mid", "B");
+        put("right", "C");
+        put("far", "D");
+        put("orange", "E");
+        put("lemon", "G");
+        put("none", "H");
+        put("QR", "J");
+        put("backup", "K");
+        put("override", "L");
+        put("intake", "M");
+        put("placement", "N");
+        put("drop", "P");
+        put("spill", "Q");
+        put("climb", "R");
+        put("incap", "S");
+        put("unincap", "U");
+        put("zone1Left", "V");
+        put("zone1Right", "W");
+        put("zone2Left", "X");
+        put("zone2Right", "Y");
+        put("zone3Left", "Z");
+        put("zone3Right", "a");
+        put("zone4Left", "b");
+        put("zone4Right", "c");
+        put("leftLoadingStation", "d");
+        put("rightLoadingStation", "e");
+        put("leftRocket", "f");
+        put("rightRocket", "g");
+        put("cargoShip", "h");
+        put("tippedOver", "j");
+        put("brokenMechanism", "k");
+        put("stuckOnObject", "m");
+        put("stuckOnHab", "n");
+        put("emergencyStop", "p");
+        put("noControl", "q");
+        put("twoGamePieces", "r");
+        put("near", "s");
     }};
-
-    ArrayList<String> nestedKeys = new ArrayList<>(Arrays.asList(
-            "allianceSwitchAttemptTele"
-    ));
 }
