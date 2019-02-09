@@ -536,6 +536,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             TimerUtil.mActivityView.setText("STORM");
             btn_startTimer.setText("START TIMER");
             overallLayout.removeView(iv_game_element);
+            popup.dismiss();
             startTimer = true;
             timerCheck = false;
 
@@ -1751,22 +1752,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void initPopup(PopupWindow pw2) {
-        if (!tele && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black")))) {
-            if (mTabletType.equals("fire")) {
-                pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+        if(timerCheck){
+            if (!tele && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+                    || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black")))) {
+                if (mTabletType.equals("fire")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+                } else {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                }
+            } else if (tele) {
+                if (mTabletType.equals("fire")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+                } else {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                }
             } else {
-                pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                pw = true;
             }
-        } else if (tele) {
-            if (mTabletType.equals("fire")) {
-                pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
-            } else {
-                pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
-            }
-        } else {
-            pw = true;
         }
+
     }
 
 
