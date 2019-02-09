@@ -5,7 +5,7 @@
     android:background="@drawable/storm_blue_background_selector">
 
     <RelativeLayout
-        android:layout_width="400dp"
+        android:layout_width="130dp"
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_to_teleop"
         android:layout_centerHorizontal="true">
@@ -20,23 +20,24 @@
             android:textColor="#000b77"/>
         <Button
             android:id="@+id/btn_timer"
-            android:layout_width="290dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:text="START TIMER"
-            android:textSize="30dp"
+
+            android:textSize="20dp"
             android:layout_marginBottom="15dp"
             android:layout_below="@+id/tv_storm"
             android:layout_centerHorizontal="true"
             android:background="@drawable/storm_blue_selector"
             android:onClick="onClickStartTimer"/>
         <ToggleButton
-            android:layout_width="290dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:id="@+id/tgbtn_storm_run"
             android:layout_below="@+id/btn_timer"
             android:padding="15dp"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:textOn="HAB LINE CROSSED"
             android:textOff="HAB LINE CROSSED"
             android:layout_marginBottom="10dp"
@@ -44,18 +45,6 @@
             android:background="@drawable/storm_blue_selector"
             android:onClick="onClickHabLineCrossed"
             android:enabled="false"/>
-        <ToggleButton
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/tgbtn_start_with_cube"
-            android:layout_below="@+id/tgbtn_storm_run"
-            android:padding="15dp"
-            android:textSize="25dp"
-            android:textOn="BEGAN W/ CUBE"
-            android:textOff="BEGAN W/OUT CUBE"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/storm_blue_selector"
-            android:onClick="onClickBeginWithCube"/>
     </RelativeLayout>
 
     <Button
@@ -63,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TELEOP"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:padding="10dp"
         android:layout_alignParentBottom="true"
         android:onClick="onClickTeleop"

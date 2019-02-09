@@ -131,7 +131,7 @@ public class A0B extends DialogMaker {
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_blue_selector);
             }
         }
-        preloadNone.setChecked(true);
+          preloadNone.setChecked(true);
     }
 
 public void onClickShowUp(View view){
@@ -287,6 +287,9 @@ public void defineVariables(){
             e.printStackTrace();
         }
         Log.e("wokDic", InputManager.mOneTimeMatchData.toString());
+        A1A.cancelStormChecker=false;
+        A1A.startTimer=true;
+        A1A.timerCheck=false;
     }
 
 }

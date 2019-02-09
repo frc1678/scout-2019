@@ -10,9 +10,11 @@
         android:id="@+id/imageView"
         android:layout_width="850dp"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
-        android:src="@drawable/field_intake_blue_left"/>
+        android:scaleType="fitXY"
+        android:src="@drawable/field_intake_blue_left" />
 
     <FrameLayout
         android:id="@+id/left_storm"
@@ -48,6 +50,7 @@
             android:text="SPILL - 0"
             android:textSize="30dp"
             android:layout_toRightOf="@+id/btn_dropped"
+            android:enabled="false"
             android:onClick="onClickSpill"/>
         <Button
             android:layout_width="0dp"
@@ -78,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:text="TYPE"
+                android:text="STORM"
                 android:textSize="25dp"
                 android:textAlignment="center" />
             <TextView
@@ -86,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
-                android:text="S"
+                android:text="15"
                 android:textSize="35dp"
                 android:textAlignment="center"
                 android:layout_below="@+id/tv_activity"
@@ -101,6 +104,7 @@
             android:textSize="30dp"
             android:textAlignment="center"
             android:background="@drawable/btn_climb"
+            android:enabled="false"
             android:onClick="onClickClimb"/>
         <ToggleButton
             android:id="@+id/tbtn_incap"
@@ -110,6 +114,7 @@
             android:textOn="INCAP"
             android:textOff="INCAP"
             android:textSize="30dp"
+            android:enabled="false"
             android:textAlignment="center"
             android:background="@drawable/tbtn_incap_selector"
             android:onClick="onClickIncap"/>
