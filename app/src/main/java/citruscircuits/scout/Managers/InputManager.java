@@ -48,6 +48,7 @@ public class InputManager {
 
     public static String mScoutName = "unselected";
     public static int mScoutId = 0;
+    public static String mTabletType = "unselected";
 
     public static int mMatchNum = 0;
     public static int mTeamNum = 0;
@@ -74,6 +75,7 @@ public class InputManager {
         AppCc.setSp("matchNum", mMatchNum);
         AppCc.setSp("teamNum", mTeamNum);
         AppCc.setSp("cycleNum", mCycleNum);
+        AppCc.setSp("tabletType", mTabletType);
     }
 
     //when storing User DAta dont use variables - just use SP
@@ -84,6 +86,7 @@ public class InputManager {
         mMatchNum = AppCc.getSp("matchNum", 0);
         mTeamNum = AppCc.getSp("teamNum", 0);
         mCycleNum = AppCc.getSp("cycleNum", 0);
+        mTabletType = AppCc.getSp("tabletType", "");
     }
 
     public static void prepareUserDataForNextMatch(){

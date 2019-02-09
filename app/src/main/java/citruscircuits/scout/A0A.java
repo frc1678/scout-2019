@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -69,6 +70,10 @@ import static citruscircuits.scout.utils.AppUtils.readFile;
 
 //Written by the Daemon himself ~ Calvin
 public class A0A extends DialogMaker {
+    public Dialog tabletDialog;
+    public RelativeLayout tabletDialogLayout;
+
+    public Context context;
 
     public static Drawable dr_redCycle, dr_blueCycle;
     public Drawable map_orientation_rb, map_orientation_br;
@@ -109,6 +114,8 @@ public class A0A extends DialogMaker {
         map_orientation_br = getResources().getDrawable(R.drawable.btn_map_orientation_br);
 
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        tabletDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.dialog_tablet_type, null);
 
         InputManager.getScoutNames();
 
@@ -495,6 +502,8 @@ public class A0A extends DialogMaker {
                     AppCc.setSp("scoutId", id);
 
                     updateUserData();
+
+                    initTabletTypeDialog(A0A.this);
 
                     pw_idWindow.dismiss();
                 }
