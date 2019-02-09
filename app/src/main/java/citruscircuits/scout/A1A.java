@@ -912,17 +912,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         Log.i("AAAAH", mRealTimeMatchData.toString());
     }
     public void onClickDefense (View v) {
+        btn_climb = (Button) findViewById(R.id.btn_climb);
         if (!defenseChecked){
             defenseChecked = true;
             defenseMap = true;
             popup_fail_success.dismiss();
             popup.dismiss();
             pw = true;
+            btn_climb.setEnabled(false);
             mapChange();
             //todo compress
         }
         else if(defenseChecked){
             defenseChecked = false;
+            btn_climb.setEnabled(true);
             defenseMap = false;
             pw = true;
             mapChange();
@@ -945,7 +948,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         if(!((((x > 1700 || y > 985) && mScoutId < 9) || ((x > 1130 || y > 660) && mScoutId >= 9))
                                 || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mScoutId < 9)
                                 || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mScoutId >= 9))) {
-                            if(mode.equals("intake") && (!defenseMap)) {
+                            if(mode.equals("intake") && (!defenseMap)){
                                 pw = false;
                                 initPopup(popup);
                             } else if (mode.equals("intake") && (defenseMap)){
@@ -1443,10 +1446,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (defenseMap && (((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mScoutId < 9)
                 || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mScoutId >= 9)){
             pwvar.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+            pw = true;
         } else if (!defenseMap){
             pwvar.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+            pw = false;
         }
-        pw = false;
+
     }
 
     public void recordClimb(float time) {
