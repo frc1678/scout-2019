@@ -1653,6 +1653,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         } else if(element.equals("orange")) {
             tb_wasDefended.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
         }
+        if (tele){
+            tb_wasDefended.setEnabled(true);
+        } else if (!tele){
+            tb_wasDefended.setEnabled(false);
+        }
 
         placementDialog.setContentView(placementDialogLayout);
         placementDialog.show();
