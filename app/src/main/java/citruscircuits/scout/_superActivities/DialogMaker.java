@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +40,11 @@ public class DialogMaker extends AppTc {
     public void initOverrideDialog(Activity a) {
         OverrideDialog mOverrideDialog = new OverrideDialog(a);
         mOverrideDialog.show();
+    }
+
+    public void initTabletTypeDialog(Activity a) {
+        TabletDialog mTabletDialog = new TabletDialog(a);
+        mTabletDialog.show();
     }
 
     public class OverrideDialog extends Dialog {
@@ -97,6 +103,62 @@ public class DialogMaker extends AppTc {
 
             rb_red = findViewById(R.id.red);
             rb_blue = findViewById(R.id.blue);
+        }
+    }
+
+    public class TabletDialog extends Dialog {
+
+        private Activity context;
+
+        private RadioButton rb_greenTablet;
+        private RadioButton rb_blackTablet;
+        private RadioButton rb_fireTablet;
+        private Button btn_done;
+
+        public TabletDialog(Activity a) {
+            super(a);
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_tablet_type);
+            this.setCanceledOnTouchOutside(false);
+
+            btn_done = findViewById(R.id.btn_done);
+
+            TabletDialog.this.setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    if(rb_blackTablet.isChecked()){
+                        InputManager.mTabletType = "black";
+                    }else if(rb_greenTablet.isChecked()){
+                        InputManager.mTabletType = "green";
+                    }else if(rb_fireTablet.isChecked()){
+                        InputManager.mTabletType = "fire";
+                    }
+
+                    InputManager.storeUserData();
+                    AppCc.setSp("tabletType", InputManager.mTabletType);
+                    A0A.updateUserData();
+                }
+            });
+
+            initViews();
+
+            btn_done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TabletDialog.this.cancel();
+                }
+            });
+        }
+
+        public void initViews() {
+            rb_greenTablet = findViewById(R.id.green_tablet);
+            rb_blackTablet = findViewById(R.id.black_tablet);
+            rb_fireTablet = findViewById(R.id.fire_tablet);
         }
     }
 }
