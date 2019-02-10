@@ -159,7 +159,7 @@ public class InputManager {
 
                 Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
 
-                for(int i=finalNamesList.size()-1;i>0;i--){
+                for(int i=finalNamesList.size()-1;i>=0;i--){
                     if(finalNamesList.get(i).contains("Backup")) {
                         backupNames.add(finalNamesList.get(i));
                         finalNamesList.remove(i);
