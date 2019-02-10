@@ -25,7 +25,7 @@ public class TimerUtil {
                     float tempTime = millisUntilFinished/1000f;
                     timestamp = Float.parseFloat(String.format("%.1f", tempTime));
                     if (tempTime > 135.5f) {
-                        mActivityView.setText("AUTO");
+                        mActivityView.setText("STORM");
                         displayTime = String.valueOf(Math.round(tempTime) - 135);
                     }
                     else if (tempTime >= 134.5f && tempTime <= 135.5f) {
