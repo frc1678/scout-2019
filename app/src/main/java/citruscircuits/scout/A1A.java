@@ -1074,11 +1074,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             pw = true;
             btn_drop.setEnabled(true);
             btn_spill.setEnabled(true);
-            tb_defense.setEnabled(true);
             tb_incap.setChecked(false);
             mapChange();
             incapChecked = false;
             btn_climb.setEnabled(true);
+            if (!tele){
+                tb_defense.setEnabled(false);
+            }
+            else if(tele){
+                tb_defense.setEnabled(true);
+            }
             try {
                 compressionDic.put("type", "unincap");
                 timestamp(TimerUtil.timestamp);
