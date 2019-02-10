@@ -79,7 +79,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean liftSelfActual;
     public boolean climbInputted = false;
     public static boolean timerCheck = false;
-    public boolean pw = false;
+    public boolean pw = true;
     public boolean isMapLeft=false;
 
     public boolean incapMap = false;
@@ -494,7 +494,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickStartTimer(View v) {
-        pw = false;
         handler.removeCallbacks(runnable);
         handler.removeCallbacksAndMessages(null);
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
@@ -502,6 +501,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_drop = findViewById(R.id.btn_dropped);
 //        tb_hab_run = findViewById(R.id.tgbtn_storm_run);
         if (startTimer) {
+            pw=true;
             handler.postDelayed(runnable, 150000);
             timerUtil.initTimer();
             btn_startTimer.setText("RESET TIMER");
@@ -510,6 +510,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_hab_run.setEnabled(true);
             tb_incap.setEnabled(true);
             btn_spill.setEnabled(true);
+            if(InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")){
+                btn_drop.setEnabled(true);
+            }
             InputManager.timerChecked= (int)(System.currentTimeMillis()/1000);
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_reset_red_selector);
@@ -518,6 +521,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
 
         } else if (!startTimer) {
+            pw=false;
             InputManager.numSpill = 0;
             InputManager.numFoul = 0;
             tb_incap.setEnabled(false);
@@ -541,6 +545,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             startTimer = true;
             timerCheck = false;
             preload();
+            InputManager.numSpill=0;
+            btn_spill.setText("SPILL - " + InputManager.numSpill);
+            btn_drop.setEnabled(false);
+
 
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
@@ -554,17 +562,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickHabLineCrossed(View v) {
         Log.e("habLineCross",String.valueOf(InputManager.habLineCrossed));
-        if (tb_hab_run.isChecked()) {
+        if (!InputManager.habLineCrossed) {
             InputManager.habLineCrossed = true;
-            pw = true;
-            Log.e("pwvalue1",String.valueOf(pw));
 
-
-        } else if (!tb_hab_run.isChecked()) {
+        } else if (InputManager.habLineCrossed) {
             InputManager.habLineCrossed = false;
-            pw = false;
-            Log.e("pwvalue2",String.valueOf(pw));
-
         }
     }
 
