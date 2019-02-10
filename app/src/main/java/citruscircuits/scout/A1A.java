@@ -79,7 +79,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean liftSelfActual;
     public boolean climbInputted = false;
     public static boolean timerCheck = false;
-    public boolean pw = true;
+    public boolean pw = false;
     public boolean isMapLeft=false;
 
     public boolean incapMap = false;
@@ -494,7 +494,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickStartTimer(View v) {
-        pw=false;
+        pw = false;
         handler.removeCallbacks(runnable);
         handler.removeCallbacksAndMessages(null);
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
@@ -553,14 +553,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickHabLineCrossed(View v) {
-
-        if (!InputManager.habLineCrossed) {
+        Log.e("habLineCross",String.valueOf(InputManager.habLineCrossed));
+        if (tb_hab_run.isChecked()) {
             InputManager.habLineCrossed = true;
-            pw=true;
+            pw = true;
+            Log.e("pwvalue1",String.valueOf(pw));
 
-        } else if (InputManager.habLineCrossed) {
+
+        } else if (!tb_hab_run.isChecked()) {
             InputManager.habLineCrossed = false;
-            pw=false;
+            pw = false;
+            Log.e("pwvalue2",String.valueOf(pw));
+
         }
     }
 
@@ -1067,7 +1071,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         else if (incapChecked) {
             compressionDic = new JSONObject();
-
             incaptype = " ";
             incapMap=false;
             pw = true;
@@ -1094,6 +1097,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.e("pwvalue",String.valueOf(pw));
                     if(pw && timerCheck) {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
@@ -1131,7 +1135,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 modeIsIntake=false;
                             }
                             else if (mode.equals("endPosition") && ((x>=180 && mTabletType.equals("black") && field_orientation.contains("left")) || (x<=950 && mTabletType.equals("black") && field_orientation.contains("right")) || (x>=270 && mTabletType.equals("green") && field_orientation.contains("left")) || (x<=1430 && mTabletType.equals("green") && field_orientation.contains("right")))){
-                                pw=false;
+                                pw = false;
                                 Log.e("woooook", "endPosition");
                                 initShape();
                                 if((y>517 && mTabletType.equals("green")) || (y>345 && mTabletType.equals("black"))) {
