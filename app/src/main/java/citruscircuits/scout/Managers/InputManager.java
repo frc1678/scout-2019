@@ -61,11 +61,6 @@ public class InputManager {
     public static Integer mDriverStartingPosition = 0;
     public static String mPreload = "";
     public static boolean isNoShow= false;
-    public static Integer timerChecked= 0;
-    public static String sandStormEndPosition="";
-
-
-    public static boolean habLineCrossed = false;
 
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
