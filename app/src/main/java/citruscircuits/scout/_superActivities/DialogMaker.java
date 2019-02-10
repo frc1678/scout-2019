@@ -149,8 +149,8 @@ public class DialogMaker extends AppTc {
 
             btn_done.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    TabletDialog.this.cancel();
+                public void onClick(View v) {TabletDialog.this.cancel();
+                InputManager.mAssignmentMode = "override";
                 }
             });
         }

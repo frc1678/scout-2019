@@ -132,6 +132,7 @@ public class A0A extends DialogMaker {
 
     //OnClick Methods
     public void onClickStartScouting(View view){
+        AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
         open(A0B.class, null,false, true);
     }
 
@@ -306,7 +307,6 @@ public class A0A extends DialogMaker {
     public void onClickQrBackup(View view) {
         open(QRScan.class, null, false, false);
         pw_backupWindow.dismiss();
-        InputManager.mAssignmentMode = "QR";
     }
 
     public void onClickFileBackup(View view) {
@@ -314,13 +314,11 @@ public class A0A extends DialogMaker {
 
 //        updateUserViews();
         pw_backupWindow.dismiss();
-        InputManager.mAssignmentMode = "backup";
     }
 
     public void onClickOverrideBackup(View view) {
         initOverrideDialog(A0A.this);
         pw_backupWindow.dismiss();
-        InputManager.mAssignmentMode = "override";
     }
 
     public class ScoutNameListAdapter extends BaseAdapter{

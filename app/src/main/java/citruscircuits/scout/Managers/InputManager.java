@@ -76,6 +76,7 @@ public class InputManager {
         AppCc.setSp("teamNum", mTeamNum);
         AppCc.setSp("cycleNum", mCycleNum);
         AppCc.setSp("tabletType", mTabletType);
+        AppCc.setSp("assignmentMode", mAssignmentMode);
     }
 
     //when storing User DAta dont use variables - just use SP
@@ -87,6 +88,7 @@ public class InputManager {
         mTeamNum = AppCc.getSp("teamNum", 0);
         mCycleNum = AppCc.getSp("cycleNum", 0);
         mTabletType = AppCc.getSp("tabletType", "");
+        mAssignmentMode = AppCc.getSp("assignmentMode", "");
     }
 
     public static void prepareUserDataForNextMatch(){
@@ -114,6 +116,8 @@ public class InputManager {
         if(mMatchNum > 0){
             String sortL1key = "match"+mMatchNum;
             String sortL2key = "scout"+mScoutId;
+
+            InputManager.mAssignmentMode = "backup";
 
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("backupAssignments.txt"));
