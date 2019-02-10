@@ -4,11 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -42,11 +47,16 @@ import java.util.Arrays;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
+import citruscircuits.scout.utils.CancelFragment;
 import citruscircuits.scout.utils.TimerUtil;
 
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
+import citruscircuits.scout.utils.StormDialog;
+import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
+import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
+
 import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static java.lang.String.valueOf;
 
@@ -61,13 +71,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public String field_orientation;
 
     public boolean incapChecked = false;
-    public boolean startTimer = true;
+    public boolean modeIsIntake=true;
+    public static boolean startTimer = true;
     public boolean tele = false;
-    public boolean startedWCube = false;
+    public boolean startedWObject = false;
     public boolean liftSelfAttempt;
     public boolean liftSelfActual;
     public boolean climbInputted = false;
-    public boolean shapeCheck = false;
+    public static boolean timerCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
 
@@ -76,12 +87,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
+    public static boolean cancelStormChecker=false;
+    public boolean doneStormChecker=false;
+    public boolean isElementUsedForRobot=false;
 
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
     public Integer level;
+    public Integer undoX;
+    public Integer undoY;
 
     public Float time;
+    public Long epicTime;
 
     public List<String> climbAttemptKeys = Arrays.asList("D", "E", "F");
     public List<String> climbActualKeys = Arrays.asList("D", "E", "F");
@@ -97,9 +114,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public TextView tv_team;
     public TextView tv_starting_position_warning;
 
-    public Button btn_startTimer;
+//    public Button btn_startTimer;
     public Button btn_drop;
-    public Button btn_spill;
+    public static Button btn_spill;
     public Button btn_undo;
     public Button btn_climb;
     public Button btn_arrow;
@@ -121,14 +138,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button spaceOneII;
     public Button spaceTwoII;
     public Button spaceThreeII;
-
-    public ToggleButton tb_incap;
-    public ToggleButton tb_auto_run;
+    public static ToggleButton tb_incap;
+//    public ToggleButton tb_hab_run;
     public ToggleButton tb_start_cube;
 
     public RelativeLayout dialogLayout;
     public RelativeLayout overallLayout;
     public RelativeLayout placementDialogLayout;
+    public FrameLayout stormLayout;
 
     public RadioButton fail;
     public RadioButton success;
@@ -156,7 +173,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public List<Object> actionList;
     public Map<Integer, List<Object>> actionDic;
     public int actionCount;
-
     public int x;
     public int y;
 
@@ -182,6 +198,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public String side;
 
     public Dialog placementDialog;
+
+    public Fragment fragment;
+    public FragmentTransaction transaction;
+    public FragmentManager fm;
+    public Fragment fragmentRecreate;
+    public FragmentTransaction transactionRecreate;
+    public FragmentManager fmRecreate;
+
+    public Fragment fragmentCancel;
+    public FragmentTransaction transactionCancel;
+    public FragmentManager fmCancel;
 
 
     @Override
@@ -254,6 +281,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_spill = findViewById(R.id.btn_spilled);
         btn_undo = findViewById(R.id.btn_undo);
         btn_arrow = findViewById(R.id.btn_arrow);
+        btn_climb = findViewById(R.id.btn_climb);
 
         tb_incap = findViewById(R.id.tbtn_incap);
 
@@ -266,15 +294,45 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         TimerUtil.mTimerView = findViewById(R.id.tv_timer);
         TimerUtil.mActivityView = findViewById(R.id.tv_activity);
+        preload();
+        fragment = new StormDialog();
+        fm = getSupportFragmentManager();
+        transaction = fm.beginTransaction();
+        if (AppCc.getSp("mapOrientation", 99) != 99) {
+            if(AppCc.getSp("mapOrientation", 99) !=0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    transaction.add(R.id.left_storm, fragment, "FRAGMENT");
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    transaction.add(R.id.right_storm, fragment, "FRAGMENT");
+                }
 
+            } else if(AppCc.getSp("mapOrientation", 99) == 0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    transaction.add(R.id.right_storm, fragment, "FRAGMENT");
+
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    transaction.add(R.id.left_storm, fragment, "FRAGMENT");
+                }
+            }
+
+        }
+        transaction.commit();
+
+//        if (mAllianceColor.equals("red")){
+//            stormLayout=(FrameLayout) this.getLayoutInflater().inflate(R.layout.activity_storm_red, null);
+//        }else if(mAllianceColor.equals("blue")){
+//            stormLayout=(FrameLayout) this.getLayoutInflater().inflate(R.layout.activity_storm_blue, null);
+//        }
+//
+//        btn_startTimer = findViewById(R.id.btn_timer);
+//        tb_hab_run = findViewById(R.id.tgbtn_storm_run);
         tv_team.setText(valueOf(InputManager.mTeamNum));
-
         if (TimerUtil.matchTimer != null) {
             TimerUtil.matchTimer.cancel();
             TimerUtil.matchTimer = null;
             TimerUtil.timestamp = 0f;
             TimerUtil.mTimerView.setText("15");
-            TimerUtil.mActivityView.setText("AUTO");
+            TimerUtil.mActivityView.setText("STORM");
             startTimer = true;
         }
 
@@ -285,9 +343,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(false);
-
         addTouchListener();
-
         btn_spill.setOnLongClickListener((new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 if (InputManager.numSpill>0) {
@@ -312,6 +368,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }));
     }
 
+
     @Override
     public void onClick(View v) {
 
@@ -319,44 +376,159 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickTeleop(View view) {
         if (!startTimer) {
-            tele = true;
             Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT");
             if (fragment != null)
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
+        if (tb_hab_run.isChecked()){
+            fragmentCancel = new CancelFragment();
+            fmCancel = getSupportFragmentManager();
+            transactionCancel = fmCancel.beginTransaction();
+
+            if (AppCc.getSp("mapOrientation", 99) != 99) {
+                if(AppCc.getSp("mapOrientation", 99) !=0){
+                    if (InputManager.mAllianceColor.equals("red")) {
+                        transactionCancel.add(R.id.left_storm, fragmentCancel, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.endposition_right);
+
+                    } else if (InputManager.mAllianceColor.equals("blue")) {
+                        transactionCancel.add(R.id.right_storm, fragmentCancel, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.endposition_left);
+
+                    }
+
+
+                } else if(AppCc.getSp("mapOrientation", 99) == 0){
+                    if (InputManager.mAllianceColor.equals("red")) {
+                        transactionCancel.add(R.id.right_storm, fragmentCancel, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.endposition_left);
+
+                    } else if (InputManager.mAllianceColor.equals("blue")) {
+                        transactionCancel.add(R.id.left_storm, fragmentCancel, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.endposition_right);
+                    }
+                }
+            }
+            mode ="endPosition";
+            transactionCancel.commit();
+        } else{
+            tele = true;
+            Log.e("startTimer?",String.valueOf(startTimer));
+            if(timerCheck){
+                btn_climb.setEnabled(true);
+            }
+            if (modeIsIntake){
+                mode ="intake";
+            }
+            else if(!modeIsIntake){
+                mode ="placement";
+            }
+            mapChange();
+        }
+        try {
+            InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
+            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
+            InputManager.mOneTimeMatchData.put("habLineCrossed", InputManager.habLineCrossed);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e("woooook", field_orientation);
+
+    }
+    public void onClickCancelEndPosition(View v){
+        getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
+        cancelStormChecker=true;
+        fragmentRecreate = new StormDialog();
+        fmRecreate = getSupportFragmentManager();
+        transactionRecreate = fmRecreate.beginTransaction();
+        if (AppCc.getSp("mapOrientation", 99) != 99) {
+            if(AppCc.getSp("mapOrientation", 99) !=0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
+                    iv_field.setImageResource(R.drawable.field_intake_red_right);
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
+                    iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                }
+            } else if(AppCc.getSp("mapOrientation", 99) == 0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
+                    iv_field.setImageResource(R.drawable.field_intake_red_left);
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
+                    iv_field.setImageResource(R.drawable.field_intake_blue_right);
+                }
+            }
+
+        }
+        transactionRecreate.commit();
+        if (modeIsIntake){
+            mode ="intake";
+        }
+        else if(!modeIsIntake){
+            mode ="placement";
+        }
+        isElementUsedForRobot=true;
+        //TODO: make the cancel not always true when go back so robot position can change
+        initShape();
+        isElementUsedForRobot=false;
+    }
+
+    public void onClickDoneEndPosition(View v){
+        cancelStormChecker=false;
+        getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
+        tele = true;
+        btn_climb.setEnabled(true);
+        if (modeIsIntake){
+            mode ="intake";
+        }
+        else if(!modeIsIntake){
+            mode ="placement";
+        }        overallLayout.removeView(iv_game_element);
+        mapChange();
+        doneStormChecker=true;
+        isElementUsedForRobot=true;
+        initShape();
+        isElementUsedForRobot=false;
+        doneStormChecker=false;
     }
 
     public void onClickStartTimer(View v) {
         handler.removeCallbacks(runnable);
         handler.removeCallbacksAndMessages(null);
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
-        btn_startTimer = findViewById(R.id.btn_timer);
+//        btn_startTimer = findViewById(R.id.btn_timer);
         btn_drop = findViewById(R.id.btn_dropped);
-        tb_auto_run = findViewById(R.id.tgbtn_auto_run);
-        btn_arrow.setEnabled(false);
-        btn_arrow.setVisibility(View.INVISIBLE);
+//        tb_hab_run = findViewById(R.id.tgbtn_storm_run);
         if (startTimer) {
+            pw=true;
             handler.postDelayed(runnable, 150000);
             timerUtil.initTimer();
             btn_startTimer.setText("RESET TIMER");
+            timerCheck = true;
             startTimer = false;
-            tb_auto_run.setEnabled(true);
-            if (InputManager.mAllianceColor.equals("red")) {
-                btn_startTimer.setBackgroundResource(R.drawable.auto_reset_red_selector);
-            } else if (InputManager.mAllianceColor.equals("blue")) {
-                btn_startTimer.setBackgroundResource(R.drawable.auto_reset_blue_selector);
-            }
-            if(startedWCube) {
+            tb_hab_run.setEnabled(true);
+            tb_incap.setEnabled(true);
+            btn_spill.setEnabled(true);
+            if(InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")){
                 btn_drop.setEnabled(true);
             }
+            InputManager.timerChecked= (int)(System.currentTimeMillis()/1000);
+            if (InputManager.mAllianceColor.equals("red")) {
+                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_red_selector);
+            } else if (InputManager.mAllianceColor.equals("blue")) {
+                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_blue_selector);
+            }
+
         } else if (!startTimer) {
+            pw=false;
             InputManager.numSpill = 0;
             InputManager.numFoul = 0;
-            tb_start_cube = findViewById(R.id.tgbtn_start_with_cube);
-            tb_start_cube.setEnabled(true);
-            tb_start_cube.setChecked(false);
-            tb_auto_run.setEnabled(false);
-            tb_auto_run.setChecked(false);
+            tb_incap.setEnabled(false);
+            tb_incap.setChecked(false);
+            btn_spill.setEnabled(false);
+            tb_hab_run.setEnabled(false);
+            tb_hab_run.setChecked(false);
 //            btn_drop.setEnabled(false);
             btn_undo.setEnabled(false);
             handler.removeCallbacks(runnable);
@@ -365,51 +537,47 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             TimerUtil.matchTimer = null;
             TimerUtil.timestamp = 0f;
             TimerUtil.mTimerView.setText("15");
-            TimerUtil.mActivityView.setText("AUTO");
+            TimerUtil.mActivityView.setText("STORM");
             btn_startTimer.setText("START TIMER");
             overallLayout.removeView(iv_game_element);
+            popup.dismiss();
+            popup_fail_success.dismiss();
             startTimer = true;
-            shapeCheck = false;
-            startedWCube = false;
-            if (InputManager.mAllianceColor.equals("red")) {
-                btn_startTimer.setBackgroundResource(R.drawable.auto_red_selector);
-            } else if (InputManager.mAllianceColor.equals("blue")) {
-                btn_startTimer.setBackgroundResource(R.drawable.auto_blue_selector);
-            }
-            mapChange();
-        }
-    }
-
-    public void onClickAutoLineCrossed(View v) {
-        if (!InputManager.mCrossedHabLine) {
-            InputManager.mCrossedHabLine = true;
-        } else if (InputManager.mCrossedHabLine) {
-            InputManager.mCrossedHabLine = false;
-        }
-    }
-
-    public void onClickBeginWithCube(View v) {
-        if (!startedWCube) {
-            shapeCheck = true;
-            if(!startTimer) {
-                btn_drop.setEnabled(true);
-            }
-            startedWCube = true;
-            mapChange();
-        } else if (startedWCube) {
-            shapeCheck = false;
+            timerCheck = false;
+            preload();
+            InputManager.numSpill=0;
+            btn_spill.setText("SPILL - " + InputManager.numSpill);
             btn_drop.setEnabled(false);
-            startedWCube = false;
+
+
+            if (InputManager.mAllianceColor.equals("red")) {
+                btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
+            } else if (InputManager.mAllianceColor.equals("blue")) {
+                btn_startTimer.setBackgroundResource(R.drawable.storm_blue_selector);
+            }
             mapChange();
         }
+        Log.e("timerCheck",String.valueOf(InputManager.timerChecked));
     }
+
+    public void onClickHabLineCrossed(View v) {
+        Log.e("habLineCross",String.valueOf(InputManager.habLineCrossed));
+        if (!InputManager.habLineCrossed) {
+            InputManager.habLineCrossed = true;
+
+        } else if (InputManager.habLineCrossed) {
+            InputManager.habLineCrossed = false;
+        }
+    }
+
+
 
     public void onClickDrop(View v) {
         compressionDic = new JSONObject();
         mode = "intake";
+        modeIsIntake=true;
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
-        shapeCheck = false;
         overallLayout.removeView(iv_game_element);
         try {
             compressionDic.put("type", "drop");
@@ -905,7 +1073,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         else if (incapChecked) {
             compressionDic = new JSONObject();
-
             incaptype = " ";
             incapMap=false;
             pw = true;
@@ -932,9 +1099,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    if(pw) {
+                    Log.e("pwvalue",String.valueOf(pw));
+                    if(pw && timerCheck) {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
+                        Log.e("Xcoordinate", String.valueOf(x));
+                        Log.e("Ycoordinate", String.valueOf(y));
 
                         time = TimerUtil.timestamp;
 
@@ -943,7 +1113,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mTabletType.equals("black")))
                                 || ((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && y > 210 && y < 305 && mTabletType.equals("fire")) {
                             if(mode.equals("intake")) {
+                                Log.e("woktouch", "shiskitabob");
                                 pw = false;
+                                modeIsIntake=true;
                                 initPopup(popup);
                             } else if(mode.equals("placement") && (((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green"))
                                     || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mTabletType.equals("green"))
@@ -962,6 +1134,40 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                     || (((field_orientation.contains("left") && x > 470 && x < 720) || (field_orientation.contains("right") && x > 130 && x < 380)) && y > 165 && y < 350 && mTabletType.equals("fire"))){
                                 pw = false;
                                 initPlacement();
+                                modeIsIntake=false;
+                            }
+                            else if (mode.equals("endPosition") && ((x>=180 && mTabletType.equals("black") && field_orientation.contains("left")) || (x<=950 && mTabletType.equals("black") && field_orientation.contains("right")) || (x>=270 && mTabletType.equals("green") && field_orientation.contains("left")) || (x<=1430 && mTabletType.equals("green") && field_orientation.contains("right")))){
+                                pw = false;
+                                Log.e("woooook", "endPosition");
+                                initShape();
+                                if((y>517 && mTabletType.equals("green")) || (y>345 && mTabletType.equals("black"))) {
+                                    if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
+                                            || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))) {
+                                        InputManager.sandStormEndPosition = "zone1Right";
+                                    } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
+                                            || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
+                                        InputManager.sandStormEndPosition = "zone2Right";
+                                    } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+                                            || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
+                                        InputManager.sandStormEndPosition = "zone3Right";
+                                    } else {
+                                        InputManager.sandStormEndPosition = "zone4Right";
+                                    }
+                                } else {
+                                    if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
+                                            || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("green"))) {
+                                        InputManager.sandStormEndPosition = "zone1Left";
+                                    } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
+                                            || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
+                                        InputManager.sandStormEndPosition = "zone2Left";
+                                    } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+                                            || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
+                                        InputManager.sandStormEndPosition = "zone3Left";
+                                    } else {
+                                        InputManager.sandStormEndPosition = "zone4Left";
+                                    }
+                                }
+
                             }
                         }
                     }
@@ -988,6 +1194,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         overallLayout.removeView(iv_game_element);
 
         mode = "intake";
+        modeIsIntake=true;
 
         pw = true;
         recordLoadingStation(false);
@@ -1095,9 +1302,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void mapChange() {
-        if(element.equals("orange")) {
+        Log.e("ahhhhh", mode);
+        Log.e("ahhhhh", element);
+
+        //startedWObject
+        if (element.equals("orange")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-            if(mode.equals("placement")) {
+            if (mode.equals("placement")) {
+                Log.e("ahhhhh", "placementorange");
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
                 if (field_orientation.contains("left")) {
                     iv_field.setImageResource(R.drawable.field_placement_orange_left);
@@ -1105,39 +1317,44 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.field_placement_orange_right);
                 }
             }
-        } else if(element.equals("lemon")) {
+        } else if (element.equals("lemon")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-            if(mode.equals("placement")) {
+            if (mode.equals("placement")) {
+                Log.e("ahhhhh", "placementlemon");
                 if (field_orientation.contains("left")) {
                     iv_field.setImageResource(R.drawable.field_placement_lemon_left);
                 } else if (field_orientation.contains("right")) {
                     iv_field.setImageResource(R.drawable.field_placement_lemon_right);
                 }
             }
-        } if(mode.equals("intake")&& !incapMap) {
+        }
+        if (mode.equals("intake") && !incapMap) {
             btn_drop.setEnabled(false);
-            if(field_orientation.equals("blue_left")) {
+            if (field_orientation.equals("blue_left")) {
                 iv_field.setImageResource(R.drawable.field_intake_blue_left);
-            } else if(field_orientation.equals("blue_right")) {
+            } else if (field_orientation.equals("blue_right")) {
                 iv_field.setImageResource(R.drawable.field_intake_blue_right);
-            } else if(field_orientation.equals("red_left")) {
+            } else if (field_orientation.equals("red_left")) {
                 iv_field.setImageResource(R.drawable.field_intake_red_left);
-            } else if(field_orientation.equals("red_right")) {
+            } else if (field_orientation.equals("red_right")) {
                 iv_field.setImageResource(R.drawable.field_intake_red_right);
             }
-        } if (incaptype.equals("brokenMechanism") || incaptype.equals("twoGamePieces")){
-             if(element.equals("lemon")) {
+        }
+        if (incaptype.equals("brokenMechanism") || incaptype.equals("twoGamePieces")) {
+            if (element.equals("lemon")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-                if(mode.equals("placement")) {
+                if (mode.equals("placement")) {
                     if (field_orientation.contains("left")) {
                         iv_field.setImageResource(R.drawable.faded_field_placement_lemon_left);
-                    }if (field_orientation.contains("right")) {
+                    }
+                    if (field_orientation.contains("right")) {
                         iv_field.setImageResource(R.drawable.faded_field_placement_lemon_right);
                     }
                 }
-            }if(element.equals("orange")) {
+            }
+            if (element.equals("orange")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                if(mode.equals("placement")) {
+                if (mode.equals("placement")) {
                     iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
                     if (field_orientation.contains("left")) {
                         iv_field.setImageResource(R.drawable.faded_field_placement_orange_left);
@@ -1145,62 +1362,126 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         iv_field.setImageResource(R.drawable.faded_field_placement_orange_right);
                     }
                 }
-            }if(mode.equals("intake")&& incapMap) {
+            }
+            if (mode.equals("intake") && incapMap) {
                 btn_drop.setEnabled(false);
-                if(field_orientation.equals("blue_left")) {
+                if (field_orientation.equals("blue_left")) {
                     iv_field.setImageResource(R.drawable.faded_field_intake_blue_left);
-                } else if(field_orientation.equals("blue_right")) {
+                } else if (field_orientation.equals("blue_right")) {
                     iv_field.setImageResource(R.drawable.faded_field_intake_blue_right);
-                } else if(field_orientation.equals("red_left")) {
+                } else if (field_orientation.equals("red_left")) {
                     iv_field.setImageResource(R.drawable.faded_field_intake_red_left);
-                } else if(field_orientation.equals("red_right")) {
+                } else if (field_orientation.equals("red_right")) {
                     iv_field.setImageResource(R.drawable.faded_field_intake_red_right);
                 }
             }
         }
     }
-
     public void initShape() {
         pw = true;
         overallLayout.removeView(iv_game_element);
 
-        if(element.equals("orange")) {
+        if(element.equals("orange") && !mode.equals("endPosition")) {
+            Log.e("wokorange", "showup");
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-        } else if(element.equals("lemon")) {
+            if(!isElementUsedForRobot){
+                actionList = new ArrayList<Object>();
+                actionList.add(x);
+                actionList.add(y);
+                actionList.add("orange");
+                //actionList.add(position);
+                actionDic.put(actionCount, actionList);
+                actionCount++;
+            }
+        } else if(element.equals("lemon")&& !mode.equals("endPosition")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+            if (!isElementUsedForRobot){
+                Log.e("woklemon", "showupppppp");
+                actionList = new ArrayList<Object>();
+                actionList.add(x);
+                actionList.add(y);
+                actionList.add("lemon");
+                //actionList.add(position);
+                actionDic.put(actionCount, actionList);
+                actionCount++;
+            }
+        } else if (mode.equals("endPosition")){
+            Log.e("wokedngge", "showup");
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.robot));
         }
+        Log.e("ahhhh",String.valueOf(actionDic));
+
+        Log.e("ahhhh",String.valueOf(actionDic.get(actionCount)));
+        Log.e("ahhhh",String.valueOf(actionCount));
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 100,
                 100);
-        if((y > 900 && mTabletType.equals("green")) || (y > 550 && mTabletType.equals("black"))) {
-            if((x < 40 && mTabletType.equals("green")) || (x < 25 && mTabletType.equals("black"))) {
-                lp.setMargins(x + 20, y - 90, 0, 0);
-            } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 && mTabletType.equals("black"))) {
-                lp.setMargins(x - 100, y - 90, 0, 0);
+        if(!cancelStormChecker && !doneStormChecker){
+            if((y > 900 && mTabletType.equals("green")) || (y > 550 && mTabletType.equals("black"))) {
+                if((x < 40 && mTabletType.equals("green")) || (x < 25 &&  mTabletType.equals("black"))) {
+                    lp.setMargins(x + 20, y - 90, 0, 0);
+                } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
+                    lp.setMargins(x - 100, y - 90, 0, 0);
+                } else {
+                    lp.setMargins(x - 25, y - 90, 0, 0);
+                }
+            } else if((y < 85 && mTabletType.equals("green")) || (y < 55 &&  mTabletType.equals("black"))) {
+                if((x < 40 && mTabletType.equals("green")) || (x < 25 && mScoutId >= 9)) {
+                    lp.setMargins(x + 20, y + 5, 0, 0);
+                } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
+                    lp.setMargins(x - 100, y + 5, 0, 0);
+                } else {
+                    lp.setMargins(x - 25, y + 5, 0, 0);
+                }
+            } else if((x < 40 && mTabletType.equals("green")) || (x < 25 &&  mTabletType.equals("black"))) {
+                lp.setMargins(x + 20, y - 40, 0, 0);
+            } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
+                lp.setMargins(x - 100, y - 40, 0, 0);
             } else {
-                lp.setMargins(x - 25, y - 90, 0, 0);
+                lp.setMargins(x - 25, y - 40, 0, 0);
             }
-        } else if((y < 85 && mTabletType.equals("green")) || (y < 55 && mTabletType.equals("black"))) {
-            if((x < 40 && mTabletType.equals("green")) || (x < 25 && mTabletType.equals("black"))) {
-                lp.setMargins(x + 20, y + 5, 0, 0);
-            } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 && mTabletType.equals("black"))) {
-                lp.setMargins(x - 100, y + 5, 0, 0);
-            } else {
-                lp.setMargins(x - 25, y + 5, 0, 0);
+            iv_game_element.setLayoutParams(lp);
+            ((ViewGroup) overallLayout).addView(iv_game_element);
+        } else if(cancelStormChecker || doneStormChecker){
+            if (actionCount>0){
+                Log.e("ahhh4", String.valueOf(mode));
+                undoX=(int) actionDic.get(actionCount-1).get(0);
+                undoY=(int) actionDic.get(actionCount-1).get(1);
+                if((undoY > 900 && mTabletType.equals("green")) || (undoY > 550 &&  mTabletType.equals("black"))) {
+                    if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
+                        lp.setMargins(undoX + 20, undoY - 90, 0, 0);
+                    } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
+                        lp.setMargins(undoX - 100, undoY - 90, 0, 0);
+                    } else {
+                        lp.setMargins(undoX - 25, undoY - 90, 0, 0);
+                    }
+                } else if((undoY < 85 && mTabletType.equals("green")) || (undoY < 55 &&  mTabletType.equals("black"))) {
+                    if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
+                        lp.setMargins(undoX + 20, undoY + 5, 0, 0);
+                    } else if((undoX > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
+                        lp.setMargins(undoX - 100, undoY + 5, 0, 0);
+                    } else {
+                        lp.setMargins(undoX - 25, undoY + 5, 0, 0);
+                    }
+                } else if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
+                    lp.setMargins(undoX + 20, undoY - 40, 0, 0);
+                } else if((x > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
+                    lp.setMargins(undoX - 100, undoY - 40, 0, 0);
+                } else {
+                    lp.setMargins(undoX - 25, undoY - 40, 0, 0);
+                }
+                iv_game_element.setLayoutParams(lp);
+                ((ViewGroup) overallLayout).addView(iv_game_element);
+            }else {
+                Log.e("ahhh","nothing should happen");
+
             }
-        } else if((x < 40 && mTabletType.equals("green")) || (x < 25 && mTabletType.equals("black"))) {
-            lp.setMargins(x + 20, y - 40, 0, 0);
-        } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 && mTabletType.equals("black"))) {
-            lp.setMargins(x - 100, y - 40, 0, 0);
-        } else {
-            lp.setMargins(x - 25, y - 40, 0, 0);
         }
-        iv_game_element.setLayoutParams(lp);
 
-        ((ViewGroup) overallLayout).addView(iv_game_element);
-
-        mapChange();
+        if (!mode.equals("endPosition")){
+            mapChange();
+        }
     }
 
     public void initIntake(String givenElement) {
@@ -1222,6 +1503,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             initPopup(popup_fail_success);
         } else {
             mode = "placement";
+            modeIsIntake=false;
             btn_drop.setEnabled(true);
             if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
                     || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) && (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))
@@ -1277,7 +1559,39 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             initShape();
         }
     }
+    public void preload(){
+        Log.e("preloadWok", "preloadWok");
+        if (InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")) {
+            Log.e("woooooook", "preloadWokinput");
 
+            if(!startTimer) {
+                btn_drop.setEnabled(true);
+            }
+            if (InputManager.mPreload.equals("orange")){
+                element ="orange";
+            }else if(InputManager.mPreload.equals("lemon")){
+                element ="lemon";
+            }
+            Log.e("preloadWok1", element);
+            mode ="placement";
+            modeIsIntake=false;
+            Log.e("preloadWok2", mode);
+            startedWObject = true;
+            mapChange();
+            startedWObject=false;
+        } else if (InputManager.mPreload.equals("none")) {
+            Log.e("woooooook", "preloadWokoutput");
+            mode = "intake";
+            modeIsIntake=true;
+            Log.e("preloadWok", mode);
+            btn_drop.setEnabled(false);
+            element = "none";
+            Log.e("preloadWok", element);
+
+            startedWObject = false;
+            mapChange();
+        }
+    }
     public void initPlacement() {
         placementDialog = new Dialog(this);
 
@@ -1391,6 +1705,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         } else if(element.equals("orange")) {
             tb_wasDefended.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
         }
+        if (tele){
+            tb_wasDefended.setEnabled(true);
+        } else if (!tele){
+            tb_wasDefended.setEnabled(false);
+        }
 
         placementDialog.setContentView(placementDialogLayout);
         placementDialog.show();
@@ -1414,6 +1733,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if(fail.isChecked() || success.isChecked()) {
             recordPlacement();
             mode = "intake";
+            modeIsIntake=true;
             initShape();
             placementDialog.dismiss();
         } else {
@@ -1432,6 +1752,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 && (level1.isChecked() || level2.isChecked() || level3.isChecked())) {
             recordPlacement();
             mode = "intake";
+            modeIsIntake=true;
             initShape();
             placementDialog.dismiss();
         } else {
@@ -1440,13 +1761,28 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-    public void initPopup(PopupWindow pw) {
-        if(mTabletType.equals("fire")) {
-            pw.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
-        } else {
-            pw.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+    public void initPopup(PopupWindow pw2) {
+        if(timerCheck){
+            if (!tele && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+                    || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black")))) {
+                if (mTabletType.equals("fire")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+                } else {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                }
+            } else if (tele) {
+                if (mTabletType.equals("fire")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+                } else {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                }
+            } else {
+                pw = true;
+            }
         }
+
     }
+
 
     public void recordClimb(float time) {
         compressionDic = new JSONObject();

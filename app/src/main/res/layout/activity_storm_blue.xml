@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/storm_blue_background_selector">
+
+    <RelativeLayout
+        android:layout_width="130dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_to_teleop"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/tv_storm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="STORM"
+            android:textSize="25dp"
+            android:textAlignment="center"
+            android:textColor="#000b77"/>
+        <Button
+            android:id="@+id/btn_timer"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="START TIMER"
+
+            android:textSize="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@+id/tv_storm"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/storm_blue_selector"
+            android:onClick="onClickStartTimer"/>
+        <ToggleButton
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tgbtn_storm_run"
+            android:layout_below="@+id/btn_timer"
+            android:padding="15dp"
+            android:textSize="20dp"
+            android:textOn="HAB LINE CROSSED"
+            android:textOff="HAB LINE CROSSED"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/storm_blue_selector"
+            android:onClick="onClickHabLineCrossed"
+            android:enabled="false"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_to_teleop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TELEOP"
+        android:textSize="25dp"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true"
+        android:onClick="onClickTeleop"
+        android:background="@drawable/storm_blue_selector" />
+</RelativeLayout>

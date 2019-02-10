@@ -9,18 +9,14 @@ import android.view.ViewGroup;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 
-public class AutoDialog extends Fragment {
+public class CancelFragment extends Fragment {
 
     View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(InputManager.mAllianceColor.equals("red")) {
-            view = inflater.inflate(R.layout.activity_auto_red, container, false);
-        }
-        else if(InputManager.mAllianceColor.equals("blue")) {
-            view = inflater.inflate(R.layout.activity_auto_blue, container, false);
-        }
+            view = inflater.inflate(R.layout.end_position_cancel, container, false);
+
         return view;
     }
 }
