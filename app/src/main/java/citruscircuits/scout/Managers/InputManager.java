@@ -61,11 +61,6 @@ public class InputManager {
     public static Integer mDriverStartingPosition = 0;
     public static String mPreload = "";
     public static boolean isNoShow= false;
-    public static Integer timerChecked= 0;
-    public static String sandStormEndPosition="";
-
-
-    public static boolean habLineCrossed = false;
 
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
@@ -81,6 +76,7 @@ public class InputManager {
         AppCc.setSp("teamNum", mTeamNum);
         AppCc.setSp("cycleNum", mCycleNum);
         AppCc.setSp("tabletType", mTabletType);
+        AppCc.setSp("assignmentMode", mAssignmentMode);
     }
 
     //when storing User DAta dont use variables - just use SP
@@ -92,6 +88,7 @@ public class InputManager {
         mTeamNum = AppCc.getSp("teamNum", 0);
         mCycleNum = AppCc.getSp("cycleNum", 0);
         mTabletType = AppCc.getSp("tabletType", "");
+        mAssignmentMode = AppCc.getSp("assignmentMode", "");
     }
 
     public static void prepareUserDataForNextMatch(){
@@ -119,6 +116,8 @@ public class InputManager {
         if(mMatchNum > 0){
             String sortL1key = "match"+mMatchNum;
             String sortL2key = "scout"+mScoutId;
+
+            InputManager.mAssignmentMode = "backup";
 
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("backupAssignments.txt"));
@@ -160,7 +159,7 @@ public class InputManager {
 
                 Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
 
-                for(int i=finalNamesList.size()-1;i>0;i--){
+                for(int i=finalNamesList.size()-1;i>=0;i--){
                     if(finalNamesList.get(i).contains("Backup")) {
                         backupNames.add(finalNamesList.get(i));
                         finalNamesList.remove(i);
@@ -240,7 +239,7 @@ public class InputManager {
                 String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
                 char scoutLetter = alphabet.charAt(nameIndex);
-                mScoutLetter = scoutLetter + "";
+                mScoutLetter = scoutLetter + "*";
             }
         }
     }

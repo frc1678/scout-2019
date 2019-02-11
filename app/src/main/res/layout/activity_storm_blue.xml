@@ -43,7 +43,6 @@
             android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/storm_blue_selector"
-            android:onClick="onClickHabLineCrossed"
             android:enabled="false"/>
     </RelativeLayout>
 

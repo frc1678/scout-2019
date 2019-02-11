@@ -264,46 +264,19 @@ public void defineVariables(){
         //go to next activity
         else if(showUp.isChecked()){
             InputManager.isNoShow=true;
-            InputManager.mDriverStartingPosition = 0;
-            InputManager.mPreload = "";
-            InputManager.mHabStartingPositionLevel = 0;
-            InputManager.mHabStartingPositionOrientation = "";
             try {
-                InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
-                InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
-                InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
-                InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
-                InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
                 InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
-                InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
+                InputManager.mOneTimeMatchData.put("currentCycle", InputManager.mCycleNum);
                 InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
                 InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
                 InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
                 InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
                 InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
-                InputManager.mOneTimeMatchData.put("sandstormEndPosition", InputManager.mSandstormEndPosition);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             open(A2A.class, null, false, true);
         }
-        Log.e("wok1",InputManager.mHabStartingPositionOrientation);
-        Log.e("wok2",String.valueOf(InputManager.mHabStartingPositionLevel));
-        Log.e("wok3",String.valueOf(InputManager.mDriverStartingPosition));
-        Log.e("wok4",InputManager.mPreload);
-        Log.e("wok5",String.valueOf(InputManager.isNoShow));
-        try{
-            Log.e("wok123", String.valueOf(InputManager.mHabStartingPositionLevel));
-            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
-            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
-            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
-            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
-            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
-
-        }catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.e("wokDic", InputManager.mOneTimeMatchData.toString());
         A1A.cancelStormChecker=false;
         A1A.startTimer=true;
         A1A.timerCheck=false;

@@ -139,8 +139,7 @@
             android:textSize="35dp"
             android:textAlignment="center"
             android:layout_below="@+id/tbtn_incap"
-            android:textColor="@color/black"
-            android:visibility="invisible"/>
+            android:textColor="@color/black" />
         <Button
             android:id="@+id/btn_arrow"
             android:layout_width="match_parent"

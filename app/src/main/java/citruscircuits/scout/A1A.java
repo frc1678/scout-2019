@@ -120,10 +120,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public TextView tv_starting_position_warning;
 
 //    public Button btn_startTimer;
-    public Button btn_drop;
+    public static Button btn_drop;
     public static Button btn_spill;
-    public Button btn_undo;
-    public Button btn_climb;
+    public static Button btn_undo;
+    public static Button btn_climb;
     public Button btn_arrow;
 
     public Button zeroI;
@@ -144,7 +144,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button spaceTwoII;
     public Button spaceThreeII;
     public static ToggleButton tb_incap;
-//    public ToggleButton tb_hab_run;
+    public static ToggleButton tb_defense;
     public ToggleButton tb_start_cube;
 
     public RelativeLayout dialogLayout;
@@ -161,7 +161,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public ToggleButton tb_wasDefended;
     public ToggleButton tb_shotOutOfField;
-    public ToggleButton tb_defense;
 
     public PopupWindow popup = new PopupWindow();
     public PopupWindow popup_fail_success = new PopupWindow();
@@ -172,6 +171,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Handler handler = new Handler();
     public Runnable runnable = new Runnable() {
         public void run() {
+            tv_team.setVisibility(View.INVISIBLE);
             btn_arrow.setEnabled(true);
             btn_arrow.setVisibility(View.VISIBLE);
         }
@@ -292,6 +292,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 
         tb_incap = findViewById(R.id.tbtn_incap);
+        tb_defense = findViewById(R.id.tbtn_defense);
 
         iv_game_element = new ImageView(getApplicationContext());
         actionCount = 0;
@@ -389,6 +390,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         if (tb_hab_run.isChecked()){
+            btn_climb.setEnabled(false);
+            tb_incap.setEnabled(false);
+            tb_defense.setEnabled(false);
+            btn_undo.setEnabled(false);
+            btn_spill.setEnabled(false);
+            btn_drop.setEnabled(false);
+
             fragmentCancel = new CancelFragment();
             fmCancel = getSupportFragmentManager();
             transactionCancel = fmCancel.beginTransaction();
@@ -404,7 +412,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         iv_field.setImageResource(R.drawable.endposition_left);
 
                     }
-
 
                 } else if(AppCc.getSp("mapOrientation", 99) == 0){
                     if (InputManager.mAllianceColor.equals("red")) {
@@ -436,13 +443,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             mapChange();
         }
-        try {
-            InputManager.mOneTimeMatchData.put("allianceColor", InputManager.mAllianceColor);
-            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
-            InputManager.mOneTimeMatchData.put("habLineCrossed", InputManager.habLineCrossed);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        InputManager.mCrossedHabLine = tb_hab_run.isChecked();
         Log.e("woooook", field_orientation);
 
     }
@@ -490,27 +491,32 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneEndPosition(View v){
-        cancelStormChecker=false;
-        getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
-        tele = true;
-        btn_climb.setEnabled(true);
-        tb_defense.setEnabled(true);
-        if (modeIsIntake){
-            mode ="intake";
+        if(InputManager.mSandstormEndPosition.contains("zone")) {
+            cancelStormChecker=false;
+            getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
+            tele = true;
+            btn_climb.setEnabled(true);
+            if (modeIsIntake){
+                mode ="intake";
+            }
+            else if(!modeIsIntake){
+                mode ="placement";
+            }
+            overallLayout.removeView(iv_game_element);
+            mapChange();
+            doneStormChecker=true;
+            isElementUsedForRobot=true;
+            initShape();
+            tb_incap.setEnabled(true);
+            btn_spill.setEnabled(true);
+            btn_drop.setEnabled(true);
+            tb_defense.setEnabled(true);
+            btn_climb.setEnabled(true);
+            didUndoOnce=false;
+        } else {
+            Toast.makeText(getBaseContext(), "Have you inputted a valid end position?",
+                    Toast.LENGTH_SHORT).show();
         }
-        else if(!modeIsIntake){
-            mode ="placement";
-        }        overallLayout.removeView(iv_game_element);
-        mapChange();
-        doneStormChecker=true;
-        isElementUsedForRobot=true;
-        initShape();
-        isElementUsedForRobot=false;
-        doneStormChecker=false;
-        btn_undo.setEnabled(false);
-        didUndoOnce=false;
-
-
     }
 
     public void onClickStartTimer(View v) {
@@ -535,7 +541,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if(InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")){
                 btn_drop.setEnabled(true);
             }
-            InputManager.timerChecked= (int)(System.currentTimeMillis()/1000);
+            InputManager.mTimerStarted= (int)(System.currentTimeMillis()/1000);
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_reset_red_selector);
             } else if (InputManager.mAllianceColor.equals("blue")) {
@@ -552,7 +558,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_spill.setEnabled(false);
             tb_hab_run.setEnabled(false);
             tb_hab_run.setChecked(false);
-//            btn_drop.setEnabled(false);
             btn_undo.setEnabled(false);
             btn_drop.setEnabled(false);
             actionDic.clear();
@@ -583,20 +588,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             mapChange();
         }
-        Log.e("timerCheck",String.valueOf(InputManager.timerChecked));
+        Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
     }
-
-    public void onClickHabLineCrossed(View v) {
-        Log.e("habLineCross",String.valueOf(InputManager.habLineCrossed));
-        if (!InputManager.habLineCrossed) {
-            InputManager.habLineCrossed = true;
-
-        } else if (InputManager.habLineCrossed) {
-            InputManager.habLineCrossed = false;
-        }
-    }
-
-
 
     public void onClickDrop(View v) {
         compressionDic = new JSONObject();
@@ -1240,38 +1233,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 initPlacement();
                                 modeIsIntake=false;
                             }
-                            else if (mode.equals("endPosition") && ((x>=180 && mTabletType.equals("black") && field_orientation.contains("left")) || (x<=950 && mTabletType.equals("black") && field_orientation.contains("right")) || (x>=270 && mTabletType.equals("green") && field_orientation.contains("left")) || (x<=1430 && mTabletType.equals("green") && field_orientation.contains("right")))){
+                            else if (mode.equals("endPosition")) {
                                 pw = false;
                                 Log.e("woooook", "endPosition");
-                                initShape();
-                                if((y>517 && mTabletType.equals("green")) || (y>345 && mTabletType.equals("black"))) {
-                                    if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
-                                            || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))) {
-                                        InputManager.sandStormEndPosition = "zone1Right";
-                                    } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
-                                            || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
-                                        InputManager.sandStormEndPosition = "zone2Right";
-                                    } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                                            || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
-                                        InputManager.sandStormEndPosition = "zone3Right";
-                                    } else {
-                                        InputManager.sandStormEndPosition = "zone4Right";
-                                    }
-                                } else {
-                                    if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
-                                            || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("green"))) {
-                                        InputManager.sandStormEndPosition = "zone1Left";
-                                    } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
-                                            || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))) {
-                                        InputManager.sandStormEndPosition = "zone2Left";
-                                    } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                                            || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))) {
-                                        InputManager.sandStormEndPosition = "zone3Left";
-                                    } else {
-                                        InputManager.sandStormEndPosition = "zone4Left";
-                                    }
-                                }
-
+                                initIntake("endPosition");
                             }
                         }
                     }
@@ -1513,7 +1478,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
         overallLayout.removeView(iv_game_element);
 
-        if(element.equals("orange") && !mode.equals("endPosition")) {
+        if (mode.equals("endPosition")){
+            Log.e("wokedngge", "showup");
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.robot));
+        } else if(element.equals("orange") && !mode.equals("endPosition")) {
             Log.e("wokorange", "showup");
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
             if(!isElementUsedForRobot){
@@ -1545,9 +1513,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 didUndoOnce=false;
 
             }
-        } else if (mode.equals("endPosition")){
-            Log.e("wokedngge", "showup");
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.robot));
         }
         Log.e("ahhhh1",String.valueOf(actionDic));
 
@@ -1625,22 +1590,30 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             }else {
                 Log.e("ahhh","nothing should happen");
-
             }
         }
 
         if (!mode.equals("endPosition")){
             mapChange();
         }
+
+        isElementUsedForRobot=false;
+        doneStormChecker=false;
     }
 
     public void initIntake(String givenElement) {
-        popup.dismiss();
-        element = givenElement;
+        zone = "";
 
-        if((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
+        if(givenElement.equals("endPosition")) {
+            pw = true;
+        } else {
+            popup.dismiss();
+            element = givenElement;
+        }
+
+        if(((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
                 || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mTabletType.equals("black"))
-                || (((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && mTabletType.equals("fire"))) {
+                || (((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && mTabletType.equals("fire"))) && !givenElement.equals("endPosition")) {
             if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && y<=220) || (field_orientation.contains("right") && y>=280)) && mTabletType.equals("fire"))) {
@@ -1652,61 +1625,73 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             initPopup(popup_fail_success);
         } else {
-            mode = "placement";
-            modeIsIntake=false;
-            btn_drop.setEnabled(true);
             if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
                     || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) && (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))
                     || (y>260 && mTabletType.equals("fire") && field_orientation.contains("left")) && (y<=260 && mTabletType.equals("fire") && field_orientation.contains("right"))) {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))
-                        || (((field_orientation.contains("left") && x <= 130) || (field_orientation.contains("right") && x >= 720)) && mTabletType.equals("fire"))) {
+                if ((((field_orientation.contains("left") && x <= 540 && x >= 225) || (field_orientation.contains("right") && x >= 1160 && x <= 1440)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 360 && x >= 175) || (field_orientation.contains("right") && x >= 955 && x<= 955)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 270 && x >= 130) || (field_orientation.contains("right") && x >= 580 && x <= 720)) && mTabletType.equals("fire"))) {
                     zone = "zone1Right";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))
-                        || (((field_orientation.contains("left") && x <= 470) || (field_orientation.contains("right") && x >= 380)) && mTabletType.equals("fire"))) {
+                } else if ((((field_orientation.contains("left") && x <= 940 && x > 540) || (field_orientation.contains("right") && x >= 760 && x < 1160)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 625 && x > 360) || (field_orientation.contains("right") && x >= 500 && x < 955)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 470 && x > 270) || (field_orientation.contains("right") && x >= 380 && x < 580)) && mTabletType.equals("fire"))) {
                     zone = "zone2Right";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
-                        || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 125)) && mTabletType.equals("fire"))) {
+                } else if ((((field_orientation.contains("left") && x <= 1445 && x > 940) || (field_orientation.contains("right") && x >= 255 && x < 760)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 960 && x > 625) || (field_orientation.contains("right") && x >= 170 && x < 500)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 720 && x > 270) || (field_orientation.contains("right") && x >= 125 && x < 380)) && mTabletType.equals("fire"))) {
                     zone = "zone3Right";
-                } else {
+                } else if ((((field_orientation.contains("left") && x > 1445) || (field_orientation.contains("right") && x < 255)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x > 960) || (field_orientation.contains("right") && x < 170)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x > 720) || (field_orientation.contains("right") && x < 125)) && mTabletType.equals("fire"))) {
                     zone = "zone4Right";
                 }
             } else {
-                if ((((field_orientation.contains("left") && x <= 540) || (field_orientation.contains("right") && x >= 1160)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 360) || (field_orientation.contains("right") && x >= 955)) && mTabletType.equals("black"))
-                        || (((field_orientation.contains("left") && x <= 130) || (field_orientation.contains("right") && x >= 720)) && mTabletType.equals("fire"))) {
+                if ((((field_orientation.contains("left") && x <= 540 && x >= 225) || (field_orientation.contains("right") && x >= 1160 && x <= 1440)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 360 && x >= 175) || (field_orientation.contains("right") && x >= 955 && x<= 955)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 270 && x >= 130) || (field_orientation.contains("right") && x >= 580 && x <= 720)) && mTabletType.equals("fire"))) {
                     zone = "zone1Left";
-                } else if ((((field_orientation.contains("left") && x <= 940) || (field_orientation.contains("right") && x >= 760)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 625) || (field_orientation.contains("right") && x >= 500)) && mTabletType.equals("black"))
-                        || (((field_orientation.contains("left") && x <= 470) || (field_orientation.contains("right") && x >= 380)) && mTabletType.equals("fire"))) {
+                } else if ((((field_orientation.contains("left") && x <= 940 && x > 540) || (field_orientation.contains("right") && x >= 760 && x < 1160)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 625 && x > 360) || (field_orientation.contains("right") && x >= 500 && x < 955)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 470 && x > 270) || (field_orientation.contains("right") && x >= 380 && x < 580)) && mTabletType.equals("fire"))) {
                     zone = "zone2Left";
-                } else if ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                        || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
-                        || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 125)) && mTabletType.equals("fire"))) {
+                } else if ((((field_orientation.contains("left") && x <= 1445 && x > 940) || (field_orientation.contains("right") && x >= 255 && x < 760)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x <= 960 && x > 625) || (field_orientation.contains("right") && x >= 170 && x < 500)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x <= 720 && x > 270) || (field_orientation.contains("right") && x >= 125 && x < 380)) && mTabletType.equals("fire"))) {
                     zone = "zone3Left";
-                } else {
+                } else if ((((field_orientation.contains("left") && x > 1445) || (field_orientation.contains("right") && x < 255)) && mTabletType.equals("green"))
+                        || (((field_orientation.contains("left") && x > 960) || (field_orientation.contains("right") && x < 170)) && mTabletType.equals("black"))
+                        || (((field_orientation.contains("left") && x > 720) || (field_orientation.contains("right") && x < 125)) && mTabletType.equals("fire"))) {
                     zone = "zone4Left";
                 }
             }
 
-            compressionDic = new JSONObject();
+            if(givenElement.equals("orange") || givenElement.equals("lemon")) {
+                mode = "placement";
+                modeIsIntake=false;
+                btn_drop.setEnabled(true);
 
-            try {
-                compressionDic.put("type", "intake");
-                timestamp(time);
-                compressionDic.put("piece", element);
-                compressionDic.put("zone", zone);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                compressionDic = new JSONObject();
+
+                try {
+                    compressionDic.put("type", "intake");
+                    timestamp(time);
+                    compressionDic.put("piece", element);
+                    compressionDic.put("zone", zone);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                mRealTimeMatchData.put(compressionDic);
+
+                Log.i("RECORDING?", mRealTimeMatchData.toString());
+                Log.i("ZONE", zone);
+                initShape();
+            } else if(givenElement.equals("endPosition") && zone.contains("zone")) {
+                InputManager.mSandstormEndPosition = zone;
+                mode = "endPosition";
+                Log.i("SANDSTORM", InputManager.mSandstormEndPosition);
+                initShape();
             }
-
-            mRealTimeMatchData.put(compressionDic);
-
-            Log.i("RECORDING?", mRealTimeMatchData.toString());
-            Log.i("ZONE", zone);
-            initShape();
         }
     }
     public void preload(){
@@ -1981,6 +1966,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
             InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
             InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
+            InputManager.mOneTimeMatchData.put("currentCycle", InputManager.mCycleNum);
             InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
             InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
             InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
