@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -49,10 +50,13 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -131,9 +135,27 @@ public class A0A extends DialogMaker {
     }
 
     //OnClick Methods
-    public void onClickStartScouting(View view){
+    public void onClickStartScouting(View view) {
+        String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
+        String fileName = "QRAssignments.txt";
+
+        File f = new File(filePath, fileName);
+
+        if(f.exists()) {
+            try {
+                JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                Integer timestampInt = timestamp.getInt("timestamp");
+
+                InputManager.mAssignmentFileTimestamp = timestampInt;
+
+                Log.i("ASSIGNMENT!", InputManager.mAssignmentFileTimestamp + "");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
-        open(A0B.class, null,false, true);
+        open(A0B.class, null, false, true);
     }
 
     public static void updateUserData(){

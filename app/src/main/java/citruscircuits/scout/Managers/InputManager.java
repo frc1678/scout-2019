@@ -239,7 +239,7 @@ public class InputManager {
                 String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
                 char scoutLetter = alphabet.charAt(nameIndex);
-                mScoutLetter = scoutLetter + "";
+                mScoutLetter = scoutLetter + "*";
             }
         }
     }
