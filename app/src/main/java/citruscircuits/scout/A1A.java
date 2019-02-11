@@ -532,6 +532,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         } else if (!startTimer) {
             pw=false;
+            defenseMap = false;
             InputManager.numSpill = 0;
             InputManager.numFoul = 0;
             tb_incap.setEnabled(false);
