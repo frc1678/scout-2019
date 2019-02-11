@@ -501,6 +501,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         initShape();
         isElementUsedForRobot=false;
         doneStormChecker=false;
+        if(didUndoOnce){
+            btn_undo.setEnabled(false);
+
+        }else if(!didUndoOnce){
+            btn_undo.setEnabled(true);
+
+        }
     }
 
     public void onClickStartTimer(View v) {
@@ -517,7 +524,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_startTimer.setText("RESET TIMER");
             timerCheck = true;
             startTimer = false;
-            btn_undo.setEnabled(true);
+            btn_undo.setEnabled(false);
 
             tb_hab_run.setEnabled(true);
             tb_incap.setEnabled(true);
@@ -601,6 +608,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         modeIsIntake=true;
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
+        didUndoOnce=false;
         overallLayout.removeView(iv_game_element);
         try {
             compressionDic.put("type", "drop");
@@ -632,6 +640,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickUndo(View v) {
             Log.e("jkgg", valueOf(actionCount));
+            popup.dismiss();
+            popup_fail_success.dismiss();
+            pw = true;
             int index = -1;
             for(int i=0;i<mRealTimeMatchData.length();i++){
                 try {
@@ -700,6 +711,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("endUndo3", String.valueOf(mode));
             Log.e("endUndo4", String.valueOf(element));
             btn_undo.setEnabled(false);
+            didUndoOnce=true;
     }
 
     public void undoGeneric(Boolean btndrop, Boolean intakeVal, String modeGeneric){
@@ -1510,6 +1522,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionDic.put(actionCount, actionList);
                 actionCount++;
                 btn_undo.setEnabled(true);
+                didUndoOnce=false;
             }
 
         } else if(element.equals("lemon")&& !mode.equals("endPosition")) {
@@ -1525,6 +1538,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionDic.put(actionCount, actionList);
                 actionCount++;
                 btn_undo.setEnabled(true);
+                didUndoOnce=false;
+
             }
         } else if (mode.equals("endPosition")){
             Log.e("wokedngge", "showup");
