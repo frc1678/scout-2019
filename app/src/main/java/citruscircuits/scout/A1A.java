@@ -421,6 +421,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             transactionCancel.commit();
             btn_undo.setEnabled(false);
         } else{
+            btn_undo.setEnabled(false);
             tb_defense.setEnabled(true);
             tele = true;
             Log.e("startTimer?",String.valueOf(startTimer));
