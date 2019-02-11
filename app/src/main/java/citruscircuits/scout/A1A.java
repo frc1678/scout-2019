@@ -486,13 +486,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             else if(!modeIsIntake){
                 mode ="placement";
-            }        overallLayout.removeView(iv_game_element);
+            }
+            overallLayout.removeView(iv_game_element);
             mapChange();
             doneStormChecker=true;
             isElementUsedForRobot=true;
             initShape();
-            isElementUsedForRobot=false;
-            doneStormChecker=false;
             tb_incap.setEnabled(true);
             btn_spill.setEnabled(true);
             btn_drop.setEnabled(true);
@@ -1445,23 +1444,25 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 ((ViewGroup) overallLayout).addView(iv_game_element);
             }else {
                 Log.e("ahhh","nothing should happen");
-
             }
         }
 
         if (!mode.equals("endPosition")){
             mapChange();
         }
+
+        isElementUsedForRobot=false;
+        doneStormChecker=false;
     }
 
     public void initIntake(String givenElement) {
         zone = "";
 
-        popup.dismiss();
-        element = givenElement;
-
         if(givenElement.equals("endPosition")) {
             pw = true;
+        } else {
+            popup.dismiss();
+            element = givenElement;
         }
 
         if(((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
