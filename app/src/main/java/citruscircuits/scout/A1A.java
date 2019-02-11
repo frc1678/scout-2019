@@ -81,10 +81,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean timerCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+
     public boolean defensePw = false;
 
     public boolean incapMap = false;
-
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
@@ -95,7 +95,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean cancelStormChecker=false;
     public boolean doneStormChecker=false;
     public boolean isElementUsedForRobot=false;
-
+    public boolean didUndoOnce=false;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
     public Integer level;
@@ -426,7 +426,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             mode ="endPosition";
             transactionCancel.commit();
+            btn_undo.setEnabled(false);
         } else{
+            btn_undo.setEnabled(false);
             tb_defense.setEnabled(true);
             tele = true;
             Log.e("startTimer?",String.valueOf(startTimer));
@@ -481,6 +483,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         isElementUsedForRobot=true;
         initShape();
         isElementUsedForRobot=false;
+        if (didUndoOnce){
+            btn_undo.setEnabled(false);
+        }else if (!didUndoOnce){
+            btn_undo.setEnabled(true);
+        }
     }
 
     public void onClickDoneEndPosition(View v){
@@ -505,6 +512,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_drop.setEnabled(true);
             tb_defense.setEnabled(true);
             btn_climb.setEnabled(true);
+            didUndoOnce=false;
         } else {
             Toast.makeText(getBaseContext(), "Have you inputted a valid end position?",
                     Toast.LENGTH_SHORT).show();
@@ -525,6 +533,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_startTimer.setText("RESET TIMER");
             timerCheck = true;
             startTimer = false;
+            btn_undo.setEnabled(false);
+
             tb_hab_run.setEnabled(true);
             tb_incap.setEnabled(true);
             btn_spill.setEnabled(true);
@@ -549,6 +559,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_hab_run.setEnabled(false);
             tb_hab_run.setChecked(false);
             btn_undo.setEnabled(false);
+            btn_drop.setEnabled(false);
+            actionDic.clear();
             handler.removeCallbacks(runnable);
             handler.removeCallbacksAndMessages(null);
             TimerUtil.matchTimer.cancel();
@@ -564,8 +576,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             timerCheck = false;
             preload();
             InputManager.numSpill=0;
+            actionCount=0;
             btn_spill.setText("SPILL - " + InputManager.numSpill);
-            btn_drop.setEnabled(false);
+            mRealTimeMatchData = new JSONArray();
 
 
             if (InputManager.mAllianceColor.equals("red")) {
@@ -580,10 +593,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDrop(View v) {
         compressionDic = new JSONObject();
+        actionList = new ArrayList<Object>();
+        actionList.add(x);
+        actionList.add(y);
+        actionList.add(mode);
+        actionList.add("drop");
+        actionList.add(TimerUtil.timestamp);
+        actionDic.put(actionCount, actionList);
+        actionCount++;
         mode = "intake";
         modeIsIntake=true;
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
+        didUndoOnce=false;
         overallLayout.removeView(iv_game_element);
         try {
             compressionDic.put("type", "drop");
@@ -594,13 +616,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         mRealTimeMatchData.put(compressionDic);
         Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
         mapChange();
-//        actionList.clear();
-//        actionList.add("drop");
-//        actionList.add("x not matter");
-//        actionList.add("y not matter");
-//        actionList.add(TimerUtil.timestamp);
-//        actionDic.put(actionCount, actionList);
-//        actionCount++;
+
     }
 
     public void onClickSpill(View v) throws JSONException {
@@ -619,35 +635,89 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //    }
     }
 
-//    public void onClickUndo(View v) {
-//        Log.e("jkgg", valueOf(actionCount));
-//        if (actionCount > 0) {
-//            actionCount = actionCount - 1;
-//            Log.e("actiondic?!", actionDic.toString());
-//            actionDic.remove(actionCount + 1);
-//            Log.e("wok", actionDic.get(actionCount).get(3).toString());
-//            // Log.e("PLZ",actionDic.get(actionCount).get(1).toString() );
-//            if (actionDic.get(actionCount).get(3).equals("triangle")) {
-//                Log.e("Why does this work", "WHYYYY");
-//                overallLayout.removeView(iv);
-//                shapeCheck = false;
-//                btn_drop.setEnabled(false);
-//                noShape = true;
-//                mapChange();
-//            } else if (actionDic.get(actionCount).get(3).equals("circle")) {
-//                Log.e("FUN", "check");
-//                shapeCheck = true;
-//                btn_drop.setEnabled(true);
-//                Log.e("Hello", "Work");
-//                overallLayout.removeView(iv2);
-//                mapChange();
-//            } else if (actionDic.get(actionCount).get(0).equals("drop")) {
-//                shapeCheck = true;
-//                btn_drop.setEnabled(true);
-//                mapChange();
-//            }
-//        }
-//    }
+    public void onClickUndo(View v) {
+            Log.e("jkgg", valueOf(actionCount));
+            popup.dismiss();
+            popup_fail_success.dismiss();
+            pw = true;
+            int index = -1;
+            for(int i=0;i<mRealTimeMatchData.length();i++){
+                try {
+                    String hf = mRealTimeMatchData.getString(i);
+                    if(hf.contains("intake") || hf.contains("placement")|| hf.contains("drop")) {
+                        index = i;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Log.e("int?!",String.valueOf(index));
+            Log.e("dic?!", mRealTimeMatchData.toString());
+
+            mRealTimeMatchData.remove(index);
+            if (actionCount > 0) {
+                Log.e("dic2?!", mRealTimeMatchData.toString());
+                Log.e("WokDic1?!!", actionDic.toString());
+
+                actionCount = actionCount - 1;
+
+                Log.e("wok", actionDic.get(actionCount).get(3).toString());
+
+                if (actionDic.get(actionCount).get(3).equals("orange")) {
+                    Log.e("wokDicInner1",String.valueOf(actionDic));
+                    element = String.valueOf(actionDic.get(actionCount).get(3));
+                    if(actionDic.get(actionCount).get(2).equals("intake")){
+                        undoGeneric(true, false,"placement");
+
+                    } else if(actionDic.get(actionCount).get(2).equals("placement")){
+                        Log.e("wokInner2", String.valueOf(actionCount));
+                        undoGeneric(false, true, "intake");
+                    }
+                    mapChange();
+                } else if (actionDic.get(actionCount).get(3).equals("lemon")) {
+                    Log.e("wokDicInner2", String.valueOf(actionDic));
+                    element = String.valueOf(actionDic.get(actionCount).get(3));
+                    if(actionDic.get(actionCount).get(2).equals("intake")){
+                        Log.e("wokInner3", String.valueOf(actionCount));
+                        undoGeneric(true, false, "placement");
+
+                    } else if(actionDic.get(actionCount).get(2).equals("placement")){
+                        Log.e("wokInner4", String.valueOf(actionCount));
+                        undoGeneric(false, true, "intake");
+                    }
+                    mapChange();
+                } else if (actionDic.get(actionCount).get(3).equals("drop")) {
+                    btn_drop.setEnabled(true);
+                    modeIsIntake=false;
+                    mode = "placement";
+                    mapChange();
+
+                }
+                actionDic.remove(actionCount);
+                Log.e("wokDic2?!!", String.valueOf(actionDic));
+
+            }else if (actionCount==0){
+                Log.e("dic2?!", mRealTimeMatchData.toString());
+                Log.e("actionDic1?!", actionDic.toString());
+                actionDic.remove(actionCount);
+                preload();
+            }
+            Log.e("endUndo1", String.valueOf(btn_drop.isEnabled()));
+            Log.e("endUndo2", String.valueOf(modeIsIntake));
+            Log.e("endUndo3", String.valueOf(mode));
+            Log.e("endUndo4", String.valueOf(element));
+            btn_undo.setEnabled(false);
+            didUndoOnce=true;
+    }
+
+    public void undoGeneric(Boolean btndrop, Boolean intakeVal, String modeGeneric){
+        Log.e("wokInner3", String.valueOf(actionCount));
+        btn_drop.setEnabled(btndrop);
+        modeIsIntake = intakeVal;
+        mode = modeGeneric;
+      overallLayout.removeView(iv_game_element);
+    }
 
     public void climbAttemptEdit(Button spaceValue, Integer space){
         if(climbInputted){
@@ -931,7 +1001,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_climb = (Button) findViewById(R.id.btn_climb);
             tb_defense = (ToggleButton) findViewById((R.id.tbtn_defense));
 
-
             cancelIncap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -963,6 +1032,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                         if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()) {
                             pw = false;
+                            btn_undo.setEnabled(false);
                             btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
@@ -1075,6 +1145,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mapChange();
             incapChecked = false;
             btn_climb.setEnabled(true);
+            btn_undo.setEnabled(true);
             if (!tele){
                 tb_defense.setEnabled(false);
             }
@@ -1120,6 +1191,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     Log.e("pwvalue",String.valueOf(pw));
+                    Log.e("WokDic1?!",String.valueOf(actionDic));
+                    Log.e("wokCount",String.valueOf(actionCount));
                     if(pw && timerCheck) {
                         x = (int) motionEvent.getX();
                         y = (int) motionEvent.getY();
@@ -1415,11 +1488,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionList = new ArrayList<Object>();
                 actionList.add(x);
                 actionList.add(y);
+                actionList.add(mode);
                 actionList.add("orange");
-                //actionList.add(position);
+                actionList.add(TimerUtil.timestamp);
                 actionDic.put(actionCount, actionList);
                 actionCount++;
+                btn_undo.setEnabled(true);
+                didUndoOnce=false;
             }
+
         } else if(element.equals("lemon")&& !mode.equals("endPosition")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
             if (!isElementUsedForRobot){
@@ -1427,20 +1504,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionList = new ArrayList<Object>();
                 actionList.add(x);
                 actionList.add(y);
+                actionList.add(mode);
                 actionList.add("lemon");
-                //actionList.add(position);
+                actionList.add(TimerUtil.timestamp);
                 actionDic.put(actionCount, actionList);
                 actionCount++;
+                btn_undo.setEnabled(true);
+                didUndoOnce=false;
+
             }
         }
-        Log.e("ahhhh",String.valueOf(actionDic));
+        Log.e("ahhhh1",String.valueOf(actionDic));
 
-        Log.e("ahhhh",String.valueOf(actionDic.get(actionCount)));
-        Log.e("ahhhh",String.valueOf(actionCount));
+        Log.e("ahhhh2",String.valueOf(actionDic.get(actionCount)));
+        Log.e("ahhhh3",String.valueOf(actionCount));
 
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 100,
                 100);
+        Log.e("stormCheck",String.valueOf(cancelStormChecker));
+        Log.e("stormCheck",String.valueOf(doneStormChecker));
+
         if(!cancelStormChecker && !doneStormChecker){
             if((y > 900 && mTabletType.equals("green")) || (y > 550 && mTabletType.equals("black"))) {
                 if((x < 40 && mTabletType.equals("green")) || (x < 25 &&  mTabletType.equals("black"))) {
@@ -1469,34 +1553,41 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             ((ViewGroup) overallLayout).addView(iv_game_element);
         } else if(cancelStormChecker || doneStormChecker){
             if (actionCount>0){
-                Log.e("ahhh4", String.valueOf(mode));
-                undoX=(int) actionDic.get(actionCount-1).get(0);
-                undoY=(int) actionDic.get(actionCount-1).get(1);
+//                if (!actionDic.get(actionCount).get(3).equals("drop")){
+                    Log.e("ahhh4", String.valueOf(mode));
+                        undoX=(int) actionDic.get(actionCount-1).get(0);
+                        undoY=(int) actionDic.get(actionCount-1).get(1);
+                        Log.e("undo1?", "stormChecker");
+                Log.e("undoX", String.valueOf(undoX));
+                Log.e("undoY", String.valueOf(undoY));
+
                 if((undoY > 900 && mTabletType.equals("green")) || (undoY > 550 &&  mTabletType.equals("black"))) {
-                    if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
-                        lp.setMargins(undoX + 20, undoY - 90, 0, 0);
-                    } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
-                        lp.setMargins(undoX - 100, undoY - 90, 0, 0);
+                        if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
+                            lp.setMargins(undoX + 20, undoY - 90, 0, 0);
+                        } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
+                            lp.setMargins(undoX - 100, undoY - 90, 0, 0);
+                        } else {
+                            lp.setMargins(undoX - 25, undoY - 90, 0, 0);
+                        }
+                    } else if((undoY < 85 && mTabletType.equals("green")) || (undoY < 55 &&  mTabletType.equals("black"))) {
+                        if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
+                            lp.setMargins(undoX + 20, undoY + 5, 0, 0);
+                        } else if((undoX > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
+                            lp.setMargins(undoX - 100, undoY + 5, 0, 0);
+                        } else {
+                            lp.setMargins(undoX - 25, undoY + 5, 0, 0);
+                        }
+                    } else if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
+                        lp.setMargins(undoX + 20, undoY - 40, 0, 0);
+                    } else if((x > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
+                        lp.setMargins(undoX - 100, undoY - 40, 0, 0);
                     } else {
-                        lp.setMargins(undoX - 25, undoY - 90, 0, 0);
+                        lp.setMargins(undoX - 25, undoY - 40, 0, 0);
                     }
-                } else if((undoY < 85 && mTabletType.equals("green")) || (undoY < 55 &&  mTabletType.equals("black"))) {
-                    if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
-                        lp.setMargins(undoX + 20, undoY + 5, 0, 0);
-                    } else if((undoX > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
-                        lp.setMargins(undoX - 100, undoY + 5, 0, 0);
-                    } else {
-                        lp.setMargins(undoX - 25, undoY + 5, 0, 0);
-                    }
-                } else if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
-                    lp.setMargins(undoX + 20, undoY - 40, 0, 0);
-                } else if((x > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
-                    lp.setMargins(undoX - 100, undoY - 40, 0, 0);
-                } else {
-                    lp.setMargins(undoX - 25, undoY - 40, 0, 0);
-                }
-                iv_game_element.setLayoutParams(lp);
-                ((ViewGroup) overallLayout).addView(iv_game_element);
+                    iv_game_element.setLayoutParams(lp);
+                    ((ViewGroup) overallLayout).addView(iv_game_element);
+//                }
+
             }else {
                 Log.e("ahhh","nothing should happen");
             }
