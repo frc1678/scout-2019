@@ -506,13 +506,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         initShape();
         isElementUsedForRobot=false;
         doneStormChecker=false;
-        if(didUndoOnce){
-            btn_undo.setEnabled(false);
+        btn_undo.setEnabled(false);
+        didUndoOnce=false;
 
-        }else if(!didUndoOnce){
-            btn_undo.setEnabled(true);
 
-        }
     }
 
     public void onClickStartTimer(View v) {
@@ -575,6 +572,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.numSpill=0;
             actionCount=0;
             btn_spill.setText("SPILL - " + InputManager.numSpill);
+            mRealTimeMatchData = new JSONArray();
 
 
             if (InputManager.mAllianceColor.equals("red")) {
