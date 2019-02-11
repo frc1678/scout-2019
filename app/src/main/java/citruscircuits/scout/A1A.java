@@ -419,6 +419,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             mode ="endPosition";
             transactionCancel.commit();
+            btn_undo.setEnabled(false);
         } else{
             tb_defense.setEnabled(true);
             tele = true;
