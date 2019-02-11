@@ -479,9 +479,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mode ="placement";
         }
         isElementUsedForRobot=true;
-        //TODO: make the cancel not always true when go back so robot position can change
         initShape();
         isElementUsedForRobot=false;
+        if (didUndoOnce){
+            btn_undo.setEnabled(false);
+        }else if (!didUndoOnce){
+            btn_undo.setEnabled(true);
+        }
     }
 
     public void onClickDoneEndPosition(View v){
