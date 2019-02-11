@@ -95,7 +95,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean cancelStormChecker=false;
     public boolean doneStormChecker=false;
     public boolean isElementUsedForRobot=false;
-
+    public boolean didUndoOnce=false;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
     public Integer level;
@@ -600,7 +600,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         mode = "intake";
         modeIsIntake=true;
         btn_drop.setEnabled(false);
-//        btn_undo.setEnabled(true);
+        btn_undo.setEnabled(true);
         overallLayout.removeView(iv_game_element);
         try {
             compressionDic.put("type", "drop");
@@ -631,75 +631,75 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickUndo(View v) {
-        Log.e("jkgg", valueOf(actionCount));
-        int index = -1;
-        for(int i=0;i<mRealTimeMatchData.length();i++){
-            try {
-                String hf = mRealTimeMatchData.getString(i);
+            Log.e("jkgg", valueOf(actionCount));
+            int index = -1;
+            for(int i=0;i<mRealTimeMatchData.length();i++){
+                try {
+                    String hf = mRealTimeMatchData.getString(i);
                     if(hf.contains("intake") || hf.contains("placement")|| hf.contains("drop")) {
-                index = i;
+                        index = i;
                     }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.e("int?!",String.valueOf(index));
-        Log.e("dic?!", mRealTimeMatchData.toString());
-
-        mRealTimeMatchData.remove(index);
-        if (actionCount > 0) {
-            Log.e("dic2?!", mRealTimeMatchData.toString());
-            Log.e("WokDic1?!!", actionDic.toString());
-
-            actionCount = actionCount - 1;
-
-            Log.e("wok", actionDic.get(actionCount).get(3).toString());
-
-            if (actionDic.get(actionCount).get(3).equals("orange")) {
-                Log.e("wokDicInner1",String.valueOf(actionDic));
-                element = String.valueOf(actionDic.get(actionCount).get(3));
-                if(actionDic.get(actionCount).get(2).equals("intake")){
-                    undoGeneric(true, false,"placement");
-
-                } else if(actionDic.get(actionCount).get(2).equals("placement")){
-                    Log.e("wokInner2", String.valueOf(actionCount));
-                    undoGeneric(false, true, "intake");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                mapChange();
-            } else if (actionDic.get(actionCount).get(3).equals("lemon")) {
-                Log.e("wokDicInner2", String.valueOf(actionDic));
-                element = String.valueOf(actionDic.get(actionCount).get(3));
-                if(actionDic.get(actionCount).get(2).equals("intake")){
-                    Log.e("wokInner3", String.valueOf(actionCount));
-                    undoGeneric(true, false, "placement");
-
-                } else if(actionDic.get(actionCount).get(2).equals("placement")){
-                    Log.e("wokInner4", String.valueOf(actionCount));
-                    undoGeneric(false, true, "intake");
-                }
-                mapChange();
-            } else if (actionDic.get(actionCount).get(3).equals("drop")) {
-                btn_drop.setEnabled(true);
-                modeIsIntake=false;
-                mode = "placement";
-                mapChange();
-
             }
-            actionDic.remove(actionCount);
-            Log.e("wokDic2?!!", String.valueOf(actionDic));
 
-        }else if (actionCount==0){
-            Log.e("dic2?!", mRealTimeMatchData.toString());
-            Log.e("actionDic1?!", actionDic.toString());
-            actionDic.remove(actionCount);
-            preload();
+            Log.e("int?!",String.valueOf(index));
+            Log.e("dic?!", mRealTimeMatchData.toString());
 
-        }
-        Log.e("endUndo1", String.valueOf(btn_drop.isEnabled()));
-        Log.e("endUndo2", String.valueOf(modeIsIntake));
-        Log.e("endUndo3", String.valueOf(mode));
-        Log.e("endUndo4", String.valueOf(element));
+            mRealTimeMatchData.remove(index);
+            if (actionCount > 0) {
+                Log.e("dic2?!", mRealTimeMatchData.toString());
+                Log.e("WokDic1?!!", actionDic.toString());
 
+                actionCount = actionCount - 1;
+
+                Log.e("wok", actionDic.get(actionCount).get(3).toString());
+
+                if (actionDic.get(actionCount).get(3).equals("orange")) {
+                    Log.e("wokDicInner1",String.valueOf(actionDic));
+                    element = String.valueOf(actionDic.get(actionCount).get(3));
+                    if(actionDic.get(actionCount).get(2).equals("intake")){
+                        undoGeneric(true, false,"placement");
+
+                    } else if(actionDic.get(actionCount).get(2).equals("placement")){
+                        Log.e("wokInner2", String.valueOf(actionCount));
+                        undoGeneric(false, true, "intake");
+                    }
+                    mapChange();
+                } else if (actionDic.get(actionCount).get(3).equals("lemon")) {
+                    Log.e("wokDicInner2", String.valueOf(actionDic));
+                    element = String.valueOf(actionDic.get(actionCount).get(3));
+                    if(actionDic.get(actionCount).get(2).equals("intake")){
+                        Log.e("wokInner3", String.valueOf(actionCount));
+                        undoGeneric(true, false, "placement");
+
+                    } else if(actionDic.get(actionCount).get(2).equals("placement")){
+                        Log.e("wokInner4", String.valueOf(actionCount));
+                        undoGeneric(false, true, "intake");
+                    }
+                    mapChange();
+                } else if (actionDic.get(actionCount).get(3).equals("drop")) {
+                    btn_drop.setEnabled(true);
+                    modeIsIntake=false;
+                    mode = "placement";
+                    mapChange();
+
+                }
+                actionDic.remove(actionCount);
+                Log.e("wokDic2?!!", String.valueOf(actionDic));
+
+            }else if (actionCount==0){
+                Log.e("dic2?!", mRealTimeMatchData.toString());
+                Log.e("actionDic1?!", actionDic.toString());
+                actionDic.remove(actionCount);
+                preload();
+            }
+            Log.e("endUndo1", String.valueOf(btn_drop.isEnabled()));
+            Log.e("endUndo2", String.valueOf(modeIsIntake));
+            Log.e("endUndo3", String.valueOf(mode));
+            Log.e("endUndo4", String.valueOf(element));
+            btn_undo.setEnabled(false);
     }
 
     public void undoGeneric(Boolean btndrop, Boolean intakeVal, String modeGeneric){
@@ -1509,6 +1509,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionList.add(TimerUtil.timestamp);
                 actionDic.put(actionCount, actionList);
                 actionCount++;
+                btn_undo.setEnabled(true);
             }
 
         } else if(element.equals("lemon")&& !mode.equals("endPosition")) {
@@ -1523,6 +1524,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionList.add(TimerUtil.timestamp);
                 actionDic.put(actionCount, actionList);
                 actionCount++;
+                btn_undo.setEnabled(true);
             }
         } else if (mode.equals("endPosition")){
             Log.e("wokedngge", "showup");
