@@ -679,9 +679,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
                 mapChange();
             } else if (actionDic.get(actionCount).get(3).equals("drop")) {
-                btn_drop.setEnabled(false);
-                modeIsIntake=true;
-                mode = "intake";
+                btn_drop.setEnabled(true);
+                modeIsIntake=false;
+                mode = "placement";
                 mapChange();
 
             }
@@ -992,7 +992,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_climb = (Button) findViewById(R.id.btn_climb);
             tb_defense = (ToggleButton) findViewById((R.id.tbtn_defense));
 
-
             cancelIncap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1024,6 +1023,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                         if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()) {
                             pw = false;
+                            btn_undo.setEnabled(false);
                             btn_climb.setEnabled(false);
                             btn_drop.setEnabled(false);
                             btn_spill.setEnabled(false);
@@ -1136,6 +1136,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mapChange();
             incapChecked = false;
             btn_climb.setEnabled(true);
+            btn_undo.setEnabled(true);
             if (!tele){
                 tb_defense.setEnabled(false);
             }
