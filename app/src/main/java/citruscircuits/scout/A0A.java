@@ -263,7 +263,13 @@ public class A0A extends DialogMaker {
     public void initPopups(){
         //BACKUP POPUP
         btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
-        pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 400, 300, true);
+        if(InputManager.mTabletType.equals("fire")) {
+            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 200, 300, true);
+        } else if(InputManager.mTabletType.equals("black")) {
+            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), ViewGroup.LayoutParams.MATCH_PARENT, 300, true);
+        } else {
+            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 400, 300, true);
+        }
         pw_backupWindow.setBackgroundDrawable(new ColorDrawable());
         btn_triggerBackupPopup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,7 +281,13 @@ public class A0A extends DialogMaker {
         //SCOUT NAME POPUP
         btn_triggerScoutNamePopup = (Button) findViewById(R.id.btn_triggerScoutNamePopup);
         LinearLayout nameLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_name, null);
-        pw_nameWindow = new PopupWindow(nameLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        if(InputManager.mTabletType.equals("fire")) {
+            pw_nameWindow = new PopupWindow(nameLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        } else if(InputManager.mTabletType.equals("black")) {
+            pw_nameWindow = new PopupWindow(nameLayout, 300, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        } else {
+            pw_nameWindow = new PopupWindow(nameLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        }
         pw_nameWindow.setBackgroundDrawable(new ColorDrawable());
 
         lv_scoutNames = nameLayout.findViewById(R.id.lv_scoutNames);
@@ -285,7 +297,13 @@ public class A0A extends DialogMaker {
         btn_triggerScoutNamePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,200, 0);
+                if(InputManager.mTabletType.equals("fire")) {
+                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
+                } else if(InputManager.mTabletType.equals("black")) {
+                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
+                } else {
+                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,200, 0);
+                }
                 mScoutNameListAdapter.notifyDataSetChanged();
             }
         });
@@ -293,7 +311,13 @@ public class A0A extends DialogMaker {
         //SCOUT ID POPUP
         btn_triggerScoutIDPopup = (Button) findViewById(R.id.btn_triggerScoutIDPopup);
         LinearLayout idLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_ids, null);
-        pw_idWindow = new PopupWindow(idLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        if(InputManager.mTabletType.equals("fire")) {
+            pw_idWindow = new PopupWindow(idLayout, 10, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        } else if(InputManager.mTabletType.equals("black")) {
+            pw_idWindow = new PopupWindow(idLayout, 10, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        } else {
+            pw_idWindow = new PopupWindow(idLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        }
         pw_idWindow.setBackgroundDrawable(new ColorDrawable());
 
         lv_scoutIds = idLayout.findViewById(R.id.lv_scoutIds);
@@ -312,7 +336,13 @@ public class A0A extends DialogMaker {
         //RESEND MATCHES POPUP
         btn_triggerResendMatches = (Button) findViewById(R.id.btn_accessData);
         LinearLayout resendMatchesLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_resend, null);
-        pw_resendMatchWindow = new PopupWindow(resendMatchesLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        if(InputManager.mTabletType.equals("fire")) {
+            pw_resendMatchWindow = new PopupWindow(resendMatchesLayout, 100, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        } else if(InputManager.mTabletType.equals("black")) {
+            pw_resendMatchWindow = new PopupWindow(resendMatchesLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        } else {
+            pw_resendMatchWindow = new PopupWindow(resendMatchesLayout, 450, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        }
         pw_resendMatchWindow.setBackgroundDrawable(new ColorDrawable());
         lv_resendMatch = resendMatchesLayout.findViewById(R.id.lv_resendMatches);
         mResendMatchesArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
