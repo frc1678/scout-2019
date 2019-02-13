@@ -22,12 +22,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+
 import citruscircuits.scout.A0A;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout._superDataClasses.Cst;
+
+import static citruscircuits.scout.Managers.InputManager.mMatchNum;
+import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 
 public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeReadListener{
 
@@ -36,6 +44,19 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
     QRCodeReaderView qrCodeReader;
 
     public String resultStr;
+
+    public static Integer numScouts;
+    public static Integer groupNumber;
+    public static Integer overallRanking;
+    public static Integer position;
+
+
+    public static ArrayList<Integer> group1 ;
+    public static ArrayList<Integer> group2 ;
+    public static ArrayList<Integer> group3 ;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +97,20 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         resultStr = text;
         String prevStr = AppCc.getSp("resultStr", "");
+
+        numScouts = prevStr.length()-2;
+        Log.e("does it go in here", String.valueOf(InputManager.mSPRRanking<6));
+
+        if(InputManager.mSPRRanking<6){
+            groupList(1,6, group1,1);
+
+        }else if( InputManager.mSPRRanking < (numScouts-6)/2+5){
+            groupList(7,(numScouts-6)/2+5, group2,2);
+
+        }else {
+            groupList((numScouts-6)/2+6, numScouts, group3,3);
+
+        }
 
         if(!resultStr.contains("|")) {
             AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
@@ -144,6 +179,18 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             qrCodeReader.setBackCamera();
         }else{
             qrCodeReader.setFrontCamera();
+        }
+    }
+    public void groupList(Integer start, Integer end, ArrayList<Integer> group, Integer groupNum){
+        if(InputManager.mSPRRanking>0){
+            for(int i=start;i<end;i++){
+                group.add(i);
+            }
+            groupNumber=groupNum;
+            Log.e("ranking", String.valueOf(groupNumber));
+            overallRanking=InputManager.mSPRRanking-start;
+            Log.e("ranking", String.valueOf(overallRanking));
+            position = ((mMatchNum-1)*groupNum+overallRanking+1)%6;
         }
     }
 

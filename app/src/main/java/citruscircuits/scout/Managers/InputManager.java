@@ -16,6 +16,7 @@ import java.util.HashMap;
 import citruscircuits.scout.A0A;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AppUtils;
+import citruscircuits.scout.utils.QRScan;
 
 import static citruscircuits.scout._superDataClasses.Cst.SCOUT_NAMES;
 
@@ -188,7 +189,6 @@ public class InputManager {
 
         return finalNamesList;
     }
-
     //Method for acquiring scout pre-match data from QRAssignments.txt
     public static void fullQRDataProcess(){
         if(mMatchNum > 0 && mCycleNum >= 0){
@@ -245,16 +245,35 @@ public class InputManager {
     }
 
     public static void getQRData(){
+        Log.e("SPR?!",String.valueOf(mSPRRanking));
         String sortL1key = "matches";
-        String sortL2key = "match"+mMatchNum;
+        Log.e("match?!",String.valueOf(sortL1key));
+        String sortL2key = String.valueOf(mMatchNum);
+        String sortL3key = String.valueOf(QRScan.position);
+        Log.e("matchnum?!",String.valueOf(sortL2key));
+        Log.e("position?!",String.valueOf(sortL3key));
 
         if(mSPRRanking > 0){
+            Log.e("does it enter here", "please do");
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
-                backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key).getJSONObject(mSPRRanking+"");
+                backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
+//                JSONObject backupDataBlue = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key).getJSONObject("blue");
+//                for(int i=0;i<backupDataRed.length();i++){
+//                    try {
+//                        String hf = backupDataRed.get(i);
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
 
-                mAllianceColor = backupData.getString("alliance");
-                mTeamNum = backupData.getInt("team");
+                Log.e("backUpData", String.valueOf(backupData));
+
+                mAllianceColor = backupData.getJSONObject(sortL3key).getString("alliance");
+                mTeamNum = backupData.getJSONObject(sortL3key).getInt("number");
+                Log.e("teamNumber", String.valueOf(mTeamNum));
+
 
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
