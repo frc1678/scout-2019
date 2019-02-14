@@ -155,8 +155,6 @@ public class InputManager {
 
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
-
-                A0A.updateUserData();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

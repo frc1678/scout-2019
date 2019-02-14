@@ -262,6 +262,11 @@ public class A0A extends DialogMaker {
 
                     setCycleBackgroundColor(InputManager.mAllianceColor);
                     tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
+                } else if(mAssignmentMode.equals("backup")) {
+                    InputManager.getBackupData();
+
+                    setCycleBackgroundColor(InputManager.mAllianceColor);
+                    tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
                 }
             }
         });
