@@ -283,11 +283,12 @@ public class InputManager {
         Log.e("position?!",String.valueOf(sortL3key));
 
         if(mSPRRanking > 0){
-            Log.e("does it enter here", "please do");
+            Log.e("marker", "please enter here");
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
 
+                Log.e("position???",String.valueOf(sortL3key));
                 Log.e("backUpData", String.valueOf(backupData));
 
                 mAllianceColor = backupData.getJSONObject(sortL3key).getString("alliance");

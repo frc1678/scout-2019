@@ -35,6 +35,7 @@ import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout._superDataClasses.Cst;
 
 import static citruscircuits.scout.Managers.InputManager.mMatchNum;
+import static citruscircuits.scout.Managers.InputManager.mQRString;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 
 public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeReadListener{
@@ -51,9 +52,9 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
     public static Integer position;
 
 
-    public static ArrayList<Integer> group1 ;
-    public static ArrayList<Integer> group2 ;
-    public static ArrayList<Integer> group3 ;
+    public static ArrayList<Integer> group1 = new ArrayList<>();
+    public static ArrayList<Integer> group2 = new ArrayList<>();
+    public static ArrayList<Integer> group3 = new ArrayList<>();
 
 
 
@@ -98,7 +99,9 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         resultStr = text;
         String prevStr = AppCc.getSp("resultStr", "");
 
-        numScouts = prevStr.length()-2;
+        InputManager.mQRString = resultStr;
+
+        numScouts = resultStr.length() - mQRString.indexOf("|");
         Log.e("does it go in here", String.valueOf(InputManager.mSPRRanking<6));
 
         if(InputManager.mSPRRanking<6){
@@ -124,7 +127,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         catch (Exception e){ e.printStackTrace(); }
 
         if(!prevStr.equals("")){
-            int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("|")));;
+            int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("|")));
 
             if(prevCycleNum >= cycleNum){
                 AppUtils.makeToast(this, "QR's CYCLE NUMBER: " + cycleNum + ", Your CYCLE NUMBER: " + prevCycleNum, 50);
@@ -149,8 +152,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         InputManager.mCycleNum = cycleNum;
         Log.e("QR STRING IN SCAN", resultStr);
-
-        InputManager.mQRString = resultStr;
 
         AppCc.setSp("resultStr", resultStr);
         AppCc.setSp("cycleNum", cycleNum);
@@ -181,7 +182,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             qrCodeReader.setFrontCamera();
         }
     }
-    public void groupList(Integer start, Integer end, ArrayList<Integer> group, Integer groupNum){
+    public static void groupList(Integer start, Integer end, ArrayList<Integer> group, Integer groupNum){
         if(InputManager.mSPRRanking>0){
             for(int i=start;i<end;i++){
                 group.add(i);
@@ -189,7 +190,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             groupNumber=groupNum;
             Log.e("ranking", String.valueOf(groupNumber));
             overallRanking=InputManager.mSPRRanking-start;
-            Log.e("ranking", String.valueOf(overallRanking));
+            Log.e("rankingoverall", String.valueOf(overallRanking));
             position = ((mMatchNum-1)*groupNum+overallRanking+1)%6;
         }
     }
