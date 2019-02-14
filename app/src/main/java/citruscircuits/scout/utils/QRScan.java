@@ -182,7 +182,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             qrCodeReader.setFrontCamera();
         }
     }
-    public void groupList(Integer start, Integer end, ArrayList<Integer> group, Integer groupNum){
+    public static void groupList(Integer start, Integer end, ArrayList<Integer> group, Integer groupNum){
         if(InputManager.mSPRRanking>0){
             for(int i=start;i<end;i++){
                 group.add(i);
