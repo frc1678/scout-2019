@@ -257,6 +257,9 @@ public class A0A extends DialogMaker {
 
                 InputManager.fullQRDataProcess();
 
+                setCycleBackgroundColor(InputManager.mAllianceColor);
+                tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
+
                 //TODO update values automatically if in backup/QR mode
             }
         });
