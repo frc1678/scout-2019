@@ -160,7 +160,7 @@ public class A0A extends DialogMaker {
 
     public static void updateUserData(){
         setCycleBackgroundColor(InputManager.mAllianceColor);
-        et_matchNum.setText(String.valueOf(InputManager.mMatchNum + 1));
+        et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
         tv_cycleNum.setText(String.valueOf(InputManager.mCycleNum));
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         btn_triggerScoutNamePopup.setText(InputManager.mScoutName);
@@ -254,6 +254,8 @@ public class A0A extends DialogMaker {
 
                 InputManager.mMatchNum = matchNum;
                 AppCc.setSp("matchNum", matchNum);
+
+                InputManager.fullQRDataProcess();
 
                 //TODO update values automatically if in backup/QR mode
             }

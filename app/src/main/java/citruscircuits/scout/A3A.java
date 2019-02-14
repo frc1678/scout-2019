@@ -128,5 +128,8 @@ public class A3A extends DialogMaker {
         }
     }
 
-    public void onClickEndScouting(View view) { open(A0A.class, null, false, false);}
+    public void onClickEndScouting(View view) {
+        InputManager.mMatchNum ++;
+        open(A0A.class, null, false, false);
+    }
 }
