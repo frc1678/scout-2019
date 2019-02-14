@@ -93,6 +93,7 @@ public class DialogMaker extends AppTc {
             btn_done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    InputManager.mAssignmentMode = "override";
                     OverrideDialog.this.cancel();
                 }
             });
@@ -150,7 +151,6 @@ public class DialogMaker extends AppTc {
             btn_done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {TabletDialog.this.cancel();
-                InputManager.mAssignmentMode = "override";
                 }
             });
         }
