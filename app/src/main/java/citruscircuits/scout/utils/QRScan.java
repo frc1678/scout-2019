@@ -101,7 +101,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         InputManager.mQRString = resultStr;
 
-        numScouts = prevStr.length() - mQRString.indexOf("|");
+        numScouts = resultStr.length() - mQRString.indexOf("|");
         Log.e("does it go in here", String.valueOf(InputManager.mSPRRanking<6));
 
         if(InputManager.mSPRRanking<6){
