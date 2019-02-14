@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import citruscircuits.scout.A0A;
 import citruscircuits.scout._superDataClasses.AppCc;
@@ -115,17 +116,45 @@ public class InputManager {
     //Backup method for acquiring scout pre-match data from backupAssignements.txt file
     public static void getBackupData(){
         if(mMatchNum > 0){
-            String sortL1key = "match"+mMatchNum;
-            String sortL2key = "scout"+mScoutId;
+            final HashMap<Integer, Integer> referenceDictionary= new HashMap<>();
+              Integer referenceEvenInteger=1;
+              Integer referenceOddInteger=1;
+
+            for(int i=1;i < 17;i++){
+                if (i < 6){
+                    referenceDictionary.put(i,i);
+                } else if(i >= 6){
+                    if ((2*i)% 2==0){
+                        referenceDictionary.put(i,referenceEvenInteger);
+                        referenceEvenInteger++;
+                    } else if((2*i)% 2==1){
+                        referenceDictionary.put(i,referenceOddInteger);
+                        referenceOddInteger++;
+                    }
+                }
+            }
+            String sortL1key = "matches";
+            Log.e("match?!",String.valueOf(sortL1key));
+            String sortL2key = String.valueOf(mMatchNum);
+            String sortL3key = String.valueOf(referenceDictionary.get(mScoutId));
+            Log.e("matchnum?!",String.valueOf(sortL2key));
+            Log.e("position?!",String.valueOf(sortL3key));
 
             InputManager.mAssignmentMode = "backup";
 
             try {
-                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("backupAssignments.txt"));
+                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
 
-                mAllianceColor = backupData.getString("alliance");
-                mTeamNum = backupData.getInt("team");
+                Log.e("backUpData", String.valueOf(backupData));
+
+                mAllianceColor = backupData.getJSONObject(sortL3key).getString("alliance");
+                mTeamNum = backupData.getJSONObject(sortL3key).getInt("number");
+
+                Log.e("teamNumber", String.valueOf(mTeamNum));
+
+                AppCc.setSp("allianceColor", mAllianceColor);
+                AppCc.setSp("teamNum", mTeamNum);
 
                 A0A.updateUserData();
             } catch (JSONException e) {
@@ -258,22 +287,13 @@ public class InputManager {
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
-//                JSONObject backupDataBlue = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key).getJSONObject("blue");
-//                for(int i=0;i<backupDataRed.length();i++){
-//                    try {
-//                        String hf = backupDataRed.get(i);
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
 
                 Log.e("backUpData", String.valueOf(backupData));
 
                 mAllianceColor = backupData.getJSONObject(sortL3key).getString("alliance");
                 mTeamNum = backupData.getJSONObject(sortL3key).getInt("number");
-                Log.e("teamNumber", String.valueOf(mTeamNum));
 
+                Log.e("teamNumber", String.valueOf(mTeamNum));
 
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
