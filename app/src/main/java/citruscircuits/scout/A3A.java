@@ -33,6 +33,7 @@ import java.util.Map;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.Managers.OutputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
+import citruscircuits.scout._superDataClasses.AppCc;
 
 public class A3A extends DialogMaker {
 
@@ -128,5 +129,9 @@ public class A3A extends DialogMaker {
         }
     }
 
-    public void onClickEndScouting(View view) { open(A0A.class, null, false, false);}
+    public void onClickEndScouting(View view) {
+        InputManager.mMatchNum ++;
+        AppCc.setSp("matchNum", InputManager.mMatchNum);
+        open(A0A.class, null, false, false);
+    }
 }

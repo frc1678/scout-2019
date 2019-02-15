@@ -22,12 +22,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+
 import citruscircuits.scout.A0A;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout._superDataClasses.Cst;
+
+import static citruscircuits.scout.Managers.InputManager.mMatchNum;
+import static citruscircuits.scout.Managers.InputManager.mQRString;
+import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 
 public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeReadListener{
 
@@ -36,6 +45,19 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
     QRCodeReaderView qrCodeReader;
 
     public String resultStr;
+
+    public static Integer numScouts;
+    public static Integer groupNumber;
+    public static Integer overallRanking;
+    public static Integer position;
+
+
+    public static ArrayList<Integer> group1 = new ArrayList<>();
+    public static ArrayList<Integer> group2 = new ArrayList<>();
+    public static ArrayList<Integer> group3 = new ArrayList<>();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +99,22 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         resultStr = text;
         String prevStr = AppCc.getSp("resultStr", "");
 
+        InputManager.mQRString = resultStr;
+
+        numScouts = resultStr.length() - mQRString.indexOf("|");
+        Log.e("does it go in here", String.valueOf(InputManager.mSPRRanking<6));
+
+        if(InputManager.mSPRRanking<6){
+            groupList(1,6, group1,1);
+
+        }else if( InputManager.mSPRRanking < (numScouts-6)/2+5){
+            groupList(7,(numScouts-6)/2+5, group2,2);
+
+        }else {
+            groupList((numScouts-6)/2+6, numScouts, group3,3);
+
+        }
+
         if(!resultStr.contains("|")) {
             AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
 
@@ -89,7 +127,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         catch (Exception e){ e.printStackTrace(); }
 
         if(!prevStr.equals("")){
-            int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("|")));;
+            int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("|")));
 
             if(prevCycleNum >= cycleNum){
                 AppUtils.makeToast(this, "QR's CYCLE NUMBER: " + cycleNum + ", Your CYCLE NUMBER: " + prevCycleNum, 50);
@@ -114,8 +152,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         InputManager.mCycleNum = cycleNum;
         Log.e("QR STRING IN SCAN", resultStr);
-
-        InputManager.mQRString = resultStr;
 
         AppCc.setSp("resultStr", resultStr);
         AppCc.setSp("cycleNum", cycleNum);
@@ -144,6 +180,18 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             qrCodeReader.setBackCamera();
         }else{
             qrCodeReader.setFrontCamera();
+        }
+    }
+    public static void groupList(Integer start, Integer end, ArrayList<Integer> group, Integer groupNum){
+        if(InputManager.mSPRRanking>0){
+            for(int i=start;i<end;i++){
+                group.add(i);
+            }
+            groupNumber=groupNum;
+            Log.e("ranking", String.valueOf(groupNumber));
+            overallRanking=InputManager.mSPRRanking-start;
+            Log.e("rankingoverall", String.valueOf(overallRanking));
+            position = ((mMatchNum-1)*groupNum+overallRanking+1)%6;
         }
     }
 

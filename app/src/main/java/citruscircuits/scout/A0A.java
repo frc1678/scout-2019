@@ -70,6 +70,7 @@ import citruscircuits.scout._superDataClasses.Cst;
 import citruscircuits.scout.utils.AppUtils;
 import citruscircuits.scout.utils.QRScan;
 
+import static citruscircuits.scout.Managers.InputManager.mQRString;
 import static citruscircuits.scout.utils.AppUtils.readFile;
 
 //Written by the Daemon himself ~ Calvin
@@ -160,7 +161,7 @@ public class A0A extends DialogMaker {
 
     public static void updateUserData(){
         setCycleBackgroundColor(InputManager.mAllianceColor);
-        et_matchNum.setText(String.valueOf(InputManager.mMatchNum + 1));
+        et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
         tv_cycleNum.setText(String.valueOf(InputManager.mCycleNum));
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         btn_triggerScoutNamePopup.setText(InputManager.mScoutName);
@@ -254,6 +255,11 @@ public class A0A extends DialogMaker {
 
                 InputManager.mMatchNum = matchNum;
                 AppCc.setSp("matchNum", matchNum);
+
+                InputManager.fullQRDataProcess();
+
+                setCycleBackgroundColor(InputManager.mAllianceColor);
+                tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
 
                 //TODO update values automatically if in backup/QR mode
             }
@@ -407,7 +413,26 @@ public class A0A extends DialogMaker {
                     InputManager.mScoutName = name;
                     AppCc.setSp("scoutName", name);
 
+                    String resultStr = AppCc.getSp("resultStr", "");
+
+                    InputManager.mQRString = resultStr;
+
+                    Integer numScouts = resultStr.length() - mQRString.indexOf("|");
+
+                    if(InputManager.mSPRRanking<6){
+                        QRScan.groupList(1,6, QRScan.group1,1);
+
+                    }else if( InputManager.mSPRRanking < (numScouts-6)/2+5){
+                        QRScan.groupList(7,(numScouts-6)/2+5, QRScan.group2,2);
+
+                    }else {
+                        QRScan.groupList((numScouts-6)/2+6, numScouts, QRScan.group3,3);
+                    }
+
                     InputManager.fullQRDataProcess();
+
+                    Log.e("TEAMNUM", InputManager.mTeamNum + "");
+                    Log.e("TEAMNUMFAKE", InputManager.mAllianceColor);
 
                     updateUserData();
 
