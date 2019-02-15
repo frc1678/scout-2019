@@ -346,7 +346,8 @@ public class A0A extends DialogMaker {
     public void onClickFileBackup(View view) {
         InputManager.getBackupData();
 
-//        updateUserViews();
+        setCycleBackgroundColor(InputManager.mAllianceColor);
+        tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         pw_backupWindow.dismiss();
     }
 
