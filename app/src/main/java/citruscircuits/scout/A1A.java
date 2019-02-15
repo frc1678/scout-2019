@@ -1898,40 +1898,41 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void initPopup(PopupWindow pw2) {
         if (timerCheck) {
-            if (defenseMap && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
-                    || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mTabletType.equals("black")) && (!defensePw))){
+            if (defenseMap && !defensePw && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
+                    || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mTabletType.equals("black"))
+                    || (((field_orientation.contains("left") && x >= 720) || (field_orientation.contains("right") && x <= 130)) && mTabletType.equals("fire")))){
                 Log.e("yes" , "defense");
                 if (mTabletType.equals("fire")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 100, y - 100);
                 } else {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 }
                 defensePw = true;
             } else if ((!tele) && (!defenseMap) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
-                    || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black")))) {
+                    || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
+                    || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 130)) && mTabletType.equals("fire")))) {
                 Log.e("yes" , "storm");
                 if (mTabletType.equals("fire")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
                 } else {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 } defensePw = false;
             } else if (tele && !defenseMap) {
                 Log.e("yes" , "tele");
                 if (mTabletType.equals("fire")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 20, y - 100);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
                 } else {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 }
                 defensePw = false;
-            }
-            else{
+            } else{
                 Log.e("yes" , "else");
                 pw = true;
             }
-                if (defensePw){
-                    Log.e("yes" , "defensePw");
-                    pw = false;
-                }
+            if (defensePw){
+                Log.e("yes" , "defensePw");
+                pw = false;
+            }
             Log.e("woooooooooooooooook",String.valueOf(pw));
         }
     }

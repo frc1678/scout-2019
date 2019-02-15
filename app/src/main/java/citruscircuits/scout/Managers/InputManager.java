@@ -292,8 +292,6 @@ public class InputManager {
                 mAllianceColor = backupData.getJSONObject(sortL3key).getString("alliance");
                 mTeamNum = backupData.getJSONObject(sortL3key).getInt("number");
 
-                Log.e("teamNumber", String.valueOf(mTeamNum));
-
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
             } catch (JSONException e) {
