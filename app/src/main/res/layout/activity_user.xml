@@ -23,7 +23,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/btn_normal_selector"
-        android:text="Data"
+        android:text="Resend"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="28sp" />
 
@@ -34,9 +34,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@drawable/btn_normal_selector"
-        android:text="Backups"
+        android:text="Assignment System"
         android:textColor="@color/normalButtonTextColor"
-        android:textSize="@dimen/textSize_backups" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btn_triggerScoutIDPopup"
@@ -91,8 +91,8 @@
 
     <ImageView
         android:id="@+id/imgv_enterScoutFillBackground"
-        android:layout_width="420dp"
-        android:layout_height="400dp"
+        android:layout_width="380dp"
+        android:layout_height="380dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:contentDescription="Drag to Scout"
@@ -154,14 +154,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:text="SCOUT"
-        android:textSize="20sp"/>
+        android:layout_margin="20dp"
+        android:textSize="30sp"/>
 
     <Button
         android:id="@+id/btn_map_orientation"
         android:layout_width="120dp"
         android:layout_height="60dp"
         android:layout_above="@+id/btn_triggerBackupPopup"
-        android:layout_alignStart="@+id/imgv_cycleNumBackground"
+        android:layout_centerHorizontal="true"
         android:background="#ffffff" />
 
 </RelativeLayout>
