@@ -176,7 +176,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         qrCodeReader.setTorchEnabled(true);
         qrCodeReader.setAutofocusInterval(3000L);
 
-        if(InputManager.mScoutId >= 7){
+        if(InputManager.mTabletType.equals("fire") || InputManager.mTabletType.equals("black")){
             qrCodeReader.setBackCamera();
         }else{
             qrCodeReader.setFrontCamera();
