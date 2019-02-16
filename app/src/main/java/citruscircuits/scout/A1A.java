@@ -187,7 +187,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static String mode = "intake";
     public String element = "";
     public String zone = "";
-    public String incaptype = "";
+    public String incapType = "";
 
     public TextView incapTypes;
     public RadioGroup incapOptions;
@@ -582,7 +582,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             timerCheck = false;
             incapChecked=false;
             incapMap=false;
-            incaptype = "";
+            incapType = "";
             preload();
             InputManager.numSpill=0;
             actionCount=0;
@@ -1083,7 +1083,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 }
                             }
                         } else if (brokenMechanism.isChecked()) {
-                            incaptype = "brokenMechanism";
+                            incapType = "brokenMechanism";
                             mapChange();
                             try {
                                 compressionDic.put("cause", "brokenMechanism");
@@ -1091,7 +1091,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 e.printStackTrace();
                             }
                         } else if (twoPieces.isChecked()) {
-                            incaptype = "twoGamePieces";
+                            incapType = "twoGamePieces";
                             mapChange();
                             try {
                                 compressionDic.put("cause", "twoGamePieces");
@@ -1150,7 +1150,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         else if (incapChecked) {
             compressionDic = new JSONObject();
-            incaptype = " ";
+            incapType = " ";
             incapMap=false;
             pw = true;
             btn_drop.setEnabled(true);
@@ -1422,7 +1422,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 iv_field.setImageResource(R.drawable.field_intake_red_right);
             }
         }
-        if (incaptype.equals("brokenMechanism") || incaptype.equals("twoGamePieces")) {
+        if (incapType.equals("brokenMechanism") || incapType.equals("twoGamePieces")) {
             if (element.equals("lemon")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
                 if (mode.equals("placement")) {
