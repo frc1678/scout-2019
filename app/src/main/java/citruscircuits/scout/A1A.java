@@ -583,6 +583,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             preload();
             InputManager.numSpill=0;
             actionCount=0;
+            incapChecked=false;
+            incapMap=false;
             btn_spill.setText("SPILL - " + InputManager.numSpill);
             mRealTimeMatchData = new JSONArray();
 
