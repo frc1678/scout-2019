@@ -139,13 +139,13 @@ public class A0A extends DialogMaker {
     //OnClick Methods
     public void onClickStartScouting(View view) {
         String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
-        String fileName = "QRAssignments.txt";
+        String fileName = "assignments.txt";
 
         File f = new File(filePath, fileName);
 
         if(f.exists()) {
             try {
-                JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 Integer timestampInt = timestamp.getInt("timestamp");
 
                 InputManager.mAssignmentFileTimestamp = timestampInt;
