@@ -21,6 +21,7 @@ public class StormDialog extends Fragment {
     public static View view;
     public static Button btn_startTimer;
     public static ToggleButton tb_hab_run;
+    public static Button teleButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,11 +29,14 @@ public class StormDialog extends Fragment {
             view = inflater.inflate(R.layout.activity_storm_red, container, false);
             btn_startTimer = view.findViewById(R.id.btn_timer);
             tb_hab_run = view.findViewById(R.id.tgbtn_storm_run);
+            teleButton =view.findViewById(R.id.btn_to_teleop);
         }
         else if(InputManager.mAllianceColor.equals("blue")) {
             view = inflater.inflate(R.layout.activity_storm_blue, container, false);
             btn_startTimer = view.findViewById(R.id.btn_timer);
             tb_hab_run = view.findViewById(R.id.tgbtn_storm_run);
+            teleButton =view.findViewById(R.id.btn_to_teleop);
+
         }
         if(A1A.cancelStormChecker){
             btn_startTimer.setPressed(true);
@@ -54,6 +58,7 @@ public class StormDialog extends Fragment {
             A1A.btn_drop.setEnabled(true);
             A1A.tb_defense.setEnabled(true);
             A1A.btn_climb.setEnabled(true);
+            teleButton.setEnabled(true);
         }
         return view;
     }
