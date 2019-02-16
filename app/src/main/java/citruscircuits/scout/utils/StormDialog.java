@@ -13,7 +13,7 @@ import citruscircuits.scout.R;
 import android.widget.Button;
 import android.widget.ToggleButton;
 import static citruscircuits.scout.A1A.cancelStormChecker;
-
+import static citruscircuits.scout.A1A.mode;
 
 
 public class StormDialog extends Fragment {
@@ -25,6 +25,7 @@ public class StormDialog extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        InputManager.mSandstormEndPosition = "";
         if(InputManager.mAllianceColor.equals("red")) {
             view = inflater.inflate(R.layout.activity_storm_red, container, false);
             btn_startTimer = view.findViewById(R.id.btn_timer);
@@ -55,7 +56,9 @@ public class StormDialog extends Fragment {
             A1A.btn_spill.setEnabled(true);
             tb_hab_run.setChecked(true);
             A1A.cancelStormChecker=false;
-            A1A.btn_drop.setEnabled(true);
+            if (mode.equals("placement")){
+                A1A.btn_drop.setEnabled(true);
+            }
             A1A.tb_defense.setEnabled(true);
             A1A.btn_climb.setEnabled(true);
             teleButton.setEnabled(true);
