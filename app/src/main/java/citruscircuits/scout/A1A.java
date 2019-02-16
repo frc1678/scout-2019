@@ -392,6 +392,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         if (tb_hab_run.isChecked()){
+            popup.dismiss();
+            popup_fail_success.dismiss();
+            pw = true;
             btn_climb.setEnabled(false);
             tb_incap.setEnabled(false);
             tb_defense.setEnabled(false);
