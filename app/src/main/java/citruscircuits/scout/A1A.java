@@ -608,6 +608,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
         didUndoOnce=false;
+        defensePw = false;
+
         overallLayout.removeView(iv_game_element);
         try {
             compressionDic.put("type", "drop");
@@ -617,6 +619,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         mRealTimeMatchData.put(compressionDic);
         Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
+        Log.e("defensevalue", String.valueOf(defensePw));
         mapChange();
 
     }
@@ -693,6 +696,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_drop.setEnabled(true);
                     modeIsIntake=false;
                     mode = "placement";
+                    Log.e("defensevalue2", String.valueOf(defensePw));
+
                     mapChange();
 
                 }
