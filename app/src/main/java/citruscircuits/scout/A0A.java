@@ -43,6 +43,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -138,26 +139,30 @@ public class A0A extends DialogMaker {
 
     //OnClick Methods
     public void onClickStartScouting(View view) {
-        String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
-        String fileName = "QRAssignments.txt";
+        if(InputManager.mTabletType.equals("") || InputManager.mScoutName.equals("unselected") || InputManager.mTabletType.equals("unselected") || InputManager.mMatchNum == 0 || InputManager.mTeamNum == 0 || InputManager.mScoutId == 0) {
+            Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
+        } else {
+            String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
+            String fileName = "QRAssignments.txt";
 
-        File f = new File(filePath, fileName);
+            File f = new File(filePath, fileName);
 
-        if(f.exists()) {
-            try {
-                JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
-                Integer timestampInt = timestamp.getInt("timestamp");
+            if(f.exists()) {
+                try {
+                    JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                    Integer timestampInt = timestamp.getInt("timestamp");
 
-                InputManager.mAssignmentFileTimestamp = timestampInt;
+                    InputManager.mAssignmentFileTimestamp = timestampInt;
 
-                Log.i("ASSIGNMENT!", InputManager.mAssignmentFileTimestamp + "");
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    Log.i("ASSIGNMENT!", InputManager.mAssignmentFileTimestamp + "");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        }
 
-        AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
-        open(A0B.class, null, false, true);
+            AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
+            open(A0B.class, null, false, true);
+        }
     }
 
     public static void updateUserData(){
