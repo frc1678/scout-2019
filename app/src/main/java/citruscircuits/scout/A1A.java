@@ -1535,7 +1535,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     lp.setMargins(x - 25, y - 90, 0, 0);
                 }
             } else if((y < 85 && mTabletType.equals("green")) || (y < 55 &&  mTabletType.equals("black"))) {
-                if((x < 40 && mTabletType.equals("green")) || (x < 25 && mScoutId >= 9)) {
+                if((x < 40 && mTabletType.equals("green")) || (x < 25 && mTabletType.equals("black"))) {
                     lp.setMargins(x + 20, y + 5, 0, 0);
                 } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
                     lp.setMargins(x - 100, y + 5, 0, 0);
