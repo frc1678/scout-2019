@@ -54,6 +54,7 @@
         android:textSize="25dp"
         android:padding="10dp"
         android:layout_alignParentBottom="true"
+        android:enabled="false"
         android:onClick="onClickTeleop"
         android:background="@drawable/storm_red_selector" />
 </RelativeLayout>

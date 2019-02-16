@@ -58,6 +58,7 @@ import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
 import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
 import static citruscircuits.scout.Managers.InputManager.mTabletType;
+import static citruscircuits.scout.utils.StormDialog.teleButton;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -534,7 +535,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             timerCheck = true;
             startTimer = false;
             btn_undo.setEnabled(false);
-
+            teleButton.setEnabled(true);
             tb_hab_run.setEnabled(true);
             tb_incap.setEnabled(true);
             btn_spill.setEnabled(true);
@@ -558,6 +559,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_spill.setEnabled(false);
             tb_hab_run.setEnabled(false);
             tb_hab_run.setChecked(false);
+            teleButton.setEnabled(false);
             btn_undo.setEnabled(false);
             btn_drop.setEnabled(false);
             actionDic.clear();
