@@ -52,6 +52,7 @@ import citruscircuits.scout.utils.TimerUtil;
 
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
+import static citruscircuits.scout.Managers.InputManager.mSandstormEndPosition;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import citruscircuits.scout.utils.StormDialog;
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
@@ -183,7 +184,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public int x;
     public int y;
 
-    public String mode = "intake";
+    public static String mode = "intake";
     public String element = "";
     public String zone = "";
     public String incaptype = "";
@@ -493,6 +494,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDoneEndPosition(View v){
         if(InputManager.mSandstormEndPosition.contains("zone")) {
+            Log.e("sandstormValue", mSandstormEndPosition);
             cancelStormChecker=false;
             getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
             tele = true;
@@ -510,7 +512,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             initShape();
             tb_incap.setEnabled(true);
             btn_spill.setEnabled(true);
-            btn_drop.setEnabled(true);
+            if (mode.equals("placement")){
+                A1A.btn_drop.setEnabled(true);
+            }
             tb_defense.setEnabled(true);
             btn_climb.setEnabled(true);
             didUndoOnce=false;
