@@ -1126,7 +1126,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                         mRealTimeMatchData.put(compressionDic);
 
-                        incapMapChange();
+                        mapChange();
                         incapDialog.dismiss();
                     }
                     else {
@@ -1183,7 +1183,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             pw = true;
             btn_climb.setEnabled(false);
             mapChange();
-            //todo compress
         }
         else if(defenseChecked){
             defenseChecked = false;
@@ -1456,7 +1455,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.faded_field_intake_red_right);
                 }
             }
-        } if(mode.equals("intake")&& defenseMap) {
+        } else if(incapMap) {
+            if (field_orientation.contains("right")) {
+                iv_field.setImageResource(R.drawable.gray_field_intake_right);
+            } else if(field_orientation.contains("left")) {
+                iv_field.setImageResource(R.drawable.gray_field_intake_left);
+            }
+        }
+
+        if(mode.equals("intake")&& defenseMap) {
             if (field_orientation.equals("blue_left")) {
                 iv_field.setImageResource(R.drawable.defense_field_blue_left);
             } else if (field_orientation.equals("blue_right")) {
@@ -1487,40 +1494,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
         }
     }
-    public void incapMapChange(){
-        if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()){
-            if(mode.equals("intake")) {
-                if (field_orientation.equals("blue_left")) {
-                    iv_field.setImageResource(R.drawable.gray_field_intake_left);
-                } else if (field_orientation.equals("blue_right")) {
-                    iv_field.setImageResource(R.drawable.gray_field_intake_right);
-                } else if (field_orientation.equals("red_left")) {
-                    iv_field.setImageResource(R.drawable.gray_field_intake_left);
-                } else if (field_orientation.equals("red_right")) {
-                    iv_field.setImageResource(R.drawable.gray_field_intake_right);
-                }
-            }
 
-            else if(element.equals("lemon") && !mode.equals("incap")) {
-                if(mode.equals("placement")) {
-                    if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.gray_field_placement_lemon_left);
-                    } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.gray_field_placement_lemon_right);
-                    }
-                }
-            }
-            else if(element.equals("orange") && !mode.equals("incap")) {
-                if(mode.equals("placement")) {
-                    if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.gray_field_placement_orange_left);
-                    } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.gray_field_placement_orange_right);
-                    }
-                }
-            }
-        }
-    }
     public void initShape() {
         pw = true;
         overallLayout.removeView(iv_game_element);
