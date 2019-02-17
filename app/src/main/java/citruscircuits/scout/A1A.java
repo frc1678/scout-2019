@@ -1156,13 +1156,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             incapType = " ";
             incapMap=false;
             pw = true;
-            btn_drop.setEnabled(true);
+            if (mode.equals("placement")){
+                btn_drop.setEnabled(true);
+            }
+            if (!didUndoOnce){
+                btn_undo.setEnabled(true);
+            }
             btn_spill.setEnabled(true);
             tb_incap.setChecked(false);
             mapChange();
             incapChecked = false;
             btn_climb.setEnabled(true);
-            btn_undo.setEnabled(true);
             if (!tele){
                 tb_defense.setEnabled(false);
             }
