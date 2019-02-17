@@ -1420,7 +1420,44 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 iv_field.setImageResource(R.drawable.field_intake_red_right);
             }
         }
-        if (incapType.equals("brokenMechanism") || incapType.equals("twoGamePieces")) {
+          if (incapMap && !incapType.equals("brokenMechanism") && !incapType.equals("twoGamePieces")) {
+            if (field_orientation.contains("right")) {
+                iv_field.setImageResource(R.drawable.gray_field_intake_right);
+            } else if(field_orientation.contains("left")) {
+                iv_field.setImageResource(R.drawable.gray_field_intake_left);
+            }
+        } else if (defenseMap){
+            if (mode.equals("intake")) {
+                if (field_orientation.equals("blue_left")) {
+                    iv_field.setImageResource(R.drawable.defense_field_blue_left);
+                } else if (field_orientation.equals("blue_right")) {
+                    iv_field.setImageResource(R.drawable.defense_field_blue_right);
+                } else if (field_orientation.equals("red_left")) {
+                    iv_field.setImageResource(R.drawable.defense_field_red_left);
+                } else if (field_orientation.equals("red_right")) {
+                    iv_field.setImageResource(R.drawable.defense_field_red_right);
+                }
+            } if (element.equals("orange")){
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                if(mode.equals("placement")) {
+                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                    if (field_orientation.contains("left")) {
+                        iv_field.setImageResource(R.drawable.defense_placement_orange_left);
+                    } else if (field_orientation.contains("right")) {
+                        iv_field.setImageResource(R.drawable.defense_placement_orange_right);
+                    }
+                }
+            } if (element.equals("lemon")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+                if(mode.equals("placement")) {
+                    if (field_orientation.contains("left")) {
+                        iv_field.setImageResource(R.drawable.defense_placement_lemon_left);
+                    } else if (field_orientation.contains("right")) {
+                        iv_field.setImageResource(R.drawable.defense_placement_lemon_right);
+                    }
+                }
+            }
+        } else if (incapType.equals("brokenMechanism") || incapType.equals("twoGamePieces")) {
             if (element.equals("lemon")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
                 if (mode.equals("placement")) {
@@ -1455,44 +1492,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.faded_field_intake_red_right);
                 }
             }
-        } else if(incapMap) {
-            if (field_orientation.contains("right")) {
-                iv_field.setImageResource(R.drawable.gray_field_intake_right);
-            } else if(field_orientation.contains("left")) {
-                iv_field.setImageResource(R.drawable.gray_field_intake_left);
-            }
         }
 
-        if(mode.equals("intake")&& defenseMap) {
-            if (field_orientation.equals("blue_left")) {
-                iv_field.setImageResource(R.drawable.defense_field_blue_left);
-            } else if (field_orientation.equals("blue_right")) {
-                iv_field.setImageResource(R.drawable.defense_field_blue_right);
-            } else if (field_orientation.equals("red_left")) {
-                iv_field.setImageResource(R.drawable.defense_field_red_left);
-            } else if (field_orientation.equals("red_right")) {
-                iv_field.setImageResource(R.drawable.defense_field_red_right);
-            }
-        } if (element.equals("orange")&& defenseMap){
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-            if(mode.equals("placement")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                if (field_orientation.contains("left")) {
-                    iv_field.setImageResource(R.drawable.defense_placement_orange_left);
-                } else if (field_orientation.contains("right")) {
-                    iv_field.setImageResource(R.drawable.defense_placement_orange_right);
-                }
-            }
-        } if (element.equals("lemon")&& defenseMap) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-            if(mode.equals("placement")) {
-                if (field_orientation.contains("left")) {
-                    iv_field.setImageResource(R.drawable.defense_placement_lemon_left);
-                } else if (field_orientation.contains("right")) {
-                    iv_field.setImageResource(R.drawable.defense_placement_lemon_right);
-                }
-            }
-        }
+
     }
 
     public void initShape() {
