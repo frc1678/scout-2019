@@ -113,7 +113,7 @@ public class InputManager {
 
     }
 
-    //Backup method for acquiring scout pre-match data from backupAssignements.txt file
+    //Backup method for acquiring scout pre-match data from assignements.txt file
     public static void getBackupData(){
         if(mMatchNum > 0){
             final HashMap<Integer, Integer> referenceDictionary= new HashMap<>();
@@ -143,7 +143,7 @@ public class InputManager {
             InputManager.mAssignmentMode = "backup";
 
             try {
-                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
 
                 Log.e("backUpData", String.valueOf(backupData));
@@ -166,7 +166,7 @@ public class InputManager {
         ArrayList<String> finalNamesList = new ArrayList<String>();
 
         String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
-        String fileName = "QRAssignments.txt";
+        String fileName = "assignments.txt";
 
         File f = new File(filePath,fileName);
 
@@ -174,7 +174,7 @@ public class InputManager {
 
         if(f.exists()) {
             try {
-                JSONObject names = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                JSONObject names = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 names = names.getJSONObject(sortL1key);
 
                 JSONArray namesArray = names.names();
@@ -216,7 +216,7 @@ public class InputManager {
 
         return finalNamesList;
     }
-    //Method for acquiring scout pre-match data from QRAssignments.txt
+    //Method for acquiring scout pre-match data from assignments.txt
     public static void fullQRDataProcess(){
         if(mMatchNum > 0 && mCycleNum >= 0){
             mSPRRanking = 0;
@@ -231,13 +231,13 @@ public class InputManager {
             String ssort1L1key = "letters";
 
             String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
-            String fileName = "QRAssignments.txt";
+            String fileName = "assignments.txt";
 
             File f = new File(filePath,fileName);
 
             if(f.exists()) {
                 try {
-                    String qrDataString = AppUtils.retrieveSDCardFile("QRAssignments.txt");
+                    String qrDataString = AppUtils.retrieveSDCardFile("assignments.txt");
 
                     JSONObject qrData = new JSONObject(qrDataString);
                     mScoutLetter = qrData.getJSONObject(ssort1L1key).getString(mScoutName);
@@ -283,7 +283,7 @@ public class InputManager {
         if(mSPRRanking > 0){
             Log.e("marker", "please enter here");
             try {
-                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
 
                 Log.e("position???",String.valueOf(sortL3key));
