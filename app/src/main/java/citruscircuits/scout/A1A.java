@@ -1331,9 +1331,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickSuccess(View view) {
         if(mode.equals("intake")) {
             mode = "placement";
+            modeIsIntake = false;
             btn_drop.setEnabled(true);
         } else if(mode.equals("placement")) {
             mode = "intake";
+            modeIsIntake = true;
             btn_drop.setEnabled(false);
         }
         recordLoadingStation(true);
