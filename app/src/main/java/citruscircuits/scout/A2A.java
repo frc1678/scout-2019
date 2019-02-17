@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -63,10 +64,14 @@ public class A2A extends DialogMaker {
     }
 
     public void onClickToQR(View view) {
-        InputManager.mTeamNum = AppUtils.StringToInt(et_teamNum.getText().toString());
-        InputManager.mMatchNum = AppUtils.StringToInt(et_matchNum.getText().toString());
+        if(et_teamNum.getText().toString().equals("") || Integer.valueOf(et_teamNum.getText().toString()) == 0 || et_matchNum.getText().toString().equals("") || Integer.valueOf(et_matchNum.getText().toString()) == 0) {
+            Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
+        } else {
+            InputManager.mTeamNum = AppUtils.StringToInt(et_teamNum.getText().toString());
+            InputManager.mMatchNum = AppUtils.StringToInt(et_matchNum.getText().toString());
 
-        open(A3A.class, null, false, false);
+            open(A3A.class, null, false, false);
+        }
     }
 
     public void onBackPressed() {
