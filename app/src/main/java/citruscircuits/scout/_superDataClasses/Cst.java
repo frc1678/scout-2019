@@ -86,6 +86,8 @@ public interface Cst {
         put("climb", "R");
         put("incap", "S");
         put("unincap", "U");
+        put("startDefense", "t");
+        put("endDefense", "u");
         put("zone1Left", "V");
         put("zone1Right", "W");
         put("zone2Left", "X");
