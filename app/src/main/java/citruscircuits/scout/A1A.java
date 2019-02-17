@@ -86,7 +86,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public boolean defensePw = false;
 
-    public boolean incapMap = false;
+    public static boolean incapMap = false;
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
@@ -97,7 +97,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean cancelStormChecker=false;
     public boolean doneStormChecker=false;
     public boolean isElementUsedForRobot=false;
-    public boolean didUndoOnce=false;
+    public boolean didUndoOnce=true;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
     public Integer level;
@@ -187,7 +187,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static String mode = "intake";
     public String element = "";
     public String zone = "";
-    public String incapType = "";
+    public static String incapType = "";
 
     public TextView incapTypes;
     public RadioGroup incapOptions;
@@ -509,10 +509,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         isElementUsedForRobot=true;
         initShape();
         isElementUsedForRobot=false;
-        if (didUndoOnce){
-            btn_undo.setEnabled(false);
-        }else if (!didUndoOnce){
-            btn_undo.setEnabled(true);
+            if (didUndoOnce){
+                btn_undo.setEnabled(false);
+            }else if (!didUndoOnce){
+                btn_undo.setEnabled(true);
+            }
+        if(incapMap && !incapType.equals("brokenMechanism") && !incapType.equals("twoGamePieces")){
+            pw=false;
         }
     }
 
@@ -522,7 +525,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             cancelStormChecker=false;
             getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
             tele = true;
-            btn_climb.setEnabled(true);
             if (modeIsIntake){
                 mode ="intake";
             }
@@ -536,12 +538,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             isElementUsedForRobot=true;
             initShape();
             tb_incap.setEnabled(true);
-            btn_spill.setEnabled(true);
-            if (mode.equals("placement")){
-                A1A.btn_drop.setEnabled(true);
+            if(!incapMap || incapType.equals("brokenMechanism") || incapType.equals("twoGamePieces")){
+                btn_spill.setEnabled(true);
+                if (mode.equals("placement")){
+                    A1A.btn_drop.setEnabled(true);
+                }
+                btn_climb.setEnabled(true);
+                tb_defense.setEnabled(true);
+
+
             }
-            tb_defense.setEnabled(true);
-            btn_climb.setEnabled(true);
+            if(incapMap && !incapType.equals("brokenMechanism") && !incapType.equals("twoGamePieces")){
+                pw=false;
+            }
+
             didUndoOnce=false;
         } else {
             Toast.makeText(getBaseContext(), "Have you inputted a valid end position?",
@@ -1057,7 +1067,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     popup.dismiss();
 
                     if (tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked() || brokenMechanism.isChecked() || twoPieces.isChecked()) {
-
                         compressionDic = new JSONObject();
 
                         try {
@@ -1156,11 +1165,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_incap.setChecked(false);
             mapChange();
             incapChecked = false;
-            btn_climb.setEnabled(true);
             if (!tele){
                 tb_defense.setEnabled(false);
+                tb_hab_run.setEnabled(true);
+                btn_climb.setEnabled(false);
+
             }
             else if(tele){
+                btn_climb.setEnabled(true);
                 tb_defense.setEnabled(true);
             }
             try {
@@ -1493,7 +1505,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
         }
-
 
     }
 

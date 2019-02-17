@@ -13,6 +13,7 @@ import citruscircuits.scout.R;
 import android.widget.Button;
 import android.widget.ToggleButton;
 import static citruscircuits.scout.A1A.cancelStormChecker;
+import static citruscircuits.scout.A1A.incapMap;
 import static citruscircuits.scout.A1A.mode;
 
 
@@ -51,14 +52,17 @@ public class StormDialog extends Fragment {
             }
             A1A.timerCheck = true;
             A1A.startTimer = false;
-            tb_hab_run.setEnabled(true);
-            A1A.tb_incap.setEnabled(true);
-            A1A.btn_spill.setEnabled(true);
-            tb_hab_run.setChecked(true);
-            A1A.cancelStormChecker=false;
-            if (mode.equals("placement")){
-                A1A.btn_drop.setEnabled(true);
+            if(!incapMap || A1A.incapType.equals("brokenMechanism") || A1A.incapType.equals("twoGamePieces")){
+                tb_hab_run.setEnabled(true);
+                tb_hab_run.setChecked(true);
+                A1A.btn_spill.setEnabled(true);
+                if (mode.equals("placement")){
+                    A1A.btn_drop.setEnabled(true);
+                }
             }
+
+            A1A.tb_incap.setEnabled(true);
+            A1A.cancelStormChecker=false;
             A1A.tb_defense.setEnabled(false);
             A1A.btn_climb.setEnabled(false);
             teleButton.setEnabled(true);
