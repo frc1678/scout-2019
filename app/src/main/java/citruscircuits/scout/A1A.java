@@ -830,7 +830,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(spaceOneI.getText().toString().equals(" ") || spaceTwoI.getText().toString().equals(" ") || spaceThreeI.getText().toString().equals(" ") || spaceOneII.getText().toString().equals(" ") || spaceTwoII.getText().toString().equals(" ") || spaceThreeII.getText().toString().equals(" ")){
+                if(spaceOneI.getText().toString().equals(" ") || spaceTwoI.getText().toString().equals(" ") || spaceThreeI.getText().toString().equals(" ") || spaceOneII.getText().toString().equals(" ") || spaceTwoII.getText().toString().equals(" ") || spaceThreeII.getText().toString().equals(" ")
+                        || (spaceOneI.getText().toString().equals("None") && spaceTwoI.getText().toString().equals("None") && spaceThreeI.getText().toString().equals("None") && spaceOneII.getText().toString().equals("None") && spaceTwoII.getText().toString().equals("None") && spaceThreeII.getText().toString().equals("None"))){
                     Toast.makeText(getBaseContext(), "Make Sure You Filled Out All Of The Information!",
                             Toast.LENGTH_SHORT).show();
 
