@@ -1198,16 +1198,38 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             popup.dismiss();
             pw = true;
             btn_climb.setEnabled(false);
+
+            compressionDic = new JSONObject();
+
+            try {
+                compressionDic.put("type", "startDefense");
+                timestamp(TimerUtil.timestamp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            mRealTimeMatchData.put(compressionDic);
+
             mapChange();
-            //todo compress
         }
         else if(defenseChecked){
             defenseChecked = false;
             btn_climb.setEnabled(true);
             defenseMap = false;
             pw = true;
+
+            compressionDic = new JSONObject();
+
+            try {
+                compressionDic.put("type", "endDefense");
+                timestamp(TimerUtil.timestamp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            mRealTimeMatchData.put(compressionDic);
+
             mapChange();
-// to do: compress
         }
     }
 
