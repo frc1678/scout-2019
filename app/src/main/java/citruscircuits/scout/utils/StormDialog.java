@@ -59,8 +59,8 @@ public class StormDialog extends Fragment {
             if (mode.equals("placement")){
                 A1A.btn_drop.setEnabled(true);
             }
-            A1A.tb_defense.setEnabled(true);
-            A1A.btn_climb.setEnabled(true);
+            A1A.tb_defense.setEnabled(false);
+            A1A.btn_climb.setEnabled(false);
             teleButton.setEnabled(true);
         }
         return view;
