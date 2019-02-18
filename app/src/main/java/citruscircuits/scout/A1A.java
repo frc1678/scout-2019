@@ -881,7 +881,28 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     Log.e("wok", climbAttemptValues.toString());
                     Log.e("wok2", climbActualValues.toString());
 
+                    if(climbInputted){
+                        int index = -1;
+                        for(int i=0;i<mRealTimeMatchData.length();i++){
+                            try {
+                                String hf = mRealTimeMatchData.getString(i);
+                                if(hf.contains("climb")) {
+                                    index = i;
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        Log.e("int?!",String.valueOf(index));
+                        Log.e("dic?!", mRealTimeMatchData.toString());
+
+                        mRealTimeMatchData.remove(index);
+
+                    }
+
                     recordClimb(climbStartTime);
+                    Log.e("cookies", String.valueOf(mRealTimeMatchData) );
                     climbActualCounter=0;
                     climbAttemptCounter=0;
                     climbDialog.dismiss();
