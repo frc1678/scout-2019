@@ -401,6 +401,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_undo.setEnabled(false);
             btn_spill.setEnabled(false);
             btn_drop.setEnabled(false);
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
             fragmentCancel = new CancelFragment();
             fmCancel = getSupportFragmentManager();
@@ -454,48 +455,51 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
     public void onClickCancelEndPosition(View v){
         getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
+        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+
         cancelStormChecker=true;
         fragmentRecreate = new StormDialog();
         fmRecreate = getSupportFragmentManager();
         transactionRecreate = fmRecreate.beginTransaction();
 
-        if (AppCc.getSp("mapOrientation", 99) != 99 && !incapMap) {
-            if(AppCc.getSp("mapOrientation", 99) !=0){
-                if (InputManager.mAllianceColor.equals("red")) {
-                    transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                    iv_field.setImageResource(R.drawable.field_intake_red_right);
-                } else if (InputManager.mAllianceColor.equals("blue")) {
-                    transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                    iv_field.setImageResource(R.drawable.field_intake_blue_left);
-                }
-            } else if(AppCc.getSp("mapOrientation", 99) == 0){
-                if (InputManager.mAllianceColor.equals("red")) {
-                    transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                    iv_field.setImageResource(R.drawable.field_intake_red_left);
-                } else if (InputManager.mAllianceColor.equals("blue")) {
-                    transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                    iv_field.setImageResource(R.drawable.field_intake_blue_right);
-                }
-            }
 
-        } else {
-            Log.e("incap", String.valueOf(incapMap));
-            if (AppCc.getSp("mapOrientation", 99) != 0) {
-                if (InputManager.mAllianceColor.equals("red")) {
-                    transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                    mapChange();
-                } else if (InputManager.mAllianceColor.equals("blue")) {
-                    transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                    mapChange();
+        if (AppCc.getSp("mapOrientation", 99) != 99) {
+            if (!incapMap){
+                if(AppCc.getSp("mapOrientation", 99) !=0){
+                    if (InputManager.mAllianceColor.equals("red")) {
+                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.field_intake_red_right);
+                    } else if (InputManager.mAllianceColor.equals("blue")) {
+                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                    }
+                } else if(AppCc.getSp("mapOrientation", 99) == 0){
+                    if (InputManager.mAllianceColor.equals("red")) {
+                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.field_intake_red_left);
+                    } else if (InputManager.mAllianceColor.equals("blue")) {
+                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
+                        iv_field.setImageResource(R.drawable.field_intake_blue_right);
+                    }
                 }
-            } else if (AppCc.getSp("mapOrientation", 99) == 0) {
-                transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                if (InputManager.mAllianceColor.equals("red")) {
-                    transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                    mapChange();
-                } else if (InputManager.mAllianceColor.equals("blue")) {
-                    transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                    mapChange();
+            } else {
+                Log.e("incap", String.valueOf(incapMap));
+                if (AppCc.getSp("mapOrientation", 99) != 0) {
+                    if (InputManager.mAllianceColor.equals("red")) {
+                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
+                        mapChange();
+                    } else if (InputManager.mAllianceColor.equals("blue")) {
+                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
+                        mapChange();
+                    }
+                } else if (AppCc.getSp("mapOrientation", 99) == 0) {
+                    if (InputManager.mAllianceColor.equals("red")) {
+                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
+                        mapChange();
+                    } else if (InputManager.mAllianceColor.equals("blue")) {
+                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
+                        mapChange();
+                    }
                 }
             }
         }
