@@ -120,27 +120,33 @@ public class InputManager {
               Integer referenceEvenInteger=1;
               Integer referenceOddInteger=1;
 
-            for(int i=1;i < 17;i++){
-                if (i < 6){
+            for(int i=1;i <= 18;i++){
+                Log.e("counterValue", String.valueOf(i));
+                if (i <= 6){
                     referenceDictionary.put(i,i);
-                } else if(i >= 6){
-                    if ((2*i)% 2==0){
+
+                } else if(i > 6){
+                    if ((i)% 2==0){
                         referenceDictionary.put(i,referenceEvenInteger);
+                        Log.e("evenDicValue",String.valueOf(referenceEvenInteger));
                         referenceEvenInteger++;
-                    } else if((2*i)% 2==1){
+                    } else if((i)% 2==1){
                         referenceDictionary.put(i,referenceOddInteger);
+                        Log.e("oddDicValue",String.valueOf(referenceOddInteger));
                         referenceOddInteger++;
                     }
                 }
             }
+            Log.e("referenceDic", String.valueOf(referenceDictionary));
             String sortL1key = "matches";
             Log.e("match?!",String.valueOf(sortL1key));
             String sortL2key = String.valueOf(mMatchNum);
-            String sortL3key = String.valueOf(referenceDictionary.get(mScoutId));
+            Integer sortL3pre = referenceDictionary.get(mScoutId);
             Log.e("matchnum?!",String.valueOf(sortL2key));
-            Log.e("position?!",String.valueOf(sortL3key));
 
             InputManager.mAssignmentMode = "backup";
+            String sortL3KeyFinal =String.valueOf((sortL3pre+mMatchNum)%6 +1);
+
 
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
@@ -148,8 +154,8 @@ public class InputManager {
 
                 Log.e("backUpData", String.valueOf(backupData));
 
-                mAllianceColor = backupData.getJSONObject(sortL3key).getString("alliance");
-                mTeamNum = backupData.getJSONObject(sortL3key).getInt("number");
+                mAllianceColor = backupData.getJSONObject(sortL3KeyFinal).getString("alliance");
+                mTeamNum = backupData.getJSONObject(sortL3KeyFinal).getInt("number");
 
                 Log.e("teamNumber", String.valueOf(mTeamNum));
 
@@ -272,19 +278,21 @@ public class InputManager {
     }
 
     public static void getQRData(){
-        Log.e("SPR?!",String.valueOf(mSPRRanking));
         String sortL1key = "matches";
         Log.e("match?!",String.valueOf(sortL1key));
         String sortL2key = String.valueOf(mMatchNum);
         String sortL3key = String.valueOf(QRScan.position);
         Log.e("matchnum?!",String.valueOf(sortL2key));
         Log.e("position?!",String.valueOf(sortL3key));
+        Log.e("SPR?!",String.valueOf(mSPRRanking));
 
         if(mSPRRanking > 0){
             Log.e("marker", "please enter here");
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
+                Log.e("entirefile", String.valueOf(backupData.getJSONObject(sortL1key)));
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
+                Log.e("dataBackup", String.valueOf(backupData));
 
                 Log.e("position???",String.valueOf(sortL3key));
                 Log.e("backUpData", String.valueOf(backupData));
