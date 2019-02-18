@@ -902,7 +902,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
 
                     recordClimb(climbStartTime);
-                    Log.e("cookies", String.valueOf(mRealTimeMatchData) );
+                    Log.e("climb", String.valueOf(mRealTimeMatchData) );
                     climbActualCounter=0;
                     climbAttemptCounter=0;
                     climbDialog.dismiss();
