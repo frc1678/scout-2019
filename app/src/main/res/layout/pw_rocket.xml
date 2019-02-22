@@ -18,7 +18,7 @@
             android:background="@drawable/cargo_ship_fail_selector"
             android:button="@null"
             android:textAlignment="center"
-            android:onClick="onClickFailRocket"/>
+            android:onClick="onClickPlacementFail"/>
         <RadioButton
             android:id="@+id/success"
             android:layout_width="250dp"
@@ -30,7 +30,7 @@
             android:background="@drawable/cargo_ship_success_selector"
             android:button="@null"
             android:textAlignment="center"
-            android:onClick="onClickSuccessRocket"/>
+            android:onClick="onClickPlacementSuccess"/>
     </RadioGroup >
     <RelativeLayout
         android:layout_width="wrap_content"
