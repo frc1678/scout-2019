@@ -124,6 +124,10 @@ public class A0A extends DialogMaker {
 
         tabletDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.dialog_tablet_type, null);
 
+        InputManager.mRealTimeMatchData = new JSONArray();
+        InputManager.mOneTimeMatchData = new JSONObject();
+        InputManager.mRealTimeInputtedData = new JSONObject();
+
         InputManager.getScoutNames();
 
         initViews();
