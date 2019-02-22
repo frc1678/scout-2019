@@ -18,7 +18,8 @@
             android:layout_margin="5dp"
             android:background="@drawable/cargo_ship_fail_selector"
             android:button="@null"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:onClick="onClickPlacementFail"/>
         <RadioButton
             android:id="@+id/success"
             android:layout_width="200dp"
@@ -29,7 +30,8 @@
             android:layout_toEndOf="@+id/fail"
             android:background="@drawable/cargo_ship_success_selector"
             android:button="@null"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:onClick="onClickPlacementSuccess"/>
     </RadioGroup >
     <ToggleButton
         android:id="@+id/wasDefended"

@@ -1714,6 +1714,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (((field_orientation.contains("right") && y<=220) || (field_orientation.contains("left") && y>=280)) && mTabletType.equals("fire"))) {
                 zone = "rightLoadingStation";
             }
+            time = TimerUtil.timestamp;
             initPopup(popup_fail_success);
         } else {
             if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
@@ -1941,13 +1942,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         placementDialog.show();
     }
 
-    public void onClickFailRocket(View view) {
-        tb_shotOutOfField.setEnabled(true);
+    public void onClickPlacementFail(View view) {
+        time = TimerUtil.timestamp;
+        if(zone.contains("Rocket")) {
+            tb_shotOutOfField.setEnabled(true);
+        }
     }
 
-    public void onClickSuccessRocket(View view) {
-        tb_shotOutOfField.setEnabled(false);
-        tb_shotOutOfField.setChecked(false);
+    public void onClickPlacementSuccess(View view) {
+        time = TimerUtil.timestamp;
+        if(zone.contains("Rocket")) {
+            tb_shotOutOfField.setEnabled(false);
+            tb_shotOutOfField.setChecked(false);
+        }
     }
 
     public void onClickCancelCS(View view) {
