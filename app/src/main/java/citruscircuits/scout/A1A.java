@@ -1643,8 +1643,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             iv_game_element.setLayoutParams(lp);
             ((ViewGroup) overallLayout).addView(iv_game_element);
         } else if(cancelStormChecker || doneStormChecker){
-            if (actionCount>0){
-//                if (!actionDic.get(actionCount).get(3).equals("drop")){
+            if (actionCount>0 && !actionDic.get(actionCount-1).get(3).equals("drop")){
                     Log.e("ahhh4", String.valueOf(mode));
                         undoX=(int) actionDic.get(actionCount-1).get(0);
                         undoY=(int) actionDic.get(actionCount-1).get(1);
@@ -1677,7 +1676,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                     iv_game_element.setLayoutParams(lp);
                     ((ViewGroup) overallLayout).addView(iv_game_element);
-//                }
 
             }else {
                 Log.e("ahhh","nothing should happen");
