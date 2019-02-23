@@ -1672,7 +1672,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     } else if((x > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
                         lp.setMargins(undoX - 100, undoY - 40, 0, 0);
                     } else {
-                        lp.setMargins(undoX - 25,undoY - 40, 0, 0);
+                        lp.setMargins(undoX - 25, undoY - 40, 0, 0);
                     }
                     iv_game_element.setLayoutParams(lp);
                     ((ViewGroup) overallLayout).addView(iv_game_element);
