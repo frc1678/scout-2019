@@ -1643,8 +1643,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             iv_game_element.setLayoutParams(lp);
             ((ViewGroup) overallLayout).addView(iv_game_element);
         } else if(cancelStormChecker || doneStormChecker){
-            if (actionCount>0){
-//                if (!actionDic.get(actionCount).get(3).equals("drop")){
+            if (actionCount>0 && !actionDic.get(actionCount-1).get(3).equals("drop")){
                     Log.e("ahhh4", String.valueOf(mode));
                         undoX=(int) actionDic.get(actionCount-1).get(0);
                         undoY=(int) actionDic.get(actionCount-1).get(1);
@@ -1673,11 +1672,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     } else if((x > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
                         lp.setMargins(undoX - 100, undoY - 40, 0, 0);
                     } else {
-                        lp.setMargins(undoX - 25, undoY - 40, 0, 0);
+                        lp.setMargins(undoX - 25,
+                                undoY - 40, 0, 0);
                     }
                     iv_game_element.setLayoutParams(lp);
                     ((ViewGroup) overallLayout).addView(iv_game_element);
-//                }
 
             }else {
                 Log.e("ahhh","nothing should happen");
