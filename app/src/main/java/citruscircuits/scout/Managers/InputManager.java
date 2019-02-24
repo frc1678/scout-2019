@@ -60,7 +60,6 @@ public class InputManager {
     //Map-Scouting Variables
     public static String mHabStartingPositionOrientation = "";
     public static Integer mHabStartingPositionLevel= 0;
-    public static Integer mDriverStartingPosition = 0;
     public static String mPreload = "";
     public static boolean isNoShow= false;
 
