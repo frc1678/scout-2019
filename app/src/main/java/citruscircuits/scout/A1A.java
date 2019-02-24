@@ -1143,7 +1143,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 public void onClick(View view) {
                     incapDialog.dismiss();
                     tb_incap.setChecked(false);
-                    tb_defense.setEnabled(true);
                     incapMap = false;
                     incapChecked = false;
                     }
