@@ -696,7 +696,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             for(int i=0;i<mRealTimeMatchData.length();i++){
                 try {
                     String hf = mRealTimeMatchData.getString(i);
-                    if(hf.contains("intake") || hf.contains("placement")|| hf.contains("drop") || hf.contains("incap") || hf.contains("unincap")) {
+                    if(hf.contains("intake") || hf.contains("placement")|| hf.contains("drop") || hf.contains("incap") || hf.contains("unincap") || hf.contains("startDefense") || hf.contains("endDefense")) {
                         index = i;
                     }
                 } catch (JSONException e) {
