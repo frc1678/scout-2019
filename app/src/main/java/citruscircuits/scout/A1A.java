@@ -755,12 +755,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         btn_drop.setEnabled(true);
                     }
 
-                    if(!tele) {
-                        tb_hab_run.setEnabled(true);
-                    }
-
                     btn_spill.setEnabled(true);
-                    tb_incap.setChecked(false);
                     mapChange();
                     incapChecked = false;
 
