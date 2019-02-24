@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -47,6 +48,9 @@ public class A0B extends DialogMaker {
     public Button arrowNext;
     public ImageView iv_hab;
 
+    public TextView teamNumTextView1;
+    public TextView teamNumTextView2;
+
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +58,13 @@ public class A0B extends DialogMaker {
         arrowNext= findViewById(R.id.btn_arrow);
         InputManager.mOneTimeMatchData = new JSONObject();
 
+
         if ( AppCc.getSp("mapOrientation", 99) != 0){
             Log.e("wok", "prer");
             if(mAllianceColor.equals("red")){
                 setContentView(R.layout.activity_pregame_r);
+                teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
+                teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
                 iv_hab.setImageResource(R.drawable.red_hab_r);
                 driverRight.setText("R3");
@@ -74,6 +81,8 @@ public class A0B extends DialogMaker {
                 driverLeft.setBackgroundResource(R.drawable.driver_red);
             } else if (mAllianceColor.equals("blue")){
                 setContentView(R.layout.activity_pregame_l);
+                teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
+                teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
                 Log.e("wok", "bluer");
                 iv_hab.setImageResource(R.drawable.blue_hab_l);
@@ -94,6 +103,8 @@ public class A0B extends DialogMaker {
             Log.e("wok", "prel");
             if(mAllianceColor.equals("red")){
                 setContentView(R.layout.activity_pregame_l);
+                teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
+                teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
                 Log.e("wok", "redl");
                 iv_hab.setImageResource(R.drawable.red_hab_l);
@@ -112,6 +123,8 @@ public class A0B extends DialogMaker {
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
             } else if (mAllianceColor.equals("blue")){
                 setContentView(R.layout.activity_pregame_r);
+                teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
+                teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
 
                 Log.e("wok", "bluel");
