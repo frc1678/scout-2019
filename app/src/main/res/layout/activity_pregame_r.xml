@@ -16,6 +16,26 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
          />
+    <TextView
+        android:id= "@+id/temNum"
+        android:layout_width="313dp"
+        android:layout_height="45sp"
+        android:layout_marginLeft="353dp"
+        android:layout_marginTop="185dp"
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:text= "Team Number:"
+        />
+
+    <TextView
+        android:id="@+id/teamTextView1"
+        android:layout_width="313dp"
+        android:layout_height="87dp"
+        android:layout_marginLeft="353dp"
+        android:layout_below="@+id/temNum"
+        android:textSize="80sp"
+        android:textAlignment="center"
+        />
 
     <RadioGroup
         android:id="@+id/hab"
