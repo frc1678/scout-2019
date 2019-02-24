@@ -147,13 +147,13 @@ public class A0A extends DialogMaker {
             Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
         } else {
             String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
-            String fileName = "QRAssignments.txt";
+            String fileName = "assignments.txt";
 
             File f = new File(filePath, fileName);
 
             if(f.exists()) {
                 try {
-                    JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("QRAssignments.txt"));
+                    JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                     Integer timestampInt = timestamp.getInt("timestamp");
 
                     InputManager.mAssignmentFileTimestamp = timestampInt;
