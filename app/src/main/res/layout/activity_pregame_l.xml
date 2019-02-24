@@ -55,25 +55,6 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
        />
-    <TextView
-        android:id= "@+id/temNum2"
-        android:layout_width="313dp"
-        android:layout_height="45sp"
-        android:layout_marginLeft="174dp"
-        android:layout_marginTop="185dp"
-        android:textSize="40sp"
-        android:textAlignment="center"
-        android:text= "Team Number:"
-        />
-
-    <TextView
-        android:id="@+id/teamTextView2"
-        android:layout_width="314dp"
-        android:layout_height="90dp"
-        android:layout_below="@+id/temNum2"
-        android:layout_marginLeft="174dp"
-        android:textAlignment="center"
-        android:textSize="80sp" />
 
     <RadioGroup
         android:id="@+id/hab"
@@ -105,13 +86,36 @@
                 android:onClick="onClickHabTwoA"
 
                 />
+            <RadioButton
+                android:id= "@+id/temNum2"
+                android:layout_width="313dp"
+                android:layout_height="45sp"
+                android:textSize="40sp"
+                android:textAlignment="center"
+                android:text= "Team Number:"
+                android:button="@null"
+                android:enabled= "false"
+                android:textColor= "#2E2E2E"
+                />
+
+            <RadioButton
+                android:id="@+id/teamTextView2"
+                android:layout_width="313dp"
+                android:layout_height="90dp"
+                android:layout_below="@+id/temNum2"
+                android:textAlignment="center"
+                android:textSize="80sp"
+                android:button= "@null"
+                android:enabled= "false"
+                android:textColor= "#2E2E2E"
+                />
 
             <RadioButton
                 android:id="@+id/LayerTwoB"
                 android:layout_width="313dp"
                 android:layout_height="174dp"
                 android:button="@null"
-                android:layout_marginTop="174dp"
+                android:layout_marginTop="45dp"
                 android:text="2"
                 android:textAlignment="center"
                 android:textSize="80sp"
