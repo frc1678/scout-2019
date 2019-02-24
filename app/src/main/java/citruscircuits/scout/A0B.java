@@ -27,10 +27,6 @@ import static java.lang.String.valueOf;
 
 
 public class A0B extends DialogMaker {
-    public RadioGroup driverStart;
-    public RadioButton driverLeft;
-    public RadioButton driverCenter;
-    public RadioButton driverRight;
     public RadioGroup hab;
     public RadioGroup habSub1;
     public RadioGroup habSub2;
@@ -67,18 +63,12 @@ public class A0B extends DialogMaker {
                 teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
                 iv_hab.setImageResource(R.drawable.red_hab_r);
-                driverRight.setText("R3");
-                driverCenter.setText("R2");
-                driverLeft.setText("R1");
                 layerOneA.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerOneB.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerOneC.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerTwoB.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
-                driverRight.setBackgroundResource(R.drawable.driver_red);
-                driverCenter.setBackgroundResource(R.drawable.driver_red);
-                driverLeft.setBackgroundResource(R.drawable.driver_red);
             } else if (mAllianceColor.equals("blue")){
                 setContentView(R.layout.activity_pregame_l);
                 teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
@@ -86,12 +76,6 @@ public class A0B extends DialogMaker {
                 defineVariables();
                 Log.e("wok", "bluer");
                 iv_hab.setImageResource(R.drawable.blue_hab_l);
-                driverRight.setText("B3");
-                driverCenter.setText("B2");
-                driverLeft.setText("B1");
-                driverRight.setBackgroundResource(R.drawable.driver_blue);
-                driverCenter.setBackgroundResource(R.drawable.driver_blue);
-                driverLeft.setBackgroundResource(R.drawable.driver_blue);
                 layerOneA.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneB.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneC.setBackgroundResource(R.drawable.starting_position_blue_selector);
@@ -108,13 +92,6 @@ public class A0B extends DialogMaker {
                 defineVariables();
                 Log.e("wok", "redl");
                 iv_hab.setImageResource(R.drawable.red_hab_l);
-                driverRight.setText("R3");
-                driverCenter.setText("R2");
-                driverLeft.setText("R1");
-
-                driverRight.setBackgroundResource(R.drawable.driver_red);
-                driverCenter.setBackgroundResource(R.drawable.driver_red);
-                driverLeft.setBackgroundResource(R.drawable.driver_red);
                 layerOneA.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerOneB.setBackgroundResource(R.drawable.starting_position_red_selector);
                 layerOneC.setBackgroundResource(R.drawable.starting_position_red_selector);
@@ -129,13 +106,6 @@ public class A0B extends DialogMaker {
 
                 Log.e("wok", "bluel");
                 iv_hab.setImageResource(R.drawable.blue_hab_r);
-                driverRight.setText("B3");
-                driverCenter.setText("B2");
-                driverLeft.setText("B1");
-
-                driverRight.setBackgroundResource(R.drawable.driver_blue);
-                driverCenter.setBackgroundResource(R.drawable.driver_blue);
-                driverLeft.setBackgroundResource(R.drawable.driver_blue);
                 layerOneA.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneB.setBackgroundResource(R.drawable.starting_position_blue_selector);
                 layerOneC.setBackgroundResource(R.drawable.starting_position_blue_selector);
@@ -154,9 +124,6 @@ public void onClickShowUp(View view){
             layerOneC.setEnabled(false);
             layerTwoA.setEnabled(false);
             layerTwoB.setEnabled(false);
-            driverRight.setEnabled(false);
-            driverLeft.setEnabled(false);
-            driverCenter.setEnabled(false);
             preloadCargo.setEnabled(false);
             preloadPanel.setEnabled(false);
             preloadNone.setEnabled(false);
@@ -166,9 +133,6 @@ public void onClickShowUp(View view){
             layerOneC.setEnabled(true);
             layerTwoA.setEnabled(true);
             layerTwoB.setEnabled(true);
-            driverRight.setEnabled(true);
-            driverLeft.setEnabled(true);
-            driverCenter.setEnabled(true);
             preloadCargo.setEnabled(true);
             preloadPanel.setEnabled(true);
             preloadNone.setEnabled(true);
@@ -178,10 +142,6 @@ public void onClickShowUp(View view){
 }
 public void defineVariables(){
     iv_hab = findViewById(R.id.imageView);
-    driverStart=findViewById(R.id.driver_starting_position);
-    driverCenter=findViewById(R.id.driver_center);
-    driverLeft=findViewById(R.id.driver_left);
-    driverRight=findViewById(R.id.driver_right);
     hab= findViewById(R.id.hab);
     habSub1=findViewById(R.id.innerhab1);
     habSub2=findViewById(R.id.innerhab2);
@@ -228,7 +188,7 @@ public void defineVariables(){
 
         if (!showUp.isChecked()){
             if((!layerOneA.isChecked() && !layerOneB.isChecked() && !layerOneC.isChecked()&& !layerTwoA.isChecked()
-                        && !layerTwoB.isChecked()) || (!driverRight.isChecked() && !driverCenter.isChecked() && !driverLeft.isChecked())
+                        && !layerTwoB.isChecked())
                         || ( !preloadCargo.isChecked()&& !preloadPanel.isChecked() && !preloadNone.isChecked())){
                     Toast.makeText(getBaseContext(), "Make Sure You Filled Out All Of The Information!",
                         Toast.LENGTH_SHORT).show();
@@ -251,13 +211,6 @@ public void defineVariables(){
                 }else if (layerOneC.isChecked()) {
                     InputManager.mHabStartingPositionLevel = 1;
                     InputManager.mHabStartingPositionOrientation="right";
-                }
-                if (driverLeft.isChecked()) {
-                    InputManager.mDriverStartingPosition = 1;
-                } else if (driverCenter.isChecked()) {
-                    InputManager.mDriverStartingPosition = 2;
-                } else if (driverRight.isChecked()) {
-                    InputManager.mDriverStartingPosition = 3;
                 }
                 if(preloadCargo.isChecked()){
                     InputManager.mPreload = "orange";
