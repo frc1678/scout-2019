@@ -2161,7 +2161,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
             InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
             InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
-            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
             InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
             InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
             InputManager.mOneTimeMatchData.put("currentCycle", InputManager.mCycleNum);
