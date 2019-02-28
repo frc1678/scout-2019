@@ -421,10 +421,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tele = true;
 
             btn_undo.setEnabled(false);
-            tb_defense.setEnabled(true);
+
             Log.e("startTimer?",String.valueOf(startTimer));
-            if(timerCheck){
+            if(timerCheck && !incapMap){
                 btn_climb.setEnabled(true);
+                tb_defense.setEnabled(true);
             }
             if (modeIsIntake){
                 mode ="intake";
