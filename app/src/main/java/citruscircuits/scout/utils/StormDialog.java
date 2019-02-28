@@ -52,15 +52,6 @@ public class StormDialog extends Fragment {
             }
             A1A.timerCheck = true;
             A1A.startTimer = false;
-            if(!incapMap || A1A.incapType.equals("brokenMechanism") || A1A.incapType.equals("twoGamePieces")){
-                tb_hab_run.setEnabled(true);
-                tb_hab_run.setChecked(true);
-                A1A.btn_spill.setEnabled(true);
-                if (mode.equals("placement")){
-                    A1A.btn_drop.setEnabled(true);
-                }
-            }
-
             A1A.tb_incap.setEnabled(true);
             A1A.cancelStormChecker=false;
             A1A.tb_defense.setEnabled(false);

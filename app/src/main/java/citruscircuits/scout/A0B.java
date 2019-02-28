@@ -223,7 +223,6 @@ public void defineVariables(){
                 }
                 InputManager.isNoShow=false;
                 A1A.incapMap=false;
-                A1A.incapType = "";
 
                 open(A1A.class, null, false, true);
 

@@ -187,20 +187,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static String mode = "intake";
     public String element = "";
     public String zone = "";
-    public static String incapType = "";
-
-    public TextView incapTypes;
-    public RadioGroup incapOptions;
-    public RadioButton tippedOver;
-    public RadioButton emergencyStop;
-    public RadioButton stuckHab;
-    public RadioButton stuckObject;
-    public RadioButton noControl;
-    public RadioButton brokenMechanism;
-    public RadioButton twoPieces;
-    public Button doneButton2;
-    public Button cancelIncap;
-
 
     public String structure;
     public String side;
@@ -513,13 +499,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         isElementUsedForRobot=true;
         initShape();
         isElementUsedForRobot=false;
-            if (didUndoOnce){
-                btn_undo.setEnabled(false);
-            }else if (!didUndoOnce){
-                btn_undo.setEnabled(true);
-            }
-        if(incapMap && !incapType.equals("brokenMechanism") && !incapType.equals("twoGamePieces")){
-            pw=false;
+        if (didUndoOnce){
+            btn_undo.setEnabled(false);
+        }else if (!didUndoOnce){
+            btn_undo.setEnabled(true);
         }
     }
 
@@ -542,17 +525,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             isElementUsedForRobot=true;
             initShape();
             tb_incap.setEnabled(true);
-            if(!incapMap || incapType.equals("brokenMechanism") || incapType.equals("twoGamePieces")){
+            if(!incapMap){
                 btn_spill.setEnabled(true);
                 if (mode.equals("placement")){
                     A1A.btn_drop.setEnabled(true);
                 }
                 btn_climb.setEnabled(true);
                 tb_defense.setEnabled(true);
-
-
             }
-            if(incapMap && !incapType.equals("brokenMechanism") && !incapType.equals("twoGamePieces")){
+            if(incapMap){
                 pw=false;
             }
 
@@ -621,7 +602,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             timerCheck = false;
             incapChecked=false;
             incapMap=false;
-            incapType = "";
             preload();
             InputManager.numSpill=0;
             actionCount=0;
@@ -748,7 +728,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     mapChange();
 
                 } else if (actionDic.get(actionCount).get(3).equals("incap")){
-                    incapType = " ";
                     incapMap=false;
                     pw = true;
                     if (mode.equals("placement")){
@@ -771,25 +750,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     tb_incap.setChecked(false);
 
                 } else if (actionDic.get(actionCount).get(3).equals("unincap")){
-                    if (!actionDic.get(actionCount).get(2).equals("brokenMechanism") && !actionDic.get(actionCount).get(2).equals("twoGamePieces")){
-                        btn_climb.setEnabled(false);
-                        btn_drop.setEnabled(false);
-                        btn_spill.setEnabled(false);
-                        tb_defense.setEnabled(false);
-                        tb_incap.setChecked(true);
-                        pw = false;
-                    } else if (actionDic.get(actionCount).get(2).equals("brokenMechanism")){
-                        incapType = "brokenMechanism";
-
-                    } else if (actionDic.get(actionCount).get(2).equals("twoGamePieces")){
-                        incapType = "twoGamePieces";
-                    }
+                    btn_climb.setEnabled(false);
+                    btn_drop.setEnabled(false);
+                    btn_spill.setEnabled(false);
+                    tb_defense.setEnabled(false);
+                    tb_incap.setChecked(true);
                     incapMap=true;
                     incapChecked=true;
                     tb_incap.setChecked(true);
+
+                    pw = false;
+
                     mapChange();
-
-
 
                 } else if (actionDic.get(actionCount).get(3).equals("defense")){
                     defenseChecked = false;
@@ -1455,7 +1427,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void mapChange() {
-        if(element.equals("orange")&& !incapMap && !defenseMap) {
+        if (element.equals("orange") && !incapMap && !defenseMap) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
             if (mode.equals("placement")) {
                 Log.e("ahhhhh", "placementorange");
@@ -1466,7 +1438,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.field_placement_orange_right);
                 }
             }
-        } else if(element.equals("lemon")&& !incapMap && !defenseMap) {
+        } else if (element.equals("lemon") && !incapMap && !defenseMap) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
             if (mode.equals("placement")) {
                 Log.e("ahhhhh", "placementlemon");
@@ -1476,7 +1448,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.field_placement_lemon_right);
                 }
             }
-        } if(mode.equals("intake")&& !incapMap && !defenseMap) {
+        }
+        if (mode.equals("intake") && !incapMap && !defenseMap) {
             btn_drop.setEnabled(false);
             if (field_orientation.equals("blue_left")) {
                 iv_field.setImageResource(R.drawable.field_intake_blue_left);
@@ -1488,13 +1461,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 iv_field.setImageResource(R.drawable.field_intake_red_right);
             }
         }
-          if (incapMap && !incapType.equals("brokenMechanism") && !incapType.equals("twoGamePieces")) {
+        if (incapMap) {
             if (field_orientation.contains("right")) {
                 iv_field.setImageResource(R.drawable.gray_field_intake_right);
-            } else if(field_orientation.contains("left")) {
+            } else if (field_orientation.contains("left")) {
                 iv_field.setImageResource(R.drawable.gray_field_intake_left);
             }
-        } else if (defenseMap){
+        } else if (defenseMap) {
             if (mode.equals("intake")) {
                 if (field_orientation.equals("blue_left")) {
                     iv_field.setImageResource(R.drawable.defense_field_blue_left);
@@ -1505,9 +1478,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if (field_orientation.equals("red_right")) {
                     iv_field.setImageResource(R.drawable.defense_field_red_right);
                 }
-            } if (element.equals("orange")){
+            }
+            if (element.equals("orange")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                if(mode.equals("placement")) {
+                if (mode.equals("placement")) {
                     iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
                     if (field_orientation.contains("left")) {
                         iv_field.setImageResource(R.drawable.defense_placement_orange_left);
@@ -1515,9 +1489,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         iv_field.setImageResource(R.drawable.defense_placement_orange_right);
                     }
                 }
-            } if (element.equals("lemon")) {
+            }
+            if (element.equals("lemon")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-                if(mode.equals("placement")) {
+                if (mode.equals("placement")) {
                     if (field_orientation.contains("left")) {
                         iv_field.setImageResource(R.drawable.defense_placement_lemon_left);
                     } else if (field_orientation.contains("right")) {
@@ -1525,43 +1500,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                 }
             }
-        } else if (incapType.equals("brokenMechanism") || incapType.equals("twoGamePieces")) {
-            if (element.equals("lemon")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-                if (mode.equals("placement")) {
-                    if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.faded_field_placement_lemon_left);
-                    }
-                    if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.faded_field_placement_lemon_right);
-                    }
-                }
-            }
-            if (element.equals("orange")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                if (mode.equals("placement")) {
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                    if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.faded_field_placement_orange_left);
-                    } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.faded_field_placement_orange_right);
-                    }
-                }
-            }
-            if (mode.equals("intake") && incapMap) {
-                btn_drop.setEnabled(false);
-                if (field_orientation.equals("blue_left")) {
-                    iv_field.setImageResource(R.drawable.faded_field_intake_blue_left);
-                } else if (field_orientation.equals("blue_right")) {
-                    iv_field.setImageResource(R.drawable.faded_field_intake_blue_right);
-                } else if (field_orientation.equals("red_left")) {
-                    iv_field.setImageResource(R.drawable.faded_field_intake_red_left);
-                } else if (field_orientation.equals("red_right")) {
-                    iv_field.setImageResource(R.drawable.faded_field_intake_red_right);
-                }
-            }
         }
-
     }
 
     public void initShape() {
@@ -2095,5 +2034,3 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 .show();
     }
 }
-
-
