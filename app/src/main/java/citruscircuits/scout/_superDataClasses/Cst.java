@@ -28,7 +28,6 @@ public interface Cst {
         put("crossedHabLine", "b");
         put("startingLocation", "c");
         put("preload", "d");
-        put("driverStation", "e");
         put("isNoShow", "f");
         put("timerStarted", "g");
         put("currentCycle", "h");
