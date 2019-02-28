@@ -77,8 +77,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean startTimer = true;
     public boolean tele = false;
     public boolean startedWObject = false;
-    public boolean liftSelfAttempt;
-    public boolean liftSelfActual;
     public boolean climbInputted = false;
     public static boolean timerCheck = false;
     public boolean pw = true;
@@ -422,7 +420,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         } else{
             btn_undo.setEnabled(false);
             tb_defense.setEnabled(true);
-            tele = true;
             Log.e("startTimer?",String.valueOf(startTimer));
             if(timerCheck){
                 btn_climb.setEnabled(true);
@@ -1146,8 +1143,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             if(!tele) {
                 tb_hab_run.setEnabled(true);
-                tb_defense.setEnabled(true);
+            }
+
+            else if(tele) {
                 btn_climb.setEnabled(true);
+                tb_defense.setEnabled(true);
             }
 
             compressionDic = new JSONObject();
