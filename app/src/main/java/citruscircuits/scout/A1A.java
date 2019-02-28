@@ -418,6 +418,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             transactionCancel.commit();
             btn_undo.setEnabled(false);
         } else{
+            tele = true;
+
             btn_undo.setEnabled(false);
             tb_defense.setEnabled(true);
             Log.e("startTimer?",String.valueOf(startTimer));
@@ -1148,6 +1150,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             else if(tele) {
                 btn_climb.setEnabled(true);
                 tb_defense.setEnabled(true);
+                Log.i("TESTTTTTTTTT", "HELP");
             }
 
             compressionDic = new JSONObject();
