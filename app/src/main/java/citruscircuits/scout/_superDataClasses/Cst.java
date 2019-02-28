@@ -28,7 +28,6 @@ public interface Cst {
         put("crossedHabLine", "b");
         put("startingLocation", "c");
         put("preload", "d");
-        put("driverStation", "e");
         put("isNoShow", "f");
         put("timerStarted", "g");
         put("currentCycle", "h");
@@ -54,8 +53,6 @@ public interface Cst {
         put("side", "y");
         put("shotOutOfField", "H");
         put("level", "z");
-
-        put("cause", "A");
 
         put("attempted", "B");
         put("actual", "C");
@@ -101,13 +98,6 @@ public interface Cst {
         put("leftRocket", "f");
         put("rightRocket", "g");
         put("cargoShip", "h");
-        put("tippedOver", "j");
-        put("brokenMechanism", "k");
-        put("stuckOnObject", "m");
-        put("stuckOnHab", "n");
-        put("emergencyStop", "p");
-        put("noControl", "q");
-        put("twoGamePieces", "r");
         put("near", "s");
     }};
 }

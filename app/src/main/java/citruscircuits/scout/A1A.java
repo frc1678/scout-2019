@@ -1116,138 +1116,39 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickIncap(View v) {
         if (!incapChecked) {
             tb_incap.setChecked(true);
+            btn_climb.setEnabled(false);
+            btn_drop.setEnabled(false);
+            btn_spill.setEnabled(false);
+            tb_defense.setEnabled(false);
+
+            if(!tele) {
+                tb_hab_run.setEnabled(false);
+            }
+
             incapMap=true;
+            pw = false;
 
-            final Dialog incapDialog = new Dialog(this);
-            incapDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.incap, null);
-            incapDialog.setCanceledOnTouchOutside(false);
-            incapDialog.setCancelable(false);
+            compressionDic = new JSONObject();
 
-            incapTypes = (TextView) dialogLayout.findViewById(R.id.incapTypes);
-            incapOptions = (RadioGroup) dialogLayout.findViewById(R.id.radioGroup00);
-            tippedOver = (RadioButton) dialogLayout.findViewById(R.id.radio_button01);
-            emergencyStop = (RadioButton) dialogLayout.findViewById(R.id.radio_button02);
-            stuckHab = (RadioButton) dialogLayout.findViewById(R.id.radio_button03);
-            stuckObject = (RadioButton) dialogLayout.findViewById(R.id.radio_button04);
-            noControl = (RadioButton) dialogLayout.findViewById(R.id.radio_button05);
-            brokenMechanism = (RadioButton) dialogLayout.findViewById(R.id.radio_button06);
-            twoPieces = (RadioButton) dialogLayout.findViewById(R.id.radio_button07);
-            doneButton2 = (Button) dialogLayout.findViewById(R.id.okayButton);
-            cancelIncap = (Button) dialogLayout.findViewById(R.id.cancelIncapButton);
-            btn_climb = (Button) findViewById(R.id.btn_climb);
-            tb_defense = (ToggleButton) findViewById((R.id.tbtn_defense));
+            try {
+                compressionDic.put("type", "incap");
+                timestamp(TimerUtil.timestamp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-            cancelIncap.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    incapDialog.dismiss();
-                    tb_incap.setChecked(false);
-                    incapMap = false;
-                    incapChecked = false;
-                    }
-                    });
+            mRealTimeMatchData.put(compressionDic);
 
-            doneButton2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    popup_fail_success.dismiss();
-                    popup.dismiss();
-                    btn_undo.setEnabled(true);
+            actionList = new ArrayList<Object>();
+            actionList.add("NA");
+            actionList.add("NA");
+            actionList.add(mode);
+            actionList.add("incap");
+            actionList.add(TimerUtil.timestamp);
+            actionDic.put(actionCount, actionList);
+            actionCount++;
 
-                    if (tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked() || brokenMechanism.isChecked() || twoPieces.isChecked()) {
-                        compressionDic = new JSONObject();
-
-                        try {
-                            compressionDic.put("type", "incap");
-                            timestamp(TimerUtil.timestamp);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        if(tippedOver.isChecked() || emergencyStop.isChecked() || stuckHab.isChecked() || stuckObject.isChecked() || noControl.isChecked()) {
-                            pw = false;
-                            btn_climb.setEnabled(false);
-                            btn_drop.setEnabled(false);
-                            btn_spill.setEnabled(false);
-                            tb_defense.setEnabled(false);
-                            if(!tele) {
-                                tb_hab_run.setEnabled(false);
-                            }
-                            if (tippedOver.isChecked()) {
-                                try {
-                                    compressionDic.put("cause", "tippedOver");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (emergencyStop.isChecked()) {
-                                try {
-                                    compressionDic.put("cause", "emergencyStop");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (stuckHab.isChecked()) {
-                                try {
-                                    compressionDic.put("cause", "stuckOnHab");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (stuckObject.isChecked()) {
-                                try {
-                                    compressionDic.put("cause", "stuckOnObject");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else if (noControl.isChecked()) {
-                                try {
-                                    compressionDic.put("cause", "noControl");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        } else if (brokenMechanism.isChecked()) {
-                            incapType = "brokenMechanism";
-                            mapChange();
-                            try {
-                                compressionDic.put("cause", "brokenMechanism");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else if (twoPieces.isChecked()) {
-                            incapType = "twoGamePieces";
-                            mapChange();
-                            try {
-                                compressionDic.put("cause", "twoGamePieces");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        mRealTimeMatchData.put(compressionDic);
-
-                        mapChange();
-                        incapDialog.dismiss();
-                        actionList = new ArrayList<Object>();
-                        actionList.add("NA");
-                        actionList.add("NA");
-                        actionList.add(mode);
-                        actionList.add("incap");
-                        actionList.add(TimerUtil.timestamp);
-                        actionDic.put(actionCount, actionList);
-                        actionCount++;
-                        didUndoOnce = false;
-                    }
-                    else {
-                        Toast.makeText(getBaseContext(), "Please input an incap type!!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-                                           });
-            incapDialog.setContentView(dialogLayout);
-            incapDialog.show();
-
+            didUndoOnce = false;
             incapChecked = true;
         }
 
@@ -1255,48 +1156,47 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionList = new ArrayList<Object>();
             actionList.add("NA");
             actionList.add("NA");
-            actionList.add(incapType);
+            actionList.add(mode);
             actionList.add("unincap");
             actionList.add(TimerUtil.timestamp);
             actionDic.put(actionCount, actionList);
             actionCount++;
+
+            incapChecked = false;
             didUndoOnce = false;
-            btn_undo.setEnabled(true);
-            compressionDic = new JSONObject();
-            incapType = " ";
             incapMap=false;
             pw = true;
-            if (mode.equals("placement")){
-                btn_drop.setEnabled(true);
-            }
+
+            btn_undo.setEnabled(true);
+            btn_spill.setEnabled(true);
+
+            tb_incap.setChecked(false);
 
             if(!tele) {
                 tb_hab_run.setEnabled(true);
-            }
-            btn_spill.setEnabled(true);
-            tb_incap.setChecked(false);
-            mapChange();
-            incapChecked = false;
-            if (!tele){
-                tb_defense.setEnabled(false);
-                tb_hab_run.setEnabled(true);
-                btn_climb.setEnabled(false);
-
-            }
-            else if(tele){
-                btn_climb.setEnabled(true);
                 tb_defense.setEnabled(true);
+                btn_climb.setEnabled(true);
             }
+
+            compressionDic = new JSONObject();
+
             try {
                 compressionDic.put("type", "unincap");
                 timestamp(TimerUtil.timestamp);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
             mRealTimeMatchData.put(compressionDic);
+
+            if (mode.equals("placement")){
+                btn_drop.setEnabled(true);
+            }
         }
+        mapChange();
         Log.i("AAAAH", mRealTimeMatchData.toString());
     }
+
     public void onClickDefense (View v) {
         btn_climb = (Button) findViewById(R.id.btn_climb);
         btn_undo.setEnabled(true);
@@ -2161,7 +2061,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
             InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
             InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
-            InputManager.mOneTimeMatchData.put("driverStation", InputManager.mDriverStartingPosition);
             InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
             InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
             InputManager.mOneTimeMatchData.put("currentCycle", InputManager.mCycleNum);
