@@ -72,7 +72,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public String field_orientation;
 
-    public boolean incapChecked = false;
     public boolean modeIsIntake=true;
     public static boolean startTimer = true;
     public boolean tele = false;
@@ -82,13 +81,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean pw = true;
     public boolean isMapLeft=false;
 
-    public static boolean incapMap = false;
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
-
-    public boolean defenseChecked = false;
-    public boolean defenseMap = false;
 
     public static boolean cancelStormChecker=false;
     public boolean doneStormChecker=false;
@@ -101,7 +96,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Integer undoY;
 
     public Float time;
-    public Long epicTime;
 
     public List<String> climbAttemptKeys = Arrays.asList("D", "E", "F");
     public List<String> climbActualKeys = Arrays.asList("D", "E", "F");
@@ -115,7 +109,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     String climbActualData;
 
     public TextView tv_team;
-    public TextView tv_starting_position_warning;
 
 //    public Button btn_startTimer;
     public static Button btn_drop;
@@ -143,12 +136,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button spaceThreeII;
     public static ToggleButton tb_incap;
     public static ToggleButton tb_defense;
-    public ToggleButton tb_start_cube;
 
     public RelativeLayout dialogLayout;
     public RelativeLayout overallLayout;
     public RelativeLayout placementDialogLayout;
-    public FrameLayout stormLayout;
 
     public RadioButton fail;
     public RadioButton success;
@@ -310,15 +301,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         }
         transaction.commit();
-
-//        if (mAllianceColor.equals("red")){
-//            stormLayout=(FrameLayout) this.getLayoutInflater().inflate(R.layout.activity_storm_red, null);
-//        }else if(mAllianceColor.equals("blue")){
-//            stormLayout=(FrameLayout) this.getLayoutInflater().inflate(R.layout.activity_storm_blue, null);
-//        }
-//
-//        btn_startTimer = findViewById(R.id.btn_timer);
-//        tb_hab_run = findViewById(R.id.tgbtn_storm_run);
         tv_team.setText(valueOf(InputManager.mTeamNum));
         if (TimerUtil.matchTimer != null) {
             TimerUtil.matchTimer.cancel();
@@ -421,7 +403,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_undo.setEnabled(false);
 
             Log.e("startTimer?",String.valueOf(startTimer));
-            if(timerCheck && !incapMap){
+            if(timerCheck && !tb_incap.isChecked()){
                 btn_climb.setEnabled(true);
                 tb_defense.setEnabled(true);
             }
@@ -448,7 +430,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 
         if (AppCc.getSp("mapOrientation", 99) != 99) {
-            if (!incapMap){
+            if (!tb_incap.isChecked()){
                 if(AppCc.getSp("mapOrientation", 99) !=0){
                     if (InputManager.mAllianceColor.equals("red")) {
                         transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
@@ -467,7 +449,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                 }
             } else {
-                Log.e("incap", String.valueOf(incapMap));
                 if (AppCc.getSp("mapOrientation", 99) != 0) {
                     if (InputManager.mAllianceColor.equals("red")) {
                         transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
@@ -523,7 +504,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             isElementUsedForRobot=true;
             initShape();
             tb_incap.setEnabled(true);
-            if(!incapMap){
+            if(!tb_incap.isChecked()){
                 btn_spill.setEnabled(true);
                 if (mode.equals("placement")){
                     A1A.btn_drop.setEnabled(true);
@@ -531,7 +512,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 btn_climb.setEnabled(true);
                 tb_defense.setEnabled(true);
             }
-            if(incapMap){
+            if(tb_incap.isChecked()){
                 pw=false;
             }
 
@@ -546,9 +527,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         handler.removeCallbacks(runnable);
         handler.removeCallbacksAndMessages(null);
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
-//        btn_startTimer = findViewById(R.id.btn_timer);
         btn_drop = findViewById(R.id.btn_dropped);
-//        tb_hab_run = findViewById(R.id.tgbtn_storm_run);
         if (startTimer) {
             pw=true;
             handler.postDelayed(runnable, 150000);
@@ -573,7 +552,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         } else if (!startTimer) {
             pw=false;
-            defenseMap = false;
             InputManager.numSpill = 0;
             InputManager.numFoul = 0;
             tb_incap.setEnabled(false);
@@ -598,8 +576,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             popup_fail_success.dismiss();
             startTimer = true;
             timerCheck = false;
-            incapChecked=false;
-            incapMap=false;
             preload();
             InputManager.numSpill=0;
             actionCount=0;
@@ -648,7 +624,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickSpill(View v) throws JSONException {
-//        if (!startTimer && !incapChecked) {
         InputManager.numSpill++;
         btn_spill.setText("SPILL - " + InputManager.numSpill);
         compressionDic = new JSONObject();
@@ -660,7 +635,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         mRealTimeMatchData.put(compressionDic);
         Log.i("LONG", mRealTimeMatchData.toString());
-//    }
     }
 
     public void onClickUndo(View v) {
@@ -668,7 +642,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             popup.dismiss();
             popup_fail_success.dismiss();
             pw = true;
-            //TODO: remove incap and def from mrealtimematchdata
             int index = -1;
             for(int i=0;i<mRealTimeMatchData.length();i++){
                 try {
@@ -724,7 +697,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     mapChange();
 
                 } else if (actionDic.get(actionCount).get(3).equals("incap")){
-                    incapMap=false;
                     pw = true;
                     if (mode.equals("placement")){
                         btn_drop.setEnabled(true);
@@ -732,7 +704,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                     btn_spill.setEnabled(true);
                     mapChange();
-                    incapChecked = false;
 
                     if (!tele){
                         tb_defense.setEnabled(false);
@@ -751,25 +722,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_spill.setEnabled(false);
                     tb_defense.setEnabled(false);
                     tb_incap.setChecked(true);
-                    incapMap=true;
-                    incapChecked=true;
-                    tb_incap.setChecked(true);
 
                     pw = false;
 
                     mapChange();
 
                 } else if (actionDic.get(actionCount).get(3).equals("defense")){
-                    defenseChecked = false;
                     btn_climb.setEnabled(true);
-                    defenseMap = false;
                     pw = true;
                     tb_defense.setChecked(false);
                     mapChange();
 
                 } else if (actionDic.get(actionCount).get(3).equals("undefense")){
-                    defenseChecked = true;
-                    defenseMap = true;
                     popup_fail_success.dismiss();
                     popup.dismiss();
                     pw = true;
@@ -1084,7 +1048,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickIncap(View v) {
         btn_undo.setEnabled(true);
 
-        if (!incapChecked) {
+        if (!tb_incap.isChecked()) {
             popup_fail_success.dismiss();
             popup.dismiss();
 
@@ -1098,7 +1062,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 tb_hab_run.setEnabled(false);
             }
 
-            incapMap=true;
             pw = false;
 
             compressionDic = new JSONObject();
@@ -1122,10 +1085,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionCount++;
 
             didUndoOnce = false;
-            incapChecked = true;
         }
 
-        else if (incapChecked) {
+        else if (tb_incap.isChecked()) {
             actionList = new ArrayList<Object>();
             actionList.add("NA");
             actionList.add("NA");
@@ -1135,9 +1097,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionDic.put(actionCount, actionList);
             actionCount++;
 
-            incapChecked = false;
             didUndoOnce = false;
-            incapMap=false;
             pw = true;
 
             btn_undo.setEnabled(true);
@@ -1177,9 +1137,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickDefense (View v) {
         btn_climb = (Button) findViewById(R.id.btn_climb);
         btn_undo.setEnabled(true);
-        if (!defenseChecked){
-            defenseChecked = true;
-            defenseMap = true;
+        if (!tb_defense.isChecked()){
             popup_fail_success.dismiss();
             popup.dismiss();
             pw = true;
@@ -1207,10 +1165,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionCount++;
             didUndoOnce = false;
         }
-        else if(defenseChecked){
-            defenseChecked = false;
+        else if(tb_defense.isChecked()){
             btn_climb.setEnabled(true);
-            defenseMap = false;
             pw = true;
 
             compressionDic = new JSONObject();
@@ -1258,16 +1214,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mTabletType.equals("green"))
                                 || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mTabletType.equals("black")))
                                 || ((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && y > 210 && y < 305 && mTabletType.equals("fire")) {
-                            if(mode.equals("intake") && !defenseMap) {
+                            if(mode.equals("intake") && !tb_defense.isChecked()) {
                                 Log.e("woktouch", "shiskitabob");
                                 pw = false;
                                 modeIsIntake=true;
                                 initPopup(popup);
-                            } else if (mode.equals("intake") && (defenseMap)){
+                            } else if (mode.equals("intake") && tb_defense.isChecked()){
                                 pw = true;
                                 initPopup(popup);
                             }
-                            else if(mode.equals("placement") && (!defenseMap) && (((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green"))
+                            else if(mode.equals("placement") && !tb_defense.isChecked() && (((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green"))
                                     || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mTabletType.equals("green"))
                                     || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mTabletType.equals("green"))
                                     || (y < 4.5 * x - 2437.5 && y < -4.5 * x + 4245 && y < 330 && field_orientation.contains("left") && mTabletType.equals("green"))
@@ -1429,7 +1385,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void mapChange() {
-        if (element.equals("orange") && !incapMap && !defenseMap) {
+        if (element.equals("orange") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
             if (mode.equals("placement")) {
                 Log.e("ahhhhh", "placementorange");
@@ -1440,7 +1396,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.field_placement_orange_right);
                 }
             }
-        } else if (element.equals("lemon") && !incapMap && !defenseMap) {
+        } else if (element.equals("lemon") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
             if (mode.equals("placement")) {
                 Log.e("ahhhhh", "placementlemon");
@@ -1451,7 +1407,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
         }
-        if (mode.equals("intake") && !incapMap && !defenseMap) {
+        if (mode.equals("intake") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             btn_drop.setEnabled(false);
             if (field_orientation.equals("blue_left")) {
                 iv_field.setImageResource(R.drawable.field_intake_blue_left);
@@ -1463,13 +1419,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 iv_field.setImageResource(R.drawable.field_intake_red_right);
             }
         }
-        if (incapMap) {
+        if (tb_incap.isChecked()) {
             if (field_orientation.contains("right")) {
                 iv_field.setImageResource(R.drawable.gray_field_intake_right);
             } else if (field_orientation.contains("left")) {
                 iv_field.setImageResource(R.drawable.gray_field_intake_left);
             }
-        } else if (defenseMap) {
+        } else if (tb_defense.isChecked()) {
             if (mode.equals("intake")) {
                 if (field_orientation.equals("blue_left")) {
                     iv_field.setImageResource(R.drawable.defense_field_blue_left);
@@ -1936,7 +1892,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void initPopup(PopupWindow pw2) {
         if (timerCheck) {
-            if (defenseMap && pw && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
+            if (tb_defense.isChecked() && pw && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x >= 720) || (field_orientation.contains("right") && x <= 130)) && mTabletType.equals("fire")))){
                 Log.e("yes" , "defense");
@@ -1946,7 +1902,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 }
                 pw = false;
-            } else if ((!tele) && (!defenseMap) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+            } else if ((!tele) && (!tb_defense.isChecked()) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 130)) && mTabletType.equals("fire")))) {
                 Log.e("yes" , "storm");
@@ -1956,7 +1912,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 }
                 pw = true;
-            } else if (tele && !defenseMap) {
+            } else if (tele && !tb_defense.isChecked()) {
                 Log.e("yes" , "tele");
                 if (mTabletType.equals("fire")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
