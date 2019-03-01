@@ -12,10 +12,6 @@ import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import android.widget.Button;
 import android.widget.ToggleButton;
-import static citruscircuits.scout.A1A.cancelStormChecker;
-import static citruscircuits.scout.A1A.incapMap;
-import static citruscircuits.scout.A1A.mode;
-
 
 public class StormDialog extends Fragment {
 
