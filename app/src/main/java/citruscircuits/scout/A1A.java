@@ -82,8 +82,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean pw = true;
     public boolean isMapLeft=false;
 
-    public boolean defensePw = false;
-
     public static boolean incapMap = false;
     public boolean didSucceed;
     public boolean wasDefended;
@@ -634,7 +632,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
         didUndoOnce=false;
-        defensePw = false;
+        pw = true;
 
         overallLayout.removeView(iv_game_element);
         try {
@@ -645,7 +643,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         mRealTimeMatchData.put(compressionDic);
         Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
-        Log.e("defensevalue", String.valueOf(defensePw));
         mapChange();
 
     }
@@ -723,7 +720,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_drop.setEnabled(true);
                     modeIsIntake=false;
                     mode = "placement";
-                    Log.e("defensevalue2", String.valueOf(defensePw));
 
                     mapChange();
 
@@ -1086,7 +1082,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickIncap(View v) {
+        btn_undo.setEnabled(true);
+
         if (!incapChecked) {
+            popup_fail_success.dismiss();
+            popup.dismiss();
+
             tb_incap.setChecked(true);
             btn_climb.setEnabled(false);
             btn_drop.setEnabled(false);
@@ -1301,18 +1302,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickOrange(View view) {
         initIntake("orange");
-        defensePw = false;
     }
 
     public void onClickLemon(View view) {
         initIntake("lemon");
-        defensePw = false;
     }
 
     public void onClickCancel(View view) {
         popup.dismiss();
         pw = true;
-        defensePw = false;
     }
 
     public void onClickFail(View view) {
@@ -1938,7 +1936,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void initPopup(PopupWindow pw2) {
         if (timerCheck) {
-            if (defenseMap && !defensePw && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
+            if (defenseMap && pw && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x >= 720) || (field_orientation.contains("right") && x <= 130)) && mTabletType.equals("fire")))){
                 Log.e("yes" , "defense");
@@ -1947,7 +1945,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 }
-                defensePw = true;
+                pw = false;
             } else if ((!tele) && (!defenseMap) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 130)) && mTabletType.equals("fire")))) {
@@ -1956,7 +1954,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
                 } else {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
-                } defensePw = false;
+                }
+                pw = true;
             } else if (tele && !defenseMap) {
                 Log.e("yes" , "tele");
                 if (mTabletType.equals("fire")) {
@@ -1964,12 +1963,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 }
-                defensePw = false;
-            } else{
+                pw = true;
+            } else {
                 Log.e("yes" , "else");
                 pw = true;
             }
-            if (defensePw){
+            if (pw){
                 Log.e("yes" , "defensePw");
                 pw = false;
             }
