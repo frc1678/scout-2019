@@ -676,7 +676,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         Log.e("wokInner2", String.valueOf(actionCount));
                         undoGeneric(false, true, "intake");
                     }
-                    mapChange();
                 } else if (actionDic.get(actionCount).get(3).equals("lemon")) {
                     Log.e("wokDicInner2", String.valueOf(actionDic));
                     element = String.valueOf(actionDic.get(actionCount).get(3));
@@ -688,23 +687,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         Log.e("wokInner4", String.valueOf(actionCount));
                         undoGeneric(false, true, "intake");
                     }
-                    mapChange();
                 } else if (actionDic.get(actionCount).get(3).equals("drop")) {
                     btn_drop.setEnabled(true);
                     modeIsIntake=false;
                     mode = "placement";
-
-                    mapChange();
-
                 } else if (actionDic.get(actionCount).get(3).equals("incap")){
                     pw = true;
                     if (mode.equals("placement")){
                         btn_drop.setEnabled(true);
                     }
-
                     btn_spill.setEnabled(true);
-                    mapChange();
-
                     if (!tele){
                         tb_defense.setEnabled(false);
                         tb_hab_run.setEnabled(true);
@@ -715,7 +707,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         tb_defense.setEnabled(true);
                     }
                     tb_incap.setChecked(false);
-
                 } else if (actionDic.get(actionCount).get(3).equals("unincap")){
                     btn_climb.setEnabled(false);
                     btn_drop.setEnabled(false);
@@ -725,26 +716,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                     pw = false;
 
-                    mapChange();
-
                 } else if (actionDic.get(actionCount).get(3).equals("defense")){
                     btn_climb.setEnabled(true);
                     pw = true;
                     tb_defense.setChecked(false);
-                    mapChange();
 
                 } else if (actionDic.get(actionCount).get(3).equals("undefense")){
                     popup_fail_success.dismiss();
                     popup.dismiss();
                     pw = true;
                     btn_climb.setEnabled(false);
-                    mapChange();
                     tb_defense.setChecked(true);
 
                 }
                 actionDic.remove(actionCount);
                 Log.e("wokDic2?!!", String.valueOf(actionDic));
-
+                mapChange();
             }else if (actionCount==0){
                 Log.e("dic2?!", mRealTimeMatchData.toString());
                 Log.e("actionDic1?!", actionDic.toString());
@@ -1048,11 +1035,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickIncap(View v) {
         btn_undo.setEnabled(true);
 
-        if (!tb_incap.isChecked()) {
+        if (tb_incap.isChecked()) {
             popup_fail_success.dismiss();
             popup.dismiss();
 
-            tb_incap.setChecked(true);
             btn_climb.setEnabled(false);
             btn_drop.setEnabled(false);
             btn_spill.setEnabled(false);
@@ -1087,7 +1073,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             didUndoOnce = false;
         }
 
-        else if (tb_incap.isChecked()) {
+        else if (!tb_incap.isChecked()) {
             actionList = new ArrayList<Object>();
             actionList.add("NA");
             actionList.add("NA");
@@ -1102,8 +1088,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             btn_undo.setEnabled(true);
             btn_spill.setEnabled(true);
-
-            tb_incap.setChecked(false);
 
             if(!tele) {
                 tb_hab_run.setEnabled(true);
@@ -1137,7 +1121,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickDefense (View v) {
         btn_climb = (Button) findViewById(R.id.btn_climb);
         btn_undo.setEnabled(true);
-        if (!tb_defense.isChecked()){
+        if (tb_defense.isChecked()){
             popup_fail_success.dismiss();
             popup.dismiss();
             pw = true;
@@ -1165,7 +1149,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             actionCount++;
             didUndoOnce = false;
         }
-        else if(tb_defense.isChecked()){
+        else if(!tb_defense.isChecked()){
             btn_climb.setEnabled(true);
             pw = true;
 
