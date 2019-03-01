@@ -2066,7 +2066,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             recordPlacement();
             mode = "intake";
             modeIsIntake=true;
-            initShape();
+            if(success.isChecked()) {
+                initShape();
+            } else if(fail.isChecked()) {
+                overallLayout.removeView(iv_game_element);
+                pw = true;
+                mapChange();
+            }
             placementDialog.dismiss();
         } else {
             Toast.makeText(getBaseContext(), "Please input fail/success!",
@@ -2085,7 +2091,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             recordPlacement();
             mode = "intake";
             modeIsIntake=true;
-            initShape();
+            if(success.isChecked()) {
+                initShape();
+            } else if(fail.isChecked()) {
+                overallLayout.removeView(iv_game_element);
+                pw = true;
+                mapChange();
+            }
             placementDialog.dismiss();
         } else {
             Toast.makeText(getBaseContext(), "Please input fail/success and/or level!",
