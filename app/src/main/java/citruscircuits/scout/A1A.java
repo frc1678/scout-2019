@@ -696,15 +696,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     if (mode.equals("placement")){
                         btn_drop.setEnabled(true);
                     }
-                    btn_spill.setEnabled(true);
+
                     if (!tele){
                         tb_defense.setEnabled(false);
                         tb_hab_run.setEnabled(true);
                         btn_climb.setEnabled(false);
                     }
                     else if(tele){
-                        btn_climb.setEnabled(true);
                         tb_defense.setEnabled(true);
+                        if(!tb_defense.isChecked()) {
+                            btn_spill.setEnabled(true);
+                            btn_climb.setEnabled(true);
+                        }
                     }
                     tb_incap.setChecked(false);
                 } else if (actionDic.get(actionCount).get(3).equals("unincap")){
@@ -816,26 +819,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         climbActualEdit(spaceOneII,0);
         climbActualEdit(spaceTwoII,1);
         climbActualEdit(spaceThreeII,2);
-
-        //this code works if we want to preset values
-//        onClicknoneI(dialogLayout);
-//        onClickoneI(dialogLayout);
-//        onClicktwoAI(dialogLayout);
-//        onClickthreeI(dialogLayout);
-//        onClicktwoBI(dialogLayout);
-//        onClicknoneII(dialogLayout);
-//        onClickoneII(dialogLayout);
-//        onClicktwoAII(dialogLayout);
-//        onClickthreeII(dialogLayout);
-//        onClicktwoBII(dialogLayout);
-//
-//        onClickspaceOneI(dialogLayout);
-//        onClickspaceTwoI(dialogLayout);
-//        onClickspaceThreeI(dialogLayout);
-//
-//        onClickspaceOneII(dialogLayout);
-//        onClickspaceTwoII(dialogLayout);
-//        onClickspaceThreeII(dialogLayout);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1824,14 +1807,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickPlacementFail(View view) {
         time = TimerUtil.timestamp;
-        if(zone.contains("Rocket")) {
+        if(structure.contains("Rocket")) {
             tb_shotOutOfField.setEnabled(true);
         }
     }
 
     public void onClickPlacementSuccess(View view) {
         time = TimerUtil.timestamp;
-        if(zone.contains("Rocket")) {
+        if(structure.contains("Rocket")) {
             tb_shotOutOfField.setEnabled(false);
             tb_shotOutOfField.setChecked(false);
         }
