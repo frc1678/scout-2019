@@ -66,6 +66,8 @@ import static java.lang.String.valueOf;
 //testing
 public class A1A extends DialogMaker implements View.OnClickListener {
 
+    final Activity activity = this;
+
     public LayoutInflater layoutInflater;
 
     public ImageView iv_field;
@@ -80,6 +82,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean timerCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+
+    public boolean placementDialogOpen = false;
 
     public boolean didSucceed;
     public boolean wasDefended;
@@ -165,6 +169,35 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_arrow.setVisibility(View.VISIBLE);
         }
     };
+
+    public Handler teleWarningHandler = new Handler();
+    public Runnable teleWarningRunnable = new Runnable() {
+        public void run() {
+            if(!tele && !mode.equals("endPosition")) {
+                new AlertDialog.Builder(activity)
+                        .setTitle("YOU ARE 10 SECONDS INTO TELEOP!!")
+                        .setPositiveButton("GO TO TELEOP", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                popup.dismiss();
+                                popup_fail_success.dismiss();
+                                if(placementDialogOpen) {
+                                    placementDialog.dismiss();
+                                }
+                                pw = true;
+                                toTeleop();
+                            }
+                        })
+                        .setNegativeButton("STAY IN SANDSTORM", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        }
+    };
+
     public List<Object> actionList;
     public Map<Integer, List<Object>> actionDic;
     public int actionCount;
@@ -301,6 +334,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         }
         transaction.commit();
+
         tv_team.setText(valueOf(InputManager.mTeamNum));
         if (TimerUtil.matchTimer != null) {
             TimerUtil.matchTimer.cancel();
@@ -350,6 +384,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickTeleop(View view) {
+        toTeleop();
+    }
+
+    public void toTeleop() {
         if (!startTimer) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag("FRAGMENT");
             if (fragment != null)
@@ -417,17 +455,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         InputManager.mCrossedHabLine = tb_hab_run.isChecked();
         Log.e("woooook", field_orientation);
-
     }
+
     public void onClickCancelEndPosition(View v){
         getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
         getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+
+        mode = "";
 
         cancelStormChecker=true;
         fragmentRecreate = new StormDialog();
         fmRecreate = getSupportFragmentManager();
         transactionRecreate = fmRecreate.beginTransaction();
-
 
         if (AppCc.getSp("mapOrientation", 99) != 99) {
             if (!tb_incap.isChecked()){
@@ -491,6 +530,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             cancelStormChecker=false;
             getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
             tele = true;
+
             if (modeIsIntake){
                 mode ="intake";
             }
@@ -526,11 +566,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickStartTimer(View v) {
         handler.removeCallbacks(runnable);
         handler.removeCallbacksAndMessages(null);
+
+        teleWarningHandler.removeCallbacks(teleWarningRunnable);
+        teleWarningHandler.removeCallbacksAndMessages(null);
+
         TimerUtil.MatchTimerThread timerUtil = new TimerUtil.MatchTimerThread();
+
         btn_drop = findViewById(R.id.btn_dropped);
+
         if (startTimer) {
             pw=true;
             handler.postDelayed(runnable, 150000);
+            teleWarningHandler.postDelayed(teleWarningRunnable, 25000);
             timerUtil.initTimer();
             btn_startTimer.setText("RESET TIMER");
             timerCheck = true;
@@ -563,8 +610,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_undo.setEnabled(false);
             btn_drop.setEnabled(false);
             actionDic.clear();
-            handler.removeCallbacks(runnable);
-            handler.removeCallbacksAndMessages(null);
             TimerUtil.matchTimer.cancel();
             TimerUtil.matchTimer = null;
             TimerUtil.timestamp = 0f;
@@ -1208,6 +1253,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 pw = false;
                                 initPlacement();
                                 modeIsIntake=false;
+                                placementDialogOpen = true;
                             }
                             else if (mode.equals("endPosition")) {
                                 pw = false;
@@ -1822,6 +1868,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickCancelCS(View view) {
         pw = true;
+        placementDialogOpen = false;
         placementDialog.dismiss();
     }
 
@@ -1837,6 +1884,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 pw = true;
                 mapChange();
             }
+            placementDialogOpen = false;
             placementDialog.dismiss();
         } else {
             Toast.makeText(getBaseContext(), "Please input fail/success!",
@@ -1846,6 +1894,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickCancelRocket(View view) {
         pw = true;
+        placementDialogOpen = false;
         placementDialog.dismiss();
     }
 
@@ -1862,6 +1911,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 pw = true;
                 mapChange();
             }
+            placementDialogOpen = false;
             placementDialog.dismiss();
         } else {
             Toast.makeText(getBaseContext(), "Please input fail/success and/or level!",
