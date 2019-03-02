@@ -32,23 +32,20 @@ public class OutputManager extends InputManager{
         fullQRDataProcess();
 
         String compressedData = InputManager.matchKey + "|";
-        //used to make sure that the Qr's header is formatted correctly - aLCFound
-        boolean aLCFound = false;
-        String aLCKey = "";
-        String aLCValue = "";
+
         try {
             JSONArray timeStampData = pMatchData.getJSONArray(InputManager.matchKey);
             Iterator<?> uncompressedKeys = InputManager.mOneTimeMatchData.keys();
+
+            Cst.compressValues.put(InputManager.mScoutName, InputManager.mScoutLetter);
 
             while(uncompressedKeys.hasNext()){
                 String currentKey = uncompressedKeys.next()+"";
                 String currentValue = InputManager.mOneTimeMatchData.get(currentKey)+"";
 
-                Cst.compressValues.put(InputManager.mScoutName, InputManager.mScoutLetter);
-
-                if(Cst.initialCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue)) {
+                if(Cst.initialCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue) && !(currentKey.equals("scoutName") && (InputManager.mScoutLetter + "").equals("null"))) {
                     compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue) + ",";
-                } else if(Cst.initialCompressKeys.containsKey(currentKey) && !(currentValue.equals("") || currentValue.equals("0") || currentValue.equals("null"))) {
+                } else if(Cst.initialCompressKeys.containsKey(currentKey) && !(currentValue.equals("") || currentValue.equals("0") || (currentKey.equals("scoutName") && (InputManager.mScoutLetter + "").equals("null")))) {
                     compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + currentValue + ",";
                 }
             }

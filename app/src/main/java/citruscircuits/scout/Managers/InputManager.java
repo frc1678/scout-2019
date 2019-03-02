@@ -215,7 +215,7 @@ public class InputManager {
             }
         } else if(!f.exists()) {
             for(int i=1;i<=52;i++) {
-                finalNamesList.add("Backup" + i);
+                finalNamesList.add("Backup " + i);
             }
         }
 
