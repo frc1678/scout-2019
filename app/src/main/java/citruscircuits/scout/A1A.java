@@ -1868,6 +1868,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickCancelCS(View view) {
         pw = true;
+        placementDialogOpen = false;
         placementDialog.dismiss();
     }
 
@@ -1893,6 +1894,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickCancelRocket(View view) {
         pw = true;
+        placementDialogOpen = false;
         placementDialog.dismiss();
     }
 
