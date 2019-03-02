@@ -1220,8 +1220,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         Log.e("Xcoordinate", String.valueOf(x));
                         Log.e("Ycoordinate", String.valueOf(y));
 
-                        time = TimerUtil.timestamp;
-
                         if(!((((x > 1700 || y > 985) && mTabletType.equals("green")) || ((x > 1130 || y > 660) && mTabletType.equals("black")) || ((x > 850 || y > 490) && mTabletType.equals("fire")))
                                 || ((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && y > 415 && y < 615 && mTabletType.equals("green"))
                                 || ((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && y > 280 && y < 410 && mTabletType.equals("black")))
@@ -1604,6 +1602,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void initIntake(String givenElement) {
         zone = "";
 
+        time = TimerUtil.timestamp;
+
         if(givenElement.equals("endPosition")) {
             pw = true;
         } else {
@@ -1623,7 +1623,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (((field_orientation.contains("right") && y<=220) || (field_orientation.contains("left") && y>=280)) && mTabletType.equals("fire"))) {
                 zone = "rightLoadingStation";
             }
-            time = TimerUtil.timestamp;
             initPopup(popup_fail_success);
         } else {
             if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
