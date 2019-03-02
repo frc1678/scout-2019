@@ -83,6 +83,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean pw = true;
     public boolean isMapLeft=false;
 
+    public boolean placementDialogOpen = false;
+
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
@@ -176,6 +178,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         .setTitle("YOU ARE 10 SECONDS INTO TELEOP!!")
                         .setPositiveButton("GO TO TELEOP", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
+                                popup.dismiss();
+                                popup_fail_success.dismiss();
+                                if(placementDialogOpen) {
+                                    placementDialog.dismiss();
+                                }
+                                pw = true;
                                 toTeleop();
                             }
                         })
@@ -1245,6 +1253,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 pw = false;
                                 initPlacement();
                                 modeIsIntake=false;
+                                placementDialogOpen = true;
                             }
                             else if (mode.equals("endPosition")) {
                                 pw = false;
@@ -1874,6 +1883,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 pw = true;
                 mapChange();
             }
+            placementDialogOpen = false;
             placementDialog.dismiss();
         } else {
             Toast.makeText(getBaseContext(), "Please input fail/success!",
@@ -1899,6 +1909,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 pw = true;
                 mapChange();
             }
+            placementDialogOpen = false;
             placementDialog.dismiss();
         } else {
             Toast.makeText(getBaseContext(), "Please input fail/success and/or level!",
