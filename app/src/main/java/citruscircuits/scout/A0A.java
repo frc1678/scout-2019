@@ -100,7 +100,7 @@ public class A0A extends DialogMaker {
 
     //user data UI
     public static EditText et_matchNum;
-    public static TextView tv_cycleNum, tv_teamNum;
+    public static TextView tv_cycleNum, tv_teamNum, tv_versionNum;
     public static Button btn_triggerScoutNamePopup, btn_triggerScoutIDPopup, btn_triggerResendMatches;
 
     public ArrayAdapter<String> mResendMatchesArrayAdapter;
@@ -174,6 +174,7 @@ public class A0A extends DialogMaker {
         et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
         tv_cycleNum.setText(String.valueOf(InputManager.mCycleNum));
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
+        tv_versionNum.setText(String.valueOf("Version: " + InputManager.mAppVersion));
         btn_triggerScoutNamePopup.setText(InputManager.mScoutName);
         btn_triggerScoutIDPopup.setText(String.valueOf(InputManager.mScoutId));
     }
@@ -208,7 +209,7 @@ public class A0A extends DialogMaker {
 
         tv_cycleNum = findViewById(R.id.tv_cycleNum);
         tv_teamNum = findViewById(R.id.tv_teamNum);
-
+        tv_versionNum = findViewById(R.id.tv_versionNum);
     }
 
     public void updateUserViews(){
