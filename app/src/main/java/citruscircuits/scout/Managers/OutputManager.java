@@ -45,7 +45,7 @@ public class OutputManager extends InputManager{
 
                 if(Cst.initialCompressKeys.containsKey(currentKey) && Cst.compressValues.containsKey(currentValue) && !(currentKey.equals("scoutName") && (InputManager.mScoutLetter + "").equals("null"))) {
                     compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + Cst.compressValues.get(currentValue) + ",";
-                } else if(Cst.initialCompressKeys.containsKey(currentKey) && !(currentValue.equals("") || currentValue.equals("0") || (currentKey.equals("scoutName") && (InputManager.mScoutLetter + "").equals("null")))) {
+                } else if(Cst.initialCompressKeys.containsKey(currentKey) && !(currentValue.equals("") || currentValue.equals("0") || currentValue.equals("null") || (currentKey.equals("scoutName") && (InputManager.mScoutLetter + "").equals("null")))) {
                     compressedData = compressedData + Cst.initialCompressKeys.get(currentKey) + currentValue + ",";
                 }
             }
