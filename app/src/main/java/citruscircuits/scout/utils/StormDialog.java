@@ -46,9 +46,13 @@ public class StormDialog extends Fragment {
             } else if (InputManager.mAllianceColor.equals("blue")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_reset_blue_selector);
             }
+            if(A1A.mode.equals("placement")) {
+                A1A.btn_drop.setEnabled(true);
+            }
             A1A.timerCheck = true;
             A1A.startTimer = false;
             A1A.tb_incap.setEnabled(true);
+            A1A.btn_spill.setEnabled(true);
             A1A.cancelStormChecker=false;
             A1A.tb_defense.setEnabled(false);
             A1A.btn_climb.setEnabled(false);

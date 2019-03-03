@@ -517,9 +517,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         isElementUsedForRobot=true;
         initShape();
         isElementUsedForRobot=false;
-        if (didUndoOnce){
-            btn_undo.setEnabled(false);
-        }else if (!didUndoOnce){
+        if (!didUndoOnce){
             btn_undo.setEnabled(true);
         }
     }
@@ -1554,8 +1552,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             iv_game_element.setLayoutParams(lp);
             ((ViewGroup) overallLayout).addView(iv_game_element);
         } else if(cancelStormChecker || doneStormChecker){
-//            Log.e("actionDicVals",String.valueOf(actionDic.get(actionCount-1).get(3)));
-//            Log.e("actionCount",String.valueOf(actionCount));
             if (actionCount>0 && ((!actionDic.get(actionCount-1).get(3).equals("drop")) && (!actionDic.get(actionCount-1).get(3).equals("incap")) && (!actionDic.get(actionCount-1).get(3).equals("unincap")))){
                     Log.e("ahhh4", String.valueOf(mode));
                         undoX=(int) actionDic.get(actionCount-1).get(0);
