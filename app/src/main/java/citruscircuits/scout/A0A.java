@@ -71,8 +71,6 @@ import citruscircuits.scout._superDataClasses.Cst;
 import citruscircuits.scout.utils.AppUtils;
 import citruscircuits.scout.utils.QRScan;
 
-import static citruscircuits.scout.Managers.InputManager.mAssignmentMode;
-import static citruscircuits.scout.Managers.InputManager.mQRString;
 import static citruscircuits.scout.utils.AppUtils.readFile;
 
 //Written by the Daemon himself ~ Calvin
@@ -109,8 +107,11 @@ public class A0A extends DialogMaker {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("ASSIGNMENTMODE1", InputManager.mAssignmentMode);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        Log.i("ASSIGNMENTMODE2", InputManager.mAssignmentMode);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -267,12 +268,15 @@ public class A0A extends DialogMaker {
                 InputManager.mMatchNum = matchNum;
                 AppCc.setSp("matchNum", matchNum);
 
-                if(mAssignmentMode.equals("QR")) {
+                if(InputManager.mAssignmentMode.equals("QR")) {
                     InputManager.fullQRDataProcess();
+
+                    Log.i("REACHED!!", InputManager.mAllianceColor);
+                    Log.i("REACHED!!", InputManager.mTeamNum + "");
 
                     setCycleBackgroundColor(InputManager.mAllianceColor);
                     tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
-                } else if(mAssignmentMode.equals("backup")) {
+                } else if(InputManager.mAssignmentMode.equals("backup")) {
                     InputManager.getBackupData();
 
                     setCycleBackgroundColor(InputManager.mAllianceColor);
@@ -430,12 +434,12 @@ public class A0A extends DialogMaker {
                     InputManager.mScoutName = name;
                     AppCc.setSp("scoutName", name);
 
-                    if(mAssignmentMode.equals("QR")) {
+                    if(InputManager.mAssignmentMode.equals("QR")) {
                         String resultStr = AppCc.getSp("resultStr", "");
 
                         InputManager.mQRString = resultStr;
 
-                        Integer numScouts = resultStr.length() - mQRString.indexOf("|");
+                        Integer numScouts = resultStr.length() - InputManager.mQRString.indexOf("|");
 
                         if(InputManager.mSPRRanking<6){
                             QRScan.groupList(1,6, QRScan.group1,1);
