@@ -1604,6 +1604,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void initIntake(String givenElement) {
+        Log.i("COORDINATECHECK", y + "");
         zone = "";
 
         time = TimerUtil.timestamp;
@@ -1630,8 +1631,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             initPopup(popup_fail_success);
         } else {
             if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
-                    || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) && (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))
-                    || (y>260 && mTabletType.equals("fire") && field_orientation.contains("left")) && (y<=260 && mTabletType.equals("fire") && field_orientation.contains("right"))) {
+                    || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) || (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))
+                    || (y>260 && mTabletType.equals("fire") && field_orientation.contains("left")) || (y<=260 && mTabletType.equals("fire") && field_orientation.contains("right"))) {
                 if ((((field_orientation.contains("left") && x <= 540 && x >= 225) || (field_orientation.contains("right") && x >= 1160 && x <= 1440)) && mTabletType.equals("green"))
                         || (((field_orientation.contains("left") && x <= 360 && x >= 175) || (field_orientation.contains("right") && x >= 955 && x<= 955)) && mTabletType.equals("black"))
                         || (((field_orientation.contains("left") && x <= 270 && x >= 130) || (field_orientation.contains("right") && x >= 580 && x <= 720)) && mTabletType.equals("fire"))) {
