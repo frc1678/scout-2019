@@ -231,6 +231,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         setContentView(R.layout.activity_map);
 
+        handler.removeCallbacks(runnable);
+        handler.removeCallbacksAndMessages(null);
+
+        teleWarningHandler.removeCallbacks(teleWarningRunnable);
+        teleWarningHandler.removeCallbacksAndMessages(null);
+
         iv_field = findViewById(R.id.imageView);
 
         if (AppCc.getSp("mapOrientation", 99) != 99) {
@@ -1998,6 +2004,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 .setMessage("GOING BACK WILL CAUSE LOSS OF DATA")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        handler.removeCallbacks(runnable);
+                        handler.removeCallbacksAndMessages(null);
+
+                        teleWarningHandler.removeCallbacks(teleWarningRunnable);
+                        teleWarningHandler.removeCallbacksAndMessages(null);
+
                         activity.finish();
                     }
                 })
