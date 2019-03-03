@@ -144,6 +144,7 @@ public class InputManager {
             Log.e("matchnum?!",String.valueOf(sortL2key));
 
             InputManager.mAssignmentMode = "backup";
+            AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
             String sortL3KeyFinal =String.valueOf((sortL3pre+mMatchNum)%6 +1);
 
 
