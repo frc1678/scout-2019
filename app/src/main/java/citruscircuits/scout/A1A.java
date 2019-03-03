@@ -824,6 +824,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickClimb(View v) {
         time = TimerUtil.timestamp;
+        popup.dismiss();
+        popup_fail_success.dismiss();
+        pw = true;
 
         final Float climbStartTime=TimerUtil.timestamp;
         final Dialog climbDialog = new Dialog(this);
