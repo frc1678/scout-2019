@@ -824,6 +824,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickClimb(View v) {
         time = TimerUtil.timestamp;
+        popup.dismiss();
+        popup_fail_success.dismiss();
+        pw = true;
 
         final Float climbStartTime=TimerUtil.timestamp;
         final Dialog climbDialog = new Dialog(this);
@@ -1121,10 +1124,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 tb_hab_run.setEnabled(true);
             }
 
-            else if(tele) {
-                btn_climb.setEnabled(true);
+            else {
+                if(!tb_defense.isChecked()) {
+                    btn_climb.setEnabled(true);
+                }
                 tb_defense.setEnabled(true);
-                Log.i("TESTTTTTTTTT", "HELP");
             }
 
             compressionDic = new JSONObject();
