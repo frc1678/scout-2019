@@ -529,42 +529,37 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneEndPosition(View v){
-        if(InputManager.mSandstormEndPosition.contains("zone")) {
-            Log.e("sandstormValue", mSandstormEndPosition);
-            cancelStormChecker=false;
-            getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
-            tele = true;
+        Log.e("sandstormValue", mSandstormEndPosition);
+        cancelStormChecker=false;
+        getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
+        tele = true;
 
-            if (modeIsIntake){
-                mode ="intake";
-            }
-            else if(!modeIsIntake){
-                mode ="placement";
-            }
-            overallLayout.removeView(iv_game_element);
-
-            mapChange();
-            doneStormChecker=true;
-            isElementUsedForRobot=true;
-            initShape();
-            tb_incap.setEnabled(true);
-            if(!tb_incap.isChecked()){
-                btn_spill.setEnabled(true);
-                if (mode.equals("placement")){
-                    A1A.btn_drop.setEnabled(true);
-                }
-                btn_climb.setEnabled(true);
-                tb_defense.setEnabled(true);
-            }
-            if(tb_incap.isChecked()){
-                pw=false;
-            }
-
-            didUndoOnce=false;
-        } else {
-            Toast.makeText(getBaseContext(), "Have you inputted a valid end position?",
-                    Toast.LENGTH_SHORT).show();
+        if (modeIsIntake){
+            mode ="intake";
         }
+        else if(!modeIsIntake){
+            mode ="placement";
+        }
+        overallLayout.removeView(iv_game_element);
+
+        mapChange();
+        doneStormChecker=true;
+        isElementUsedForRobot=true;
+        initShape();
+        tb_incap.setEnabled(true);
+        if(!tb_incap.isChecked()){
+            btn_spill.setEnabled(true);
+            if (mode.equals("placement")){
+                A1A.btn_drop.setEnabled(true);
+            }
+            btn_climb.setEnabled(true);
+            tb_defense.setEnabled(true);
+        }
+        if(tb_incap.isChecked()){
+            pw=false;
+        }
+
+        didUndoOnce=false;
     }
 
     public void onClickStartTimer(View v) {
