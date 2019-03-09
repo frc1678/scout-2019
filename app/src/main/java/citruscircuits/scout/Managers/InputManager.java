@@ -65,7 +65,7 @@ public class InputManager {
 
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
-    public static String mAppVersion = "1.1";
+    public static String mAppVersion = "1.3";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
     public static String mSandstormEndPosition = "";

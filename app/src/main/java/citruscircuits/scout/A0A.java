@@ -57,6 +57,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -71,6 +72,7 @@ import citruscircuits.scout._superDataClasses.Cst;
 import citruscircuits.scout.utils.AppUtils;
 import citruscircuits.scout.utils.QRScan;
 
+import static citruscircuits.scout.Managers.InputManager.mMatchNum;
 import static citruscircuits.scout.utils.AppUtils.readFile;
 
 //Written by the Daemon himself ~ Calvin
@@ -144,7 +146,7 @@ public class A0A extends DialogMaker {
 
     //OnClick Methods
     public void onClickStartScouting(View view) {
-        if(InputManager.mTabletType.equals("") || InputManager.mScoutName.equals("unselected") || InputManager.mTabletType.equals("unselected") || InputManager.mMatchNum == 0 || InputManager.mTeamNum == 0 || InputManager.mScoutId == 0) {
+        if(InputManager.mTabletType.equals("") || InputManager.mScoutName.equals("unselected") || InputManager.mTabletType.equals("unselected") || mMatchNum == 0 || InputManager.mTeamNum == 0 || InputManager.mScoutId == 0) {
             Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
         } else {
             String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
@@ -172,7 +174,7 @@ public class A0A extends DialogMaker {
 
     public static void updateUserData(){
         setCycleBackgroundColor(InputManager.mAllianceColor);
-        et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
+        et_matchNum.setText(String.valueOf(mMatchNum));
         tv_cycleNum.setText(String.valueOf(InputManager.mCycleNum));
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         tv_versionNum.setText(String.valueOf("Version: " + InputManager.mAppVersion));
@@ -215,7 +217,7 @@ public class A0A extends DialogMaker {
 
     public void updateUserViews(){
         try{//TODO make sure that InputManager's recover user data is called when restarting activity
-            et_matchNum.setText(InputManager.mMatchNum);
+            et_matchNum.setText(mMatchNum);
             tv_teamNum.setText(InputManager.mTeamNum);
             tv_cycleNum.setText(InputManager.mCycleNum);
 
@@ -265,7 +267,7 @@ public class A0A extends DialogMaker {
 
                 int matchNum = AppUtils.StringToInt(editable.toString());
 
-                InputManager.mMatchNum = matchNum;
+                mMatchNum = matchNum;
                 AppCc.setSp("matchNum", matchNum);
 
                 if(InputManager.mAssignmentMode.equals("QR")) {
@@ -439,19 +441,26 @@ public class A0A extends DialogMaker {
 
                         InputManager.mQRString = resultStr;
 
+                        InputManager.fullQRDataProcess();
+
                         Integer numScouts = resultStr.length() - InputManager.mQRString.indexOf("|");
 
-                        if(InputManager.mSPRRanking<6){
-                            QRScan.groupList(1,6, QRScan.group1,1);
+                        ArrayList<Integer> baseRef = new ArrayList<Integer>();
+                        baseRef.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6));
+                        QRScan.position = (mMatchNum*(InputManager.mSPRRanking/6) + baseRef.get(InputManager.mSPRRanking - 1))%6 + 1;
+                        Log.i("POSITION", QRScan.position + "");
 
-                        }else if( InputManager.mSPRRanking < (numScouts-6)/2+5){
-                            QRScan.groupList(7,(numScouts-6)/2+5, QRScan.group2,2);
+                        Log.i("SPRRANKING", "" + InputManager.mSPRRanking);
 
-                        }else {
-                            QRScan.groupList((numScouts-6)/2+6, numScouts, QRScan.group3,3);
-                        }
-
-                        InputManager.fullQRDataProcess();
+//                        if(InputManager.mSPRRanking<6){
+//                            QRScan.groupList(1,6, QRScan.group1,1);
+//
+//                        }else if( InputManager.mSPRRanking < (numScouts-6)/2+5){
+//                            QRScan.groupList(7,(numScouts-6)/2+5, QRScan.group2,2);
+//
+//                        }else {
+//                            QRScan.groupList((numScouts-6)/2+6, numScouts, QRScan.group3,3);
+//                        }
 
                         Log.e("TEAMNUM", InputManager.mTeamNum + "");
                         Log.e("TEAMNUMFAKE", InputManager.mAllianceColor);
