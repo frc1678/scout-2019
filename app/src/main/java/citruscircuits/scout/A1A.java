@@ -145,6 +145,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Button spaceOneII;
     public Button spaceTwoII;
     public Button spaceThreeII;
+    public Button blockRight;
+    public Button blockLeft;
     public static ToggleButton tb_incap;
     public static ToggleButton tb_defense;
     public ToggleButton tb_start_cube;
@@ -233,20 +235,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.field_intake_blue_right);
                     field_orientation = "blue_right";
                     isMapLeft = false;
+                    blockRight.setVisibility(View.VISIBLE);
                 } else if(mAllianceColor.equals("red")) {
                     iv_field.setImageResource(R.drawable.field_intake_red_left);
                     field_orientation = "red_left";
                     isMapLeft = true;
+                    blockLeft.setVisibility(View.VISIBLE);
+
                 }
             } else {
                 if(mAllianceColor.equals("blue")) {
                     iv_field.setImageResource(R.drawable.field_intake_blue_left);
                     field_orientation = "blue_left";
                     isMapLeft = true;
+                    blockLeft.setVisibility(View.VISIBLE);
+
                 } else if(mAllianceColor.equals("red")) {
                     iv_field.setImageResource(R.drawable.field_intake_red_right);
                     field_orientation = "red_right";
                     isMapLeft = false;
+                    blockRight.setVisibility(View.VISIBLE);
+
                 }
             }
         } else {
@@ -291,6 +300,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_arrow = findViewById(R.id.btn_arrow);
         btn_climb = findViewById(R.id.btn_climb);
         tb_defense = (ToggleButton) findViewById(R.id.tbtn_defense);
+        blockRight = findViewById(R.id.rightBlock);
+        blockLeft = findViewById(R.id.leftBlock);
 
 
         tb_incap = findViewById(R.id.tbtn_incap);
@@ -637,6 +648,40 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mapChange();
         }
         Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
+    }
+
+    public void onClickHabLine(View v){
+        if (!tb_hab_run.isChecked()){
+            if(AppCc.getSp("mapOrientation", 99) !=0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    blockRight.setVisibility(View.VISIBLE);
+
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    blockLeft.setVisibility(View.VISIBLE);
+                }
+            } else if(AppCc.getSp("mapOrientation", 99) == 0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    blockLeft.setVisibility(View.VISIBLE);
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    blockRight.setVisibility(View.VISIBLE);
+                }
+            }
+        } else{
+            if(AppCc.getSp("mapOrientation", 99) !=0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    blockRight.setVisibility(View.INVISIBLE);
+
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    blockLeft.setVisibility(View.INVISIBLE);
+                }
+            } else if(AppCc.getSp("mapOrientation", 99) == 0){
+                if (InputManager.mAllianceColor.equals("red")) {
+                    blockLeft.setVisibility(View.INVISIBLE);
+                } else if (InputManager.mAllianceColor.equals("blue")) {
+                    blockRight.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
     }
 
     public void onClickDrop(View v) {
