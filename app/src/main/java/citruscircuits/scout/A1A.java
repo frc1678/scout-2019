@@ -462,6 +462,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         InputManager.mCrossedHabLine = tb_hab_run.isChecked();
         Log.e("woooook", field_orientation);
+        blockRight.setVisibility(View.INVISIBLE);
+        blockLeft.setVisibility(View.INVISIBLE);
 
     }
     public void onClickCancelEndPosition(View v){
@@ -540,6 +542,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             cancelStormChecker=false;
             getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
             tele = true;
+
             if (modeIsIntake){
                 mode ="intake";
             }
@@ -568,6 +571,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
 
             didUndoOnce=false;
+
+            blockRight.setVisibility(View.INVISIBLE);
+            blockLeft.setVisibility(View.INVISIBLE);
+
         } else {
             Toast.makeText(getBaseContext(), "Have you inputted a valid end position?",
                     Toast.LENGTH_SHORT).show();
