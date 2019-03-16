@@ -399,6 +399,7 @@ public class A0A extends DialogMaker {
         setCycleBackgroundColor(InputManager.mAllianceColor);
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         pw_backupWindow.dismiss();
+        btn_triggerBackupPopup.setText("backup");
     }
 
     public void onClickOverrideBackup(View view) {
