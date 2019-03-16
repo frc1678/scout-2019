@@ -144,7 +144,7 @@ public class A0A extends DialogMaker {
 
         //Display assignment type on assignment system popup button. If none selected, display "Assignment System"
         btn_triggerBackupPopup.setText(InputManager.mAssignmentMode);
-        if (!InputManager.mAssignmentMode.equals("QR") && !InputManager.mAssignmentMode.equals("override") && !InputManager.mAssignmentMode.equals("backup")){
+        if (!InputManager.mAssignmentMode.equals("QR") && !InputManager.mAssignmentMode.equals("override") && !InputManager.mAssignmentMode.equals("backup")) {
             btn_triggerBackupPopup.setText("Assignment System");
         }
     }
