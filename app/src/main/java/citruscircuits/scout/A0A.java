@@ -445,22 +445,22 @@ public class A0A extends DialogMaker {
 
                         Integer numScouts = resultStr.length() - InputManager.mQRString.indexOf("|");
 
-                        ArrayList<Integer> baseRef = new ArrayList<Integer>();
-                        baseRef.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6));
-                        QRScan.position = (mMatchNum*(InputManager.mSPRRanking/6) + baseRef.get(InputManager.mSPRRanking - 1))%6 + 1;
+                        if(InputManager.mSPRRanking<=6){
+                            QRScan.groupNumber = 1;
+                            QRScan.initialSPR = 1;
+                        }else if(InputManager.mSPRRanking < (numScouts-6)/2+6){
+                            QRScan.groupNumber = 2;
+                            QRScan.initialSPR = 7;
+                        }else {
+                            QRScan.groupNumber = 3;
+                            QRScan.initialSPR = (numScouts-6)/2+7;
+                        }
+
+                        QRScan.position = ((mMatchNum*QRScan.groupNumber) + (InputManager.mSPRRanking - QRScan.initialSPR))%6 + 1;
                         Log.i("POSITION", QRScan.position + "");
+                        Log.i("INITIALSPR", QRScan.initialSPR + "");
 
                         Log.i("SPRRANKING", "" + InputManager.mSPRRanking);
-
-//                        if(InputManager.mSPRRanking<6){
-//                            QRScan.groupList(1,6, QRScan.group1,1);
-//
-//                        }else if( InputManager.mSPRRanking < (numScouts-6)/2+5){
-//                            QRScan.groupList(7,(numScouts-6)/2+5, QRScan.group2,2);
-//
-//                        }else {
-//                            QRScan.groupList((numScouts-6)/2+6, numScouts, QRScan.group3,3);
-//                        }
 
                         Log.e("TEAMNUM", InputManager.mTeamNum + "");
                         Log.e("TEAMNUMFAKE", InputManager.mAllianceColor);

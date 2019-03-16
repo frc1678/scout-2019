@@ -51,13 +51,8 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
     public static Integer numScouts;
     public static Integer groupNumber;
-    public static Integer overallRanking;
     public static Integer position;
-
-
-    public static ArrayList<Integer> group1 = new ArrayList<>();
-    public static ArrayList<Integer> group2 = new ArrayList<>();
-    public static ArrayList<Integer> group3 = new ArrayList<>();
+    public static Integer initialSPR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,21 +103,19 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         Log.i("SPRRANKING", "" + InputManager.mSPRRanking);
 
-        ArrayList<Integer> baseRef = new ArrayList<Integer>();
-        baseRef.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6));
-        position = (mMatchNum + baseRef.get(InputManager.mSPRRanking - 1))%6 + 1;
-        Log.i("POSITION", position + "");
+        if(InputManager.mSPRRanking<=6){
+            groupNumber = 1;
+            initialSPR = 1;
+        }else if(InputManager.mSPRRanking < (numScouts-6)/2+6){
+            groupNumber = 2;
+            initialSPR = 7;
+        }else {
+            groupNumber = 3;
+            initialSPR = (numScouts-6)/2+7;
+        }
 
-//        if(InputManager.mSPRRanking<6){
-//            groupList(1,6, group1,1);
-//
-//        }else if( InputManager.mSPRRanking < (numScouts-6)/2+5){
-//            groupList(7,(numScouts-6)/2+5, group2,2);
-//
-//        }else {
-//            groupList((numScouts-6)/2+6, numScouts, group3,3);
-//
-//        }
+        position = ((mMatchNum - 1)*groupNumber) + (InputManager.mSPRRanking - initialSPR) + 1;
+        Log.i("POSITION", position + "");
 
         if(!resultStr.contains("|")) {
             AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
@@ -187,17 +180,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             qrCodeReader.setBackCamera();
         }else{
             qrCodeReader.setFrontCamera();
-        }
-    }
-    public static void groupList(Integer start, Integer end, ArrayList<Integer> group, Integer groupNum){
-        if(InputManager.mSPRRanking>0){
-//            for(int i=start;i<end;i++){
-//                group.add(i);
-//            }
-//            groupNumber=groupNum;
-//            Log.e("ranking", String.valueOf(groupNumber));
-//            overallRanking=InputManager.mSPRRanking-start;
-//            Log.e("rankingoverall", String.valueOf(overallRanking));
         }
     }
 
