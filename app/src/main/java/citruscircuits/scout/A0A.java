@@ -142,6 +142,7 @@ public class A0A extends DialogMaker {
         updateListView();
         listenForResendClick();
 
+        // when A0A is opened, it shows the assignment type on the button. If none is selected, it shows "Assignment System"
         btn_triggerBackupPopup.setText(InputManager.mAssignmentMode);
         if (!InputManager.mAssignmentMode.equals("QR") && !InputManager.mAssignmentMode.equals("override") && !InputManager.mAssignmentMode.equals("backup")){
             btn_triggerBackupPopup.setText("Assignment System");
