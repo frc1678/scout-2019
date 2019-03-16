@@ -254,7 +254,7 @@ public class InputManager {
         if(mSPRRanking<=6){
             groupNumber = 0;
             initialSPR = 1;
-        }else if(mSPRRanking < groupIIIInitialSPR){
+        }else if(mSPRRanking < groupIIIInitialSPR) {
             groupNumber = 1;
             initialSPR = 7;
         }else {
