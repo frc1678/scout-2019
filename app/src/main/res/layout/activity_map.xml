@@ -151,7 +151,18 @@
             android:enabled="false"
             android:visibility="invisible"
             android:onClick="onClickDataCheck"/>
-
-
     </RelativeLayout>
+
+    <Button
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:id="@+id/btn_defense"
+        android:text="DEFENSIVE ACTIONS - 0"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:onClick="onClickDefAction"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:enabled="false"/>
 </RelativeLayout>
