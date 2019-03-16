@@ -142,10 +142,8 @@ public class A0A extends DialogMaker {
         listenForResendClick();
 
         //Display assignment type on assignment system popup button.
-        // If none selected, display "Assignment System."
-        btn_triggerBackupPopup.setText(InputManager.mAssignmentMode);
-        if (InputManager.mAssignmentMode.equals("")) {
-            btn_triggerBackupPopup.setText("Assignment System");
+        if (!InputManager.mAssignmentMode.equals("")) {
+            btn_triggerBackupPopup.setText(InputManager.mAssignmentMode);
         }
     }
 
