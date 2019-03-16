@@ -456,14 +456,7 @@ public class A0A extends DialogMaker {
                             QRScan.initialSPR = (numScouts-6)/2+7;
                         }
 
-                        QRScan.position = ((mMatchNum*QRScan.groupNumber) + (InputManager.mSPRRanking - QRScan.initialSPR))%6 + 1;
-                        Log.i("POSITION", QRScan.position + "");
-                        Log.i("INITIALSPR", QRScan.initialSPR + "");
-
-                        Log.i("SPRRANKING", "" + InputManager.mSPRRanking);
-
-                        Log.e("TEAMNUM", InputManager.mTeamNum + "");
-                        Log.e("TEAMNUMFAKE", InputManager.mAllianceColor);
+                        QRScan.position = (mMatchNum * (QRScan.groupNumber + 1) + InputManager.mSPRRanking - QRScan.initialSPR)%6 + 1;
                     }
 
                     updateUserData();

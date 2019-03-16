@@ -113,17 +113,17 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         }
 
         if(InputManager.mSPRRanking<=6){
-            groupNumber = 1;
+            groupNumber = 0;
             initialSPR = 1;
         }else if(InputManager.mSPRRanking < n){
-            groupNumber = 2;
+            groupNumber = 1;
             initialSPR = 7;
         }else {
-            groupNumber = 3;
+            groupNumber = 2;
             initialSPR = n;
         }
 
-        position = ((mMatchNum*groupNumber) + (InputManager.mSPRRanking - initialSPR))%6 + 1;
+        position = (mMatchNum * (groupNumber + 1) + InputManager.mSPRRanking - initialSPR)%6 + 1;
 
         Log.i("POSITION", position + "");
 
