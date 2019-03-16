@@ -44,6 +44,48 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/storm_blue_selector"
             android:enabled="false"/>
+
+        <RadioGroup
+            android:id="@+id/preload2"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/showedUp"
+            android:layout_below="@+id/tgbtn_storm_run"
+            android:layout_marginTop="10dp">
+
+            <RadioButton
+                android:id="@+id/preloadCargo2"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cargo_selector"
+                android:button="@null"
+                android:text="Cargo"
+                android:textAlignment="center"
+                android:textSize="25sp" />
+
+            <RadioButton
+                android:id="@+id/preloadPanel2"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/panel_selector"
+                android:button="@null"
+                android:text="Panel"
+                android:textAlignment="center"
+                android:textSize="25sp" />
+
+            <RadioButton
+                android:id="@+id/preloadNone2"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/no_preload_selector"
+                android:button="@null"
+                android:text="None"
+                android:textAlignment="center"
+                android:textSize="25sp" />
+        </RadioGroup>
+
     </RelativeLayout>
 
     <Button
