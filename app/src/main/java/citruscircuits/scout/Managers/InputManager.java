@@ -27,10 +27,17 @@ public class InputManager {
     // (1) Store Permanent Data In SDCARD In MainActivity
     // (2) Store Temporary Data During Scouting Process
 
-    //QR String
+    //QR Assignment Variables
     public static String mQRString;
     public static String mScoutLetter;
     public static int mSPRRanking;
+
+    public static Integer groupIIIInitialSPR;
+
+    public static Integer numScouts;
+    public static Integer groupNumber;
+    public static Integer position;
+    public static Integer initialSPR;
 
     public static int numSpill;
     public static int numFoul;
@@ -222,6 +229,47 @@ public class InputManager {
 
         return finalNamesList;
     }
+
+    //Assign robots to scouts based on SPR Ranking from scanned QR.
+    public static void getQRAssignment(String resultText) {
+        mQRString = resultText;
+
+        fullQRDataProcess();
+
+        numScouts = resultText.length() - mQRString.indexOf("|");
+
+        Log.i("SPRRANKING", "" + mSPRRanking);
+
+        //Set groupIIIInitialSPR based on the number of scouts (odd or even)
+        //in order to properly distribute robots between groups of scouts.
+        if(numScouts%2 == 0) {
+            groupIIIInitialSPR = (int) Math.ceil((numScouts-6)/2)+7;
+        } else {
+            groupIIIInitialSPR = (int) Math.ceil((numScouts-6)/2)+6;
+        }
+
+        //Assign scout to scout group based on SPR Ranking.
+        //Groups are used to evenly distribute robots to scouts for most accurate data.
+        //Assign initial SPR as the first SPR Rank in the scout group.
+        if(mSPRRanking<=6){
+            groupNumber = 0;
+            initialSPR = 1;
+        }else if(mSPRRanking < groupIIIInitialSPR){
+            groupNumber = 1;
+            initialSPR = 7;
+        }else {
+            groupNumber = 2;
+            initialSPR = groupIIIInitialSPR;
+        }
+
+        //Algorithm to assign scouts to position of robot (robot 1 - 6)
+        //depending on SPR Ranking and Match Number.
+        //Used to distribute scouts so they do not scout with the same scouts as frequently.
+        position = (mMatchNum * (groupNumber + 1) + (mSPRRanking - initialSPR))%6 + 1;
+
+        Log.i("POSITION", position + "");
+    }
+
     //Method for acquiring scout pre-match data from assignments.txt
     public static void fullQRDataProcess(){
         if(mMatchNum > 0 && mCycleNum >= 0){
@@ -281,7 +329,7 @@ public class InputManager {
         String sortL1key = "matches";
         Log.e("match?!",String.valueOf(sortL1key));
         String sortL2key = String.valueOf(mMatchNum);
-        String sortL3key = String.valueOf(QRScan.position);
+        String sortL3key = String.valueOf(position);
         Log.e("matchnum?!",String.valueOf(sortL2key));
         Log.e("position?!",String.valueOf(sortL3key));
         Log.e("SPR?!",String.valueOf(mSPRRanking));

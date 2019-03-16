@@ -271,6 +271,7 @@ public class A0A extends DialogMaker {
                 AppCc.setSp("matchNum", matchNum);
 
                 if(InputManager.mAssignmentMode.equals("QR")) {
+                    //Update assigned robot based on match number.
                     InputManager.fullQRDataProcess();
 
                     Log.i("REACHED!!", InputManager.mAllianceColor);
@@ -437,26 +438,8 @@ public class A0A extends DialogMaker {
                     AppCc.setSp("scoutName", name);
 
                     if(InputManager.mAssignmentMode.equals("QR")) {
-                        String resultStr = AppCc.getSp("resultStr", "");
-
-                        InputManager.mQRString = resultStr;
-
-                        InputManager.fullQRDataProcess();
-
-                        Integer numScouts = resultStr.length() - InputManager.mQRString.indexOf("|");
-
-                        if(InputManager.mSPRRanking<=6){
-                            QRScan.groupNumber = 1;
-                            QRScan.initialSPR = 1;
-                        }else if(InputManager.mSPRRanking < (numScouts-6)/2+6){
-                            QRScan.groupNumber = 2;
-                            QRScan.initialSPR = 7;
-                        }else {
-                            QRScan.groupNumber = 3;
-                            QRScan.initialSPR = (numScouts-6)/2+7;
-                        }
-
-                        QRScan.position = (mMatchNum * (QRScan.groupNumber + 1) + InputManager.mSPRRanking - QRScan.initialSPR)%6 + 1;
+                        //Update assigned robot based on new scout name.
+                        InputManager.getQRAssignment(AppCc.getSp("resultStr", ""));
                     }
 
                     updateUserData();

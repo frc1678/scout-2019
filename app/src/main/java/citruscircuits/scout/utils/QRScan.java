@@ -49,13 +49,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
     public String resultStr;
 
-    public Integer n;
-
-    public static Integer numScouts;
-    public static Integer groupNumber;
-    public static Integer position;
-    public static Integer initialSPR;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,39 +86,12 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
     public void onQRCodeRead(String text, PointF[] points) {
         alertScout();
 
+        //Set QRString to scanned QR in order to retrieve scout SPR Ranking.
         resultStr = text;
         String prevStr = AppCc.getSp("resultStr", "");
 
-        InputManager.mQRString = resultStr;
-        InputManager.mSPRRanking = 0;
-
-        InputManager.fullQRDataProcess();
-
-        numScouts = resultStr.length() - mQRString.indexOf("|");
-        Log.e("does it go in here", String.valueOf(InputManager.mSPRRanking<6));
-
-        Log.i("SPRRANKING", "" + InputManager.mSPRRanking);
-
-        if(InputManager.mSPRRanking%2 == 0) {
-            n = (int) Math.ceil((numScouts-6)/2)+7;
-        } else {
-            n = (int) Math.ceil((numScouts-6)/2)+n;
-        }
-
-        if(InputManager.mSPRRanking<=6){
-            groupNumber = 0;
-            initialSPR = 1;
-        }else if(InputManager.mSPRRanking < n){
-            groupNumber = 1;
-            initialSPR = 7;
-        }else {
-            groupNumber = 2;
-            initialSPR = n;
-        }
-
-        position = (mMatchNum * (groupNumber + 1) + InputManager.mSPRRanking - initialSPR)%6 + 1;
-
-        Log.i("POSITION", position + "");
+        //Update assigned robot based on scout name and newly scanned QR.
+        InputManager.getQRAssignment(resultStr);
 
         if(!resultStr.contains("|")) {
             AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
