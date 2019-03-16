@@ -49,6 +49,8 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
     public String resultStr;
 
+    public Integer n;
+
     public static Integer numScouts;
     public static Integer groupNumber;
     public static Integer position;
@@ -95,6 +97,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         String prevStr = AppCc.getSp("resultStr", "");
 
         InputManager.mQRString = resultStr;
+        InputManager.mSPRRanking = 0;
 
         InputManager.fullQRDataProcess();
 
@@ -103,18 +106,25 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         Log.i("SPRRANKING", "" + InputManager.mSPRRanking);
 
+        if(InputManager.mSPRRanking%2 == 0) {
+            n = (int) Math.ceil((numScouts-6)/2)+7;
+        } else {
+            n = (int) Math.ceil((numScouts-6)/2)+n;
+        }
+
         if(InputManager.mSPRRanking<=6){
             groupNumber = 1;
             initialSPR = 1;
-        }else if(InputManager.mSPRRanking < (numScouts-6)/2+6){
+        }else if(InputManager.mSPRRanking < n){
             groupNumber = 2;
             initialSPR = 7;
         }else {
             groupNumber = 3;
-            initialSPR = (numScouts-6)/2+7;
+            initialSPR = n;
         }
 
-        position = ((mMatchNum - 1)*groupNumber) + (InputManager.mSPRRanking - initialSPR) + 1;
+        position = ((mMatchNum*groupNumber) + (InputManager.mSPRRanking - initialSPR))%6 + 1;
+
         Log.i("POSITION", position + "");
 
         if(!resultStr.contains("|")) {
