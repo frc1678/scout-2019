@@ -120,6 +120,7 @@ public class A0A extends DialogMaker {
         dr_blueCycle = getResources().getDrawable(R.drawable.cycle_blue_dashed_background);
         map_orientation_rb = getResources().getDrawable(R.drawable.btn_map_orientation_rb);
         map_orientation_br = getResources().getDrawable(R.drawable.btn_map_orientation_br);
+        btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
 
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -140,6 +141,11 @@ public class A0A extends DialogMaker {
 
         updateListView();
         listenForResendClick();
+
+        btn_triggerBackupPopup.setText(InputManager.mAssignmentMode);
+        if (!InputManager.mAssignmentMode.equals("QR") && !InputManager.mAssignmentMode.equals("override") && !InputManager.mAssignmentMode.equals("backup")){
+            btn_triggerBackupPopup.setText("Assignment System");
+        }
     }
 
     //OnClick Methods
@@ -398,6 +404,7 @@ public class A0A extends DialogMaker {
     public void onClickOverrideBackup(View view) {
         initOverrideDialog(A0A.this);
         pw_backupWindow.dismiss();
+        btn_triggerBackupPopup.setText("Override");
     }
 
     public class ScoutNameListAdapter extends BaseAdapter{
