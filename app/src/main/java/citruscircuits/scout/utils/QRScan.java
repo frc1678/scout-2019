@@ -54,7 +54,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 300);
         }
 
@@ -64,11 +64,12 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         initCam();
     }
 
+    //Request camera permissions if not already granted.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode) {
+        switch (requestCode) {
             case 300:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     initCam();
                 }
                 return;
@@ -78,8 +79,17 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         open(A0A.class, null, true, false);
     }
 
-    public void onBackClick(View v){
-        open(A0A.class, null, true, false);
+    //Initiates the camera
+    private void initCam() throws NullPointerException {
+        qrCodeReader.setQRDecodingEnabled(true);
+        qrCodeReader.setTorchEnabled(true);
+        qrCodeReader.setAutofocusInterval(3000L);
+
+        if(InputManager.mTabletType.equals("black") || InputManager.mTabletType.equals("fire")){
+            qrCodeReader.setBackCamera();
+        }else{
+            qrCodeReader.setFrontCamera();
+        }
     }
 
     @Override
@@ -93,7 +103,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         //Update assigned robot based on scout name and newly scanned QR.
         InputManager.getQRAssignment(resultStr);
 
-        if(!resultStr.contains("|")) {
+        if (!resultStr.contains("|")) {
             AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
 
             resultStr = prevStr;
@@ -101,29 +111,36 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         }
 
         int cycleNum = 0;
-        try { cycleNum = AppUtils.StringToInt(resultStr.substring(0, resultStr.indexOf("|"))); }
-        catch (Exception e){ e.printStackTrace(); }
+        try {
+            cycleNum = AppUtils.StringToInt(resultStr.substring(0, resultStr.indexOf("|")));
+        }
+        catch (Exception e){ e.printStackTrace();
+        }
 
-        if(!prevStr.equals("")){
+        if (!prevStr.equals("")) {
             int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("|")));
 
-            if(prevCycleNum >= cycleNum){
+            if (prevCycleNum >= cycleNum) {
                 AppUtils.makeToast(this, "QR's CYCLE NUMBER: " + cycleNum + ", Your CYCLE NUMBER: " + prevCycleNum, 50);
 
                 resultStr = prevStr;
                 cycleNum = prevCycleNum;
-            } else if(cycleNum <= 0) {
+            }
+            else if (cycleNum <= 0) {
                 AppUtils.makeToast(this, "INVALID CYCLE NUMBER:" + cycleNum, 50);
 
                 resultStr = prevStr;
                 cycleNum = prevCycleNum;
-            }else{
+            }
+            else {
                 AppUtils.makeToast(this,"CYCLE NUMBER: " + cycleNum, 50);
             }
-        }else{
-            try{
+        }
+        else {
+            try {
                 AppUtils.makeToast(this, "CYCLE NUMBER: " + cycleNum, 50);
-            }catch(Exception e){
+            }
+            catch(Exception e) {
                 e.printStackTrace();
             }
         }
@@ -147,42 +164,37 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         qrCodeReader.stopCamera();
     }
 
-    private void initCam() throws NullPointerException{
-        qrCodeReader.setQRDecodingEnabled(true);
-        qrCodeReader.setTorchEnabled(true);
-        qrCodeReader.setAutofocusInterval(3000L);
-
-        if(InputManager.mTabletType.equals("black") || InputManager.mTabletType.equals("fire")){
-            qrCodeReader.setBackCamera();
-        }else{
-            qrCodeReader.setFrontCamera();
-        }
-    }
-
-    public void alertScout(){
+    //Alert scout of QR scan, make spinner appear for scout to confirm/select name.
+    public void alertScout() {
         Log.i("SCOUTNAME", InputManager.mScoutName);
+
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_name_confirmation, null);
         TextView nameView= (TextView) dialogView.findViewById(R.id.nameView);
         nameView.setText(InputManager.mScoutName);
-        name_spinner = (Spinner) dialogView.findViewById(R.id.nameList);
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, Cst.SCOUT_NAMES);
+        name_spinner = (Spinner) dialogView.findViewById(R.id.nameList);
+
         name_spinner.setAdapter(spinnerAdapter);
         name_spinner.setSelection(((ArrayAdapter<String>)name_spinner.getAdapter()).getPosition(InputManager.mScoutName));
-        name_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
 
+        name_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
+                //Do nothing, but necessary for spinner
             }
             public void onNothingSelected(AdapterView<?> parent){
-
+                //Do nothing, but necessary for spinner
             }
         });
 
-        if(InputManager.mScoutName != null){
+        if (InputManager.mScoutName != null) {
             nameView.setText(InputManager.mScoutName);
-        }else{
+        }
+        else {
             nameView.setText("");
         }
 
+        //Create and display name selection/confirmation alert dialog.
         AlertDialog scoutNameAlertDialog;
         scoutNameAlertDialog = new AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -202,5 +214,9 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
                 .create();
         scoutNameAlertDialog.show();
         scoutNameAlertDialog.setCanceledOnTouchOutside(false);
+    }
+
+    public void onBackClick(View v){
+        open(A0A.class, null, true, false);
     }
 }
