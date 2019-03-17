@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -407,27 +408,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickTeleop(View view) {
-        new AlertDialog.Builder(activity)
-                .setTitle("ARE YOU SURE YOU WANT TO GO INTO TELEOP?")
-                .setPositiveButton("GO TO TELEOP", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        popup.dismiss();
-                        popup_fail_success.dismiss();
-                        if(placementDialogOpen) {
-                            placementDialog.dismiss();
-                        }
-                        pw = true;
-                        toTeleop();
-                    }
-                })
-                .setNegativeButton("STAY IN SANDSTORM", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-    }
+            toTeleop();
+         }
 
     public void toTeleop() {
         if (!startTimer) {
