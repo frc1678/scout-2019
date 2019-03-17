@@ -53,16 +53,13 @@ public class InputManager {
 
     //Main Inputs
     public static String matchKey = "1678Q3-13";
-
     public static String mAllianceColor = "";
-
     public static String mScoutName = "unselected";
-    public static int mScoutId = 0;
     public static String mTabletType = "unselected";
 
+    public static int mScoutId = 0;
     public static int mMatchNum = 0;
     public static int mTeamNum = 0;
-
     public static int mCycleNum = 0;
 
     //Map-Scouting Variables
