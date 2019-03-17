@@ -82,8 +82,6 @@ public class A0A extends DialogMaker {
     public static TextView tv_cycleNum, tv_teamNum, tv_versionNum, tv_assignmentFileTimestamp;
     public static Button btn_triggerScoutNamePopup, btn_triggerScoutIDPopup, btn_triggerResendMatches;
 
-    public static String assignmentFileTimestamp;
-
     public ArrayAdapter<String> mResendMatchesArrayAdapter;
 
     LayoutInflater mLayoutInflater;
@@ -609,24 +607,6 @@ public class A0A extends DialogMaker {
             Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
         }
         else {
-            String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
-            String fileName = "assignments.txt";
-
-            File f = new File(filePath, fileName);
-
-            if (f.exists()) {
-                try {
-                    JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
-                    Integer timestampInt = timestamp.getInt("timestamp");
-
-                    InputManager.mAssignmentFileTimestamp = timestampInt;
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
             open(A0B.class, null, false, true);
         }
     }
