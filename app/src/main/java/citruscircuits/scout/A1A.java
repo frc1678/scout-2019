@@ -2018,7 +2018,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
-    //Increment when pressed, deincrement when
+    //Increment when pressed.
     public void onClickCyclesDefended(View v) {
         InputManager.cyclesDefended++;
         btn_cyclesDefended.setText("CYCLES DEFENDED - " + InputManager.cyclesDefended);
