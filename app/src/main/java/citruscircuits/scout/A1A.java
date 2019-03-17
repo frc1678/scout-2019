@@ -436,7 +436,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickTeleop(View view) {
         toTeleop();
     }
-
+    // Method sets mPreload and calls preload and dismissPopups
     public void mPreloadType(String PVal) {
         InputManager.mPreload = PVal;
         preload();
@@ -688,7 +688,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
     }
-
+    // Method sets preload buttons as enabled or disabled.
     public void preloadEnabled(Boolean preVal) {
         preloadCargo2.setEnabled(preVal);
         preloadPanel2.setEnabled(preVal);
