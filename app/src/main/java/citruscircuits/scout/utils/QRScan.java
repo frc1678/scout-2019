@@ -70,7 +70,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         qrCodeReader.setTorchEnabled(true);
         qrCodeReader.setAutofocusInterval(3000L);
 
-        if(InputManager.mTabletType.equals("black") || InputManager.mTabletType.equals("fire")){
+        if (InputManager.mTabletType.equals("black") || InputManager.mTabletType.equals("fire")) {
             qrCodeReader.setBackCamera();
         }else{
             qrCodeReader.setFrontCamera();
@@ -99,7 +99,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         try {
             cycleNum = AppUtils.StringToInt(resultStr.substring(0, resultStr.indexOf("|")));
         }
-        catch (Exception e){ e.printStackTrace();
+        catch (Exception e) { e.printStackTrace();
         }
 
         if (!prevStr.equals("")) {
@@ -167,7 +167,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
                 //Do nothing, but necessary for spinner
             }
-            public void onNothingSelected(AdapterView<?> parent){
+            public void onNothingSelected(AdapterView<?> parent) {
                 //Do nothing, but necessary for spinner
             }
         });
@@ -201,7 +201,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         scoutNameAlertDialog.setCanceledOnTouchOutside(false);
     }
 
-    public void onBackClick(View v){
+    public void onBackClick(View v) {
         open(A0A.class, null, true, false);
     }
 }

@@ -150,8 +150,8 @@ public class A0A extends DialogMaker {
 
     public void initViews() {
         btn_mapOrientation = findViewById(R.id.btn_map_orientation);
-        if (AppCc.getSp("mapOrientation",99) != 99) {
-            if(AppCc.getSp("mapOrientation", 99) == 0) {
+        if (AppCc.getSp("mapOrientation", 99) != 99) {
+            if (AppCc.getSp("mapOrientation", 99) == 0) {
                 btn_mapOrientation.setBackground(map_orientation_rb);
             }
             else {
@@ -176,7 +176,7 @@ public class A0A extends DialogMaker {
         btn_mapOrientation.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if (AppCc.getSp("mapOrientation",99) != 99) {
+                if (AppCc.getSp("mapOrientation", 99) != 99) {
                     if (AppCc.getSp("mapOrientation", 99) == 0) {
                         AppCc.setSp("mapOrientation", 1);
                         btn_mapOrientation.setBackground(map_orientation_br);
@@ -207,7 +207,7 @@ public class A0A extends DialogMaker {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable.toString().equals("")) {
+                if (editable.toString().equals("")) {
                     return;
                 }
 
@@ -223,7 +223,7 @@ public class A0A extends DialogMaker {
                     setCycleBackgroundColor(InputManager.mAllianceColor);
                     tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
                 }
-                else if(InputManager.mAssignmentMode.equals("backup")) {
+                else if (InputManager.mAssignmentMode.equals("backup")) {
                     InputManager.getBackupData();
 
                     setCycleBackgroundColor(InputManager.mAllianceColor);
@@ -239,7 +239,7 @@ public class A0A extends DialogMaker {
         if (InputManager.mTabletType.equals("fire")) {
             pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 200, 300, true);
         }
-        else if(InputManager.mTabletType.equals("black")) {
+        else if (InputManager.mTabletType.equals("black")) {
             pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), ViewGroup.LayoutParams.MATCH_PARENT, 300, true);
         }
         else {
@@ -360,7 +360,7 @@ public class A0A extends DialogMaker {
 
     public class ScoutNameListAdapter extends BaseAdapter {
 
-        public ScoutNameListAdapter(){
+        public ScoutNameListAdapter() {
             //Do nothing, required for populating list views.
         }
 
@@ -393,7 +393,7 @@ public class A0A extends DialogMaker {
                     InputManager.mScoutName = name;
                     AppCc.setSp("scoutName", name);
 
-                    if(InputManager.mAssignmentMode.equals("QR")) {
+                    if (InputManager.mAssignmentMode.equals("QR")) {
                         //Update assigned robot based on new scout name.
                         InputManager.getQRAssignment(AppCc.getSp("resultStr", ""));
                     }
@@ -417,7 +417,7 @@ public class A0A extends DialogMaker {
 
         final File[] files = dir.listFiles();
 
-        if(files == null){
+        if (files == null) {
             return;
         }
 

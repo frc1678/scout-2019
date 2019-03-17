@@ -95,23 +95,23 @@ public class InputManager {
 
     //Backup method for acquiring scout pre-match data from assignements.txt file
     public static void getBackupData() {
-        if(mMatchNum > 0) {
+        if (mMatchNum > 0) {
             final HashMap<Integer, Integer> referenceDictionary = new HashMap<>();
               Integer referenceEvenInteger = 1;
               Integer referenceOddInteger = 1;
 
             for (int i = 1; i <= 18; i++) {
                 Log.e("counterValue", String.valueOf(i));
-                if (i <= 6){
+                if (i <= 6) {
                     referenceDictionary.put(i,i);
                 }
                 else if (i > 6) {
-                    if ((i) % 2 == 0){
+                    if ((i) % 2 == 0) {
                         referenceDictionary.put(i, referenceEvenInteger);
                         Log.e("evenDicValue",String.valueOf(referenceEvenInteger));
                         referenceEvenInteger++;
                     }
-                    else if((i) % 2 == 1){
+                    else if ((i) % 2 == 1) {
                         referenceDictionary.put(i, referenceOddInteger);
                         Log.e("oddDicValue",String.valueOf(referenceOddInteger));
                         referenceOddInteger++;
@@ -176,7 +176,7 @@ public class InputManager {
                 Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
 
                 for (int i = finalNamesList.size() - 1; i >= 0; i--) {
-                    if(finalNamesList.get(i).contains("Backup")) {
+                    if (finalNamesList.get(i).contains("Backup")) {
                         backupNames.add(finalNamesList.get(i));
                         finalNamesList.remove(i);
                     }
@@ -303,7 +303,7 @@ public class InputManager {
                     e.printStackTrace();
                 }
             }
-            else if(!f.exists()) {
+            else if (!f.exists()) {
                 String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
                 char scoutLetter = alphabet.charAt(nameIndex);
@@ -322,7 +322,7 @@ public class InputManager {
         Log.i("sortL3key?!",String.valueOf(sortL3key));
         Log.i("SPRRanking?!",String.valueOf(mSPRRanking));
 
-        if(mSPRRanking > 0) {
+        if (mSPRRanking > 0) {
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
 
@@ -347,7 +347,7 @@ public class InputManager {
         }
     }
 
-    public static void initMatchKey(){
+    public static void initMatchKey() {
         matchKey = mTeamNum + "Q" + mMatchNum + "-" + mScoutId;
     }
 }
