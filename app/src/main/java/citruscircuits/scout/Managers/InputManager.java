@@ -195,14 +195,14 @@ public class InputManager {
                 JSONArray namesArray = names.names();
                 ArrayList<String> backupNames = new ArrayList<String>();
 
-                for(int i=0;i<namesArray.length();i++){
+                for (int i=0;i<namesArray.length();i++){
                     String finalNames = namesArray.getString(i);
                     finalNamesList.add(finalNames);
                 }
 
                 Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
 
-                for(int i=finalNamesList.size()-1;i>=0;i--){
+                for (int i=finalNamesList.size()-1;i>=0;i--){
                     if(finalNamesList.get(i).contains("Backup")) {
                         backupNames.add(finalNamesList.get(i));
                         finalNamesList.remove(i);
@@ -213,7 +213,7 @@ public class InputManager {
 
                 JSONArray backupArray = new JSONArray(backupNames);
 
-                for(int i=0;i<backupArray.length();i++){
+                for (int i=0;i<backupArray.length();i++){
                     String moreNames = backupArray.getString(i);
                     finalNamesList.add(moreNames);
                 }
@@ -224,7 +224,7 @@ public class InputManager {
                 e.printStackTrace();
             }
         } else if(!f.exists()) {
-            for(int i=1;i<=52;i++) {
+            for (int i=1;i<=52;i++) {
                 finalNamesList.add("Backup " + i);
             }
         }
@@ -235,33 +235,37 @@ public class InputManager {
     //Assign robots to scouts based on SPR Ranking from scanned QR.
     public static void getQRAssignment(String resultText) {
         mQRString = resultText;
-        Log.e("WokStringValue", mQRString);
+        Log.e("StringValue", mQRString);
         fullQRDataProcess();
 
-        numScouts = resultText.length() - (mQRString.indexOf("|")+1);
+        numScouts = resultText.length() - (mQRString.indexOf("|") + 1);
 
         Log.i("SPRRANKING", "" + mSPRRanking);
 
         //Set groupIIIInitialSPR based on the number of scouts (odd or even)
         //in order to properly distribute robots between groups of scouts.
-        if(numScouts%2 == 0) {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts-6)/2)+7;
-        } else {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts-6)/2)+6;
+        if (numScouts % 2 == 0) {
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 7;
+        }
+        else {
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 6;
         }
 
-        Log.e("numScoutsWok", String.valueOf(numScouts));
+        Log.e("numScouts", String.valueOf(numScouts));
 
         //Assign scout to scout group based on SPR Ranking.
         //Groups are used to evenly distribute robots to scouts for most accurate data.
         //Assign initial SPR as the first SPR Rank in the scout group.
-        if(mSPRRanking<=6){
+        if (mSPRRanking <= 6) {
             groupNumber = 0;
             initialSPR = 1;
-        }else if(mSPRRanking < groupIIIInitialSPR) {
+        }
+        else if (mSPRRanking < groupIIIInitialSPR) {
             groupNumber = 1;
             initialSPR = 7;
-        }else {
+
+         }
+         else {
             groupNumber = 2;
             initialSPR = groupIIIInitialSPR;
         }
@@ -269,7 +273,7 @@ public class InputManager {
         //Algorithm to assign scouts to position of robot (robot 1 - 6)
         //depending on SPR Ranking and Match Number.
         //Used to distribute scouts so they do not scout with the same scouts as frequently.
-        position = (mMatchNum * (groupNumber + 1) + (mSPRRanking - initialSPR))%6 + 1;
+        position = (mMatchNum * (groupNumber + 1) + (mSPRRanking - initialSPR)) % 6 + 1;
 
         Log.i("POSITION", position + "");
     }
