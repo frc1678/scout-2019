@@ -70,6 +70,16 @@ public class StormDialog extends Fragment {
             tb_hab_run.setChecked(true);
             teleButton.setEnabled(true);
         }
+
+        //Make preload buttons start the same as previous screen.
+        if (InputManager.mPreload.equals("orange")){
+            preloadCargo2.setChecked(true);
+        }else if (InputManager.mPreload.equals("lemon")){
+            preloadPanel2.setChecked(true);
+        }else if (InputManager.mPreload.equals("none")){
+            preloadNone2.setChecked(true);
+        }
+
         return view;
     }
 }

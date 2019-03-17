@@ -56,7 +56,9 @@ import static citruscircuits.scout.Managers.InputManager.mSandstormEndPosition;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import citruscircuits.scout.utils.StormDialog;
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
+import static citruscircuits.scout.utils.StormDialog.preload2;
 import static citruscircuits.scout.utils.StormDialog.preloadCargo2;
+import static citruscircuits.scout.utils.StormDialog.preloadNone2;
 import static citruscircuits.scout.utils.StormDialog.preloadPanel2;
 import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
@@ -345,6 +347,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         transaction.commit();
 
+
         tv_team.setText(valueOf(InputManager.mTeamNum));
         if (TimerUtil.matchTimer != null) {
             TimerUtil.matchTimer.cancel();
@@ -392,6 +395,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClick(View v) {
 
     }
+    //onClick methods for preload in sandstorm
     public void onClickPreloadLemon(View view){
         InputManager.mPreload = "lemon";
         preload();
@@ -645,6 +649,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_spill.setText("SPILL - " + InputManager.numSpill);
             mRealTimeMatchData = new JSONArray();
 
+            // Make preload enabled when you reset the timer.
+            if (!tele){
+                preloadCargo2.setEnabled(true);
+                preloadPanel2.setEnabled(true);
+                preloadNone2.setEnabled(true);
+            }
+
 
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
@@ -672,6 +683,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_undo.setEnabled(true);
         didUndoOnce=false;
         pw = true;
+
+        // Make preload disabled after you've dropped.
+        if (!tele){
+            preloadCargo2.setEnabled(false);
+            preloadPanel2.setEnabled(false);
+            preloadNone2.setEnabled(false);
+        }
 
         overallLayout.removeView(iv_game_element);
         try {
@@ -702,8 +720,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickUndo(View v) {
             Log.e("jkgg", valueOf(actionCount));
-            popup.dismiss();
-            popup_fail_success.dismiss();
+
+            // Re-enable preload when you undo your first action.
+            if(!tele && actionCount <= 1){
+                preloadPanel2.setEnabled(true);
+                preloadCargo2.setEnabled(true);
+                preloadNone2.setEnabled(true);
+            }
+            dismissPopups();
             pw = true;
             int index = -1;
             for(int i=0;i<mRealTimeMatchData.length();i++){
@@ -1291,10 +1315,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickOrange(View view) {
         initIntake("orange");
+        // Make preload disabled after intaking
+        if (!tele){
+            preloadCargo2.setEnabled(false);
+            preloadPanel2.setEnabled(false);
+            preloadNone2.setEnabled(false);
+        }
     }
 
     public void onClickLemon(View view) {
         initIntake("lemon");
+        // Make preload disabled after intaking
+        if (!tele){
+            preloadCargo2.setEnabled(false);
+            preloadPanel2.setEnabled(false);
+            preloadNone2.setEnabled(false);
+        }
     }
 
     public void onClickCancel(View view) {
@@ -1725,7 +1761,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             if (InputManager.mPreload.equals("orange")){
                 element ="orange";
-            }else if(InputManager.mPreload.equals("lemon")){
+            }else if (InputManager.mPreload.equals("lemon")){
                 element ="lemon";
             }
             Log.e("preloadWok1", element);
