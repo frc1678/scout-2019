@@ -56,10 +56,13 @@ import static citruscircuits.scout.Managers.InputManager.mSandstormEndPosition;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import citruscircuits.scout.utils.StormDialog;
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
+import static citruscircuits.scout.utils.StormDialog.preloadCargo2;
+import static citruscircuits.scout.utils.StormDialog.preloadPanel2;
 import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
 import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static citruscircuits.scout.utils.StormDialog.teleButton;
+import static citruscircuits.scout.utils.StormDialog.view;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -239,6 +242,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         iv_field = findViewById(R.id.imageView);
 
+
         if (AppCc.getSp("mapOrientation", 99) != 99) {
             if (AppCc.getSp("mapOrientation", 99) == 0) {
                 if(mAllianceColor.equals("blue")) {
@@ -387,6 +391,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
+    }
+    public void onClickPreloadLemon(View view){
+        InputManager.mPreload = "lemon";
+        preload();
+        dismissPopups();
+    }
+    public void onClickPreloadCargo(View view){
+        InputManager.mPreload = "orange";
+        preload();
+        dismissPopups();
+    }
+    public void onClickPreloadNone(View view){
+        InputManager.mPreload = "none";
+        preload();
+        dismissPopups();
     }
 
     public void onClickTeleop(View view) {
@@ -1949,8 +1968,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("woooooooooooooooook",String.valueOf(pw));
         }
     }
-
-
+    public void dismissPopups(){
+        popup.dismiss();
+        popup_fail_success.dismiss();
+    }
 
     public void recordClimb(float time) {
         compressionDic = new JSONObject();

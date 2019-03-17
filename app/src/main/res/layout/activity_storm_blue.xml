@@ -61,7 +61,8 @@
                 android:button="@null"
                 android:text="Cargo"
                 android:textAlignment="center"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:onClick="onClickPreloadCargo"/>
 
             <RadioButton
                 android:id="@+id/preloadPanel2"
@@ -72,7 +73,8 @@
                 android:button="@null"
                 android:text="Panel"
                 android:textAlignment="center"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:onClick="onClickPreloadLemon"/>
 
             <RadioButton
                 android:id="@+id/preloadNone2"
@@ -83,7 +85,8 @@
                 android:button="@null"
                 android:text="None"
                 android:textAlignment="center"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                android:onClick="onClickPreloadNone"/>
         </RadioGroup>
 
     </RelativeLayout>
