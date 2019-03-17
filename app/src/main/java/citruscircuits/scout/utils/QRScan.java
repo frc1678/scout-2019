@@ -1,14 +1,10 @@
 package citruscircuits.scout.utils;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
-import android.hardware.camera2.CameraManager;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -23,23 +19,12 @@ import android.widget.TextView;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Dictionary;
-
 import citruscircuits.scout.A0A;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout._superDataClasses.Cst;
-
-import static citruscircuits.scout.Managers.InputManager.mMatchNum;
-import static citruscircuits.scout.Managers.InputManager.mQRString;
-import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 
 public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeReadListener{
 
