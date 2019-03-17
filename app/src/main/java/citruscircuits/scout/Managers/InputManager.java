@@ -34,6 +34,7 @@ public class InputManager {
 
     public static int numSpill;
     public static int numFoul;
+    public static int cyclesDefended;
 
     //Match Data Holders
     //Below holds match data

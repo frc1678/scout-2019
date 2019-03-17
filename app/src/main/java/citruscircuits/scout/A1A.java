@@ -55,6 +55,7 @@ import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 import static citruscircuits.scout.Managers.InputManager.mSandstormEndPosition;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import citruscircuits.scout.utils.StormDialog;
+
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
 import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
@@ -117,6 +118,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 //    public Button btn_startTimer;
     public static Button btn_drop;
     public static Button btn_spill;
+    public static Button btn_cyclesDefended;
     public static Button btn_undo;
     public static Button btn_climb;
     public Button btn_arrow;
@@ -299,6 +301,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         btn_drop = findViewById(R.id.btn_dropped);
         btn_spill = findViewById(R.id.btn_spilled);
+        btn_cyclesDefended = findViewById(R.id.btn_cyclesDefended);
         btn_undo = findViewById(R.id.btn_undo);
         btn_arrow = findViewById(R.id.btn_arrow);
         btn_climb = findViewById(R.id.btn_climb);
@@ -355,6 +358,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         InputManager.mOneTimeMatchData = new JSONObject();
         InputManager.numSpill = 0;
         InputManager.numFoul = 0;
+        InputManager.cyclesDefended = 0;
 
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(false);
@@ -378,6 +382,30 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_spill.setText("SPILL - " + InputManager.numSpill);
                 }
                 Log.e("LONG", mRealTimeMatchData.toString());
+                return true;
+            }
+        }));
+
+        //Deincrement Cycles Defended counter upon long click.
+        btn_cyclesDefended.setOnLongClickListener((new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                if (InputManager.cyclesDefended>0) {
+                    int index = -1;
+                    //Increment through mRealTimeMatchData to identify the last cyclesDefended to remove.
+                    for(int i=0;i<mRealTimeMatchData.length();i++){
+                        try {
+                            String test = mRealTimeMatchData.getString(i);
+                            if(test.contains("cyclesDefended")) {
+                                index = i;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mRealTimeMatchData.remove(index);
+                    InputManager.cyclesDefended--;
+                    btn_cyclesDefended.setText("CYCLES DEFENDED - " + InputManager.cyclesDefended);
+                }
                 return true;
             }
         }));
@@ -768,6 +796,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     pw = true;
                     tb_defense.setChecked(false);
 
+                    //Remove Cycles Defended tracker from UI.
+                    btn_cyclesDefended.setEnabled(false);
+                    btn_cyclesDefended.setVisibility(View.INVISIBLE);
+
                 } else if (actionDic.get(actionCount).get(3).equals("undefense")){
                     popup_fail_success.dismiss();
                     popup.dismiss();
@@ -775,6 +807,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_climb.setEnabled(false);
                     tb_defense.setChecked(true);
 
+                    //Show Cycles Defended tracker in UI and keep previous Cycles Defended.
+                    btn_cyclesDefended.setEnabled(true);
+                    btn_cyclesDefended.setVisibility(View.VISIBLE);
+                    btn_cyclesDefended.setText("CYCLES DEFENDED - " + InputManager.cyclesDefended);
                 }
                 actionDic.remove(actionCount);
                 Log.e("wokDic2?!!", String.valueOf(actionDic));
@@ -1158,6 +1194,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             pw = true;
             btn_climb.setEnabled(false);
 
+            //Show Cycles Defended tracker in UI.
+            InputManager.cyclesDefended = 0;
+            btn_cyclesDefended.setEnabled(true);
+            btn_cyclesDefended.setVisibility(View.VISIBLE);
+            btn_cyclesDefended.setText("CYCLES DEFENDED - 0");
+
             compressionDic = new JSONObject();
 
             try {
@@ -1182,12 +1224,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         else if(!tb_defense.isChecked()){
             btn_climb.setEnabled(true);
+
+            //Remove Cycles Defended tracker from UI.
+            btn_cyclesDefended.setEnabled(false);
+            btn_cyclesDefended.setVisibility(View.INVISIBLE);
+
             pw = true;
 
             compressionDic = new JSONObject();
 
             try {
                 compressionDic.put("type", "endDefense");
+                compressionDic.put("cyclesDefended", InputManager.cyclesDefended);
                 timestamp(TimerUtil.timestamp);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1969,6 +2017,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         climbInputted = true;
         Log.i("RECORDING?", mRealTimeMatchData.toString());
+    }
+
+    //Increment when pressed, deincrement when
+    public void onClickCyclesDefended(View v) {
+        InputManager.cyclesDefended++;
+        btn_cyclesDefended.setText("CYCLES DEFENDED - " + InputManager.cyclesDefended);
     }
 
     public void onClickDataCheck(View v) {
