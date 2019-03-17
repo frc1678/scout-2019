@@ -55,7 +55,6 @@ import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
 import static citruscircuits.scout.Managers.InputManager.mSandstormEndPosition;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import citruscircuits.scout.utils.StormDialog;
-
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
 import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
@@ -389,13 +388,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         //Deincrement Cycles Defended counter upon long click.
         btn_cyclesDefended.setOnLongClickListener((new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                if (InputManager.cyclesDefended>0) {
+                if (InputManager.cyclesDefended > 0) {
                     int index = -1;
                     //Increment through mRealTimeMatchData to identify the last cyclesDefended to remove.
-                    for(int i=0;i<mRealTimeMatchData.length();i++){
+                    for (int i = 0; i < mRealTimeMatchData.length(); i++){
                         try {
                             String test = mRealTimeMatchData.getString(i);
-                            if(test.contains("cyclesDefended")) {
+                            if (test.contains("cyclesDefended")) {
                                 index = i;
                             }
                         } catch (JSONException e) {
