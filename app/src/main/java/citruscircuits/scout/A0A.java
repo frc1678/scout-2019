@@ -115,13 +115,14 @@ public class A0A extends DialogMaker {
 
         File f = new File(filePath, fileName);
 
-        if(f.exists()) {
+        if (f.exists()) {
             try {
                 JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 InputManager.mAssignmentFileTimestamp = timestamp.getInt("timestamp");
 
                 Log.i("ASSIGNMENT!", InputManager.mAssignmentFileTimestamp + "");
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
         }
