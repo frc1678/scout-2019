@@ -437,22 +437,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         popup.dismiss();
         popup_fail_success.dismiss();
-            tele = true;
+        tele = true;
 
-            btn_undo.setEnabled(false);
+        btn_undo.setEnabled(false);
 
-            Log.e("startTimer?",String.valueOf(startTimer));
-            if(timerCheck && !tb_incap.isChecked()){
-                btn_climb.setEnabled(true);
-                tb_defense.setEnabled(true);
-            }
-            if (modeIsIntake){
+        Log.e("startTimer?",String.valueOf(startTimer));
+        if(timerCheck && !tb_incap.isChecked()){
+            btn_climb.setEnabled(true);
+            tb_defense.setEnabled(true);
+        }
+        if (modeIsIntake){
                 mode ="intake";
-            }
-            else if(!modeIsIntake){
+        }
+        else if(!modeIsIntake){
                 mode ="placement";
-            }
-            mapChange();
+        }
+        mapChange();
         InputManager.mCrossedHabLine = tb_hab_run.isChecked();
         Log.e("woooook", field_orientation);
     }
