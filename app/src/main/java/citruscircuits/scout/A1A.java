@@ -1796,7 +1796,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("woooooook", "preloadWokinput");
 
             if(!startTimer) {
-                btn_drop.setEnabled(true);
+                if (tb_incap.isChecked()) {
+                    btn_drop.setEnabled(false);
+                }
+                else {
+                    btn_drop.setEnabled(true);
+                }
             }
             if (InputManager.mPreload.equals("orange")) {
                 element ="orange";
