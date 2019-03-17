@@ -809,7 +809,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     //Show Cycles Defended tracker in UI and keep previous Cycles Defended.
                     btn_cyclesDefended.setEnabled(true);
                     btn_cyclesDefended.setVisibility(View.VISIBLE);
-                    btn_cyclesDefended.setText("CYCLES DEFENDED - " + InputManager.cyclesDefended);
                 }
                 actionDic.remove(actionCount);
                 Log.e("wokDic2?!!", String.valueOf(actionDic));
