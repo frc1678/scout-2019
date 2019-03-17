@@ -195,14 +195,14 @@ public class InputManager {
                 JSONArray namesArray = names.names();
                 ArrayList<String> backupNames = new ArrayList<String>();
 
-                for (int i=0;i<namesArray.length();i++){
+                for (int i = 0; i < namesArray.length(); i++){
                     String finalNames = namesArray.getString(i);
                     finalNamesList.add(finalNames);
                 }
 
                 Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
 
-                for (int i=finalNamesList.size()-1;i>=0;i--){
+                for (int i=finalNamesList.size() - 1; i>=0 ; i--){
                     if(finalNamesList.get(i).contains("Backup")) {
                         backupNames.add(finalNamesList.get(i));
                         finalNamesList.remove(i);
@@ -213,7 +213,7 @@ public class InputManager {
 
                 JSONArray backupArray = new JSONArray(backupNames);
 
-                for (int i=0;i<backupArray.length();i++){
+                for (int i = 0; i < backupArray.length(); i++) {
                     String moreNames = backupArray.getString(i);
                     finalNamesList.add(moreNames);
                 }
@@ -224,7 +224,7 @@ public class InputManager {
                 e.printStackTrace();
             }
         } else if(!f.exists()) {
-            for (int i=1;i<=52;i++) {
+            for (int i = 1;i <= 52; i++) {
                 finalNamesList.add("Backup " + i);
             }
         }
@@ -263,9 +263,8 @@ public class InputManager {
         else if (mSPRRanking < groupIIIInitialSPR) {
             groupNumber = 1;
             initialSPR = 7;
-
-         }
-         else {
+        }
+        else {
             groupNumber = 2;
             initialSPR = groupIIIInitialSPR;
         }
