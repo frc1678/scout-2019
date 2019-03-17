@@ -245,7 +245,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         iv_field = findViewById(R.id.imageView);
 
-
         if (AppCc.getSp("mapOrientation", 99) != 99) {
             if (AppCc.getSp("mapOrientation", 99) == 0) {
                 if(mAllianceColor.equals("blue")) {
@@ -349,7 +348,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         transaction.commit();
 
-
         tv_team.setText(valueOf(InputManager.mTeamNum));
         if (TimerUtil.matchTimer != null) {
             TimerUtil.matchTimer.cancel();
@@ -422,25 +420,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClick(View v) {
 
     }
-    //onClick methods for preload in sandstorm
-    public void onClickPreloadLemon(View view){
-        InputManager.mPreload = "lemon";
-        preload();
-        dismissPopups();
+    // onClick methods for preload in sandstorm.
+    public void onClickPreloadLemon(View view) {
+        mPreloadType("lemon");
     }
-    public void onClickPreloadCargo(View view){
-        InputManager.mPreload = "orange";
-        preload();
-        dismissPopups();
+
+    public void onClickPreloadCargo(View view) {
+        mPreloadType("orange");
     }
-    public void onClickPreloadNone(View view){
-        InputManager.mPreload = "none";
-        preload();
-        dismissPopups();
+
+    public void onClickPreloadNone(View view) {
+        mPreloadType("none");
     }
 
     public void onClickTeleop(View view) {
         toTeleop();
+    }
+
+    public void mPreloadType(String PVal) {
+        InputManager.mPreload = PVal;
+        preload();
+        dismissPopups();
     }
 
     public void toTeleop() {
@@ -677,12 +677,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mRealTimeMatchData = new JSONArray();
 
             // Make preload enabled when you reset the timer.
-            if (!tele){
-                preloadCargo2.setEnabled(true);
-                preloadPanel2.setEnabled(true);
-                preloadNone2.setEnabled(true);
-            }
-
+            preloadEnabled(true);
 
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
@@ -692,6 +687,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mapChange();
         }
         Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
+    }
+
+    public void preloadEnabled(Boolean preVal) {
+        preloadCargo2.setEnabled(preVal);
+        preloadPanel2.setEnabled(preVal);
+        preloadNone2.setEnabled(preVal);
     }
 
     public void onClickDrop(View v) {
@@ -712,10 +713,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
 
         // Make preload disabled after you've dropped.
-        if (!tele){
-            preloadCargo2.setEnabled(false);
-            preloadPanel2.setEnabled(false);
-            preloadNone2.setEnabled(false);
+        if (!tele) {
+          preloadEnabled(false);
         }
 
         overallLayout.removeView(iv_game_element);
@@ -749,10 +748,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("jkgg", valueOf(actionCount));
 
             // Re-enable preload when you undo your first action.
-            if(!tele && actionCount <= 1){
-                preloadPanel2.setEnabled(true);
-                preloadCargo2.setEnabled(true);
-                preloadNone2.setEnabled(true);
+            if(!tele && actionCount <= 1) {
+                preloadEnabled(true);
             }
             dismissPopups();
             pw = true;
@@ -1362,20 +1359,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClickOrange(View view) {
         initIntake("orange");
         // Make preload disabled after intaking
-        if (!tele){
-            preloadCargo2.setEnabled(false);
-            preloadPanel2.setEnabled(false);
-            preloadNone2.setEnabled(false);
+        if (!tele) {
+          preloadEnabled(false);
         }
     }
 
     public void onClickLemon(View view) {
         initIntake("lemon");
         // Make preload disabled after intaking
-        if (!tele){
-            preloadCargo2.setEnabled(false);
-            preloadPanel2.setEnabled(false);
-            preloadNone2.setEnabled(false);
+        if (!tele) {
+          preloadEnabled(false);
         }
     }
 
@@ -1805,9 +1798,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if(!startTimer) {
                 btn_drop.setEnabled(true);
             }
-            if (InputManager.mPreload.equals("orange")){
+            if (InputManager.mPreload.equals("orange")) {
                 element ="orange";
-            }else if (InputManager.mPreload.equals("lemon")){
+            }
+            else if (InputManager.mPreload.equals("lemon")) {
                 element ="lemon";
             }
             Log.e("preloadWok1", element);
@@ -1976,10 +1970,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDoneCS(View view) {
         // Make preload disabled after placement in CS.
-        if (!tele){
-            preloadNone2.setEnabled(false);
-            preloadPanel2.setEnabled(false);
-            preloadCargo2.setEnabled(false);
+        if (!tele) {
+            preloadEnabled(false);
         }
         if(fail.isChecked() || success.isChecked()) {
             recordPlacement();
@@ -2008,11 +2000,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDoneRocket(View View) {
         // Make preload disabled after placement in rocket.
-        if (!tele){
-            preloadNone2.setEnabled(false);
-            preloadPanel2.setEnabled(false);
-            preloadCargo2.setEnabled(false);
+        if (!tele) {
+            preloadEnabled(false);
         }
+
         if((fail.isChecked() || success.isChecked())
                 && (level1.isChecked() || level2.isChecked() || level3.isChecked())) {
             recordPlacement();
@@ -2062,7 +2053,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("woooooooooooooooook",String.valueOf(pw));
         }
     }
-    public void dismissPopups(){
+    public void dismissPopups() {
         popup.dismiss();
         popup_fail_success.dismiss();
     }

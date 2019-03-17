@@ -35,6 +35,7 @@ public class StormDialog extends Fragment {
             tb_hab_run = view.findViewById(R.id.tgbtn_storm_run);
             teleButton =view.findViewById(R.id.btn_to_teleop);
         }
+
         else if(InputManager.mAllianceColor.equals("blue")) {
             view = inflater.inflate(R.layout.activity_storm_blue, container, false);
             btn_startTimer = view.findViewById(R.id.btn_timer);
@@ -72,11 +73,13 @@ public class StormDialog extends Fragment {
         }
 
         //Make preload buttons start the same as previous screen.
-        if (InputManager.mPreload.equals("orange")){
+        if (InputManager.mPreload.equals("orange")) {
             preloadCargo2.setChecked(true);
-        }else if (InputManager.mPreload.equals("lemon")){
+        }
+        else if (InputManager.mPreload.equals("lemon")) {
             preloadPanel2.setChecked(true);
-        }else if (InputManager.mPreload.equals("none")){
+        }
+        else if (InputManager.mPreload.equals("none")) {
             preloadNone2.setChecked(true);
         }
 
