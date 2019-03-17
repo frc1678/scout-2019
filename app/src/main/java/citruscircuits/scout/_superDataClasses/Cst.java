@@ -54,6 +54,8 @@ public interface Cst {
         put("shotOutOfField", "H");
         put("level", "z");
 
+        put("cyclesDefended", "J");
+
         put("attempted", "B");
         put("actual", "C");
         put("self", "D");
