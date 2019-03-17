@@ -1975,6 +1975,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneCS(View view) {
+        // Make preload disabled after placement in CS.
+        if (!tele){
+            preloadNone2.setEnabled(false);
+            preloadPanel2.setEnabled(false);
+            preloadCargo2.setEnabled(false);
+        }
         if(fail.isChecked() || success.isChecked()) {
             recordPlacement();
             mode = "intake";
@@ -2001,6 +2007,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneRocket(View View) {
+        // Make preload disabled after placement in rocket.
+        if (!tele){
+            preloadNone2.setEnabled(false);
+            preloadPanel2.setEnabled(false);
+            preloadCargo2.setEnabled(false);
+        }
         if((fail.isChecked() || success.isChecked())
                 && (level1.isChecked() || level2.isChecked() || level3.isChecked())) {
             recordPlacement();
