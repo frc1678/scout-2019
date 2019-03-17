@@ -182,7 +182,6 @@ public void defineVariables(){
     }
 
 
-
     public void onClickDataCheck(View v) {
         //record data
 

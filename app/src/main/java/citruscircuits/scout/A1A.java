@@ -407,7 +407,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickTeleop(View view) {
-        toTeleop();
+        new AlertDialog.Builder(activity)
+                .setTitle("ARE YOU SURE YOU WANT TO GO INTO TELEOP?")
+                .setPositiveButton("GO TO TELEOP", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        popup.dismiss();
+                        popup_fail_success.dismiss();
+                        if(placementDialogOpen) {
+                            placementDialog.dismiss();
+                        }
+                        pw = true;
+                        toTeleop();
+                    }
+                })
+                .setNegativeButton("STAY IN SANDSTORM", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void toTeleop() {
@@ -418,8 +437,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         popup.dismiss();
         popup_fail_success.dismiss();
-//        pw = true;
-
             tele = true;
 
             btn_undo.setEnabled(false);
