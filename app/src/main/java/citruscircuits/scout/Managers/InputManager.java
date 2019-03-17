@@ -233,10 +233,10 @@ public class InputManager {
     //Assign robots to scouts based on SPR Ranking from scanned QR.
     public static void getQRAssignment(String resultText) {
         mQRString = resultText;
-
+        Log.e("WokStringValue", mQRString);
         fullQRDataProcess();
 
-        numScouts = resultText.length() - mQRString.indexOf("|");
+        numScouts = resultText.length() - (mQRString.indexOf("|")+1);
 
         Log.i("SPRRANKING", "" + mSPRRanking);
 
@@ -247,6 +247,8 @@ public class InputManager {
         } else {
             groupIIIInitialSPR = (int) Math.ceil((numScouts-6)/2)+6;
         }
+
+        Log.e("numScoutsWok", String.valueOf(numScouts));
 
         //Assign scout to scout group based on SPR Ranking.
         //Groups are used to evenly distribute robots to scouts for most accurate data.
