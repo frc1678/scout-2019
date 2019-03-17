@@ -243,7 +243,6 @@ public void defineVariables(){
             }
             open(A2A.class, null, false, true);
         }
-        A1A.cancelStormChecker=false;
         A1A.startTimer=true;
         A1A.timerCheck=false;
     }
