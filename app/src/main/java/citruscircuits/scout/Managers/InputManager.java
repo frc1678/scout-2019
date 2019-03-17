@@ -41,6 +41,7 @@ public class InputManager {
 
     public static int numSpill;
     public static int numFoul;
+    public static int cyclesDefended;
 
     //Match Data Holders
     //Below holds match data
@@ -72,7 +73,8 @@ public class InputManager {
 
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
-    public static String mAppVersion = "1.3";
+
+    public static String mAppVersion = "1.4";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
     public static String mSandstormEndPosition = "";

@@ -142,6 +142,11 @@ public class A0A extends DialogMaker {
 
         updateListView();
         listenForResendClick();
+
+        //Display assignment type on assignment system popup button.
+        if (!InputManager.mAssignmentMode.equals("")) {
+            btn_triggerBackupPopup.setText(InputManager.mAssignmentMode);
+        }
     }
 
     //OnClick Methods
@@ -396,6 +401,7 @@ public class A0A extends DialogMaker {
         setCycleBackgroundColor(InputManager.mAllianceColor);
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         pw_backupWindow.dismiss();
+        btn_triggerBackupPopup.setText("Backup");
     }
 
     public void onClickOverrideBackup(View view) {
