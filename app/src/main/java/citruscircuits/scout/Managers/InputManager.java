@@ -1,6 +1,5 @@
 package citruscircuits.scout.Managers;
 
-import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
@@ -12,25 +11,28 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
-import citruscircuits.scout.A0A;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AppUtils;
-import citruscircuits.scout.utils.QRScan;
 
 import static citruscircuits.scout._superDataClasses.Cst.SCOUT_NAMES;
 
-//Written by the Daemon himself ~ Calvin
 public class InputManager {
     //Tasks
     // (1) Store Permanent Data In SDCARD In MainActivity
     // (2) Store Temporary Data During Scouting Process
 
-    //QR String
+    //QR Assignment Variables
     public static String mQRString;
     public static String mScoutLetter;
     public static int mSPRRanking;
+
+    public static Integer groupIIIInitialSPR;
+
+    public static Integer numScouts;
+    public static Integer groupNumber;
+    public static Integer position;
+    public static Integer initialSPR;
 
     public static int numSpill;
     public static int numFoul;
@@ -46,16 +48,13 @@ public class InputManager {
 
     //Main Inputs
     public static String matchKey = "1678Q3-13";
-
     public static String mAllianceColor = "";
-
     public static String mScoutName = "unselected";
-    public static int mScoutId = 0;
     public static String mTabletType = "unselected";
 
+    public static int mScoutId = 0;
     public static int mMatchNum = 0;
     public static int mTeamNum = 0;
-
     public static int mCycleNum = 0;
 
     //Map-Scouting Variables
@@ -63,14 +62,15 @@ public class InputManager {
     public static Integer mHabStartingPositionLevel= 0;
     public static String mPreload = "";
     public static boolean isNoShow= false;
-
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
+
     public static String mAppVersion = "1.4";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
     public static String mSandstormEndPosition = "";
-    public static void storeUserData(){
+
+    public static void storeUserData() {
         AppCc.setSp("allianceColor", mAllianceColor);
         AppCc.setSp("scoutName", mScoutName);
         AppCc.setSp("scoutId", mScoutId);
@@ -82,7 +82,7 @@ public class InputManager {
     }
 
     //when storing User DAta dont use variables - just use SP
-    public static void recoverUserData(){
+    public static void recoverUserData() {
         mAllianceColor = AppCc.getSp("allianceColor", "");
         mScoutName = AppCc.getSp("scoutName", "unselected");
         mScoutId = AppCc.getSp("scoutId", 0);
@@ -93,45 +93,26 @@ public class InputManager {
         mAssignmentMode = AppCc.getSp("assignmentMode", "");
     }
 
-    public static void prepareUserDataForNextMatch(){
-        mAllianceColor = "";
-        //Scout Name Doesn't Change
-        //Scout Id Doesn't Change
-        mMatchNum++;
-        mTeamNum = 0;
-        //Cycle Number Doesn't Change
-
-        storeUserData();
-    }
-
-    //TODO update the correct key input format later
-    public static void updateRealTimeMatchData() throws JSONException, NullPointerException {
-
-    }
-
-    public static void recoverRealTimeMatchData() throws JSONException, NullPointerException {
-
-    }
-
     //Backup method for acquiring scout pre-match data from assignements.txt file
-    public static void getBackupData(){
-        if(mMatchNum > 0){
-            final HashMap<Integer, Integer> referenceDictionary= new HashMap<>();
-              Integer referenceEvenInteger=1;
-              Integer referenceOddInteger=1;
+    public static void getBackupData() {
+        if (mMatchNum > 0) {
+            final HashMap<Integer, Integer> referenceDictionary = new HashMap<>();
+              Integer referenceEvenInteger = 1;
+              Integer referenceOddInteger = 1;
 
-            for(int i=1;i <= 18;i++){
+            for (int i = 1; i <= 18; i++) {
                 Log.e("counterValue", String.valueOf(i));
-                if (i <= 6){
+                if (i <= 6) {
                     referenceDictionary.put(i,i);
-
-                } else if(i > 6){
-                    if ((i)% 2==0){
-                        referenceDictionary.put(i,referenceEvenInteger);
+                }
+                else if (i > 6) {
+                    if ((i) % 2 == 0) {
+                        referenceDictionary.put(i, referenceEvenInteger);
                         Log.e("evenDicValue",String.valueOf(referenceEvenInteger));
                         referenceEvenInteger++;
-                    } else if((i)% 2==1){
-                        referenceDictionary.put(i,referenceOddInteger);
+                    }
+                    else if ((i) % 2 == 1) {
+                        referenceDictionary.put(i, referenceOddInteger);
                         Log.e("oddDicValue",String.valueOf(referenceOddInteger));
                         referenceOddInteger++;
                     }
@@ -146,8 +127,7 @@ public class InputManager {
 
             InputManager.mAssignmentMode = "backup";
             AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
-            String sortL3KeyFinal =String.valueOf((sortL3pre+mMatchNum)%6 +1);
-
+            String sortL3KeyFinal = String.valueOf((sortL3pre + mMatchNum) % 6 + 1);
 
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
@@ -162,7 +142,8 @@ public class InputManager {
 
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -175,11 +156,11 @@ public class InputManager {
         String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
         String fileName = "assignments.txt";
 
-        File f = new File(filePath,fileName);
+        File f = new File(filePath, fileName);
 
-        Log.i("FILEEXISTS", f.exists()+"");
+        Log.i("FILEEXISTS", f.exists() + "");
 
-        if(f.exists()) {
+        if (f.exists()) {
             try {
                 JSONObject names = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 names = names.getJSONObject(sortL1key);
@@ -187,15 +168,15 @@ public class InputManager {
                 JSONArray namesArray = names.names();
                 ArrayList<String> backupNames = new ArrayList<String>();
 
-                for(int i=0;i<namesArray.length();i++){
+                for (int i = 0; i < namesArray.length(); i++) {
                     String finalNames = namesArray.getString(i);
                     finalNamesList.add(finalNames);
                 }
 
                 Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
 
-                for(int i=finalNamesList.size()-1;i>=0;i--){
-                    if(finalNamesList.get(i).contains("Backup")) {
+                for (int i = finalNamesList.size() - 1; i >= 0; i--) {
+                    if (finalNamesList.get(i).contains("Backup")) {
                         backupNames.add(finalNamesList.get(i));
                         finalNamesList.remove(i);
                     }
@@ -205,44 +186,90 @@ public class InputManager {
 
                 JSONArray backupArray = new JSONArray(backupNames);
 
-                for(int i=0;i<backupArray.length();i++){
+                for (int i = 0; i < backupArray.length(); i++) {
                     String moreNames = backupArray.getString(i);
                     finalNamesList.add(moreNames);
                 }
 
                 Log.i("finalNames", finalNamesList.toString());
 
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else if(!f.exists()) {
-            for(int i=1;i<=52;i++) {
+        }
+        else if (!f.exists()) {
+
+            for (int i = 1; i <= 52; i++) {
                 finalNamesList.add("Backup " + i);
             }
         }
 
         return finalNamesList;
     }
+
+    //Assign robots to scouts based on SPR Ranking from scanned QR.
+    public static void getQRAssignment(String resultText) {
+        mQRString = resultText;
+        Log.e("StringValue", mQRString);
+        fullQRDataProcess();
+
+        numScouts = resultText.length() - (mQRString.indexOf("|") + 1);
+
+        Log.i("SPRRANKING", "" + mSPRRanking);
+
+        //Set groupIIIInitialSPR based on the number of scouts (odd or even)
+        //in order to properly distribute robots between groups of scouts.
+        if (numScouts % 2 == 0) {
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 7;
+        }
+        else {
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 6;
+        }
+
+        Log.e("numScouts", String.valueOf(numScouts));
+
+        //Assign scout to scout group based on SPR Ranking.
+        //Groups are used to evenly distribute robots to scouts for most accurate data.
+        //Assign initial SPR as the first SPR Rank in the scout group.
+        if (mSPRRanking <= 6) {
+            groupNumber = 0;
+            initialSPR = 1;
+        }
+        else if (mSPRRanking < groupIIIInitialSPR) {
+            groupNumber = 1;
+            initialSPR = 7;
+        }
+        else {
+            groupNumber = 2;
+            initialSPR = groupIIIInitialSPR;
+        }
+
+        //Algorithm to assign scouts to position of robot (robot 1 - 6)
+        //depending on SPR Ranking and Match Number.
+        //Used to distribute scouts so they do not scout with the same scouts as frequently.
+        position = (mMatchNum * (groupNumber + 1) + (mSPRRanking - initialSPR)) % 6 + 1;
+
+        Log.i("POSITION", position + "");
+    }
+
     //Method for acquiring scout pre-match data from assignments.txt
-    public static void fullQRDataProcess(){
-        if(mMatchNum > 0 && mCycleNum >= 0){
+    public static void fullQRDataProcess() {
+        if (mMatchNum > 0 && mCycleNum >= 0) {
             mSPRRanking = 0;
 
             String tPrevScoutLetter;
 
             Log.e("QR Process", "Called");
 
-//            String sortL1key = "matches";
-//            String sortL2key = "match"+mMatchNum;
-            //stands for side sort 1- for sorting other things in the same layer
             String ssort1L1key = "letters";
 
             String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
             String fileName = "assignments.txt";
 
-            File f = new File(filePath,fileName);
+            File f = new File(filePath, fileName);
 
-            if(f.exists()) {
+            if (f.exists()) {
                 try {
                     String qrDataString = AppUtils.retrieveSDCardFile("assignments.txt");
 
@@ -250,26 +277,33 @@ public class InputManager {
                     mScoutLetter = qrData.getJSONObject(ssort1L1key).getString(mScoutName);
 
                     if (mQRString != null) {
+
                         if (mQRString.contains(mScoutLetter)) {
                             mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
                             tPrevScoutLetter = mScoutLetter;
 
                             AppCc.setSp("prevScoutLetter", tPrevScoutLetter);
-                        } else {
+                        }
+
+                        else {
                             tPrevScoutLetter = AppCc.getSp("prevScoutLetter", "");
+
                             if (!tPrevScoutLetter.equals("")) {
                                 mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
                             }
+
                         }
 
                         AppCc.setSp("sprRanking", mSPRRanking);
 
                         getQRData();
                     }
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else if(!f.exists()) {
+            }
+            else if (!f.exists()) {
                 String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
                 char scoutLetter = alphabet.charAt(nameIndex);
@@ -278,45 +312,42 @@ public class InputManager {
         }
     }
 
-    public static void getQRData(){
+    public static void getQRData() {
         String sortL1key = "matches";
-        Log.e("match?!",String.valueOf(sortL1key));
         String sortL2key = String.valueOf(mMatchNum);
-        String sortL3key = String.valueOf(QRScan.position);
-        Log.e("matchnum?!",String.valueOf(sortL2key));
-        Log.e("position?!",String.valueOf(sortL3key));
-        Log.e("SPR?!",String.valueOf(mSPRRanking));
+        String sortL3key = String.valueOf(position);
 
-        if(mSPRRanking > 0){
-            Log.e("marker", "please enter here");
+        Log.i("sortL1key?!",String.valueOf(sortL1key));
+        Log.i("sortL2key?!",String.valueOf(sortL2key));
+        Log.i("sortL3key?!",String.valueOf(sortL3key));
+        Log.i("SPRRanking?!",String.valueOf(mSPRRanking));
+
+        if (mSPRRanking > 0) {
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
-                Log.e("entirefile", String.valueOf(backupData.getJSONObject(sortL1key)));
-                backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
-                Log.e("dataBackup", String.valueOf(backupData));
 
-                Log.e("position???",String.valueOf(sortL3key));
-                Log.e("backUpData", String.valueOf(backupData));
+                Log.i("entirefile", String.valueOf(backupData.getJSONObject(sortL1key)));
+
+                backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
+
+                Log.i("dataBackup", String.valueOf(backupData));
+
+                Log.i("position???", String.valueOf(sortL3key));
+                Log.i("backUpData", String.valueOf(backupData));
 
                 mAllianceColor = backupData.getJSONObject(sortL3key).getString("alliance");
                 mTeamNum = backupData.getJSONObject(sortL3key).getInt("number");
 
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void initMatchKey(){
+    public static void initMatchKey() {
         matchKey = mTeamNum + "Q" + mMatchNum + "-" + mScoutId;
     }
-
-//    public static void completeInputData(){
-//        for(int i = 0; i < mRealTimeMatchData.length(); i++){
-//            mRealTimeInputtedData mRealTimeMatchData.get(i);
-//
-//        }
-//    }
 }
