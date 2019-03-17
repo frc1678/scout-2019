@@ -2025,6 +2025,19 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDataCheck(View v) {
+        if(tb_defense.isChecked()) {
+            compressionDic = new JSONObject();
+
+            try {
+                compressionDic.put("type", "endDefense");
+                compressionDic.put("cyclesDefended", InputManager.cyclesDefended);
+                timestamp(TimerUtil.timestamp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            mRealTimeMatchData.put(compressionDic);
+        }
         try {
             InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
             InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
