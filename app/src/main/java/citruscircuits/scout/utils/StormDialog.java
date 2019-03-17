@@ -36,30 +36,6 @@ public class StormDialog extends Fragment {
             teleButton =view.findViewById(R.id.btn_to_teleop);
 
         }
-//        if(A1A.cancelStormChecker){
-//            btn_startTimer.setPressed(true);
-//            Log.e("wok", "wofansegnasgk");
-//            btn_startTimer.setText("RESET TIMER");
-//            Log.e("wok", "wokjsdfakkk");
-//            if (InputManager.mAllianceColor.equals("red")) {
-//                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_red_selector);
-//            } else if (InputManager.mAllianceColor.equals("blue")) {
-//                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_blue_selector);
-//            }
-//            if(A1A.mode.equals("placement")) {
-//                A1A.btn_drop.setEnabled(true);
-//            }
-//            A1A.timerCheck = true;
-//            A1A.startTimer = false;
-//            A1A.tb_incap.setEnabled(true);
-//            A1A.btn_spill.setEnabled(true);
-//            A1A.cancelStormChecker=false;
-//            A1A.tb_defense.setEnabled(false);
-//            A1A.btn_climb.setEnabled(false);
-//            tb_hab_run.setEnabled(true);
-//            tb_hab_run.setChecked(true);
-//            teleButton.setEnabled(true);
-//        }
         return view;
     }
 }
