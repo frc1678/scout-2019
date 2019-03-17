@@ -70,7 +70,6 @@ public class InputManager {
     public static Integer mHabStartingPositionLevel= 0;
     public static String mPreload = "";
     public static boolean isNoShow= false;
-
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
 
@@ -78,6 +77,7 @@ public class InputManager {
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
     public static String mSandstormEndPosition = "";
+
     public static void storeUserData(){
         AppCc.setSp("allianceColor", mAllianceColor);
         AppCc.setSp("scoutName", mScoutName);
@@ -128,7 +128,7 @@ public class InputManager {
               Integer referenceEvenInteger=1;
               Integer referenceOddInteger=1;
 
-            for(int i=1;i <= 18;i++){
+            for (int i = 1;i <= 18; i++){
                 Log.e("counterValue", String.valueOf(i));
                 if (i <= 6){
                     referenceDictionary.put(i,i);
