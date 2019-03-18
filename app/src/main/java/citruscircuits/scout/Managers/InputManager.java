@@ -68,6 +68,7 @@ public class InputManager {
     public static String mAppVersion = "1.5";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
+    public static String mDatabaseURL;
     public static String mSandstormEndPosition = "";
 
     public static void storeUserData() {
@@ -91,6 +92,7 @@ public class InputManager {
         mCycleNum = AppCc.getSp("cycleNum", 0);
         mTabletType = AppCc.getSp("tabletType", "");
         mAssignmentMode = AppCc.getSp("assignmentMode", "");
+        mDatabaseURL = AppCc.getSp("databaseURL", "");
     }
 
     //Backup method for acquiring scout pre-match data from assignements.txt file
