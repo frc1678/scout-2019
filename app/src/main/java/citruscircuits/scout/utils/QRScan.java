@@ -101,8 +101,8 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         if (f.exists()) {
             try {
-                JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
-                InputManager.mDatabaseURL = timestamp.getString("databaseURL");
+                JSONObject databaseURL = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
+                InputManager.mDatabaseURL = databaseURL.getString("databaseURL");
             }
             catch (JSONException e) {
                 e.printStackTrace();
@@ -112,7 +112,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         AppCc.setSp("databaseURL", InputManager.mDatabaseURL);
 
         //Check if QR contains correct database URL.
-        if(resultStr.contains(InputManager.mDatabaseURL)) {
+        if (resultStr.contains(InputManager.mDatabaseURL)) {
             //Update assigned robot based on scout name and newly scanned QR.
             InputManager.getQRAssignment(resultStr);
 
@@ -158,7 +158,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
                 try {
                     AppUtils.makeToast(this, "CYCLE NUMBER: " + cycleNum, 50);
                 }
-                catch(Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }
