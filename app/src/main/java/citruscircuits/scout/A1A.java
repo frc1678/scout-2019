@@ -158,6 +158,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public PopupWindow popup = new PopupWindow();
     public PopupWindow popup_fail_success = new PopupWindow();
+    public PopupWindow popup_drop_defense = new PopupWindow();
 
     public ImageView field;
     public ImageView iv_game_element;
@@ -295,6 +296,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);
+
+        if (mTabletType.equals("green")) {
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 530, 430, false);
+        }
+        else if (mTabletType.equals("black")) {
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 320, 280, false);
+        }
+        else if (mTabletType.equals("fire")) {
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 220, 230, false);
+        }
+        popup_drop_defense.setOutsideTouchable(false);
+        popup_drop_defense.setFocusable(false);
 
         tv_team = findViewById(R.id.tv_teamNum);
 
@@ -665,7 +678,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDrop(View v) {
-        compressionDic = new JSONObject();
+        initPopup(popup_drop_defense);
+
+        //Make drop able to be undone by putting it in actionList.
         actionList = new ArrayList<Object>();
         actionList.add(x);
         actionList.add(y);
@@ -674,24 +689,43 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionList.add(TimerUtil.timestamp);
         actionDic.put(actionCount, actionList);
         actionCount++;
+    }
+
+    public void onClickDropDefended(View v) {
+        recordDrop(true);
+    }
+
+    public void onClickDropNotDefended(View v) {
+        recordDrop(false);
+    }
+
+    public void recordDrop(Boolean dropWasDefended) {
+        //Allow user to input next intake.
         mode = "intake";
         modeIsIntake=true;
+        pw = true;
+
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
         didUndoOnce=false;
-        pw = true;
+
+        popup_drop_defense.dismiss();
 
         overallLayout.removeView(iv_game_element);
+
+        mapChange();
+
+        //Record drop action in mRealTimeMatchData to be compressed.
+        compressionDic = new JSONObject();
+
         try {
             compressionDic.put("type", "drop");
             timestamp(TimerUtil.timestamp);
+            compressionDic.put("wasDefended", dropWasDefended);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         mRealTimeMatchData.put(compressionDic);
-        Log.i("ISTHISWORKING?", mRealTimeMatchData.toString());
-        mapChange();
-
     }
 
     public void onClickSpill(View v) throws JSONException {
