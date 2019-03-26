@@ -416,7 +416,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                     mRealTimeMatchData.remove(index);
                     InputManager.cyclesDefended--;
-                    btn_cyclesDefended.setText("CYCLES DEFENDED - " + InputManager.cyclesDefended);
+                    btn_cyclesDefended.setText("FAILED PLACEMENTS/DROPS CAUSED - " + InputManager.cyclesDefended);
                 }
                 return true;
             }
@@ -1230,7 +1230,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.cyclesDefended = 0;
             btn_cyclesDefended.setEnabled(true);
             btn_cyclesDefended.setVisibility(View.VISIBLE);
-            btn_cyclesDefended.setText("CYCLES DEFENDED - 0");
+            btn_cyclesDefended.setText("FAILED PLACEMENTS/DROPS CAUSED - 0");
 
             compressionDic = new JSONObject();
 
@@ -2054,7 +2054,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     //Increment when pressed.
     public void onClickCyclesDefended(View v) {
         InputManager.cyclesDefended++;
-        btn_cyclesDefended.setText("CYCLES DEFENDED - " + InputManager.cyclesDefended);
+        btn_cyclesDefended.setText("FAILED PLACEMENTS/DROPS CAUSED - " + InputManager.cyclesDefended);
     }
 
     public void onClickDataCheck(View v) {
