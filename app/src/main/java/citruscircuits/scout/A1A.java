@@ -73,23 +73,23 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public String field_orientation;
 
-    public boolean modeIsIntake=true;
+    public boolean modeIsIntake = true;
     public static boolean startTimer = true;
     public boolean tele = false;
     public boolean startedWObject = false;
     public boolean climbInputted = false;
     public static boolean timerCheck = false;
     public boolean pw = true;
-    public boolean isMapLeft=false;
+    public boolean isMapLeft = false;
 
     public boolean placementDialogOpen = false;
 
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
-    public boolean didUndoOnce=true;
-    public Integer climbAttemptCounter=0;
-    public Integer climbActualCounter=0;
+    public boolean didUndoOnce = true;
+    public Integer climbAttemptCounter = 0;
+    public Integer climbActualCounter = 0;
     public Integer level;
     public Integer undoX;
     public Integer undoY;
@@ -212,9 +212,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Fragment fragment;
     public FragmentTransaction transaction;
     public FragmentManager fm;
-    public Fragment fragmentRecreate;
-    public FragmentTransaction transactionRecreate;
-    public FragmentManager fmRecreate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -314,7 +311,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         fm = getSupportFragmentManager();
         transaction = fm.beginTransaction();
         if (AppCc.getSp("mapOrientation", 99) != 99) {
-            if (AppCc.getSp("mapOrientation", 99) !=0) {
+            if (AppCc.getSp("mapOrientation", 99) != 0) {
                 if (InputManager.mAllianceColor.equals("red")) {
                     transaction.add(R.id.left_storm, fragment, "FRAGMENT");
                 } else if (InputManager.mAllianceColor.equals("blue")) {
@@ -356,7 +353,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             public boolean onLongClick(View v) {
                 if (InputManager.numSpill>0) {
                     int index = -1;
-                    for(int i=0;i<mRealTimeMatchData.length();i++) {
+                    for(int i = 0; i<mRealTimeMatchData.length(); i++) {
                         try {
                             String test = mRealTimeMatchData.getString(i);
                             if (test.contains("spill")) {
@@ -428,10 +425,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_defense.setEnabled(true);
         }
         if (modeIsIntake) {
-                mode ="intake";
+                mode = "intake";
         }
         else if (!modeIsIntake) {
-                mode ="placement";
+                mode = "placement";
         }
         mapChange();
         InputManager.mCrossedHabLine = tb_hab_run.isChecked();
@@ -450,7 +447,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_drop = findViewById(R.id.btn_dropped);
 
         if (startTimer) {
-            pw=true;
+            pw = true;
             handler.postDelayed(runnable, 150000);
             teleWarningHandler.postDelayed(teleWarningRunnable, 25000);
             timerUtil.initTimer();
@@ -465,7 +462,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if (InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")) {
                 btn_drop.setEnabled(true);
             }
-            InputManager.mTimerStarted= (int)(System.currentTimeMillis()/1000);
+            InputManager.mTimerStarted = (int)(System.currentTimeMillis()/1000);
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_reset_red_selector);
             } else if (InputManager.mAllianceColor.equals("blue")) {
@@ -473,7 +470,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
 
         } else if (!startTimer) {
-            pw=false;
+            pw = false;
             InputManager.numSpill = 0;
             InputManager.numFoul = 0;
             tb_incap.setEnabled(false);
@@ -497,8 +494,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             startTimer = true;
             timerCheck = false;
             preload();
-            InputManager.numSpill=0;
-            actionCount=0;
+            InputManager.numSpill = 0;
+            actionCount = 0;
             btn_spill.setText("SPILL - " + InputManager.numSpill);
             mRealTimeMatchData = new JSONArray();
 
@@ -524,10 +521,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionDic.put(actionCount, actionList);
         actionCount++;
         mode = "intake";
-        modeIsIntake=true;
+        modeIsIntake = true;
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(true);
-        didUndoOnce=false;
+        didUndoOnce = false;
         pw = true;
 
         overallLayout.removeView(iv_game_element);
@@ -563,7 +560,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             popup_fail_success.dismiss();
             pw = true;
             int index = -1;
-            for(int i=0;i<mRealTimeMatchData.length();i++) {
+            for(int i = 0; i<mRealTimeMatchData.length(); i++) {
                 try {
                     String hf = mRealTimeMatchData.getString(i);
                     if (hf.contains("intake") || hf.contains("placement")|| hf.contains("drop") || hf.contains("incap") || hf.contains("unincap") || hf.contains("startDefense") || hf.contains("endDefense")) {
@@ -609,7 +606,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                 } else if (actionDic.get(actionCount).get(3).equals("drop")) {
                     btn_drop.setEnabled(true);
-                    modeIsIntake=false;
+                    modeIsIntake  =false;
                     mode = "placement";
                 } else if (actionDic.get(actionCount).get(3).equals("incap")) {
                     pw = true;
@@ -662,7 +659,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionDic.remove(actionCount);
                 Log.e("wokDic2?!!", String.valueOf(actionDic));
                 mapChange();
-            }else if (actionCount==0) {
+            }else if (actionCount == 0) {
                 Log.e("dic2?!", mRealTimeMatchData.toString());
                 Log.e("actionDic1?!", actionDic.toString());
                 actionDic.remove(actionCount);
@@ -673,7 +670,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("endUndo3", String.valueOf(mode));
             Log.e("endUndo4", String.valueOf(element));
             btn_undo.setEnabled(false);
-            didUndoOnce=true;
+            didUndoOnce = true;
     }
 
     public void undoGeneric(Boolean btndrop, Boolean intakeVal, String modeGeneric) {
@@ -686,7 +683,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void climbAttemptEdit(Button spaceValue, Integer space) {
         if (climbInputted) {
-            if (climbAttemptValues.get(space)==0) {
+            if (climbAttemptValues.get(space) == 0) {
                 spaceValue.setText("None");
             }else{
                 spaceValue.setText(climbAttemptValues.get(space).toString());
@@ -695,7 +692,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
     public void climbActualEdit(Button spaceValue, Integer space) {
         if (climbInputted) {
-            if (climbActualValues.get(space)==0) {
+            if (climbActualValues.get(space) == 0) {
                 spaceValue.setText("None");
             }else{
                 spaceValue.setText(climbActualValues.get(space).toString());
@@ -710,7 +707,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup_fail_success.dismiss();
         pw = true;
 
-        final Float climbStartTime=TimerUtil.timestamp;
+        final Float climbStartTime = TimerUtil.timestamp;
         final Dialog climbDialog = new Dialog(this);
         climbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (isMapLeft) {
@@ -722,24 +719,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
        climbDialog.setCanceledOnTouchOutside(false);
        climbDialog.setCancelable(false);
 
-        zeroI= (Button) dialogLayout.findViewById(R.id.zero);
-        oneI= (Button) dialogLayout.findViewById(R.id.one);
-        twoAI= (Button) dialogLayout.findViewById(R.id.twoa);
-        threeI= (Button) dialogLayout.findViewById(R.id.three);
-        twoBI= (Button) dialogLayout.findViewById(R.id.twob);
-        zeroII= (Button) dialogLayout.findViewById(R.id.zeroII);
-        oneII= (Button) dialogLayout.findViewById(R.id.oneII);
-        twoAII= (Button) dialogLayout.findViewById(R.id.twoaII);
-        threeII= (Button) dialogLayout.findViewById(R.id.threeII);
-        twoBII= (Button) dialogLayout.findViewById(R.id.twobII);
-        spaceOneI= (Button) dialogLayout.findViewById(R.id.SpaceOne);
-        spaceTwoI= (Button) dialogLayout.findViewById(R.id.SpaceTwo);
-        spaceThreeI= (Button) dialogLayout.findViewById(R.id.SpaceThree);
-        spaceOneII= (Button) dialogLayout.findViewById(R.id.SpaceOneII);
-        spaceTwoII= (Button) dialogLayout.findViewById(R.id.SpaceTwoII);
-        spaceThreeII= (Button) dialogLayout.findViewById(R.id.SpaceThreeII);
-        final Button cancel= (Button) dialogLayout.findViewById(R.id.cancelButton);
-        final Button done= (Button) dialogLayout.findViewById(R.id.doneButton);
+        zeroI = (Button) dialogLayout.findViewById(R.id.zero);
+        oneI = (Button) dialogLayout.findViewById(R.id.one);
+        twoAI = (Button) dialogLayout.findViewById(R.id.twoa);
+        threeI = (Button) dialogLayout.findViewById(R.id.three);
+        twoBI = (Button) dialogLayout.findViewById(R.id.twob);
+        zeroII = (Button) dialogLayout.findViewById(R.id.zeroII);
+        oneII = (Button) dialogLayout.findViewById(R.id.oneII);
+        twoAII = (Button) dialogLayout.findViewById(R.id.twoaII);
+        threeII = (Button) dialogLayout.findViewById(R.id.threeII);
+        twoBII = (Button) dialogLayout.findViewById(R.id.twobII);
+        spaceOneI = (Button) dialogLayout.findViewById(R.id.SpaceOne);
+        spaceTwoI = (Button) dialogLayout.findViewById(R.id.SpaceTwo);
+        spaceThreeI = (Button) dialogLayout.findViewById(R.id.SpaceThree);
+        spaceOneII = (Button) dialogLayout.findViewById(R.id.SpaceOneII);
+        spaceTwoII = (Button) dialogLayout.findViewById(R.id.SpaceTwoII);
+        spaceThreeII = (Button) dialogLayout.findViewById(R.id.SpaceThreeII);
+        final Button cancel = (Button) dialogLayout.findViewById(R.id.cancelButton);
+        final Button done = (Button) dialogLayout.findViewById(R.id.doneButton);
         spaceChanger(spaceTwoI, spaceThreeI, spaceOneI);
         spaceChanger(spaceTwoII, spaceThreeII, spaceOneII);
 
@@ -753,8 +750,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                climbActualCounter=0;
-                climbAttemptCounter=0;
+                climbActualCounter = 0;
+                climbAttemptCounter =  0;
                 climbDialog.dismiss();
             }
         });
@@ -778,7 +775,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                     if (climbInputted) {
                         int index = -1;
-                        for(int i=0;i<mRealTimeMatchData.length();i++) {
+                        for(int i = 0; i<mRealTimeMatchData.length(); i++) {
                             try {
                                 String hf = mRealTimeMatchData.getString(i);
                                 if (hf.contains("climb")) {
@@ -798,8 +795,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                     recordClimb(climbStartTime);
                     Log.e("climb", String.valueOf(mRealTimeMatchData) );
-                    climbActualCounter=0;
-                    climbAttemptCounter=0;
+                    climbActualCounter = 0;
+                    climbAttemptCounter = 0;
                     climbDialog.dismiss();
                 }
             }
@@ -856,30 +853,30 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickspaceOneI(View v) {
-        climbAttemptCounter=0;
+        climbAttemptCounter = 0;
         spaceChanger(spaceTwoI, spaceThreeI, spaceOneI);
     }
     public void onClickspaceTwoI(View v) {
-        climbAttemptCounter=1;
+        climbAttemptCounter = 1;
         spaceChanger(spaceOneI, spaceThreeI, spaceTwoI);
 
     }
     public void onClickspaceThreeI(View v) {
-        climbAttemptCounter=2;
+        climbAttemptCounter = 2;
         spaceChanger(spaceOneI, spaceTwoI, spaceThreeI);
 
     }
     public void onClickspaceOneII(View v) {
-        climbActualCounter=0;
+        climbActualCounter = 0;
         spaceChanger(spaceTwoII, spaceThreeII, spaceOneII);
     }
     public void onClickspaceTwoII(View v ) {
-        climbActualCounter=1;
+        climbActualCounter = 1;
         spaceChanger(spaceOneII, spaceThreeII, spaceTwoII);
 
     }
     public void onClickspaceThreeII(View v) {
-        climbActualCounter=2;
+        climbActualCounter = 2;
         spaceChanger(spaceOneII, spaceTwoII, spaceThreeII);
     }
     public void spaceChanger(Button whiteA, Button whiteB, Button Yellow) {
@@ -1530,17 +1527,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 btn_drop.setEnabled(true);
             }
             if (InputManager.mPreload.equals("orange")) {
-                element ="orange";
+                element = "orange";
             }else if (InputManager.mPreload.equals("lemon")) {
                 element ="lemon";
             }
             Log.e("preloadWok1", element);
-            mode ="placement";
-            modeIsIntake=false;
+            mode = "placement";
+            modeIsIntake = false;
             Log.e("preloadWok2", mode);
             startedWObject = true;
             mapChange();
-            startedWObject=false;
+            startedWObject = false;
         } else if (InputManager.mPreload.equals("none")) {
             Log.e("woooooook", "preloadWokoutput");
             mode = "intake";
