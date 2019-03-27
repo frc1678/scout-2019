@@ -230,17 +230,7 @@ public void defineVariables(){
         //go to next activity
         else if(showUp.isChecked()){
             InputManager.isNoShow=true;
-            try {
-                InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
-                InputManager.mOneTimeMatchData.put("currentCycle", InputManager.mCycleNum);
-                InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
-                InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
-                InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
-                InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
-                InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
             open(A2A.class, null, false, true);
         }
         A1A.cancelStormChecker=false;
