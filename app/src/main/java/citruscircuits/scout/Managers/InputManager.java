@@ -131,6 +131,8 @@ public class InputManager {
             AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
             String sortL3KeyFinal = String.valueOf((sortL3pre + mMatchNum) % 6 + 1);
 
+            Log.e("sortL#KeyFinal",sortL3KeyFinal);
+
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
