@@ -678,9 +678,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDrop(View v) {
-        x = 280;
-        y = 970;
+        //Sets an exact location for drop to occur
+
+        if (mTabletType.equals("black")){
+            x = 280;
+            y = 540;
+        }
+        else if (mTabletType.equals("green")){
+            x = 280;
+            y= 820;
+        }
+        else {
+            x = 150;
+            y = 650;
+        }
+
         initPopup(popup_drop_defense);
+    }
+
+    public void onClickDropDefended(View v) {
+        recordDrop(true);
 
         //Make drop able to be undone by putting it in actionList.
         actionList = new ArrayList<Object>();
@@ -693,12 +710,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionCount++;
     }
 
-    public void onClickDropDefended(View v) {
-        recordDrop(true);
-    }
-
     public void onClickDropNotDefended(View v) {
         recordDrop(false);
+
+        //Make drop able to be undone by putting it in actionList.
+        actionList = new ArrayList<Object>();
+        actionList.add(x);
+        actionList.add(y);
+        actionList.add(mode);
+        actionList.add("drop");
+        actionList.add(TimerUtil.timestamp);
+        actionDic.put(actionCount, actionList);
+        actionCount++;
     }
 
     public void onClickCancelDrop(View v) {
