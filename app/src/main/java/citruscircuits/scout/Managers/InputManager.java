@@ -37,6 +37,8 @@ public class InputManager {
     public static int numSpill;
     public static int numFoul;
     public static int cyclesDefended;
+    public static int finalMatchNum;
+
 
     //Match Data Holders
     //Below holds match data
@@ -131,10 +133,14 @@ public class InputManager {
             AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
             String sortL3KeyFinal = String.valueOf((sortL3pre + mMatchNum) % 6 + 1);
 
-            Log.e("sortL#KeyFinal",sortL3KeyFinal);
+            Log.e("sortL3KeyFinal",sortL3KeyFinal);
 
             try {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
+
+                //Finds the final match number
+                finalMatchNum = backupData.getJSONObject(sortL1key).length();
+
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
 
                 Log.e("backUpData", String.valueOf(backupData));
@@ -331,6 +337,9 @@ public class InputManager {
                 JSONObject backupData = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
 
                 Log.i("entirefile", String.valueOf(backupData.getJSONObject(sortL1key)));
+
+                //Finds the final match number
+                finalMatchNum = backupData.getJSONObject(sortL1key).length();
 
                 backupData = backupData.getJSONObject(sortL1key).getJSONObject(sortL2key);
 
