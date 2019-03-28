@@ -113,9 +113,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
         //Check if QR contains correct database URL.
         if (resultStr.contains(InputManager.mDatabaseURL)) {
-            //Update assigned robot based on scout name and newly scanned QR.
-            InputManager.getQRAssignment(resultStr);
-
             //Check if resultStr is valid.
             if (!resultStr.contains("|") || !resultStr.contains("_")) {
                 AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
@@ -228,8 +225,13 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
                     public void onClick(DialogInterface dialog, int which) {
                         InputManager.mScoutName = name_spinner.getSelectedItem().toString();
                         AppCc.setSp("scoutName", InputManager.mScoutName);
+
                         InputManager.mAssignmentMode = "QR";
                         AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
+
+                        //Update assigned robot based on scout name and newly scanned QR.
+                        InputManager.getQRAssignment(resultStr);
+
                         open(A0A.class, null, true, false);
                     }
                 })

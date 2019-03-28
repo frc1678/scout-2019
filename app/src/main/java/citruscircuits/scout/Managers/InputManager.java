@@ -24,6 +24,7 @@ public class InputManager {
 
     //QR Assignment Variables
     public static String mQRString;
+    public static String mQRStringFinal;
     public static String mScoutLetter;
     public static int mSPRRanking;
 
@@ -97,6 +98,8 @@ public class InputManager {
 
     //Backup method for acquiring scout pre-match data from assignements.txt file
     public static void getBackupData() {
+        InputManager.mTeamNum = 0;
+
         if (mMatchNum > 0) {
             final HashMap<Integer, Integer> referenceDictionary = new HashMap<>();
               Integer referenceEvenInteger = 1;
@@ -214,9 +217,15 @@ public class InputManager {
     public static void getQRAssignment(String resultText) {
         mQRString = resultText;
         Log.e("StringValue", mQRString);
-        fullQRDataProcess();
 
+        //Isolate QRString with scout letters and SPR Rankings.
+        mQRStringFinal = resultText.substring(mQRString.indexOf("|") + 1, resultText.length());
         numScouts = resultText.length() - (mQRString.indexOf("|") + 1);
+
+        Log.i("FINALQRSTRING", mQRStringFinal);
+
+        //Set mSPRRanking
+        fullQRDataProcess();
 
         Log.i("SPRRANKING", "" + mSPRRanking);
 
@@ -247,12 +256,11 @@ public class InputManager {
             initialSPR = groupIIIInitialSPR;
         }
 
-        //Algorithm to assign scouts to position of robot (robot 1 - 6)
-        //depending on SPR Ranking and Match Number.
-        //Used to distribute scouts so they do not scout with the same scouts as frequently.
-        position = (mMatchNum * (groupNumber + 1) + (mSPRRanking - initialSPR)) % 6 + 1;
+        AppCc.setSp("groupNumber", groupNumber);
+        AppCc.setSp("initialSPR", initialSPR);
 
-        Log.i("POSITION", position + "");
+        //Assign robot position.
+        getQRData();
     }
 
     //Method for acquiring scout pre-match data from assignments.txt
@@ -280,8 +288,8 @@ public class InputManager {
 
                     if (mQRString != null) {
 
-                        if (mQRString.contains(mScoutLetter)) {
-                            mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
+                        if (mQRStringFinal.contains(mScoutLetter)) {
+                            mSPRRanking = mQRStringFinal.indexOf(mScoutLetter) + 1;
                             tPrevScoutLetter = mScoutLetter;
 
                             AppCc.setSp("prevScoutLetter", tPrevScoutLetter);
@@ -291,14 +299,11 @@ public class InputManager {
                             tPrevScoutLetter = AppCc.getSp("prevScoutLetter", "");
 
                             if (!tPrevScoutLetter.equals("")) {
-                                mSPRRanking = mQRString.indexOf(mScoutLetter) - mQRString.indexOf("|");
+                                mSPRRanking = mQRStringFinal.indexOf(mScoutLetter) + 1;
                             }
 
                         }
-
                         AppCc.setSp("sprRanking", mSPRRanking);
-
-                        getQRData();
                     }
                 }
                 catch (JSONException e) {
@@ -315,6 +320,13 @@ public class InputManager {
     }
 
     public static void getQRData() {
+        //Algorithm to assign scouts to position of robot (robot 1 - 6)
+        //depending on SPR Ranking and Match Number.
+        //Used to distribute scouts so they do not scout with the same scouts as frequently.
+        position = (mMatchNum * (AppCc.getSp("groupNumber", 0) + 1) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % 6 + 1;
+
+        Log.i("POSITION", position + "");
+
         String sortL1key = "matches";
         String sortL2key = String.valueOf(mMatchNum);
         String sortL3key = String.valueOf(position);

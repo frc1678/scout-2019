@@ -242,7 +242,7 @@ public class A0A extends DialogMaker {
 
                 if (InputManager.mAssignmentMode.equals("QR")) {
                     //Update assigned robot based on match number.
-                    InputManager.fullQRDataProcess();
+                    InputManager.getQRData();
 
                     setCycleBackgroundColor(InputManager.mAllianceColor);
                     tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
@@ -419,7 +419,7 @@ public class A0A extends DialogMaker {
 
                     if (InputManager.mAssignmentMode.equals("QR")) {
                         //Update assigned robot based on new scout name.
-                        InputManager.getQRAssignment(AppCc.getSp("resultStr", ""));
+                        InputManager.getQRAssignment(InputManager.mQRString);
                     }
 
                     updateUserData();
