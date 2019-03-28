@@ -85,6 +85,8 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
+        qrCodeReader.stopCamera();
+
         alertScout();
 
         //Set QRString to scanned QR in order to retrieve scout SPR Ranking.
