@@ -56,10 +56,15 @@ import static citruscircuits.scout.Managers.InputManager.mSandstormEndPosition;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import citruscircuits.scout.utils.StormDialog;
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
+import static citruscircuits.scout.utils.StormDialog.preload2;
+import static citruscircuits.scout.utils.StormDialog.preloadCargo2;
+import static citruscircuits.scout.utils.StormDialog.preloadNone2;
+import static citruscircuits.scout.utils.StormDialog.preloadPanel2;
 import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
 import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static citruscircuits.scout.utils.StormDialog.teleButton;
+import static citruscircuits.scout.utils.StormDialog.view;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -415,9 +420,31 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClick(View v) {
 
     }
+    // onClick methods for preload in sandstorm.
+    public void onClickPreloadLemon(View view) {
+        setPreloadType("lemon");
+    }
+
+    public void onClickPreloadCargo(View view) {
+        setPreloadType("orange");
+    }
+
+    public void onClickPreloadNone(View view) {
+        setPreloadType("none");
+    }
 
     public void onClickTeleop(View view) {
         toTeleop();
+    }
+
+    // Method sets mPreload and calls preload and dismissPopups
+    public void setPreloadType(String PVal) {
+        InputManager.mPreload = PVal;
+        preload();
+        dismissPopups();
+        if (!tb_incap.isChecked()) {
+            pw = true;
+        }
     }
 
     public void toTeleop() {
@@ -653,6 +680,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_spill.setText("SPILL - " + InputManager.numSpill);
             mRealTimeMatchData = new JSONArray();
 
+            // Make preload enabled when you reset the timer.
+            preloadEnabled(true);
 
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
@@ -662,6 +691,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mapChange();
         }
         Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
+    }
+
+    // Method sets preload buttons as enabled or disabled.
+    public void preloadEnabled(Boolean preVal) {
+        preloadCargo2.setEnabled(preVal);
+        preloadPanel2.setEnabled(preVal);
+        preloadNone2.setEnabled(preVal);
     }
 
     public void onClickDrop(View v) {
@@ -680,6 +716,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_undo.setEnabled(true);
         didUndoOnce=false;
         pw = true;
+
+        // Make preload disabled after you've dropped.
+        if (!tele) {
+          preloadEnabled(false);
+        }
 
         overallLayout.removeView(iv_game_element);
         try {
@@ -710,8 +751,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickUndo(View v) {
             Log.e("jkgg", valueOf(actionCount));
-            popup.dismiss();
-            popup_fail_success.dismiss();
+
+            // Re-enable preload when you undo your first action.
+            if (!tele && actionCount <= 1) {
+                preloadEnabled(true);
+            }
+
+            dismissPopups();
             pw = true;
             int index = -1;
             for(int i=0;i<mRealTimeMatchData.length();i++){
@@ -1318,10 +1364,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickOrange(View view) {
         initIntake("orange");
+        // Make preload disabled after intaking
+        if (!tele) {
+          preloadEnabled(false);
+        }
     }
 
     public void onClickLemon(View view) {
         initIntake("lemon");
+        // Make preload disabled after intaking
+        if (!tele) {
+          preloadEnabled(false);
+        }
     }
 
     public void onClickCancel(View view) {
@@ -1748,11 +1802,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("woooooook", "preloadWokinput");
 
             if(!startTimer) {
-                btn_drop.setEnabled(true);
+                if (tb_incap.isChecked()) {
+                    btn_drop.setEnabled(false);
+                }
+                else {
+                    btn_drop.setEnabled(true);
+                }
             }
-            if (InputManager.mPreload.equals("orange")){
+            if (InputManager.mPreload.equals("orange")) {
                 element ="orange";
-            }else if(InputManager.mPreload.equals("lemon")){
+            }
+            else if (InputManager.mPreload.equals("lemon")) {
                 element ="lemon";
             }
             Log.e("preloadWok1", element);
@@ -1920,6 +1980,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneCS(View view) {
+        // Make preload disabled after placement in CS.
+        if (!tele) {
+            preloadEnabled(false);
+        }
         if(fail.isChecked() || success.isChecked()) {
             recordPlacement();
             mode = "intake";
@@ -1946,6 +2010,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneRocket(View View) {
+        // Make preload disabled after placement in rocket.
+        if (!tele) {
+            preloadEnabled(false);
+        }
+
         if((fail.isChecked() || success.isChecked())
                 && (level1.isChecked() || level2.isChecked() || level3.isChecked())) {
             recordPlacement();
@@ -1996,7 +2065,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-
+    public void dismissPopups() {
+        popup.dismiss();
+        popup_fail_success.dismiss();
+    }
 
     public void recordClimb(float time) {
         compressionDic = new JSONObject();
