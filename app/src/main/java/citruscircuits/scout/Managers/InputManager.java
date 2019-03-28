@@ -215,6 +215,8 @@ public class InputManager {
 
     //Assign robots to scouts based on SPR Ranking from scanned QR.
     public static void getQRAssignment(String resultText) {
+        InputManager.mTeamNum = 0;
+
         mQRString = resultText;
         Log.e("StringValue", mQRString);
 
