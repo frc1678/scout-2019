@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#ffffff">
-
     <Button
-        android:id="@+id/btn_defended"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:text="DEFENDED"
-        android:layout_margin="5dp"
-        android:onClick="onClickDropDefended" />
+        android:id="@+id/dropDefended"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:onClick="onClickDropDefended"
+        android:text="Drop Defended"
+        android:textSize="25dp"
+        android:layout_marginRight="5dp"
+        android:background="#ff9999"/>
     <Button
-        android:id="@+id/btn_notDefended"
-        android:layout_width="200dp"
+        android:id="@+id/dropNotDefended"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:onClick="onClickDropNotDefended"
+        android:text="Drop Not Defended"
+        android:textSize="25dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/dropDefended"
+        android:background="#a3ff99"/>
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:textAlignment="center"
-        android:textSize="30dp"
-        android:text="NOT DEFENDED"
-        android:layout_below="@+id/btn_defended"
-        android:layout_margin="5dp"
-        android:onClick="onClickDropNotDefended" />
-
+        android:text="CANCEL"
+        android:textSize="25dp"
+        android:layout_below="@+id/dropDefended"
+        android:layout_marginTop="5dp"
+        android:onClick="onClickCancelDrop"/>
 </RelativeLayout>

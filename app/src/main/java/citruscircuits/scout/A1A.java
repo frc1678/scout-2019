@@ -298,13 +298,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup_fail_success.setFocusable(false);
 
         if (mTabletType.equals("green")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 530, 430, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 620, 450, false);
         }
         else if (mTabletType.equals("black")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 320, 280, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 410, 300, false);
         }
         else if (mTabletType.equals("fire")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 220, 230, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 310, 250, false);
         }
         popup_drop_defense.setOutsideTouchable(false);
         popup_drop_defense.setFocusable(false);
@@ -678,6 +678,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDrop(View v) {
+        x = 280;
+        y = 970;
         initPopup(popup_drop_defense);
 
         //Make drop able to be undone by putting it in actionList.
@@ -697,6 +699,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDropNotDefended(View v) {
         recordDrop(false);
+    }
+
+    public void onClickCancelDrop(View v) {
+        popup_drop_defense.dismiss();
+        pw = true;
     }
 
     public void recordDrop(Boolean dropWasDefended) {
