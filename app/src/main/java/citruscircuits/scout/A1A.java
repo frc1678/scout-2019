@@ -422,25 +422,29 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
     // onClick methods for preload in sandstorm.
     public void onClickPreloadLemon(View view) {
-        mPreloadType("lemon");
+        setPreloadType("lemon");
     }
 
     public void onClickPreloadCargo(View view) {
-        mPreloadType("orange");
+        setPreloadType("orange");
     }
 
     public void onClickPreloadNone(View view) {
-        mPreloadType("none");
+        setPreloadType("none");
     }
 
     public void onClickTeleop(View view) {
         toTeleop();
     }
+
     // Method sets mPreload and calls preload and dismissPopups
-    public void mPreloadType(String PVal) {
+    public void setPreloadType(String PVal) {
         InputManager.mPreload = PVal;
         preload();
         dismissPopups();
+        if (!tb_incap.isChecked()) {
+            pw = true;
+        }
     }
 
     public void toTeleop() {
@@ -688,6 +692,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
     }
+
     // Method sets preload buttons as enabled or disabled.
     public void preloadEnabled(Boolean preVal) {
         preloadCargo2.setEnabled(preVal);
@@ -748,9 +753,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("jkgg", valueOf(actionCount));
 
             // Re-enable preload when you undo your first action.
-            if(!tele && actionCount <= 1) {
+            if (!tele && actionCount <= 1) {
                 preloadEnabled(true);
             }
+
             dismissPopups();
             pw = true;
             int index = -1;
@@ -2058,6 +2064,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("woooooooooooooooook",String.valueOf(pw));
         }
     }
+
     public void dismissPopups() {
         popup.dismiss();
         popup_fail_success.dismiss();

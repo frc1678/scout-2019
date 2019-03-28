@@ -35,7 +35,6 @@ public class StormDialog extends Fragment {
             tb_hab_run = view.findViewById(R.id.tgbtn_storm_run);
             teleButton =view.findViewById(R.id.btn_to_teleop);
         }
-
         else if(InputManager.mAllianceColor.equals("blue")) {
             view = inflater.inflate(R.layout.activity_storm_blue, container, false);
             btn_startTimer = view.findViewById(R.id.btn_timer);
