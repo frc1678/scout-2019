@@ -694,6 +694,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
 
         initPopup(popup_drop_defense);
+
+        final Button defendedButton= (Button) layoutInflater.inflate(R.layout.pw_drop, null).findViewById(R.id.dropDefended);
+
+        if (element.equals("lemon")){
+            defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
+        }
+        else {
+            defendedButton.setBackgroundColor(Color.parseColor("#ffab4c"));
+        }
+
     }
 
     public void onClickDropDefended(View v) {
