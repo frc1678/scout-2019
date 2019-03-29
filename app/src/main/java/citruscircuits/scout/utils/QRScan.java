@@ -140,7 +140,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
                 if (prevCycleNum >= cycleNum) {
                     AppUtils.makeToast(this, "QR's CYCLE NUMBER: " + cycleNum + ", Your CYCLE NUMBER: " + prevCycleNum, 50);
 
-                    resultStr = prevStr;
                     cycleNum = prevCycleNum;
                 }
                 else if (cycleNum <= 0) {
