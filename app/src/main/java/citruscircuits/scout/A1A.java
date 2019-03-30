@@ -458,6 +458,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         dismissPopups();
+        //Allows scout to touch screen if a popup used to be open
         if(isPopupOpen && !tb_incap.isChecked()){
             pw = true;
         }
