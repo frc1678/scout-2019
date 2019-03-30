@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,11 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
 
 import citruscircuits.scout.A0A;
 import citruscircuits.scout.Managers.InputManager;
@@ -91,88 +85,56 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         resultStr = text;
         String prevStr = AppCc.getSp("resultStr", "");
 
-        //Check if QR Assignment app is on proper database based on database URL in assignment.txt file.
+        //Update assigned robot based on scout name and newly scanned QR.
+        InputManager.getQRAssignment(resultStr);
 
-        //Set mDatabaseURL based on database URL in assignment.txt file.
-        String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
-        String fileName = "assignments.txt";
+        if (!resultStr.contains("|")) {
+            AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
 
-        File f = new File(filePath, fileName);
+            resultStr = prevStr;
+            return;
+        }
 
-        if (f.exists()) {
-            try {
-                JSONObject databaseURL = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
-                InputManager.mDatabaseURL = databaseURL.getString("databaseURL");
+        int cycleNum = 0;
+        try {
+            cycleNum = AppUtils.StringToInt(resultStr.substring(0, resultStr.indexOf("|")));
+        }
+        catch (Exception e) { e.printStackTrace();
+        }
+
+        if (!prevStr.equals("")) {
+            int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("|")));
+
+            if (prevCycleNum >= cycleNum) {
+                AppUtils.makeToast(this, "QR's CYCLE NUMBER: " + cycleNum + ", Your CYCLE NUMBER: " + prevCycleNum, 50);
+
+                resultStr = prevStr;
+                cycleNum = prevCycleNum;
             }
-            catch (JSONException e) {
+            else if (cycleNum <= 0) {
+                AppUtils.makeToast(this, "INVALID CYCLE NUMBER:" + cycleNum, 50);
+
+                resultStr = prevStr;
+                cycleNum = prevCycleNum;
+            }
+            else {
+                AppUtils.makeToast(this,"CYCLE NUMBER: " + cycleNum, 50);
+            }
+        }
+        else {
+            try {
+                AppUtils.makeToast(this, "CYCLE NUMBER: " + cycleNum, 50);
+            }
+            catch(Exception e) {
                 e.printStackTrace();
             }
         }
 
-        AppCc.setSp("databaseURL", InputManager.mDatabaseURL);
+        InputManager.mCycleNum = cycleNum;
+        Log.e("QR STRING IN SCAN", resultStr);
 
-        //Check if QR contains correct database URL.
-        if (resultStr.contains(InputManager.mDatabaseURL)) {
-            //Update assigned robot based on scout name and newly scanned QR.
-            InputManager.getQRAssignment(resultStr);
-
-            //Check if resultStr is valid.
-            if (!resultStr.contains("|") || !resultStr.contains("_")) {
-                AppUtils.makeToast(this, "The QR Code is wrong, no PIPE!", 50);
-
-                resultStr = prevStr;
-                return;
-            }
-
-            //Set cycleNum from 0 index to "_" index of QR string.
-            int cycleNum = 0;
-            try {
-                cycleNum = AppUtils.StringToInt(resultStr.substring(0, resultStr.indexOf("_")));
-            }
-            catch (Exception e) { e.printStackTrace();
-            }
-
-            //Set prevCycleNum if prevStr is valid.
-            if (prevStr.contains("_") && prevStr.contains("|")) {
-                int prevCycleNum = AppUtils.StringToInt(prevStr.substring(0, prevStr.indexOf("_")));
-
-                //Create and display toasts depending on cycleNum and prevCycleNum
-                //to alert scouts of whether their cycle number is valid and the QR has been successfully scanned.
-                if (prevCycleNum >= cycleNum) {
-                    AppUtils.makeToast(this, "QR's CYCLE NUMBER: " + cycleNum + ", Your CYCLE NUMBER: " + prevCycleNum, 50);
-
-                    resultStr = prevStr;
-                    cycleNum = prevCycleNum;
-                }
-                else if (cycleNum <= 0) {
-                    AppUtils.makeToast(this, "INVALID CYCLE NUMBER:" + cycleNum, 50);
-
-                    resultStr = prevStr;
-                    cycleNum = prevCycleNum;
-                }
-                else {
-                    AppUtils.makeToast(this,"CYCLE NUMBER: " + cycleNum, 50);
-                }
-            }
-            else {
-                try {
-                    AppUtils.makeToast(this, "CYCLE NUMBER: " + cycleNum, 50);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            InputManager.mCycleNum = cycleNum;
-            Log.e("QR STRING IN SCAN", resultStr);
-
-            AppCc.setSp("resultStr", resultStr);
-            AppCc.setSp("cycleNum", cycleNum);
-        }
-        //If QR code does not have correct database URL, alert Scout that QR App is outdated.
-        else {
-            AppUtils.makeToast(this,"QR APP IS OUTDATED", 50);
-        }
+        AppCc.setSp("resultStr", resultStr);
+        AppCc.setSp("cycleNum", cycleNum);
     }
 
     @Override
