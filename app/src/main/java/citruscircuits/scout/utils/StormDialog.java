@@ -41,35 +41,11 @@ public class StormDialog extends Fragment {
             tb_hab_run = view.findViewById(R.id.tgbtn_storm_run);
             teleButton =view.findViewById(R.id.btn_to_teleop);
         }
+
         preload2 = (RadioGroup) view.findViewById(R.id.preload2);
         preloadCargo2 = (RadioButton) view.findViewById(R.id.preloadCargo2);
         preloadPanel2 = (RadioButton) view.findViewById(R.id.preloadPanel2);
         preloadNone2 = (RadioButton) view.findViewById(R.id.preloadNone2);
-
-        if(A1A.cancelStormChecker){
-            btn_startTimer.setPressed(true);
-            Log.e("wok", "wofansegnasgk");
-            btn_startTimer.setText("RESET TIMER");
-            Log.e("wok", "wokjsdfakkk");
-            if (InputManager.mAllianceColor.equals("red")) {
-                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_red_selector);
-            } else if (InputManager.mAllianceColor.equals("blue")) {
-                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_blue_selector);
-            }
-            if(A1A.mode.equals("placement")) {
-                A1A.btn_drop.setEnabled(true);
-            }
-            A1A.timerCheck = true;
-            A1A.startTimer = false;
-            A1A.tb_incap.setEnabled(true);
-            A1A.btn_spill.setEnabled(true);
-            A1A.cancelStormChecker=false;
-            A1A.tb_defense.setEnabled(false);
-            A1A.btn_climb.setEnabled(false);
-            tb_hab_run.setEnabled(true);
-            tb_hab_run.setChecked(true);
-            teleButton.setEnabled(true);
-        }
 
         //Make preload buttons start the same as previous screen.
         if (InputManager.mPreload.equals("orange")) {

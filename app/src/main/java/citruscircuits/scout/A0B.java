@@ -159,29 +159,27 @@ public void defineVariables(){
     public void onClickHabOneA(View v){
         Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
-
     }
+    
     public void onClickHabOneB(View v){
         Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
-
     }
+    
     public void onClickHabOneC(View v){
         Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
-
     }
+    
     public void onClickHabTwoA(View v){
         Log.e("wokkkkkk", "layer2");
         habSub1.clearCheck();
-
     }
+    
     public void onClickHabTwoB(View v){
         Log.e("wokkkkkk", "layer2");
         habSub1.clearCheck();
     }
-
-
 
     public void onClickDataCheck(View v) {
         //record data
@@ -243,7 +241,6 @@ public void defineVariables(){
             }
             open(A2A.class, null, false, true);
         }
-        A1A.cancelStormChecker=false;
         A1A.startTimer=true;
         A1A.timerCheck=false;
     }
