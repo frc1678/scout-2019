@@ -1889,22 +1889,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             mRealTimeMatchData.put(compressionDic);
         }
-        try {
-            InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
-            InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
-            InputManager.mOneTimeMatchData.put("startingLocation", InputManager.mHabStartingPositionOrientation);
-            InputManager.mOneTimeMatchData.put("preload", InputManager.mPreload);
-            InputManager.mOneTimeMatchData.put("isNoShow", InputManager.isNoShow);
-            InputManager.mOneTimeMatchData.put("timerStarted", InputManager.mTimerStarted);
-            InputManager.mOneTimeMatchData.put("currentCycle", InputManager.mCycleNum);
-            InputManager.mOneTimeMatchData.put("scoutName", InputManager.mScoutName);
-            InputManager.mOneTimeMatchData.put("scoutID", InputManager.mScoutId);
-            InputManager.mOneTimeMatchData.put("appVersion", InputManager.mAppVersion);
-            InputManager.mOneTimeMatchData.put("assignmentMode", InputManager.mAssignmentMode);
-            InputManager.mOneTimeMatchData.put("assignmentFileTimestamp", InputManager.mAssignmentFileTimestamp);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         open(A2A.class, null, false, true);
     }
 
