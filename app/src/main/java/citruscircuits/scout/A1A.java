@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -52,14 +53,18 @@ import citruscircuits.scout.utils.TimerUtil;
 
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
-import static citruscircuits.scout.Managers.InputManager.mSandstormEndPosition;
 import static citruscircuits.scout.Managers.InputManager.mScoutId;
 import citruscircuits.scout.utils.StormDialog;
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
+import static citruscircuits.scout.utils.StormDialog.preload2;
+import static citruscircuits.scout.utils.StormDialog.preloadCargo2;
+import static citruscircuits.scout.utils.StormDialog.preloadNone2;
+import static citruscircuits.scout.utils.StormDialog.preloadPanel2;
 import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
 import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static citruscircuits.scout.utils.StormDialog.teleButton;
+import static citruscircuits.scout.utils.StormDialog.view;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -88,10 +93,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean didSucceed;
     public boolean wasDefended;
     public boolean shotOutOfField;
-
-    public static boolean cancelStormChecker=false;
-    public boolean doneStormChecker=false;
-    public boolean isElementUsedForRobot=false;
     public boolean didUndoOnce=true;
     public Integer climbAttemptCounter=0;
     public Integer climbActualCounter=0;
@@ -174,7 +175,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Handler teleWarningHandler = new Handler();
     public Runnable teleWarningRunnable = new Runnable() {
         public void run() {
-            if(!tele && !mode.equals("endPosition")) {
+            if(!tele) {
                 new AlertDialog.Builder(activity)
                         .setTitle("YOU ARE 10 SECONDS INTO TELEOP!!")
                         .setPositiveButton("GO TO TELEOP", new DialogInterface.OnClickListener() {
@@ -220,11 +221,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public Fragment fragmentRecreate;
     public FragmentTransaction transactionRecreate;
     public FragmentManager fmRecreate;
-
-    public Fragment fragmentCancel;
-    public FragmentTransaction transactionCancel;
-    public FragmentManager fmCancel;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -415,9 +411,31 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void onClick(View v) {
 
     }
+    // onClick methods for preload in sandstorm.
+    public void onClickPreloadLemon(View view) {
+        setPreloadType("lemon");
+    }
+
+    public void onClickPreloadCargo(View view) {
+        setPreloadType("orange");
+    }
+
+    public void onClickPreloadNone(View view) {
+        setPreloadType("none");
+    }
 
     public void onClickTeleop(View view) {
-        toTeleop();
+            toTeleop();
+    }
+
+    // Method sets mPreload and calls preload and dismissPopups
+    public void setPreloadType(String PVal) {
+        InputManager.mPreload = PVal;
+        preload();
+        dismissPopups();
+        if (!tb_incap.isChecked()) {
+            pw = true;
+        }
     }
 
     public void toTeleop() {
@@ -426,167 +444,26 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if (fragment != null)
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        if (tb_hab_run.isChecked()){
-            popup.dismiss();
-            popup_fail_success.dismiss();
-            pw = true;
-            btn_climb.setEnabled(false);
-            tb_incap.setEnabled(false);
-            tb_defense.setEnabled(false);
-            btn_undo.setEnabled(false);
-            btn_spill.setEnabled(false);
-            btn_drop.setEnabled(false);
-            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-
-            fragmentCancel = new CancelFragment();
-            fmCancel = getSupportFragmentManager();
-            transactionCancel = fmCancel.beginTransaction();
-
-            if (AppCc.getSp("mapOrientation", 99) != 99) {
-                if(AppCc.getSp("mapOrientation", 99) !=0){
-                    if (InputManager.mAllianceColor.equals("red")) {
-                        transactionCancel.add(R.id.left_storm, fragmentCancel, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.endposition_right);
-
-                    } else if (InputManager.mAllianceColor.equals("blue")) {
-                        transactionCancel.add(R.id.right_storm, fragmentCancel, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.endposition_left);
-
-                    }
-
-                } else if(AppCc.getSp("mapOrientation", 99) == 0){
-                    if (InputManager.mAllianceColor.equals("red")) {
-                        transactionCancel.add(R.id.right_storm, fragmentCancel, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.endposition_left);
-
-                    } else if (InputManager.mAllianceColor.equals("blue")) {
-                        transactionCancel.add(R.id.left_storm, fragmentCancel, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.endposition_right);
-                    }
-                }
-            }
-            mode ="endPosition";
-            transactionCancel.commit();
-            btn_undo.setEnabled(false);
-        } else{
-            tele = true;
-
-            btn_undo.setEnabled(false);
-
-            Log.e("startTimer?",String.valueOf(startTimer));
-            if(timerCheck && !tb_incap.isChecked()){
-                btn_climb.setEnabled(true);
-                tb_defense.setEnabled(true);
-            }
-            if (modeIsIntake){
-                mode ="intake";
-            }
-            else if(!modeIsIntake){
-                mode ="placement";
-            }
-            mapChange();
-        }
-        InputManager.mCrossedHabLine = tb_hab_run.isChecked();
-        Log.e("woooook", field_orientation);
-    }
-
-    public void onClickCancelEndPosition(View v){
-        getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
-        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-
-        mode = "";
-
-        cancelStormChecker=true;
-        fragmentRecreate = new StormDialog();
-        fmRecreate = getSupportFragmentManager();
-        transactionRecreate = fmRecreate.beginTransaction();
-
-        if (AppCc.getSp("mapOrientation", 99) != 99) {
-            if (!tb_incap.isChecked()){
-                if(AppCc.getSp("mapOrientation", 99) !=0){
-                    if (InputManager.mAllianceColor.equals("red")) {
-                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.field_intake_red_right);
-                    } else if (InputManager.mAllianceColor.equals("blue")) {
-                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.field_intake_blue_left);
-                    }
-                } else if(AppCc.getSp("mapOrientation", 99) == 0){
-                    if (InputManager.mAllianceColor.equals("red")) {
-                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.field_intake_red_left);
-                    } else if (InputManager.mAllianceColor.equals("blue")) {
-                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                        iv_field.setImageResource(R.drawable.field_intake_blue_right);
-                    }
-                }
-            } else {
-                if (AppCc.getSp("mapOrientation", 99) != 0) {
-                    if (InputManager.mAllianceColor.equals("red")) {
-                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                        mapChange();
-                    } else if (InputManager.mAllianceColor.equals("blue")) {
-                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                        mapChange();
-                    }
-                } else if (AppCc.getSp("mapOrientation", 99) == 0) {
-                    if (InputManager.mAllianceColor.equals("red")) {
-                        transactionRecreate.add(R.id.right_storm, fragmentRecreate, "FRAGMENT");
-                        mapChange();
-                    } else if (InputManager.mAllianceColor.equals("blue")) {
-                        transactionRecreate.add(R.id.left_storm, fragmentRecreate, "FRAGMENT");
-                        mapChange();
-                    }
-                }
-            }
-        }
-        transactionRecreate.commit();
-        if (modeIsIntake){
-            mode ="intake";
-        }
-        else if(!modeIsIntake){
-            mode ="placement";
-        }
-        isElementUsedForRobot=true;
-        initShape();
-        isElementUsedForRobot=false;
-        if (!didUndoOnce){
-            btn_undo.setEnabled(true);
-        }
-    }
-
-    public void onClickDoneEndPosition(View v){
-        Log.e("sandstormValue", mSandstormEndPosition);
-        cancelStormChecker=false;
-        getSupportFragmentManager().beginTransaction().remove(fragmentCancel).commit();
+        popup.dismiss();
+        popup_fail_success.dismiss();
         tele = true;
 
-        if (modeIsIntake){
-            mode ="intake";
-        }
-        else if(!modeIsIntake){
-            mode ="placement";
-        }
-        overallLayout.removeView(iv_game_element);
+        btn_undo.setEnabled(false);
 
-        mapChange();
-        doneStormChecker=true;
-        isElementUsedForRobot=true;
-        initShape();
-        tb_incap.setEnabled(true);
-        if(!tb_incap.isChecked()){
-            btn_spill.setEnabled(true);
-            if (mode.equals("placement")){
-                A1A.btn_drop.setEnabled(true);
-            }
+        Log.e("startTimer?",String.valueOf(startTimer));
+        if(timerCheck && !tb_incap.isChecked()){
             btn_climb.setEnabled(true);
             tb_defense.setEnabled(true);
         }
-        if(tb_incap.isChecked()){
-            pw=false;
+        if (modeIsIntake){
+                mode ="intake";
         }
-
-        didUndoOnce=false;
+        else if(!modeIsIntake){
+                mode ="placement";
+        }
+        mapChange();
+        InputManager.mCrossedHabLine = tb_hab_run.isChecked();
+        Log.e("woooook", field_orientation);
     }
 
     public void onClickStartTimer(View v) {
@@ -653,6 +530,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             btn_spill.setText("SPILL - " + InputManager.numSpill);
             mRealTimeMatchData = new JSONArray();
 
+            // Make preload enabled when you reset the timer.
+            preloadEnabled(true);
 
             if (InputManager.mAllianceColor.equals("red")) {
                 btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
@@ -662,6 +541,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mapChange();
         }
         Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
+    }
+
+    // Method sets preload buttons as enabled or disabled.
+    public void preloadEnabled(Boolean preVal) {
+        preloadCargo2.setEnabled(preVal);
+        preloadPanel2.setEnabled(preVal);
+        preloadNone2.setEnabled(preVal);
     }
 
     public void onClickDrop(View v) {
@@ -680,6 +566,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_undo.setEnabled(true);
         didUndoOnce=false;
         pw = true;
+
+        // Make preload disabled after you've dropped.
+        if (!tele) {
+          preloadEnabled(false);
+        }
 
         overallLayout.removeView(iv_game_element);
         try {
@@ -710,8 +601,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickUndo(View v) {
             Log.e("jkgg", valueOf(actionCount));
-            popup.dismiss();
-            popup_fail_success.dismiss();
+
+            // Re-enable preload when you undo your first action.
+            if (!tele && actionCount <= 1) {
+                preloadEnabled(true);
+            }
+
+            dismissPopups();
             pw = true;
             int index = -1;
             for(int i=0;i<mRealTimeMatchData.length();i++){
@@ -1302,11 +1198,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                                 modeIsIntake=false;
                                 placementDialogOpen = true;
                             }
-                            else if (mode.equals("endPosition")) {
-                                pw = false;
-                                Log.e("woooook", "endPosition");
-                                initIntake("endPosition");
-                            }
                         }
                     }
                     Log.e("AH", mode);
@@ -1318,10 +1209,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickOrange(View view) {
         initIntake("orange");
+        // Make preload disabled after intaking
+        if (!tele) {
+          preloadEnabled(false);
+        }
     }
 
     public void onClickLemon(View view) {
         initIntake("lemon");
+        // Make preload disabled after intaking
+        if (!tele) {
+          preloadEnabled(false);
+        }
     }
 
     public void onClickCancel(View view) {
@@ -1525,13 +1424,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
         overallLayout.removeView(iv_game_element);
 
-        if (mode.equals("endPosition")){
-            Log.e("wokedngge", "showup");
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.robot));
-        } else if(element.equals("orange") && !mode.equals("endPosition")) {
+        if(element.equals("orange")) {
             Log.e("wokorange", "showup");
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-            if(!isElementUsedForRobot){
                 actionList = new ArrayList<Object>();
                 actionList.add(x);
                 actionList.add(y);
@@ -1542,11 +1437,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionCount++;
                 btn_undo.setEnabled(true);
                 didUndoOnce=false;
-            }
 
-        } else if(element.equals("lemon")&& !mode.equals("endPosition")) {
+        } else if(element.equals("lemon")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-            if (!isElementUsedForRobot){
                 Log.e("woklemon", "showupppppp");
                 actionList = new ArrayList<Object>();
                 actionList.add(x);
@@ -1559,7 +1452,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 btn_undo.setEnabled(true);
                 didUndoOnce=false;
 
-            }
         }
         Log.e("ahhhh1",String.valueOf(actionDic));
 
@@ -1569,11 +1461,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 100,
                 100);
-        Log.e("stormCheck",String.valueOf(cancelStormChecker));
-        Log.e("stormCheck",String.valueOf(doneStormChecker));
-
-        if(!cancelStormChecker && !doneStormChecker){
-            if((y > 900 && mTabletType.equals("green")) || (y > 550 && mTabletType.equals("black"))) {
+         if((y > 900 && mTabletType.equals("green")) || (y > 550 && mTabletType.equals("black"))) {
                 if((x < 40 && mTabletType.equals("green")) || (x < 25 &&  mTabletType.equals("black"))) {
                     lp.setMargins(x + 20, y - 90, 0, 0);
                 } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
@@ -1598,52 +1486,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             iv_game_element.setLayoutParams(lp);
             ((ViewGroup) overallLayout).addView(iv_game_element);
-        } else if(cancelStormChecker || doneStormChecker){
-            if (actionCount>0 && ((!actionDic.get(actionCount-1).get(3).equals("drop")) && (!actionDic.get(actionCount-1).get(3).equals("incap")) && (!actionDic.get(actionCount-1).get(3).equals("unincap")))){
-                    Log.e("ahhh4", String.valueOf(mode));
-                        undoX=(int) actionDic.get(actionCount-1).get(0);
-                        undoY=(int) actionDic.get(actionCount-1).get(1);
-                        Log.e("undo1?", "stormChecker");
-                Log.e("undoX", String.valueOf(undoX));
-                Log.e("undoY", String.valueOf(undoY));
 
-                if((undoY > 900 && mTabletType.equals("green")) || (undoY > 550 &&  mTabletType.equals("black"))) {
-                        if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
-                            lp.setMargins(undoX + 20, undoY - 90, 0, 0);
-                        } else if((x > 1650 && mTabletType.equals("green")) || (x > 1090 &&  mTabletType.equals("black"))) {
-                            lp.setMargins(undoX - 100, undoY - 90, 0, 0);
-                        } else {
-                            lp.setMargins(undoX - 25, undoY - 90, 0, 0);
-                        }
-                    } else if((undoY < 85 && mTabletType.equals("green")) || (undoY < 55 &&  mTabletType.equals("black"))) {
-                        if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
-                            lp.setMargins(undoX + 20, undoY + 5, 0, 0);
-                        } else if((undoX > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
-                            lp.setMargins(undoX - 100, undoY + 5, 0, 0);
-                        } else {
-                            lp.setMargins(undoX - 25, undoY + 5, 0, 0);
-                        }
-                    } else if((undoX < 40 && mTabletType.equals("green")) || (undoX < 25 &&  mTabletType.equals("black"))) {
-                        lp.setMargins(undoX + 20, undoY - 40, 0, 0);
-                    } else if((x > 1650 && mTabletType.equals("green")) || (undoX > 1090 &&  mTabletType.equals("black"))) {
-                        lp.setMargins(undoX - 100, undoY - 40, 0, 0);
-                    } else {
-                        lp.setMargins(undoX - 25, undoY - 40, 0, 0);
-                    }
-                    iv_game_element.setLayoutParams(lp);
-                    ((ViewGroup) overallLayout).addView(iv_game_element);
-
-            }else {
-                Log.e("ahhh","nothing should happen");
-            }
-        }
-
-        if (!mode.equals("endPosition")){
             mapChange();
-        }
-
-        isElementUsedForRobot=false;
-        doneStormChecker=false;
     }
 
     public void initIntake(String givenElement) {
@@ -1651,17 +1495,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         zone = "";
 
         time = TimerUtil.timestamp;
-
-        if(givenElement.equals("endPosition")) {
-            pw = true;
-        } else {
-            popup.dismiss();
-            element = givenElement;
-        }
+        popup.dismiss();
+        element = givenElement;
 
         if(((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
                 || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mTabletType.equals("black"))
-                || (((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && mTabletType.equals("fire"))) && !givenElement.equals("endPosition")) {
+                || (((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && mTabletType.equals("fire")))) {
             if((((field_orientation.contains("left") && y<=415) || (field_orientation.contains("right") && y>=615)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && y<=280) || (field_orientation.contains("right") && y>=410)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && y<=220) || (field_orientation.contains("right") && y>=280)) && mTabletType.equals("fire"))) {
@@ -1734,11 +1573,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 Log.i("RECORDING?", mRealTimeMatchData.toString());
                 Log.i("ZONE", zone);
                 initShape();
-            } else if(givenElement.equals("endPosition") && zone.contains("zone")) {
-                InputManager.mSandstormEndPosition = zone;
-                mode = "endPosition";
-                Log.i("SANDSTORM", InputManager.mSandstormEndPosition);
-                initShape();
             }
         }
     }
@@ -1748,11 +1582,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             Log.e("woooooook", "preloadWokinput");
 
             if(!startTimer) {
-                btn_drop.setEnabled(true);
+                if (tb_incap.isChecked()) {
+                    btn_drop.setEnabled(false);
+                }
+                else {
+                    btn_drop.setEnabled(true);
+                }
             }
-            if (InputManager.mPreload.equals("orange")){
+            if (InputManager.mPreload.equals("orange")) {
                 element ="orange";
-            }else if(InputManager.mPreload.equals("lemon")){
+            }
+            else if (InputManager.mPreload.equals("lemon")) {
                 element ="lemon";
             }
             Log.e("preloadWok1", element);
@@ -1920,6 +1760,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneCS(View view) {
+        // Make preload disabled after placement in CS.
+        if (!tele) {
+            preloadEnabled(false);
+        }
         if(fail.isChecked() || success.isChecked()) {
             recordPlacement();
             mode = "intake";
@@ -1946,6 +1790,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickDoneRocket(View View) {
+        // Make preload disabled after placement in rocket.
+        if (!tele) {
+            preloadEnabled(false);
+        }
+
         if((fail.isChecked() || success.isChecked())
                 && (level1.isChecked() || level2.isChecked() || level3.isChecked())) {
             recordPlacement();
@@ -1996,7 +1845,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
-
+    public void dismissPopups() {
+        popup.dismiss();
+        popup_fail_success.dismiss();
+    }
 
     public void recordClimb(float time) {
         compressionDic = new JSONObject();
@@ -2037,6 +1889,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             mRealTimeMatchData.put(compressionDic);
         }
+
         open(A2A.class, null, false, true);
     }
 
