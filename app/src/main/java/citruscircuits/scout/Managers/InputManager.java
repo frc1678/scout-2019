@@ -35,7 +35,6 @@ public class InputManager {
     public static Integer position;
     public static Integer initialSPR;
 
-    public static int numSpill;
     public static int numFoul;
     public static int cyclesDefended;
     public static int finalMatchNum;
