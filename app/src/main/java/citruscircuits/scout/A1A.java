@@ -118,7 +118,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 //    public Button btn_startTimer;
     public static Button btn_drop;
-    public static Button btn_spill;
+    public static Button btn_foul;
     public static Button btn_cyclesDefended;
     public static Button btn_undo;
     public static Button btn_climb;
@@ -309,7 +309,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         tv_team = findViewById(R.id.tv_teamNum);
 
         btn_drop = findViewById(R.id.btn_dropped);
-        btn_spill = findViewById(R.id.btn_spilled);
+        btn_foul = findViewById(R.id.btn_foul);
         btn_cyclesDefended = findViewById(R.id.btn_cyclesDefended);
         btn_undo = findViewById(R.id.btn_undo);
         btn_arrow = findViewById(R.id.btn_arrow);
@@ -365,21 +365,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         mRealTimeMatchData = new JSONArray();
         InputManager.mOneTimeMatchData = new JSONObject();
-        InputManager.numSpill = 0;
         InputManager.numFoul = 0;
         InputManager.cyclesDefended = 0;
 
         btn_drop.setEnabled(false);
         btn_undo.setEnabled(false);
         addTouchListener();
-        btn_spill.setOnLongClickListener((new View.OnLongClickListener() {
+        btn_foul.setOnLongClickListener((new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
-                if (InputManager.numSpill>0) {
+                if (InputManager.numFoul>0) {
                     int index = -1;
                     for(int i=0;i<mRealTimeMatchData.length();i++){
                         try {
                             String test = mRealTimeMatchData.getString(i);
-                            if(test.contains("spill")) {
+                            if(test.contains("foul")) {
                                 index = i;
                             }
                         } catch (JSONException e) {
@@ -387,8 +386,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         }
                     }
                     mRealTimeMatchData.remove(index);
-                    InputManager.numSpill--;
-                    btn_spill.setText("SPILL - " + InputManager.numSpill);
+                    InputManager.numFoul--;
+                    btn_foul.setText("PIN FOUL - " + InputManager.numFoul);
                 }
                 Log.e("LONG", mRealTimeMatchData.toString());
                 return true;
@@ -502,7 +501,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             teleButton.setEnabled(true);
             tb_hab_run.setEnabled(true);
             tb_incap.setEnabled(true);
-            btn_spill.setEnabled(true);
+            btn_foul.setEnabled(true);
             if(InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")){
                 btn_drop.setEnabled(true);
             }
@@ -515,11 +514,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         } else if (!startTimer) {
             pw=false;
-            InputManager.numSpill = 0;
             InputManager.numFoul = 0;
             tb_incap.setEnabled(false);
             tb_incap.setChecked(false);
-            btn_spill.setEnabled(false);
+            btn_foul.setEnabled(false);
             tb_hab_run.setEnabled(false);
             tb_hab_run.setChecked(false);
             teleButton.setEnabled(false);
@@ -537,9 +535,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             startTimer = true;
             timerCheck = false;
             preload();
-            InputManager.numSpill=0;
+            InputManager.numFoul=0;
             actionCount=0;
-            btn_spill.setText("SPILL - " + InputManager.numSpill);
+            btn_foul.setText("PIN FOUL - " + InputManager.numFoul);
             mRealTimeMatchData = new JSONArray();
 
             // Make preload enabled when you reset the timer.
@@ -666,12 +664,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         mRealTimeMatchData.put(compressionDic);
     }
 
-    public void onClickSpill(View v) throws JSONException {
-        InputManager.numSpill++;
-        btn_spill.setText("SPILL - " + InputManager.numSpill);
+    public void onClickFoul(View v) throws JSONException {
+        InputManager.numFoul++;
+        btn_foul.setText("PIN FOUL - " + InputManager.numFoul);
         compressionDic = new JSONObject();
         try {
-            compressionDic.put("type", "spill");
+            compressionDic.put("type", "foul");
             timestamp(TimerUtil.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -753,7 +751,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     else if(tele){
                         tb_defense.setEnabled(true);
                         if(!tb_defense.isChecked()) {
-                            btn_spill.setEnabled(true);
+                            btn_foul.setEnabled(true);
                             btn_climb.setEnabled(true);
                         }
                     }
@@ -761,7 +759,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 } else if (actionDic.get(actionCount).get(3).equals("unincap")){
                     btn_climb.setEnabled(false);
                     btn_drop.setEnabled(false);
-                    btn_spill.setEnabled(false);
+                    btn_foul.setEnabled(false);
                     tb_defense.setEnabled(false);
                     tb_incap.setChecked(true);
 
@@ -1079,7 +1077,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             btn_climb.setEnabled(false);
             btn_drop.setEnabled(false);
-            btn_spill.setEnabled(false);
+            btn_foul.setEnabled(false);
             tb_defense.setEnabled(false);
 
             if(!tele) {
@@ -1125,7 +1123,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             pw = true;
 
             btn_undo.setEnabled(true);
-            btn_spill.setEnabled(true);
+            btn_foul.setEnabled(true);
 
             if(!tele) {
                 tb_hab_run.setEnabled(true);

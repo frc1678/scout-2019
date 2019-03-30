@@ -42,22 +42,22 @@
             android:textSize="30dp"
             android:onClick="onClickDrop"/>
         <Button
-            android:id="@+id/btn_spilled"
+            android:id="@+id/btn_foul"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/btn_spill_selector"
-            android:text="SPILL - 0"
+            android:background="@drawable/btn_foul_selector"
+            android:text="PIN FOUL - 0"
             android:textSize="30dp"
             android:layout_toRightOf="@+id/btn_dropped"
             android:enabled="false"
-            android:onClick="onClickSpill"/>
+            android:onClick="onClickFoul"/>
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/btn_undo"
-            android:layout_toRightOf="@+id/btn_fouled"
+            android:layout_toRightOf="@+id/btn_foul"
             android:text="UNDO"
             android:textSize="30dp"
             android:textAlignment="center"

@@ -81,7 +81,7 @@ public interface Cst {
         put("intake", "M");
         put("placement", "N");
         put("drop", "P");
-        put("spill", "Q");
+        put("foul", "Q");
         put("climb", "R");
         put("incap", "S");
         put("unincap", "U");
