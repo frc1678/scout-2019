@@ -29,7 +29,7 @@
         android:layout_height="100dp"
         android:text="CANCEL"
         android:textSize="25dp"
-        android:layout_below="@+id/dropDefended"
+        android:layout_below="@+id/dropNotDefended"
         android:layout_marginTop="5dp"
         android:onClick="onClickCancelDrop"/>
 </RelativeLayout>

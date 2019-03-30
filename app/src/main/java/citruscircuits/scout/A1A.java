@@ -87,6 +87,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public static boolean timerCheck = false;
     public boolean pw = true;
     public boolean isMapLeft=false;
+    public boolean dropClick = false;
 
     public boolean placementDialogOpen = false;
 
@@ -457,8 +458,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if (fragment != null)
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        popup.dismiss();
-        popup_fail_success.dismiss();
+        dismissPopups();
         tele = true;
 
         btn_undo.setEnabled(false);
@@ -533,8 +533,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             TimerUtil.mActivityView.setText("STORM");
             btn_startTimer.setText("START TIMER");
             overallLayout.removeView(iv_game_element);
-            popup.dismiss();
-            popup_fail_success.dismiss();
+            dismissPopups();
             startTimer = true;
             timerCheck = false;
             preload();
@@ -578,6 +577,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             x = 150;
             y = 650;
         }
+        dropClick = true;
 
         initPopup(popup_drop_defense);
 
@@ -604,6 +604,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionList.add(TimerUtil.timestamp);
         actionDic.put(actionCount, actionList);
         actionCount++;
+        dropClick = false;
     }
 
     public void onClickDropNotDefended(View v) {
@@ -618,11 +619,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         actionList.add(TimerUtil.timestamp);
         actionDic.put(actionCount, actionList);
         actionCount++;
+
+        dropClick = false;
     }
 
     public void onClickCancelDrop(View v) {
         popup_drop_defense.dismiss();
-        pw = true;
+        if (!tb_defense.isChecked()){
+            pw = true;
+        }
+
+        dropClick = false;
     }
 
     public void recordDrop(Boolean dropWasDefended) {
@@ -770,8 +777,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_cyclesDefended.setVisibility(View.INVISIBLE);
 
                 } else if (actionDic.get(actionCount).get(3).equals("undefense")){
-                    popup_fail_success.dismiss();
-                    popup.dismiss();
+                    dismissPopups();
                     pw = true;
                     btn_climb.setEnabled(false);
                     tb_defense.setChecked(true);
@@ -827,8 +833,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickClimb(View v) {
         time = TimerUtil.timestamp;
-        popup.dismiss();
-        popup_fail_success.dismiss();
+        dismissPopups();
         pw = true;
 
         final Float climbStartTime=TimerUtil.timestamp;
@@ -1070,8 +1075,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_undo.setEnabled(true);
 
         if (tb_incap.isChecked()) {
-            popup_fail_success.dismiss();
-            popup.dismiss();
+            dismissPopups();
 
             btn_climb.setEnabled(false);
             btn_drop.setEnabled(false);
@@ -1157,8 +1161,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_climb = (Button) findViewById(R.id.btn_climb);
         btn_undo.setEnabled(true);
         if (tb_defense.isChecked()){
-            popup_fail_success.dismiss();
-            popup.dismiss();
+            dismissPopups();
             pw = true;
             btn_climb.setEnabled(false);
 
@@ -1569,7 +1572,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         zone = "";
 
         time = TimerUtil.timestamp;
-        popup.dismiss();
+        dismissPopups();
         element = givenElement;
 
         if(((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
@@ -1901,7 +1904,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 }
                 pw = false;
-            } else if (((!tele) && (!tb_defense.isChecked()) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+            }
+            else if (tb_defense.isChecked() && dropClick){
+                Log.e("yes" , "defense");
+                if (mTabletType.equals("fire")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
+                } else {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                }
+                pw = false;
+            }  else if (((!tele) && (!tb_defense.isChecked()) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 130)) && mTabletType.equals("fire")))) || (tele && !tb_defense.isChecked())) {
                 Log.e("yes" , "storm");
@@ -1922,6 +1934,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void dismissPopups() {
         popup.dismiss();
         popup_fail_success.dismiss();
+        popup_drop_defense.dismiss();
     }
 
     public void recordClimb(float time) {
