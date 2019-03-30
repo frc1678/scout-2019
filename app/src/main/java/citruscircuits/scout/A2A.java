@@ -69,7 +69,7 @@ public class A2A extends DialogMaker {
         et_matchNum.setText(valueOf(InputManager.mMatchNum));
         et_teamNum.setText(valueOf(InputManager.mTeamNum));
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, Cst.SCOUT_NAMES);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, Cst.SCOUT_NAMES);
         name_spinner = (Spinner) findViewById(R.id.spinner_name);
 
         name_spinner.setAdapter(spinnerAdapter);
@@ -78,6 +78,7 @@ public class A2A extends DialogMaker {
         name_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
                 InputManager.mScoutName = name_spinner.getSelectedItem().toString();
+                AppCc.setSp("scoutName", InputManager.mScoutName);
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 //Do nothing, but necessary for spinner
