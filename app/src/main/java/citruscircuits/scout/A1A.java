@@ -887,8 +887,27 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             public void onClick(View view) {
                 if(spaceOneI.getText().toString().equals(" ") || spaceTwoI.getText().toString().equals(" ") || spaceThreeI.getText().toString().equals(" ") || spaceOneII.getText().toString().equals(" ") || spaceTwoII.getText().toString().equals(" ") || spaceThreeII.getText().toString().equals(" ")
                         || (spaceOneI.getText().toString().equals("None") && spaceTwoI.getText().toString().equals("None") && spaceThreeI.getText().toString().equals("None") && spaceOneII.getText().toString().equals("None") && spaceTwoII.getText().toString().equals("None") && spaceThreeII.getText().toString().equals("None"))){
-                    Toast.makeText(getBaseContext(), "Make Sure You Filled Out All Of The Information!",
-                            Toast.LENGTH_SHORT).show();
+                    if (climbInputted) {
+                        climbInputted = false;
+
+                        //Remove previous climb input if scout inputs all "None"
+                        for (int i = 0; i < mRealTimeMatchData.length(); i++){
+                            try {
+                                String matchDataIndexString = mRealTimeMatchData.getString(i);
+                                if (matchDataIndexString.contains("climb")) {
+                                    mRealTimeMatchData.remove(i);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        climbDialog.dismiss();
+                    }
+                    else {
+                        Toast.makeText(getBaseContext(), "Make Sure You Filled Out All Of The Information!",
+                                Toast.LENGTH_SHORT).show();
+                    }
 
                 }else{
                     dataListSendAttempt(spaceOneI.getText().toString(), spaceOneI, 0);
