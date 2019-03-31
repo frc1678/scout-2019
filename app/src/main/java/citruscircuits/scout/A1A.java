@@ -538,6 +538,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             dismissPopups();
             startTimer = true;
             timerCheck = false;
+            isPopupOpen = false;
             preload();
             InputManager.numFoul=0;
             actionCount=0;
