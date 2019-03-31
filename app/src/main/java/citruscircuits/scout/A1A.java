@@ -1849,22 +1849,22 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (((field_orientation.contains("left") && x >= 720) || (field_orientation.contains("right") && x <= 130)) && mTabletType.equals("fire")))){
                 Log.e("yes" , "defense");
                 if (mTabletType.equals("fire")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 100, y - 100);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
                 } else if (mTabletType.equals("green")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 } else if (mTabletType.equals("black")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 200);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 230, y - 150);
                 }
                 pw = false;
             }
             else if (tb_defense.isChecked() && dropClick){
                 Log.e("yes" , "defense");
                 if (mTabletType.equals("fire")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 100, y - 100);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
                 } else if (mTabletType.equals("green")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 } else if (mTabletType.equals("black")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 200);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 230, y - 150);
                 }
                 pw = false;
             }
@@ -1873,11 +1873,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 130)) && mTabletType.equals("fire")))) || (tele && !tb_defense.isChecked())) {
                 Log.e("yes" , "storm");
                 if (mTabletType.equals("fire")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 100, y - 100);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
                 } else if (mTabletType.equals("green")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
                 } else if (mTabletType.equals("black")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 200);
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 230, y - 150);
                 }
                 pw = false;
             } else {
