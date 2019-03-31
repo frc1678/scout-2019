@@ -88,8 +88,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public boolean pw = true;
     public boolean isMapLeft=false;
     public boolean dropClick = false;
-
     public boolean placementDialogOpen = false;
+    public boolean isPopupOpen = false;
 
     public boolean didSucceed;
     public boolean wasDefended;
@@ -458,6 +458,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         dismissPopups();
+        //Allows scout to touch screen if a popup used to be open
+        if(isPopupOpen && !tb_incap.isChecked()){
+            pw = true;
+        }
         tele = true;
 
         btn_undo.setEnabled(false);
@@ -534,6 +538,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             dismissPopups();
             startTimer = true;
             timerCheck = false;
+            isPopupOpen = false;
             preload();
             InputManager.numFoul=0;
             actionCount=0;
@@ -1892,6 +1897,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void initPopup(PopupWindow pw2) {
         if (timerCheck) {
+            isPopupOpen = true;
             if (tb_defense.isChecked() && pw && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x >= 720) || (field_orientation.contains("right") && x <= 130)) && mTabletType.equals("fire")))){
