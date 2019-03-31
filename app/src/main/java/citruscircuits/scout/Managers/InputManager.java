@@ -256,6 +256,7 @@ public class InputManager {
         if (mSPRRanking <= 6) {
             groupNumber = 1;
             initialSPR = 1;
+            //Change below if fewer than 6 scouts are scouting
             groupSize = 6;
         }
         else if (mSPRRanking < groupIIIInitialSPR) {
