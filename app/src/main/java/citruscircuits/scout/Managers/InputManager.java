@@ -34,6 +34,7 @@ public class InputManager {
     public static Integer groupNumber;
     public static Integer position;
     public static Integer initialSPR;
+    public static Integer groupSize;
 
     public static int numFoul;
     public static int cyclesDefended;
@@ -241,10 +242,10 @@ public class InputManager {
         //Set groupIIIInitialSPR based on the number of scouts (odd or even)
         //in order to properly distribute robots between groups of scouts.
         if (numScouts % 2 == 0) {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 7;
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 7;
         }
         else {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 6;
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 6;
         }
 
         Log.e("numScouts", String.valueOf(numScouts));
@@ -253,16 +254,20 @@ public class InputManager {
         //Groups are used to evenly distribute robots to scouts for most accurate data.
         //Assign initial SPR as the first SPR Rank in the scout group.
         if (mSPRRanking <= 6) {
-            groupNumber = 0;
+            groupNumber = 1;
             initialSPR = 1;
+            //Change below if fewer than 6 scouts are scouting
+            groupSize = 6;
         }
         else if (mSPRRanking < groupIIIInitialSPR) {
-            groupNumber = 1;
+            groupNumber = 2;
             initialSPR = 7;
+            groupSize = (int) Math.floor((numScouts - 6) / 2.);
         }
         else {
-            groupNumber = 2;
+            groupNumber = 3;
             initialSPR = groupIIIInitialSPR;
+            groupSize = numScouts - ((int) Math.floor((numScouts - 6) / 2.) + 6);
         }
 
         AppCc.setSp("groupNumber", groupNumber);
@@ -332,7 +337,7 @@ public class InputManager {
         //Algorithm to assign scouts to position of robot (robot 1 - 6)
         //depending on SPR Ranking and Match Number.
         //Used to distribute scouts so they do not scout with the same scouts as frequently.
-        position = (mMatchNum * (AppCc.getSp("groupNumber", 0) + 1) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % 6 + 1;
+        position = ((mMatchNum - 1) * (AppCc.getSp("groupNumber", 0)) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % groupSize + 1;
 
         Log.i("POSITION", position + "");
 
