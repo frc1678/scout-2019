@@ -569,8 +569,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         //Sets an exact location for drop to occur
 
         if (mTabletType.equals("black")){
-            x = 280;
-            y = 540;
+            x = 230;
+            y = 600;
         }
         else if (mTabletType.equals("green")){
             x = 280;
@@ -1849,9 +1849,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (((field_orientation.contains("left") && x >= 720) || (field_orientation.contains("right") && x <= 130)) && mTabletType.equals("fire")))){
                 Log.e("yes" , "defense");
                 if (mTabletType.equals("fire")) {
-                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 100, y - 100);
-                } else {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
+                } else if (mTabletType.equals("green")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                } else if (mTabletType.equals("black")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 230, y - 150);
                 }
                 pw = false;
             }
@@ -1859,18 +1861,23 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 Log.e("yes" , "defense");
                 if (mTabletType.equals("fire")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
-                } else {
+                } else if (mTabletType.equals("green")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                } else if (mTabletType.equals("black")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 230, y - 150);
                 }
                 pw = false;
-            }  else if (((!tele) && (!tb_defense.isChecked()) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
+            }
+            else if (((!tele) && (!tb_defense.isChecked()) && ((((field_orientation.contains("left") && x <= 1445) || (field_orientation.contains("right") && x >= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x <= 960) || (field_orientation.contains("right") && x >= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x <= 720) || (field_orientation.contains("right") && x >= 130)) && mTabletType.equals("fire")))) || (tele && !tb_defense.isChecked())) {
                 Log.e("yes" , "storm");
                 if (mTabletType.equals("fire")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 150, y - 100);
-                } else {
+                } else if (mTabletType.equals("green")) {
                     pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 350, y - 100);
+                } else if (mTabletType.equals("black")) {
+                    pw2.showAtLocation(overallLayout, Gravity.NO_GRAVITY, x - 230, y - 150);
                 }
                 pw = false;
             } else {
