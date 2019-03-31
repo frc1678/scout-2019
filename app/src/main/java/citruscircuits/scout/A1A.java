@@ -599,14 +599,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         recordDrop(true);
 
         //Make drop able to be undone by putting it in actionList.
-        actionList = new ArrayList<Object>();
-        actionList.add(x);
-        actionList.add(y);
-        actionList.add(mode);
-        actionList.add("drop");
-        actionList.add(TimerUtil.timestamp);
-        actionDic.put(actionCount, actionList);
-        actionCount++;
+        undoDicAdder(x,y,"drop");
         dropClick = false;
     }
 
@@ -614,14 +607,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         recordDrop(false);
 
         //Make drop able to be undone by putting it in actionList.
-        actionList = new ArrayList<Object>();
-        actionList.add(x);
-        actionList.add(y);
-        actionList.add(mode);
-        actionList.add("drop");
-        actionList.add(TimerUtil.timestamp);
-        actionDic.put(actionCount, actionList);
-        actionCount++;
+        undoDicAdder(x,y,"drop");
 
         dropClick = false;
     }
@@ -642,8 +628,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
 
         btn_drop.setEnabled(false);
-        btn_undo.setEnabled(true);
-        didUndoOnce=false;
 
         popup_drop_defense.dismiss();
 
@@ -792,7 +776,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionDic.remove(actionCount);
                 Log.e("wokDic2?!!", String.valueOf(actionDic));
                 mapChange();
-            }else if (actionCount==0){
+            }
+            else if (actionCount==0){
                 Log.e("dic2?!", mRealTimeMatchData.toString());
                 Log.e("actionDic1?!", actionDic.toString());
                 actionDic.remove(actionCount);
@@ -1075,7 +1060,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void onClickIncap(View v) {
-        btn_undo.setEnabled(true);
 
         if (tb_incap.isChecked()) {
             dismissPopups();
@@ -1102,32 +1086,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             mRealTimeMatchData.put(compressionDic);
 
-            actionList = new ArrayList<Object>();
-            actionList.add("NA");
-            actionList.add("NA");
-            actionList.add(mode);
-            actionList.add("incap");
-            actionList.add(TimerUtil.timestamp);
-            actionDic.put(actionCount, actionList);
-            actionCount++;
+            undoDicAdder("NA", "NA", "incap");
 
-            didUndoOnce = false;
         }
 
         else if (!tb_incap.isChecked()) {
-            actionList = new ArrayList<Object>();
-            actionList.add("NA");
-            actionList.add("NA");
-            actionList.add(mode);
-            actionList.add("unincap");
-            actionList.add(TimerUtil.timestamp);
-            actionDic.put(actionCount, actionList);
-            actionCount++;
-
-            didUndoOnce = false;
+            undoDicAdder("NA","NA","unincap");
             pw = true;
 
-            btn_undo.setEnabled(true);
             btn_foul.setEnabled(true);
 
             if(!tele) {
@@ -1162,7 +1128,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDefense (View v) {
         btn_climb = (Button) findViewById(R.id.btn_climb);
-        btn_undo.setEnabled(true);
         if (tb_defense.isChecked()){
             dismissPopups();
             pw = true;
@@ -1186,15 +1151,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mRealTimeMatchData.put(compressionDic);
 
             mapChange();
-            actionList = new ArrayList<Object>();
-            actionList.add("NA");
-            actionList.add("NA");
-            actionList.add(mode);
-            actionList.add("defense");
-            actionList.add(TimerUtil.timestamp);
-            actionDic.put(actionCount, actionList);
-            actionCount++;
-            didUndoOnce = false;
+            undoDicAdder("NA","NA","defense");
         }
         else if(!tb_defense.isChecked()){
             btn_climb.setEnabled(true);
@@ -1218,15 +1175,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mRealTimeMatchData.put(compressionDic);
 
             mapChange();
-            actionList = new ArrayList<Object>();
-            actionList.add("NA");
-            actionList.add("NA");
-            actionList.add(mode);
-            actionList.add("undefense");
-            actionList.add(TimerUtil.timestamp);
-            actionDic.put(actionCount, actionList);
-            actionCount++;
-            didUndoOnce = false;
+            undoDicAdder("NA","NA","undefense");
         }
     }
 
@@ -1507,30 +1456,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if(element.equals("orange")) {
             Log.e("wokorange", "showup");
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-                actionList = new ArrayList<Object>();
-                actionList.add(x);
-                actionList.add(y);
-                actionList.add(mode);
-                actionList.add("orange");
-                actionList.add(TimerUtil.timestamp);
-                actionDic.put(actionCount, actionList);
-                actionCount++;
-                btn_undo.setEnabled(true);
-                didUndoOnce=false;
+            undoDicAdder(x,y,"orange");
 
         } else if(element.equals("lemon")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
                 Log.e("woklemon", "showupppppp");
-                actionList = new ArrayList<Object>();
-                actionList.add(x);
-                actionList.add(y);
-                actionList.add(mode);
-                actionList.add("lemon");
-                actionList.add(TimerUtil.timestamp);
-                actionDic.put(actionCount, actionList);
-                actionCount++;
-                btn_undo.setEnabled(true);
-                didUndoOnce=false;
+                undoDicAdder(x,y,"lemon");
 
         }
         Log.e("ahhhh1",String.valueOf(actionDic));
@@ -1854,6 +1785,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
+                if (element.equals("orange")) {
+                    Log.e("wokorange", "showup");
+                    undoDicAdder(x,y,"orange");
+                } else if(element.equals("lemon")) {
+                    Log.e("woklemon", "showupppppp");
+                    undoDicAdder(x, y, "lemon");
+                }
             }
             placementDialogOpen = false;
             placementDialog.dismiss();
@@ -1886,6 +1824,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
+                if (element.equals("orange")) {
+                    Log.e("wokorange", "showup");
+                    undoDicAdder(x,y,"orange");
+
+                } else if(element.equals("lemon")) {
+                    Log.e("woklemon", "showupppppp");
+                    undoDicAdder(x, y, "lemon");
+                }
             }
             placementDialogOpen = false;
             placementDialog.dismiss();
@@ -1939,6 +1885,20 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         popup.dismiss();
         popup_fail_success.dismiss();
         popup_drop_defense.dismiss();
+    }
+
+//Method to add action to a dictionary
+    public void undoDicAdder(Object xCoordinate, Object yCoordinate, String type){
+        actionList = new ArrayList<Object>();
+        actionList.add(xCoordinate);
+        actionList.add(yCoordinate);
+        actionList.add(mode);
+        actionList.add(type);
+        actionList.add(TimerUtil.timestamp);
+        actionDic.put(actionCount, actionList);
+        actionCount++;
+        didUndoOnce = false;
+        btn_undo.setEnabled(true);
     }
 
     public void recordClimb(float time) {
