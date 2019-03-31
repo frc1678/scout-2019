@@ -569,8 +569,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         //Sets an exact location for drop to occur
 
         if (mTabletType.equals("black")){
-            x = 280;
-            y = 540;
+            x = 230;
+            y = 600;
         }
         else if (mTabletType.equals("green")){
             x = 280;
