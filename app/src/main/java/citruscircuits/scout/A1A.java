@@ -582,33 +582,30 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         dropClick = true;
 
-        initPopup(popup_drop_defense);
+        if (tele) {
+            initPopup(popup_drop_defense);
 
-        final Button defendedButton= (Button) layoutInflater.inflate(R.layout.pw_drop, null).findViewById(R.id.dropDefended);
+            final Button defendedButton= (Button) layoutInflater.inflate(R.layout.pw_drop, null).findViewById(R.id.dropDefended);
 
-        if (element.equals("lemon")){
-            defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
+            if (element.equals("lemon")){
+                defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
+            }
+            else {
+                defendedButton.setBackgroundColor(Color.parseColor("#ffab4c"));
+            }
         }
-        else {
-            defendedButton.setBackgroundColor(Color.parseColor("#ffab4c"));
+        else if (!tele) {
+            recordDrop(false);
         }
-
     }
 
     public void onClickDropDefended(View v) {
         recordDrop(true);
-
-        //Make drop able to be undone by putting it in actionList.
-        undoDicAdder(x,y,"drop");
         dropClick = false;
     }
 
     public void onClickDropNotDefended(View v) {
         recordDrop(false);
-
-        //Make drop able to be undone by putting it in actionList.
-        undoDicAdder(x,y,"drop");
-
         dropClick = false;
     }
 
@@ -639,6 +636,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         overallLayout.removeView(iv_game_element);
 
         mapChange();
+
+        undoDicAdder(x,y,"drop");
+
 
         //Record drop action in mRealTimeMatchData to be compressed.
         compressionDic = new JSONObject();
