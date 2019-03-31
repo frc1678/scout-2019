@@ -582,17 +582,21 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         dropClick = true;
 
-        initPopup(popup_drop_defense);
+        if (tele) {
+            initPopup(popup_drop_defense);
 
-        final Button defendedButton= (Button) layoutInflater.inflate(R.layout.pw_drop, null).findViewById(R.id.dropDefended);
+            final Button defendedButton= (Button) layoutInflater.inflate(R.layout.pw_drop, null).findViewById(R.id.dropDefended);
 
-        if (element.equals("lemon")){
-            defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
+            if (element.equals("lemon")){
+                defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
+            }
+            else {
+                defendedButton.setBackgroundColor(Color.parseColor("#ffab4c"));
+            }
         }
-        else {
-            defendedButton.setBackgroundColor(Color.parseColor("#ffab4c"));
+        else if (!tele) {
+            recordDrop(false);
         }
-
     }
 
     public void onClickDropDefended(View v) {
