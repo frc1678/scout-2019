@@ -241,10 +241,10 @@ public class InputManager {
         //Set groupIIIInitialSPR based on the number of scouts (odd or even)
         //in order to properly distribute robots between groups of scouts.
         if (numScouts % 2 == 0) {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 7;
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 7;
         }
         else {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 6;
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 6;
         }
 
         Log.e("numScouts", String.valueOf(numScouts));
@@ -256,7 +256,7 @@ public class InputManager {
             groupNumber = 0;
             initialSPR = 1;
         }
-        else if (mSPRRanking < groupIIIInitialSPR && mSPRRanking > 6) {
+        else if (mSPRRanking < groupIIIInitialSPR) {
             groupNumber = 1;
             initialSPR = 7;
         }
