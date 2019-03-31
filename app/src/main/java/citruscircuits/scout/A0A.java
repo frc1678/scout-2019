@@ -604,10 +604,11 @@ public class A0A extends DialogMaker {
     }
 
     public void onClickStartScouting(View view) {
+        Log.i("Scout", InputManager.mAssignmentMode);
         if (InputManager.mTabletType.equals("") || InputManager.mScoutName.equals("unselected") || InputManager.mTabletType.equals("unselected") || InputManager.mMatchNum == 0 || InputManager.mTeamNum == 0 || InputManager.mScoutId == 0) {
             Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
         }
-        else if (InputManager.mMatchNum > InputManager.finalMatchNum ||InputManager.mAssignmentMode.equals("override")) {
+        else if (InputManager.mMatchNum > InputManager.finalMatchNum && !InputManager.mAssignmentMode.equals("override")) {
             //Doesn't let a Scout scout if they have a match number that doesn't exist
             Toast.makeText(getBaseContext(), "Please Input a Valid Match Number", Toast.LENGTH_SHORT).show();
         }

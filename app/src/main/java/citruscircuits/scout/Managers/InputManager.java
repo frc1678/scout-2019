@@ -241,10 +241,10 @@ public class InputManager {
         //Set groupIIIInitialSPR based on the number of scouts (odd or even)
         //in order to properly distribute robots between groups of scouts.
         if (numScouts % 2 == 0) {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 7;
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 7;
         }
         else {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2) + 6;
+            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 6;
         }
 
         Log.e("numScouts", String.valueOf(numScouts));
@@ -256,7 +256,7 @@ public class InputManager {
             groupNumber = 0;
             initialSPR = 1;
         }
-        else if (mSPRRanking < groupIIIInitialSPR) {
+        else if (mSPRRanking < groupIIIInitialSPR && mSPRRanking > 6) {
             groupNumber = 1;
             initialSPR = 7;
         }
@@ -332,6 +332,10 @@ public class InputManager {
         //Algorithm to assign scouts to position of robot (robot 1 - 6)
         //depending on SPR Ranking and Match Number.
         //Used to distribute scouts so they do not scout with the same scouts as frequently.
+        Log.i("group3", String.valueOf(groupIIIInitialSPR));
+        Log.i("groupnum", String.valueOf(AppCc.getSp("groupNumber", 0)));
+        Log.i("initialSPR",String.valueOf(AppCc.getSp("initialSPR", 0)));
+        Log.i("SPRTotal",String.valueOf(AppCc.getSp("sprRanking", 0)));
         position = (mMatchNum * (AppCc.getSp("groupNumber", 0) + 1) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % 6 + 1;
 
         Log.i("POSITION", position + "");

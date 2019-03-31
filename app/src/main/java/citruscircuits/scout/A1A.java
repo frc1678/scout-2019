@@ -1780,13 +1780,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
-                if(element.equals("orange")) {
+                if (element.equals("orange")) {
                     Log.e("wokorange", "showup");
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
                     undoDicAdder(x,y,"orange");
-
                 } else if(element.equals("lemon")) {
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
                     Log.e("woklemon", "showupppppp");
                     undoDicAdder(x, y, "lemon");
                 }
@@ -1822,13 +1819,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
-                if(element.equals("orange")) {
+                if (element.equals("orange")) {
                     Log.e("wokorange", "showup");
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
                     undoDicAdder(x,y,"orange");
 
                 } else if(element.equals("lemon")) {
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
                     Log.e("woklemon", "showupppppp");
                     undoDicAdder(x, y, "lemon");
                 }
