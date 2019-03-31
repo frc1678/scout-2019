@@ -601,18 +601,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void onClickDropDefended(View v) {
         recordDrop(true);
-
-        //Make drop able to be undone by putting it in actionList.
-        undoDicAdder(x,y,"drop");
         dropClick = false;
     }
 
     public void onClickDropNotDefended(View v) {
         recordDrop(false);
-
-        //Make drop able to be undone by putting it in actionList.
-        undoDicAdder(x,y,"drop");
-
         dropClick = false;
     }
 
@@ -643,6 +636,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         overallLayout.removeView(iv_game_element);
 
         mapChange();
+
+        undoDicAdder(x,y,"drop");
+
 
         //Record drop action in mRealTimeMatchData to be compressed.
         compressionDic = new JSONObject();
