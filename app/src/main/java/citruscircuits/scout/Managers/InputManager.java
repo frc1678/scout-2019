@@ -68,7 +68,7 @@ public class InputManager {
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
 
-    public static String mAppVersion = "3.0";
+    public static String mAppVersion = "3.1";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
     public static String mDatabaseURL;
