@@ -228,9 +228,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
                         InputManager.mScoutName = name_spinner.getSelectedItem().toString();
                         AppCc.setSp("scoutName", InputManager.mScoutName);
 
-                        InputManager.mAssignmentMode = "QR";
-                        AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
-
                         //Update assigned robot based on scout name and newly scanned QR.
                         InputManager.getQRAssignment(resultStr);
 

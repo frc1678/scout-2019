@@ -94,7 +94,7 @@ public class DialogMaker extends AppTc {
                 @Override
                 public void onClick(View v) {
                     InputManager.mAssignmentMode = "override";
-                    AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
+                    AppCc.setSp("assignmentMode", "override");
                     A0A.btn_triggerBackupPopup.setText("Override");
                     OverrideDialog.this.cancel();
                 }

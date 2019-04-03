@@ -127,7 +127,7 @@ public class A0A extends DialogMaker {
             }
         }
 
-        AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
+        InputManager.mAssignmentMode = AppCc.getSp("assignmentMode", "");
 
 
         InputManager.getScoutNames();
