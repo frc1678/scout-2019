@@ -68,7 +68,7 @@ public class InputManager {
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
 
-    public static String mAppVersion = "3.0";
+    public static String mAppVersion = "3.1";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
     public static String mDatabaseURL;
@@ -132,8 +132,6 @@ public class InputManager {
             Integer sortL3pre = referenceDictionary.get(mScoutId);
             Log.e("matchnum?!",String.valueOf(sortL2key));
 
-            InputManager.mAssignmentMode = "backup";
-            AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
             String sortL3KeyFinal = String.valueOf((sortL3pre + mMatchNum) % 6 + 1);
 
             Log.e("sortL3KeyFinal",sortL3KeyFinal);
@@ -155,6 +153,9 @@ public class InputManager {
 
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
+
+                InputManager.mAssignmentMode = "backup";
+                AppCc.setSp("assignmentMode", InputManager.mAssignmentMode);
             }
             catch (JSONException e) {
                 e.printStackTrace();
@@ -376,6 +377,10 @@ public class InputManager {
 
                 AppCc.setSp("allianceColor", mAllianceColor);
                 AppCc.setSp("teamNum", mTeamNum);
+
+                //Set assignment mode as QR
+                InputManager.mAssignmentMode = "QR";
+                AppCc.setSp("assignmentMode", "QR");
             }
             catch (JSONException e) {
                 e.printStackTrace();
