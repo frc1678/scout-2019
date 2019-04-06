@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <gradient android:angle="-45"
-        android:startColor="@color/cycle_red_start"
-        android:endColor="@color/cycle_red_end"  />
+    <solid android:color="@color/cycle_red_end"  />
 
     <stroke
         android:width="3dp"
