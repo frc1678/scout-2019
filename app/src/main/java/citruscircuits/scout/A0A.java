@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,9 @@ public class A0A extends DialogMaker {
     public ListView lv_scoutNames, lv_scoutIds, lv_resendMatch;
     public ScoutNameListAdapter mScoutNameListAdapter;
     public ScoutIdListAdapter mScoutIdListAdapter;
+
+    public Spinner name_spinner;
+    public Spinner id_spinner;
 
     //user data UI
     public static EditText et_matchNum;
@@ -277,64 +281,37 @@ public class A0A extends DialogMaker {
             }
         });
 
-        //SCOUT NAME POPUP
-        btn_triggerScoutNamePopup = (Button) findViewById(R.id.btn_triggerScoutNamePopup);
-        LinearLayout nameLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_name, null);
-        if (InputManager.mTabletType.equals("fire")) {
-            pw_nameWindow = new PopupWindow(nameLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else if (InputManager.mTabletType.equals("black")) {
-            pw_nameWindow = new PopupWindow(nameLayout, 300, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else {
-            pw_nameWindow = new PopupWindow(nameLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        pw_nameWindow.setBackgroundDrawable(new ColorDrawable());
+        //SCOUT NAME SPINNER
+        ArrayAdapter<String> spinnerNameAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, Cst.SCOUT_NAMES);
+        name_spinner = (Spinner) findViewById(R.id.spinner_Name);
 
-        lv_scoutNames = nameLayout.findViewById(R.id.lv_scoutNames);
-        mScoutNameListAdapter = new ScoutNameListAdapter();
-        lv_scoutNames.setAdapter(mScoutNameListAdapter);
+        name_spinner.setAdapter(spinnerNameAdapter);
+        name_spinner.setSelection(((ArrayAdapter<String>)name_spinner.getAdapter()).getPosition(InputManager.mScoutName));
 
-        btn_triggerScoutNamePopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (InputManager.mTabletType.equals("fire")) {
-                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
-                }
-                else if (InputManager.mTabletType.equals("black")) {
-                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
-                }
-                else {
-                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,200, 0);
-                }
-                mScoutNameListAdapter.notifyDataSetChanged();
+        name_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
+                InputManager.mScoutName = name_spinner.getSelectedItem().toString();
+                AppCc.setSp("scoutName", InputManager.mScoutName);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing, but necessary for spinner
             }
         });
 
-        //SCOUT ID POPUP
-        btn_triggerScoutIDPopup = (Button) findViewById(R.id.btn_triggerScoutIDPopup);
-        LinearLayout idLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_ids, null);
-        if (InputManager.mTabletType.equals("fire")) {
-            pw_idWindow = new PopupWindow(idLayout, 10, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else if (InputManager.mTabletType.equals("black")) {
-            pw_idWindow = new PopupWindow(idLayout, 10, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else {
-            pw_idWindow = new PopupWindow(idLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        pw_idWindow.setBackgroundDrawable(new ColorDrawable());
+        //SCOUT ID SPINNER
+        ArrayAdapter<String> spinnerIDAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, Cst.SCOUT_IDS);
+        id_spinner = (Spinner) findViewById(R.id.spinner_ID);
 
-        lv_scoutIds = idLayout.findViewById(R.id.lv_scoutIds);
-        mScoutIdListAdapter = new ScoutIdListAdapter();
-        lv_scoutIds.setAdapter(mScoutIdListAdapter);
+        id_spinner.setAdapter(spinnerIDAdapter);
+        id_spinner.setSelection(((ArrayAdapter<Integer>)name_spinner.getAdapter()).getPosition(InputManager.mScoutId));
 
-        btn_triggerScoutIDPopup.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                pw_idWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
-                mScoutIdListAdapter.notifyDataSetChanged();
-                return true;
+        id_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
+                InputManager.mScoutId = (int) id_spinner.getSelectedItem();
+                AppCc.setSp("scoutId", InputManager.mScoutId);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing, but necessary for spinner
             }
         });
 
