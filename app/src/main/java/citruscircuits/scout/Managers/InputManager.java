@@ -268,6 +268,7 @@ public class InputManager {
 
         AppCc.setSp("groupNumber", groupNumber);
         AppCc.setSp("initialSPR", initialSPR);
+        AppCc.setSp("groupSize", groupSize);
 
         //Assign robot position.
         getQRData();
@@ -338,7 +339,7 @@ public class InputManager {
         Log.i("initialSPR",String.valueOf(AppCc.getSp("initialSPR", 0)));
         Log.i("SPRTotal",String.valueOf(AppCc.getSp("sprRanking", 0)));
 
-        position = (mMatchNum * (AppCc.getSp("groupNumber", 0)) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % groupSize + 1;
+        position = (mMatchNum * (AppCc.getSp("groupNumber", 0)) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % AppCc.getSp("groupSize", 1) + 1;
 
         Log.i("POSITION", position + "");
 

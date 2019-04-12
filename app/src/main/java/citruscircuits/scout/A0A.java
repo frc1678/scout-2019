@@ -127,7 +127,9 @@ public class A0A extends DialogMaker {
             }
         }
 
+        //Set Assignment Mode and QR String from stored data.
         InputManager.mAssignmentMode = AppCc.getSp("assignmentMode", "");
+        InputManager.mQRString = AppCc.getSp("qrString", "");
 
 
         InputManager.getScoutNames();
