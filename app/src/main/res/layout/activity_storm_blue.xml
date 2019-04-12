@@ -93,6 +93,5 @@
         android:layout_marginBottom="15dp"
         android:enabled="false"
         android:onClick="onClickTeleop"
-
         android:background="@drawable/storm_blue_selector" />
 </RelativeLayout>
