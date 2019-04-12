@@ -28,7 +28,7 @@ public class InputManager {
     public static String mScoutLetter;
     public static int mSPRRanking;
 
-    public static Integer groupIIIInitialSPR;
+    public static Integer group3InitialSPR;
 
     public static Integer numScouts;
     public static Integer groupNumber;
@@ -68,7 +68,7 @@ public class InputManager {
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
 
-    public static String mAppVersion = "3.1";
+    public static String mAppVersion = "3.3";
     public static String mAssignmentMode = "";
     public static Integer mAssignmentFileTimestamp = 0;
     public static String mDatabaseURL;
@@ -231,7 +231,7 @@ public class InputManager {
 
         //Isolate QRString with scout letters and SPR Rankings.
         mQRStringFinal = resultText.substring(mQRString.indexOf("|") + 1, resultText.length());
-        numScouts = resultText.length() - (mQRString.indexOf("|") + 1);
+        numScouts = mQRStringFinal.length();
 
         Log.i("FINALQRSTRING", mQRStringFinal);
 
@@ -242,12 +242,7 @@ public class InputManager {
 
         //Set groupIIIInitialSPR based on the number of scouts (odd or even)
         //in order to properly distribute robots between groups of scouts.
-        if (numScouts % 2 == 0) {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 7;
-        }
-        else {
-            groupIIIInitialSPR = (int) Math.ceil((numScouts - 6) / 2.) + 6;
-        }
+        group3InitialSPR = (int) Math.floor((numScouts - 6) / 2.) + 7;
 
         Log.e("numScouts", String.valueOf(numScouts));
 
@@ -260,15 +255,15 @@ public class InputManager {
             //Change below if fewer than 6 scouts are scouting
             groupSize = 6;
         }
-        else if (mSPRRanking < groupIIIInitialSPR) {
+        else if (mSPRRanking < group3InitialSPR) {
             groupNumber = 2;
             initialSPR = 7;
-            groupSize = (int) Math.floor((numScouts - 6) / 2.);
+            groupSize = group3InitialSPR - 7;
         }
         else {
             groupNumber = 3;
-            initialSPR = groupIIIInitialSPR;
-            groupSize = numScouts - ((int) Math.floor((numScouts - 6) / 2.) + 6);
+            initialSPR = group3InitialSPR;
+            groupSize = numScouts - (group3InitialSPR - 1);
         }
 
         AppCc.setSp("groupNumber", groupNumber);
@@ -338,12 +333,12 @@ public class InputManager {
         //Algorithm to assign scouts to position of robot (robot 1 - 6)
         //depending on SPR Ranking and Match Number.
         //Used to distribute scouts so they do not scout with the same scouts as frequently.
-        Log.i("group3", String.valueOf(groupIIIInitialSPR));
+        Log.i("group3", String.valueOf(group3InitialSPR));
         Log.i("groupnum", String.valueOf(AppCc.getSp("groupNumber", 0)));
         Log.i("initialSPR",String.valueOf(AppCc.getSp("initialSPR", 0)));
         Log.i("SPRTotal",String.valueOf(AppCc.getSp("sprRanking", 0)));
 
-        position = ((mMatchNum - 1) * (AppCc.getSp("groupNumber", 0)) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % groupSize + 1;
+        position = (mMatchNum * (AppCc.getSp("groupNumber", 0)) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % groupSize + 1;
 
         Log.i("POSITION", position + "");
 
