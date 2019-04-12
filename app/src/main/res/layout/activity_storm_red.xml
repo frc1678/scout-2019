@@ -9,15 +9,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_to_teleop"
         android:layout_centerHorizontal="true">
-        <TextView
-            android:id="@+id/tv_storm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="25dp"
-            android:text="STORM"
-            android:textSize="20dp"
-            android:textAlignment="center"
-            android:textColor="#820000"/>
         <Button
             android:id="@+id/btn_timer"
             android:layout_width="130dp"
@@ -26,7 +17,6 @@
             android:text="START TIMER"
             android:textSize="20dp"
             android:layout_marginBottom="15dp"
-            android:layout_below="@+id/tv_storm"
             android:layout_centerHorizontal="true"
             android:background="@drawable/storm_red_selector"
             android:onClick="onClickStartTimer"/>
@@ -61,7 +51,8 @@
                 android:text="Cargo"
                 android:textAlignment="center"
                 android:textSize="25sp"
-                android:onClick="onClickPreloadCargo"/>
+                android:onClick="onClickPreloadCargo"
+                android:layout_marginBottom="15dp"/>
 
             <RadioButton
                 android:id="@+id/preloadPanel2"
@@ -73,7 +64,8 @@
                 android:text="Panel"
                 android:textAlignment="center"
                 android:textSize="25sp"
-                android:onClick="onClickPreloadLemon"/>
+                android:onClick="onClickPreloadLemon"
+                android:layout_marginBottom="15dp"/>
 
             <RadioButton
                 android:id="@+id/preloadNone2"
@@ -93,11 +85,12 @@
     <Button
         android:id="@+id/btn_to_teleop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:text="TELEOP"
         android:textSize="25dp"
         android:padding="10dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
         android:enabled="false"
         android:onClick="onClickTeleop"
         android:background="@drawable/storm_red_selector" />
