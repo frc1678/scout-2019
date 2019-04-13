@@ -29,7 +29,7 @@ public class OutputManager extends InputManager{
     }
 
     public static String compressMatchData(JSONObject pMatchData) {
-        fullQRDataProcess();
+        getScoutLetter();
 
         String compressedData = InputManager.matchKey + "|";
 
