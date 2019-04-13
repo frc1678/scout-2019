@@ -739,6 +739,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                     else if(tele){
                         tb_defense.setEnabled(true);
+                        tb_defense.bringToFront();
                         if(!tb_defense.isChecked()) {
                             btn_foul.setEnabled(true);
                             btn_climb.setEnabled(true);
@@ -772,6 +773,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     //Show Cycles Defended tracker in UI and keep previous Cycles Defended.
                     btn_cyclesDefended.setEnabled(true);
                     btn_cyclesDefended.setVisibility(View.VISIBLE);
+                    btn_cyclesDefended.bringToFront();
                 }
                 actionDic.remove(actionCount);
                 Log.e("wokDic2?!!", String.valueOf(actionDic));
@@ -1153,6 +1155,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             InputManager.cyclesDefended = 0;
             btn_cyclesDefended.setEnabled(true);
             btn_cyclesDefended.setVisibility(View.VISIBLE);
+            btn_cyclesDefended.bringToFront();
             btn_cyclesDefended.setText("FAILED PLACEMENTS/DROPS CAUSED - 0");
 
             compressionDic = new JSONObject();
