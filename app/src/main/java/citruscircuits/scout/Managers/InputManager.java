@@ -297,7 +297,7 @@ public class InputManager {
                     JSONObject qrData = new JSONObject(qrDataString);
                     mScoutLetter = qrData.getJSONObject(ssort1L1key).getString(mScoutName);
 
-                    if (mQRString != null) {
+                    if (mQRStringFinal != null) {
 
                         if (mQRStringFinal.contains(mScoutLetter)) {
                             mSPRRanking = mQRStringFinal.indexOf(mScoutLetter) + 1;
