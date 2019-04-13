@@ -101,7 +101,7 @@ public class InputManager {
 
     //Backup method for acquiring scout pre-match data from assignements.txt file
     public static void getBackupData() {
-        InputManager.mTeamNum = 0;
+        mTeamNum = 0;
 
         if (mMatchNum > 0) {
             final HashMap<Integer, Integer> referenceDictionary = new HashMap<>();
@@ -191,7 +191,7 @@ public class InputManager {
 
     //Assign robots to scouts based on SPR Ranking from scanned QR.
     public static void getQRAssignment(String resultText) {
-        InputManager.mTeamNum = 0;
+        mTeamNum = 0;
 
         mQRString = resultText;
         Log.e("StringValue", mQRString);
@@ -330,7 +330,7 @@ public class InputManager {
             AppCc.setSp("teamNum", mTeamNum);
 
             //Set assignment mode
-            InputManager.mAssignmentMode = assignmentType;
+            mAssignmentMode = assignmentType;
             AppCc.setSp("assignmentMode", assignmentType);
         } catch (JSONException e) {
             e.printStackTrace();
