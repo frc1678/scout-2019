@@ -287,13 +287,7 @@ public class InputManager {
 
         if (mMatchNum > 0 && mCycleNum >= 0) {
             mSPRRanking = 0;
-
-            if (mQRStringFinal.contains(mScoutLetter)) {
-                mSPRRanking = mQRStringFinal.indexOf(mScoutLetter) + 1;
-            }
-            else if (!mPrevScoutLetter.equals("")) {
-                mSPRRanking = mQRStringFinal.indexOf(mScoutLetter) + 1;
-            }
+            mSPRRanking = mQRStringFinal.indexOf(mScoutLetter) + 1;
             AppCc.setSp("sprRanking", mSPRRanking);
         }
     }
