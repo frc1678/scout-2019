@@ -328,7 +328,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         overallLayout = findViewById(R.id.field);
 
         TimerUtil.mTimerView = findViewById(R.id.tv_timer);
-        TimerUtil.mActivityView = findViewById(R.id.tv_activity);
         preload();
         fragment = new StormDialog();
         fm = getSupportFragmentManager();
@@ -359,7 +358,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             TimerUtil.matchTimer = null;
             TimerUtil.timestamp = 0f;
             TimerUtil.mTimerView.setText("15");
-            TimerUtil.mActivityView.setText("STORM");
             startTimer = true;
         }
 
@@ -532,7 +530,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             TimerUtil.matchTimer = null;
             TimerUtil.timestamp = 0f;
             TimerUtil.mTimerView.setText("15");
-            TimerUtil.mActivityView.setText("STORM");
             btn_startTimer.setText("START TIMER");
             overallLayout.removeView(iv_game_element);
             dismissPopups();
