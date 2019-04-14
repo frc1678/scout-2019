@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button
+
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/btn_nameCell"
-    android:layout_width="200dp"
+    android:layout_width="175dp"
     android:layout_height="70dp"
-    android:background="@drawable/btn_popup_selector"
-    android:text="Noob"
-    android:textSize="@dimen/textSize_names"/>
+    android:background="#ffffff"
+    android:text="unselected"
+    android:gravity="center"
+    android:textSize="@dimen/textSize_names"
+    android:textColor="#000000"/>
