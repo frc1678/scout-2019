@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -69,7 +70,7 @@ public class A0A extends DialogMaker {
 
     public Button btn_mapOrientation;
 
-    public static ImageView imgv_cycleBackground;
+    public static ImageButton imgv_cycleBackground;
     public static ImageView QRImage;
 
     PopupWindow pw_backupWindow, pw_nameWindow, pw_idWindow, pw_resendMatchWindow;
@@ -281,7 +282,7 @@ public class A0A extends DialogMaker {
 
         //SCOUT NAME POPUP
         sp_triggerScoutNamePopup = (Spinner) findViewById(R.id.btn_triggerScoutNamePopup);
-        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, Cst.SCOUT_NAMES);
+        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.cell_scout_name, Cst.SCOUT_NAMES);
 
         sp_triggerScoutNamePopup.setAdapter(nameAdapter);
         sp_triggerScoutNamePopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutNamePopup.getAdapter()).getPosition(InputManager.mScoutName));
@@ -305,10 +306,20 @@ public class A0A extends DialogMaker {
 
         //SCOUT ID POPUP
         sp_triggerScoutIDPopup = (Spinner) findViewById(R.id.btn_triggerScoutIDPopup);
-        ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_layout, Cst.SCOUT_IDS);
+        ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.cell_scout_id, Cst.SCOUT_IDS);
+
+        sp_triggerScoutIDPopup.setEnabled(false);
 
         sp_triggerScoutIDPopup.setAdapter(idAdapter);
         sp_triggerScoutIDPopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutIDPopup.getAdapter()).getPosition(String.valueOf(InputManager.mScoutId)));
+
+        imgv_cycleBackground.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                sp_triggerScoutIDPopup.performClick();
+                return true;
+            }
+        });
 
         sp_triggerScoutIDPopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
@@ -316,6 +327,7 @@ public class A0A extends DialogMaker {
                 AppCc.setSp("scoutId", InputManager.mScoutId);
 
                 if (InputManager.mAssignmentMode.equals("backup")) {
+                    //Update assigned robot based on new scout ID.
                     InputManager.getBackupData();
                 }
 
