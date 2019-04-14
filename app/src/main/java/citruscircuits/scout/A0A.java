@@ -69,6 +69,7 @@ public class A0A extends DialogMaker {
     public static Button btn_triggerBackupPopup;
 
     public Button btn_mapOrientation;
+    public Boolean isNotFirst = false;
 
     public static ImageButton imgv_cycleBackground;
     public static ImageView QRImage;
@@ -285,7 +286,6 @@ public class A0A extends DialogMaker {
         ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.cell_scout_name, Cst.SCOUT_NAMES);
 
         sp_triggerScoutNamePopup.setAdapter(nameAdapter);
-        sp_triggerScoutNamePopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutNamePopup.getAdapter()).getPosition(InputManager.mScoutName));
 
         sp_triggerScoutNamePopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
@@ -311,11 +311,11 @@ public class A0A extends DialogMaker {
         sp_triggerScoutIDPopup.setEnabled(false);
 
         sp_triggerScoutIDPopup.setAdapter(idAdapter);
-        sp_triggerScoutIDPopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutIDPopup.getAdapter()).getPosition(String.valueOf(InputManager.mScoutId)));
 
         imgv_cycleBackground.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                isNotFirst = true;
                 sp_triggerScoutIDPopup.performClick();
                 return true;
             }
@@ -323,17 +323,19 @@ public class A0A extends DialogMaker {
 
         sp_triggerScoutIDPopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
-                InputManager.mScoutId = (int) sp_triggerScoutIDPopup.getSelectedItem();
-                AppCc.setSp("scoutId", InputManager.mScoutId);
+                if (isNotFirst) {
+                    InputManager.mScoutId = (int) sp_triggerScoutIDPopup.getSelectedItem();
+                    AppCc.setSp("scoutId", InputManager.mScoutId);
 
-                if (InputManager.mAssignmentMode.equals("backup")) {
-                    //Update assigned robot based on new scout ID.
-                    InputManager.getBackupData();
+                    if (InputManager.mAssignmentMode.equals("backup")) {
+                        //Update assigned robot based on new scout ID.
+                        InputManager.getBackupData();
+                    }
+
+                    updateUserData();
+
+                    initTabletTypeDialog(A0A.this);
                 }
-
-                updateUserData();
-
-                initTabletTypeDialog(A0A.this);
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 //Do nothing, but necessary for spinner
