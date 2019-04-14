@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,13 +75,12 @@ public class A0A extends DialogMaker {
     PopupWindow pw_backupWindow, pw_nameWindow, pw_idWindow, pw_resendMatchWindow;
 
     public ListView lv_scoutNames, lv_scoutIds, lv_resendMatch;
-    public ScoutNameListAdapter mScoutNameListAdapter;
-    public ScoutIdListAdapter mScoutIdListAdapter;
 
     //user data UI
     public static EditText et_matchNum;
     public static TextView tv_cycleNum, tv_teamNum, tv_versionNum, tv_assignmentFileTimestamp;
-    public static Button btn_triggerScoutNamePopup, btn_triggerScoutIDPopup, btn_triggerResendMatches;
+    public static Button btn_triggerResendMatches;
+    public static Spinner sp_triggerScoutNamePopup, sp_triggerScoutIDPopup;
 
     public ArrayAdapter<String> mResendMatchesArrayAdapter;
 
@@ -158,8 +158,8 @@ public class A0A extends DialogMaker {
         tv_teamNum.setText(String.valueOf(InputManager.mTeamNum));
         tv_versionNum.setText(String.valueOf("Version: " + InputManager.mAppVersion));
         tv_assignmentFileTimestamp.setText("File Timestamp: " + InputManager.mAssignmentFileTimestamp);
-        btn_triggerScoutNamePopup.setText(InputManager.mScoutName);
-        btn_triggerScoutIDPopup.setText(String.valueOf(InputManager.mScoutId));
+        sp_triggerScoutNamePopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutNamePopup.getAdapter()).getPosition(InputManager.mScoutName));
+        sp_triggerScoutIDPopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutIDPopup.getAdapter()).getPosition(String.valueOf(InputManager.mScoutId)));
     }
 
     public static void setCycleBackgroundColor(String color) {
@@ -280,63 +280,51 @@ public class A0A extends DialogMaker {
         });
 
         //SCOUT NAME POPUP
-        btn_triggerScoutNamePopup = (Button) findViewById(R.id.btn_triggerScoutNamePopup);
-        LinearLayout nameLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_name, null);
-        if (InputManager.mTabletType.equals("fire")) {
-            pw_nameWindow = new PopupWindow(nameLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else if (InputManager.mTabletType.equals("black")) {
-            pw_nameWindow = new PopupWindow(nameLayout, 300, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else {
-            pw_nameWindow = new PopupWindow(nameLayout, 400, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        pw_nameWindow.setBackgroundDrawable(new ColorDrawable());
+        sp_triggerScoutNamePopup = (Spinner) findViewById(R.id.btn_triggerScoutNamePopup);
+        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, Cst.SCOUT_NAMES);
 
-        lv_scoutNames = nameLayout.findViewById(R.id.lv_scoutNames);
-        mScoutNameListAdapter = new ScoutNameListAdapter();
-        lv_scoutNames.setAdapter(mScoutNameListAdapter);
+        sp_triggerScoutNamePopup.setAdapter(nameAdapter);
+        sp_triggerScoutNamePopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutNamePopup.getAdapter()).getPosition(InputManager.mScoutName));
 
-        btn_triggerScoutNamePopup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (InputManager.mTabletType.equals("fire")) {
-                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
+        sp_triggerScoutNamePopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
+                InputManager.mScoutName = sp_triggerScoutNamePopup.getSelectedItem().toString();
+                AppCc.setSp("scoutName", InputManager.mScoutName);
+
+                if (InputManager.mAssignmentMode.equals("QR")) {
+                    //Update assigned robot based on new scout name.
+                    InputManager.getQRAssignment(InputManager.mQRString);
                 }
-                else if (InputManager.mTabletType.equals("black")) {
-                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
-                }
-                else {
-                    pw_nameWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,200, 0);
-                }
-                mScoutNameListAdapter.notifyDataSetChanged();
+
+                updateUserData();
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing, but necessary for spinner
             }
         });
 
         //SCOUT ID POPUP
-        btn_triggerScoutIDPopup = (Button) findViewById(R.id.btn_triggerScoutIDPopup);
-        LinearLayout idLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_scout_ids, null);
-        if (InputManager.mTabletType.equals("fire")) {
-            pw_idWindow = new PopupWindow(idLayout, 10, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else if (InputManager.mTabletType.equals("black")) {
-            pw_idWindow = new PopupWindow(idLayout, 10, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        else {
-            pw_idWindow = new PopupWindow(idLayout, 200, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        }
-        pw_idWindow.setBackgroundDrawable(new ColorDrawable());
+        sp_triggerScoutIDPopup = (Spinner) findViewById(R.id.btn_triggerScoutIDPopup);
+        ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.spinner_layout, Cst.SCOUT_IDS);
 
-        lv_scoutIds = idLayout.findViewById(R.id.lv_scoutIds);
-        mScoutIdListAdapter = new ScoutIdListAdapter();
-        lv_scoutIds.setAdapter(mScoutIdListAdapter);
+        sp_triggerScoutIDPopup.setAdapter(idAdapter);
+        sp_triggerScoutIDPopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutIDPopup.getAdapter()).getPosition(String.valueOf(InputManager.mScoutId)));
 
-        btn_triggerScoutIDPopup.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                pw_idWindow.showAtLocation((RelativeLayout) findViewById(R.id.user_layout), Gravity.RIGHT,0, 0);
-                mScoutIdListAdapter.notifyDataSetChanged();
-                return true;
+        sp_triggerScoutIDPopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
+                InputManager.mScoutId = (int) sp_triggerScoutIDPopup.getSelectedItem();
+                AppCc.setSp("scoutId", InputManager.mScoutId);
+
+                if (InputManager.mAssignmentMode.equals("backup")) {
+                    InputManager.getBackupData();
+                }
+
+                updateUserData();
+
+                initTabletTypeDialog(A0A.this);
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing, but necessary for spinner
             }
         });
 
@@ -382,56 +370,6 @@ public class A0A extends DialogMaker {
     public void onClickOverrideBackup(View view) {
         initOverrideDialog(A0A.this);
         pw_backupWindow.dismiss();
-    }
-
-    public class ScoutNameListAdapter extends BaseAdapter {
-
-        public ScoutNameListAdapter() {
-            //Do nothing, required for populating list views.
-        }
-
-        @Override
-        public int getCount() {
-            return Cst.SCOUT_NAMES.size();
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return Cst.SCOUT_NAMES.get(position);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup viewGroup) {
-            convertView = mLayoutInflater.inflate(R.layout.cell_scout_name, null);
-
-            final String name = getItem(position).toString();
-
-            final Button nameButton = convertView.findViewById(R.id.btn_nameCell);
-            nameButton.setText(name);
-            nameButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    InputManager.mScoutName = name;
-                    AppCc.setSp("scoutName", name);
-
-                    if (InputManager.mAssignmentMode.equals("QR")) {
-                        //Update assigned robot based on new scout name.
-                        InputManager.getQRAssignment(InputManager.mQRString);
-                    }
-
-                    updateUserData();
-
-                    pw_nameWindow.dismiss();
-                }
-            });
-
-            return convertView;
-        }
     }
 
     public void updateListView() {
@@ -555,53 +493,6 @@ public class A0A extends DialogMaker {
         }
         catch (Exception er) {
             Log.e("QrGenerate",er.getMessage());
-        }
-    }
-
-    public class ScoutIdListAdapter extends BaseAdapter {
-
-        public ScoutIdListAdapter() {
-            //Do nothing, required for populating list views.
-        }
-
-        @Override
-        public int getCount() {
-            return Cst.SCOUT_IDS.size();
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return Cst.SCOUT_IDS.get(position);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup viewGroup) {
-            convertView = mLayoutInflater.inflate(R.layout.cell_scout_id, null);
-
-            final int id = (Integer) getItem(position);
-
-            final Button idButton = convertView.findViewById(R.id.btn_idCell);
-            idButton.setText(String.valueOf(id));
-            idButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    InputManager.mScoutId = id;
-                    AppCc.setSp("scoutId", id);
-
-                    updateUserData();
-
-                    initTabletTypeDialog(A0A.this);
-
-                    pw_idWindow.dismiss();
-                }
-            });
-
-            return convertView;
         }
     }
 
