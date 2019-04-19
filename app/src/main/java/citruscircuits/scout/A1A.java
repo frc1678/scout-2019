@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,13 +18,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,15 +43,13 @@ import java.util.Arrays;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
-import citruscircuits.scout.utils.CancelFragment;
 import citruscircuits.scout.utils.TimerUtil;
 
 import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static citruscircuits.scout.Managers.InputManager.mRealTimeMatchData;
-import static citruscircuits.scout.Managers.InputManager.mScoutId;
+
 import citruscircuits.scout.utils.StormDialog;
 import static citruscircuits.scout.utils.StormDialog.btn_startTimer;
-import static citruscircuits.scout.utils.StormDialog.preload2;
 import static citruscircuits.scout.utils.StormDialog.preloadCargo2;
 import static citruscircuits.scout.utils.StormDialog.preloadNone2;
 import static citruscircuits.scout.utils.StormDialog.preloadPanel2;
@@ -64,7 +57,6 @@ import static citruscircuits.scout.utils.StormDialog.tb_hab_run;
 
 import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static citruscircuits.scout.utils.StormDialog.teleButton;
-import static citruscircuits.scout.utils.StormDialog.view;
 import static java.lang.String.valueOf;
 
 //Written by the Daemon himself ~ Calvin
@@ -1425,9 +1417,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         if (tb_incap.isChecked()) {
             if (field_orientation.contains("right")) {
-                iv_field.setImageResource(R.drawable.gray_field_intake_right);
+                iv_field.setImageResource(R.drawable.gray_field_right);
             } else if (field_orientation.contains("left")) {
-                iv_field.setImageResource(R.drawable.gray_field_intake_left);
+                iv_field.setImageResource(R.drawable.gray_field_left);
             }
         } else if (tb_defense.isChecked()) {
             if (mode.equals("intake")) {
