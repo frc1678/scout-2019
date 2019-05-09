@@ -129,10 +129,11 @@ public class A0A extends DialogMaker {
             }
         }
 
-        //Set Assignment Mode, QR String, and Final Match Number from stored data.
+        //Set Assignment Mode, QR String, Scout ID, and Final Match Number from stored data.
         InputManager.mAssignmentMode = AppCc.getSp("assignmentMode", "");
         InputManager.mQRString = AppCc.getSp("qrString", "");
         InputManager.finalMatchNum = AppCc.getSp("finalMatchNum", 0);
+        InputManager.mScoutId = AppCc.getSp("scoutId", 0);
 
         InputManager.getScoutNames();
 
@@ -161,7 +162,7 @@ public class A0A extends DialogMaker {
         tv_versionNum.setText(String.valueOf("Version: " + InputManager.mAppVersion));
         tv_assignmentFileTimestamp.setText("File Timestamp: " + InputManager.mAssignmentFileTimestamp);
         sp_triggerScoutNamePopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutNamePopup.getAdapter()).getPosition(InputManager.mScoutName));
-        sp_triggerScoutIDPopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutIDPopup.getAdapter()).getPosition(String.valueOf(InputManager.mScoutId)));
+        sp_triggerScoutIDPopup.setSelection(((ArrayAdapter<Integer>)sp_triggerScoutIDPopup.getAdapter()).getPosition(InputManager.mScoutId));
     }
 
     public static void setCycleBackgroundColor(String color) {
