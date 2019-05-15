@@ -89,7 +89,7 @@ public class A0A extends DialogMaker {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_main);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -102,7 +102,7 @@ public class A0A extends DialogMaker {
 
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        tabletDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.dialog_tablet_type, null);
+        tabletDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.main_dialog_tablet_type, null);
 
         InputManager.mRealTimeMatchData = new JSONArray();
         InputManager.mOneTimeMatchData = new JSONObject();
@@ -263,13 +263,13 @@ public class A0A extends DialogMaker {
         //BACKUP POPUP
         btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
         if (InputManager.mTabletType.equals("fire")) {
-            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 200, 300, true);
+            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.main_popup_dropdown_backup, null), 200, 300, true);
         }
         else if (InputManager.mTabletType.equals("black")) {
-            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), ViewGroup.LayoutParams.MATCH_PARENT, 300, true);
+            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.main_popup_dropdown_backup, null), ViewGroup.LayoutParams.MATCH_PARENT, 300, true);
         }
         else {
-            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 400, 300, true);
+            pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.main_popup_dropdown_backup, null), 400, 300, true);
         }
         pw_backupWindow.setBackgroundDrawable(new ColorDrawable());
         btn_triggerBackupPopup.setOnClickListener(new View.OnClickListener() {
@@ -281,7 +281,7 @@ public class A0A extends DialogMaker {
 
         //SCOUT NAME POPUP
         sp_triggerScoutNamePopup = (Spinner) findViewById(R.id.btn_triggerScoutNamePopup);
-        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.cell_scout_name, Cst.SCOUT_NAMES);
+        ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.main_popup_header_name, Cst.SCOUT_NAMES);
 
         sp_triggerScoutNamePopup.setAdapter(nameAdapter);
 
@@ -304,7 +304,7 @@ public class A0A extends DialogMaker {
 
         //SCOUT ID POPUP
         sp_triggerScoutIDPopup = (Spinner) findViewById(R.id.btn_triggerScoutIDPopup);
-        ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.cell_scout_id, Cst.SCOUT_IDS);
+        ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.main_popup_header_id, Cst.SCOUT_IDS);
 
         sp_triggerScoutIDPopup.setEnabled(false);
 
@@ -342,7 +342,7 @@ public class A0A extends DialogMaker {
 
         //RESEND MATCHES POPUP
         btn_triggerResendMatches = (Button) findViewById(R.id.btn_accessData);
-        LinearLayout resendMatchesLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_resend, null);
+        LinearLayout resendMatchesLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.main_popup_dropdown_resend, null);
         if (InputManager.mTabletType.equals("fire")) {
             pw_resendMatchWindow = new PopupWindow(resendMatchesLayout, 100, ViewGroup.LayoutParams.MATCH_PARENT, true);
         } else if (InputManager.mTabletType.equals("black")) {

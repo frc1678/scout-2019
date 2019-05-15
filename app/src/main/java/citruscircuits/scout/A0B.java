@@ -56,7 +56,7 @@ public class A0B extends DialogMaker {
         if ( AppCc.getSp("mapOrientation", 99) != 0){
             Log.e("wok", "prer");
             if(mAllianceColor.equals("red")){
-                setContentView(R.layout.activity_pregame_r);
+                setContentView(R.layout.activity_pregame_right);
                 teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
                 teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
@@ -68,7 +68,7 @@ public class A0B extends DialogMaker {
                 layerTwoB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
                 layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
             } else if (mAllianceColor.equals("blue")){
-                setContentView(R.layout.activity_pregame_l);
+                setContentView(R.layout.activity_pregame_left);
                 teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
                 teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
@@ -84,7 +84,7 @@ public class A0B extends DialogMaker {
         }else if ( AppCc.getSp("mapOrientation", 99) == 0){
             Log.e("wok", "prel");
             if(mAllianceColor.equals("red")){
-                setContentView(R.layout.activity_pregame_l);
+                setContentView(R.layout.activity_pregame_left);
                 teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
                 teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
@@ -97,7 +97,7 @@ public class A0B extends DialogMaker {
                 layerTwoB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
                 layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
             } else if (mAllianceColor.equals("blue")){
-                setContentView(R.layout.activity_pregame_r);
+                setContentView(R.layout.activity_pregame_right);
                 teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
                 teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();

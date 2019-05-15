@@ -4,35 +4,17 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.PointF;
-import android.hardware.Camera;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
-import android.net.ParseException;
-
-import org.json.JSONObject;
 
 import citruscircuits.scout.A0A;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AppUtils;
-
-import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 
 //Written by the Daemon himself ~ Calvin
 public class DialogMaker extends AppTc {
@@ -64,7 +46,7 @@ public class DialogMaker extends AppTc {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.dialog_override);
+            setContentView(R.layout.main_dialog_override);
             this.setCanceledOnTouchOutside(false);
 
             btn_done = findViewById(R.id.btn_done);
@@ -126,7 +108,7 @@ public class DialogMaker extends AppTc {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.dialog_tablet_type);
+            setContentView(R.layout.main_dialog_tablet_type);
             this.setCanceledOnTouchOutside(false);
 
             btn_done = findViewById(R.id.btn_done);

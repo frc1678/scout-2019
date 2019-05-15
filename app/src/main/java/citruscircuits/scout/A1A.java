@@ -267,33 +267,33 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         layoutInflater = (LayoutInflater) A1A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         if(mTabletType.equals("green")) {
-            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 620, 450, false);
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_intake, null), 620, 450, false);
         } else if(mTabletType.equals("black")) {
-            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 410, 300, false);
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_intake, null), 410, 300, false);
         } else if(mTabletType.equals("fire")) {
-            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 310, 250, false);
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_intake, null), 310, 250, false);
         }
         popup.setOutsideTouchable(false);
         popup.setFocusable(false);
 
         if(mTabletType.equals("green")) {
-            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 620, 450, false);
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_fail_success_loading_station, null), 620, 450, false);
         } else if(mTabletType.equals("black")) {
-            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 410, 300, false);
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_fail_success_loading_station, null), 410, 300, false);
         } else if(mTabletType.equals("fire")) {
-            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 310, 250, false);
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_fail_success_loading_station, null), 310, 250, false);
         }
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);
 
         if (mTabletType.equals("green")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 620, 450, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_drop_defense, null), 620, 450, false);
         }
         else if (mTabletType.equals("black")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 410, 300, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_drop_defense, null), 410, 300, false);
         }
         else if (mTabletType.equals("fire")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 310, 250, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_drop_defense, null), 310, 250, false);
         }
         popup_drop_defense.setOutsideTouchable(false);
         popup_drop_defense.setFocusable(false);
@@ -574,7 +574,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (tele) {
             initPopup(popup_drop_defense);
 
-            final Button defendedButton= (Button) layoutInflater.inflate(R.layout.pw_drop, null).findViewById(R.id.dropDefended);
+            final Button defendedButton= (Button) layoutInflater.inflate(R.layout.map_popup_drop_defense, null).findViewById(R.id.dropDefended);
 
             if (element.equals("lemon")){
                 defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
@@ -819,10 +819,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         final Dialog climbDialog = new Dialog(this);
         climbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (isMapLeft){
-            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.climb_dialog_l, null);
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.map_dialog_climb_left, null);
         }
         else {
-            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.climb_dialog_r, null);
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.main_dialog_climb_right, null);
         }
        climbDialog.setCanceledOnTouchOutside(false);
        climbDialog.setCancelable(false);
@@ -1697,7 +1697,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     side = "near";
                 }
             }
-            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_rocket, null);
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.map_placement_dialog_rocket, null);
 
             tb_shotOutOfField = placementDialogLayout.findViewById(R.id.shotOutOfField);
 
@@ -1735,7 +1735,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (((field_orientation.contains("left") && y >= 260) || (field_orientation.contains("right") && y <= 260)) && mTabletType.equals("fire"))){
                 side = "right";
             }
-            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_cargo_ship, null);
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.map_placement_dialog_cargo_ship, null);
         }
         fail = placementDialogLayout.findViewById(R.id.fail);
         success = placementDialogLayout.findViewById(R.id.success);
