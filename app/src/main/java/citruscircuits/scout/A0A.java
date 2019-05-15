@@ -1,7 +1,6 @@
 package citruscircuits.scout;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -22,7 +21,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -96,11 +94,11 @@ public class A0A extends DialogMaker {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        dr_redCycle = getResources().getDrawable(R.drawable.cycle_red_dashed_background);
-        dr_blueCycle = getResources().getDrawable(R.drawable.cycle_blue_dashed_background);
+        dr_redCycle = getResources().getDrawable(R.drawable.main_cycle_red);
+        dr_blueCycle = getResources().getDrawable(R.drawable.main_cycle_blue);
 
-        map_orientation_rb = getResources().getDrawable(R.drawable.btn_map_orientation_rb);
-        map_orientation_br = getResources().getDrawable(R.drawable.btn_map_orientation_br);
+        map_orientation_rb = getResources().getDrawable(R.drawable.main_map_orientation_rb);
+        map_orientation_br = getResources().getDrawable(R.drawable.main_map_orientation_br);
 
         mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 

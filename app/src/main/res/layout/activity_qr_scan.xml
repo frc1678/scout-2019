@@ -12,7 +12,7 @@
         android:layout_width="@dimen/qrCodeReaderViewSide"
         android:layout_height="@dimen/qrCodeReaderViewSide"
         android:layout_centerInParent="true"
-        android:background="@drawable/scan_outline"/>
+        android:background="@drawable/qr_scan_outline"/>
 
     <ImageButton
         android:id="@+id/imageButton"

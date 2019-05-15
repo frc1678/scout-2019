@@ -96,5 +96,5 @@
         android:translationX="440dp"
         android:onClick="onClickToQR"
         android:textColor="#ffffff"
-        android:background="@drawable/send_gradient"/>
+        android:background="@drawable/datacheck_send_gradient"/>
 </RelativeLayout>
