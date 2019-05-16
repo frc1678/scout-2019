@@ -1382,10 +1382,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     public void mapChange() {
         if (element.equals("orange") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
             if (mode.equals("placement")) {
                 Log.e("ahhhhh", "placementorange");
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
                 if (field_orientation.contains("left")) {
                     iv_field.setImageResource(R.drawable.map_field_placement_orange_left);
                 } else if (field_orientation.contains("right")) {
@@ -1434,9 +1434,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
             if (element.equals("orange")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
                 if (mode.equals("placement")) {
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
                     if (field_orientation.contains("left")) {
                         iv_field.setImageResource(R.drawable.map_field_defense_placement_orange_left);
                     } else if (field_orientation.contains("right")) {
@@ -1463,7 +1463,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         if(element.equals("orange")) {
             Log.e("wokorange", "showup");
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
             undoDicAdder(x,y,"orange");
 
         } else if(element.equals("lemon")) {
