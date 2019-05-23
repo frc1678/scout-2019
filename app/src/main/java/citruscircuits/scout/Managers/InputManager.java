@@ -296,10 +296,6 @@ public class InputManager {
         //Algorithm to assign scouts to position of robot (robot 1 - 6)
         //depending on SPR Ranking and Match Number.
         //Used to distribute scouts so they do not scout with the same scouts as frequently.
-        Log.i("group3", String.valueOf(group3InitialSPR));
-        Log.i("groupnum", String.valueOf(AppCc.getSp("groupNumber", 0)));
-        Log.i("initialSPR",String.valueOf(AppCc.getSp("initialSPR", 0)));
-        Log.i("SPRTotal",String.valueOf(AppCc.getSp("sprRanking", 0)));
 
         position = (mMatchNum * (AppCc.getSp("groupNumber", 0)) + (AppCc.getSp("sprRanking", 0) - AppCc.getSp("initialSPR", 0))) % AppCc.getSp("groupSize", 1) + 1;
 
