@@ -379,7 +379,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     InputManager.numFoul--;
                     btn_foul.setText("PIN FOUL - " + InputManager.numFoul);
                 }
-                Log.e("LONG", mRealTimeMatchData.toString());
                 return true;
             }
         }));
@@ -456,7 +455,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         btn_undo.setEnabled(false);
 
-        Log.e("startTimer?",String.valueOf(startTimer));
         if(timerCheck && !tb_incap.isChecked()){
             btn_climb.setEnabled(true);
             tb_defense.setEnabled(true);
@@ -469,7 +467,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
         mapChange();
         InputManager.mCrossedHabLine = tb_hab_run.isChecked();
-        Log.e("field_orientation", field_orientation);
     }
 
     public void onClickStartTimer(View v) {
@@ -544,7 +541,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
             mapChange();
         }
-        Log.e("timerCheck",String.valueOf(InputManager.mTimerStarted));
     }
 
     // Method sets preload buttons as enabled or disabled.
@@ -653,7 +649,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             e.printStackTrace();
         }
         mRealTimeMatchData.put(compressionDic);
-        Log.i("LONG", mRealTimeMatchData.toString());
     }
 
     public void onClickUndo(View v) {
@@ -676,13 +671,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
 
-            Log.e("index!",String.valueOf(index));
-            Log.e("mRealTimeMatchData", mRealTimeMatchData.toString());
+            Log.e("indexVals",String.valueOf(index));
+            Log.e("mRealTimeMatchDataVals", mRealTimeMatchData.toString());
 
             mRealTimeMatchData.remove(index);
             if (actionCount > 0) {
-                Log.e("mRealTimeMatchData!", mRealTimeMatchData.toString());
-                Log.e("actionic1?!!", actionDic.toString());
 
                 actionCount = actionCount - 1;
 
@@ -762,10 +755,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 actionDic.remove(actionCount);
                 preload();
             }
-            Log.e("endUndo1", String.valueOf(btn_drop.isEnabled()));
-            Log.e("endUndo2", String.valueOf(modeIsIntake));
-            Log.e("endUndo3", String.valueOf(mode));
-            Log.e("endUndo4", String.valueOf(element));
             btn_undo.setEnabled(false);
             didUndoOnce=true;
     }
@@ -881,8 +870,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     dataListSendActual(spaceOneII.getText().toString(), spaceOneII, 0);
                     dataListSendActual(spaceTwoII.getText().toString(), spaceTwoII, 1);
                     dataListSendActual(spaceThreeII.getText().toString(), spaceThreeII, 2);
-                    Log.e("cimbAttempt", climbAttemptValues.toString());
-                    Log.e("climbActual", climbActualValues.toString());
+                    Log.e("cimbAttemptVals", climbAttemptValues.toString());
+                    Log.e("climbActualVals", climbActualValues.toString());
 
                     if(climbInputted){
                         int index = -1;
@@ -1113,7 +1102,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
         }
         mapChange();
-        Log.i("mRealTimeMatchData", mRealTimeMatchData.toString());
+        Log.i("mRealTimeMatchDataVal", mRealTimeMatchData.toString());
     }
 
     public void onClickDefense (View v) {
@@ -1216,7 +1205,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                             }
                         }
                     }
-                    Log.e("mode", mode);
                 }
                 return false;
             }
@@ -1355,7 +1343,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         mRealTimeMatchData.put(compressionDic);
 
-        Log.i("RECORDING?", mRealTimeMatchData.toString());
+        Log.i("mRealTimeMatchDataVals?", mRealTimeMatchData.toString());
     }
 
     public void mapChange() {
@@ -1480,7 +1468,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
 
     public void initIntake(String givenElement) {
-        Log.i("COORDINATECHECK", y + "");
         zone = "";
 
         time = TimerUtil.timestamp;
@@ -1559,8 +1546,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                 mRealTimeMatchData.put(compressionDic);
 
-                Log.i("RECORDING?", mRealTimeMatchData.toString());
-                Log.i("ZONE", zone);
+                Log.i("mRealTimeMatchDataVals", mRealTimeMatchData.toString());
+
                 initShape();
             }
         }
@@ -1884,7 +1871,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         mRealTimeMatchData.put(compressionDic);
 
         climbInputted = true;
-        Log.i("RECORDING?", mRealTimeMatchData.toString());
+        Log.i("mRealTimeMatchDataVals", mRealTimeMatchData.toString());
     }
 
     //Increment when pressed.

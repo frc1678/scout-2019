@@ -122,7 +122,7 @@ public class A0A extends DialogMaker {
                 JSONObject timestamp = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
                 InputManager.mAssignmentFileTimestamp = timestamp.getInt("timestamp");
 
-                Log.i("ASSIGNMENT!", InputManager.mAssignmentFileTimestamp + "");
+                Log.i("Assignment Timestamp", InputManager.mAssignmentFileTimestamp + "");
             }
             catch (JSONException e) {
                 e.printStackTrace();
@@ -391,7 +391,7 @@ public class A0A extends DialogMaker {
         final File dir;
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
         if (!dir.mkdir()) {
-            Log.i("File Info", "Failed to make Directory. Unimportant");
+            Log.i("File Exists", "Failed to make Directory. Unimportant");
         }
 
         final File[] files = dir.listFiles();
@@ -401,7 +401,6 @@ public class A0A extends DialogMaker {
         }
 
         mResendMatchesArrayAdapter.clear();
-        Log.e("DEBUGGING", files.toString());
 
         for (File tmpFile : files) {
             mResendMatchesArrayAdapter.add(tmpFile.getName());
@@ -507,12 +506,11 @@ public class A0A extends DialogMaker {
             QRImage.setImageBitmap(bitmap);
         }
         catch (Exception er) {
-            Log.e("QrGenerate",er.getMessage());
+            Log.e("QrGenerate", er.getMessage());
         }
     }
 
     public void onClickStartScouting(View view) {
-        Log.i("Scout", InputManager.mAssignmentMode);
         if (InputManager.mTabletType.equals("") || InputManager.mScoutName.equals("unselected") || InputManager.mTabletType.equals("unselected") || InputManager.mMatchNum == 0 || InputManager.mTeamNum == 0 || InputManager.mScoutId == 0) {
             Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
         }

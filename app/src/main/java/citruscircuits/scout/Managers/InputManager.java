@@ -109,19 +109,16 @@ public class InputManager {
               Integer referenceOddInteger = 1;
 
             for (int i = 1; i <= 18; i++) {
-                Log.e("counterValue", String.valueOf(i));
                 if (i <= 6) {
                     referenceDictionary.put(i,i);
                 }
                 else if (i > 6) {
                     if ((i) % 2 == 0) {
                         referenceDictionary.put(i, referenceEvenInteger);
-                        Log.e("evenDicValue",String.valueOf(referenceEvenInteger));
                         referenceEvenInteger++;
                     }
                     else if ((i) % 2 == 1) {
                         referenceDictionary.put(i, referenceOddInteger);
-                        Log.e("oddDicValue",String.valueOf(referenceOddInteger));
                         referenceOddInteger++;
                     }
                 }
@@ -139,7 +136,7 @@ public class InputManager {
 
         File f = new File(filePath, fileName);
 
-        Log.i("FILEEXISTS", f.exists() + "");
+        Log.i("doesFileExist", f.exists() + "");
 
         if (f.exists()) {
             try {
@@ -172,7 +169,7 @@ public class InputManager {
                     finalNamesList.add(moreNames);
                 }
 
-                Log.i("finalNames", finalNamesList.toString());
+                Log.i("scoutNames", finalNamesList.toString());
 
             }
             catch (JSONException e) {
@@ -194,18 +191,18 @@ public class InputManager {
         mTeamNum = 0;
 
         mQRString = resultText;
-        Log.e("StringValue", mQRString);
+        Log.e("ScoutQrCompressVals", mQRString);
 
         //Isolate QRString with scout letters and SPR Rankings.
         mQRStringFinal = resultText.substring(mQRString.indexOf("|") + 1, resultText.length());
         numScouts = mQRStringFinal.length();
 
-        Log.i("FINALQRSTRING", mQRStringFinal);
+        Log.i("ScoutQRCompressShort", mQRStringFinal);
 
         //Set mSPRRanking
         getSPRRanking();
 
-        Log.i("SPRRANKING", "" + mSPRRanking);
+        Log.i("SprRank", "" + mSPRRanking);
 
         //Set groupIIIInitialSPR based on the number of scouts (odd or even)
         //in order to properly distribute robots between groups of scouts.
@@ -243,8 +240,6 @@ public class InputManager {
 
     //Method for acquiring scout letter from scout name
     public static void getScoutLetter() {
-        Log.e("QR Process", "Called");
-
         String ssort1L1key = "letters";
 
         String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";

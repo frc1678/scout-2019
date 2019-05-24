@@ -188,7 +188,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
 
     //Alert scout of QR scan, make spinner appear for scout to confirm/select name.
     public void alertScout() {
-        Log.i("SCOUTNAME", InputManager.mScoutName);
+        Log.i("Scout Name", InputManager.mScoutName);
 
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_name_confirmation, null);
         TextView nameView= (TextView) dialogView.findViewById(R.id.nameView);

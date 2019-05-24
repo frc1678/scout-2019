@@ -49,14 +49,14 @@ public class AppUtils {
     }
 
     public static String retrieveSDCardFile(String pFileName){
-        Log.e("Retrieve Called", pFileName);
+        Log.e("Retrieve File", pFileName);
 
         if (!bluetoothDir.exists()) {
             bluetoothDir.mkdir();
         }
         final File[] files = bluetoothDir.listFiles();
 
-        Log.e("NULL CHECK! 1", files.toString());
+        Log.e("FilesList", files.toString());
 
         try{
             if(!(files == null)){
@@ -67,7 +67,7 @@ public class AppUtils {
                 }
             }
         }catch(NullPointerException ne){
-            Log.e("NULL POINTER", "getting file path");
+            Log.e("NULL POINTER EXCEPTION", "getting file path");
         }
 
         return null;
