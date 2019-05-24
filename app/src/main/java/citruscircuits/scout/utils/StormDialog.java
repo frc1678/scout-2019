@@ -28,6 +28,7 @@ public class StormDialog extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //Declare all of the buttons in the Sandstorm Fragment
         InputManager.mSandstormEndPosition = "";
         if(InputManager.mAllianceColor.equals("red")) {
             view = inflater.inflate(R.layout.activity_storm_red, container, false);
