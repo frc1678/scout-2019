@@ -78,7 +78,7 @@ public class A0A extends DialogMaker {
 
     public ListView lv_scoutNames, lv_scoutIds, lv_resendMatch;
 
-    //user data UI
+    //set user data UI
     public static EditText et_matchNum;
     public static TextView tv_cycleNum, tv_teamNum, tv_versionNum, tv_assignmentFileTimestamp;
     public static Button btn_triggerResendMatches;
@@ -90,6 +90,7 @@ public class A0A extends DialogMaker {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Set UI of the entire activity.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
@@ -136,7 +137,7 @@ public class A0A extends DialogMaker {
         InputManager.mScoutId = AppCc.getSp("scoutId", 0);
 
         InputManager.getScoutNames();
-
+        //Calls all Views, Popups, and  Listeners in Main Activity
         initViews();
         initPopups();
         initListeners();
@@ -153,7 +154,7 @@ public class A0A extends DialogMaker {
         }
     }
 
-    //OnClick Methods
+    //Set UI text values
     public static void updateUserData() {
         setCycleBackgroundColor(InputManager.mAllianceColor);
         et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
@@ -164,7 +165,7 @@ public class A0A extends DialogMaker {
         sp_triggerScoutNamePopup.setSelection(((ArrayAdapter<String>)sp_triggerScoutNamePopup.getAdapter()).getPosition(InputManager.mScoutName));
         sp_triggerScoutIDPopup.setSelection(((ArrayAdapter<Integer>)sp_triggerScoutIDPopup.getAdapter()).getPosition(InputManager.mScoutId));
     }
-
+    //Set Cycle Background color
     public static void setCycleBackgroundColor(String color) {
         switch (color) {
             case "red":
@@ -175,7 +176,7 @@ public class A0A extends DialogMaker {
                 break;
         }
     }
-
+    //Method to set background orientation when button is pressed and to declare any textviews.
     public void initViews() {
         btn_mapOrientation = findViewById(R.id.btn_map_orientation);
         if (AppCc.getSp("mapOrientation", 99) != 99) {
@@ -200,8 +201,9 @@ public class A0A extends DialogMaker {
         tv_versionNum = findViewById(R.id.tv_versionNum);
         tv_assignmentFileTimestamp = findViewById(R.id.tv_fileTimestamp);
     }
-
+    //Come back to
     public void initListeners() {
+        //Changes the map position when map button is held
         btn_mapOrientation.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -234,6 +236,7 @@ public class A0A extends DialogMaker {
                 //Do nothing, necessary for TextChangedListeners.
             }
 
+            //Update data after altered
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().equals("")) {
@@ -261,9 +264,9 @@ public class A0A extends DialogMaker {
             }
         });
     }
-
+    //Create the backup, scout name, and ID popups
     public void initPopups() {
-        //BACKUP POPUP
+        //Declare backup popup
         btn_triggerBackupPopup = (Button) findViewById(R.id.btn_triggerBackupPopup);
         if (InputManager.mTabletType.equals("fire")) {
             pw_backupWindow = new PopupWindow((LinearLayout) mLayoutInflater.inflate(R.layout.popup_backup, null), 200, 300, true);
@@ -282,7 +285,7 @@ public class A0A extends DialogMaker {
             }
         });
 
-        //SCOUT NAME POPUP
+        //declare scout name popup
         sp_triggerScoutNamePopup = (Spinner) findViewById(R.id.btn_triggerScoutNamePopup);
         ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.cell_scout_name, Cst.SCOUT_NAMES);
 
@@ -305,7 +308,7 @@ public class A0A extends DialogMaker {
             }
         });
 
-        //SCOUT ID POPUP
+        //declare Scout ID poopup
         sp_triggerScoutIDPopup = (Spinner) findViewById(R.id.btn_triggerScoutIDPopup);
         ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.cell_scout_id, Cst.SCOUT_IDS);
 
@@ -321,7 +324,7 @@ public class A0A extends DialogMaker {
                 return true;
             }
         });
-
+        //Saves scout ID when selected
         sp_triggerScoutIDPopup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
                 if (isNotFirst) {
@@ -343,7 +346,7 @@ public class A0A extends DialogMaker {
             }
         });
 
-        //RESEND MATCHES POPUP
+        //Declare all resend popups
         btn_triggerResendMatches = (Button) findViewById(R.id.btn_accessData);
         LinearLayout resendMatchesLayout = (LinearLayout) mLayoutInflater.inflate(R.layout.popup_resend, null);
         if (InputManager.mTabletType.equals("fire")) {
@@ -368,11 +371,13 @@ public class A0A extends DialogMaker {
         });
     }
 
+    //Open QR scanner when clicked
     public void onClickQrBackup(View view) {
         open(QRScan.class, null, false, false);
         pw_backupWindow.dismiss();
     }
 
+    //Set backup values in file when backup pressed
     public void onClickFileBackup(View view) {
         InputManager.getBackupData();
 
@@ -382,11 +387,13 @@ public class A0A extends DialogMaker {
         btn_triggerBackupPopup.setText("Backup");
     }
 
+    //Open override dialog when pressed
     public void onClickOverrideBackup(View view) {
         initOverrideDialog(A0A.this);
         pw_backupWindow.dismiss();
     }
 
+    //Come back to.
     public void updateListView() {
         final File dir;
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
@@ -420,6 +427,7 @@ public class A0A extends DialogMaker {
         mResendMatchesArrayAdapter.notifyDataSetChanged();
     }
 
+    //Opens previous match data when a resend is clicked.
     public void listenForResendClick() {
         lv_resendMatch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -432,7 +440,7 @@ public class A0A extends DialogMaker {
             }
         });
     }
-
+    //Create the layout and open a QR dialog.
     public void openQRDialog(String qrString) {
         final Dialog qrDialog = new Dialog(this,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         qrDialog.setCanceledOnTouchOutside(false);
@@ -456,7 +464,7 @@ public class A0A extends DialogMaker {
         qrDialog.setContentView(qrDialogLayout);
         qrDialog.show();
     }
-
+    //Creates dimensions for QR code and opens it.
     public void displayQR(String qrCode) {
         try {
             //Set size of QR code.
@@ -480,6 +488,7 @@ public class A0A extends DialogMaker {
         }
     }
 
+    //Sets specifications to create the QR code.
     public void createQRCode(String qrCodeData,String charset, Map hintMap, int qrCodeheight, int qrCodewidth) {
         try {
             //generating qr code in bitmatrix type
@@ -510,7 +519,7 @@ public class A0A extends DialogMaker {
             Log.e("QrGenerate",er.getMessage());
         }
     }
-
+    //Button to move to the pregame activity.
     public void onClickStartScouting(View view) {
         Log.i("Scout", InputManager.mAssignmentMode);
         if (InputManager.mTabletType.equals("") || InputManager.mScoutName.equals("unselected") || InputManager.mTabletType.equals("unselected") || InputManager.mMatchNum == 0 || InputManager.mTeamNum == 0 || InputManager.mScoutId == 0) {
