@@ -201,7 +201,7 @@ public class A0A extends DialogMaker {
         tv_versionNum = findViewById(R.id.tv_versionNum);
         tv_assignmentFileTimestamp = findViewById(R.id.tv_fileTimestamp);
     }
-    //Come back to
+    //Add listeners to map and matchNum editor.
     public void initListeners() {
         //Changes the map position when map button is held
         btn_mapOrientation.setOnLongClickListener(new View.OnLongClickListener() {
@@ -393,7 +393,7 @@ public class A0A extends DialogMaker {
         pw_backupWindow.dismiss();
     }
 
-    //Come back to.
+    //Updates Resend Dropdown information and formats it.
     public void updateListView() {
         final File dir;
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
