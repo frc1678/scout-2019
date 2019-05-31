@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import citruscircuits.scout.R;
 
-//Written by the Daemon himself ~ Calvin
 public class AppTc extends AppCompatActivity{
 
     public void open(Class<? extends Activity> a, Context c, boolean finish, boolean animate){
