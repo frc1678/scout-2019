@@ -59,8 +59,7 @@ import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static citruscircuits.scout.utils.StormDialog.teleButton;
 import static java.lang.String.valueOf;
 
-//Written by the Daemon himself ~ Calvin
-//testing
+
 public class A1A extends DialogMaker implements View.OnClickListener {
 
     final Activity activity = this;
