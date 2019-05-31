@@ -37,11 +37,12 @@ import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 //Written by the Daemon himself ~ Calvin
 public class DialogMaker extends AppTc {
 
+    //Shows the override dialog
     public void initOverrideDialog(Activity a) {
         OverrideDialog mOverrideDialog = new OverrideDialog(a);
         mOverrideDialog.show();
     }
-
+    //Shows the tablet type dialog
     public void initTabletTypeDialog(Activity a) {
         TabletDialog mTabletDialog = new TabletDialog(a);
         mTabletDialog.show();
@@ -63,6 +64,8 @@ public class DialogMaker extends AppTc {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            //Declare formatting for overrride dialog.
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.dialog_override);
             this.setCanceledOnTouchOutside(false);
@@ -72,24 +75,27 @@ public class DialogMaker extends AppTc {
             OverrideDialog.this.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
+                    //Sets team number to whatever is selected in override
                     try {
                         InputManager.mTeamNum = AppUtils.StringToInt(et_overrideTeamNum.getText().toString());
                     } catch (Exception e) {
                     }
 
+                    //Sets team color to whatever is selected in override
                     if(rb_red.isChecked()){
                         InputManager.mAllianceColor = "red";
                     }else if(rb_blue.isChecked()){
                         InputManager.mAllianceColor = "blue";
                     }
 
+                    //Saves data inputted in override
                     InputManager.storeUserData();
                     A0A.updateUserData();
                 }
             });
 
             initViews();
-
+            //Saves assignment mode as override when done button is pressed
             btn_done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,7 +106,7 @@ public class DialogMaker extends AppTc {
                 }
             });
         }
-
+        //Format for all views in override dialog
         public void initViews() {
             et_overrideTeamNum = findViewById(R.id.et_overrideTeamNum);
 
@@ -125,12 +131,14 @@ public class DialogMaker extends AppTc {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            //Declares tabletDialog format
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.dialog_tablet_type);
             this.setCanceledOnTouchOutside(false);
 
             btn_done = findViewById(R.id.btn_done);
 
+            //Saves tablet type as one of three tablet types and saves the data.
             TabletDialog.this.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
@@ -156,7 +164,7 @@ public class DialogMaker extends AppTc {
                 }
             });
         }
-
+        //Creates buttons for green, black, and fire tablet in tabletDialog
         public void initViews() {
             rb_greenTablet = findViewById(R.id.green_tablet);
             rb_blackTablet = findViewById(R.id.black_tablet);
