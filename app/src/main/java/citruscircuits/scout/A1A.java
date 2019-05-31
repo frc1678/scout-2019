@@ -1388,6 +1388,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
                 compressionDic.put("side", side);
             }
+            //Record different levels of rocket
             if(structure.contains("Rocket")) {
                 if(level1.isChecked()) {
                     level = 1;
@@ -1411,6 +1412,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         Log.i("RECORDING?", mRealTimeMatchData.toString());
     }
 
+    //Set map drawable based user mode
     public void mapChange() {
         if (element.equals("orange") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
@@ -1492,11 +1494,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
         overallLayout.removeView(iv_game_element);
 
+        //Set cargo image on screen if element is orange
         if(element.equals("orange")) {
             Log.e("wokorange", "showup");
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
             undoDicAdder(x,y,"orange");
 
+            //Set hatch panel image on screen if element is lemon
         } else if(element.equals("lemon")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
                 Log.e("woklemon", "showupppppp");
@@ -1511,6 +1515,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 100,
                 100);
+        //Set location of game element based on coordinates and tablet type
          if((y > 900 && mTabletType.equals("green")) || (y > 550 && mTabletType.equals("black"))) {
                 if((x < 40 && mTabletType.equals("green")) || (x < 25 &&  mTabletType.equals("black"))) {
                     lp.setMargins(x + 20, y - 90, 0, 0);
@@ -1548,6 +1553,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         dismissPopups();
         element = givenElement;
 
+        //Set coordinates for loading stations based on tablet types and field orientation
         if(((((field_orientation.contains("left") && x < 225) || (field_orientation.contains("right") && x > 1440)) && mTabletType.equals("green"))
                 || (((field_orientation.contains("left") && x < 175) || (field_orientation.contains("right") && x > 955)) && mTabletType.equals("black"))
                 || (((field_orientation.contains("left") && x < 130) || (field_orientation.contains("right") && x > 720)) && mTabletType.equals("fire")))) {
@@ -1561,6 +1567,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 zone = "rightLoadingStation";
             }
             initPopup(popup_fail_success);
+            //Set coordinates for zones based on tablet types
         } else {
             if((y>517 && mTabletType.equals("green") && field_orientation.contains("left")) || (y<=517 && mTabletType.equals("green") && field_orientation.contains("right"))
                     || (y>345 && mTabletType.equals("black") && field_orientation.contains("left")) || (y<=345 && mTabletType.equals("black") && field_orientation.contains("right"))
@@ -1631,6 +1638,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")) {
             Log.e("woooooook", "preloadWokinput");
 
+            //Set whether drop is enabled based on whether or not incap is checked
             if(!startTimer) {
                 if (tb_incap.isChecked()) {
                     btn_drop.setEnabled(false);
@@ -1690,6 +1698,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         //ROCKET LEFT (top, left, fire): y < 4.5 * x - 1207.5 && y < -4.5 * x + 2122.5 && y < 165 && field_orientation.contains("left") && mTabletType.equals("fire")
 
 
+        //Set locations of rockets based on tablet types
         if((y > -4.5 * x + 4457.5 && y > 4.5 * x - 4182.5 && y > 700 && field_orientation.contains("right") && mTabletType.equals("green"))
                 || (y < 4.5 * x - 3405 && y < -4.5 * x + 5212.5 && y < 330 && field_orientation.contains("right") && mTabletType.equals("green"))
                 || (y > -4.5 * x + 3467.5 && y > 4.5 * x - 3585 && y > 700 && field_orientation.contains("left") && mTabletType.equals("green"))
@@ -1717,6 +1726,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (y < 4.5 * x - 1207.5 && y < -4.5 * x + 2122.5 && y < 165 && field_orientation.contains("left") && mTabletType.equals("fire"))) {
                 structure = "leftRocket";
             }
+            //If element is lemon, add different coordinates for different sides of each rocket
             if(element.equals("lemon")) {
                 if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mTabletType.equals("green"))
                         || (((x >= 493 && field_orientation.contains("left")) || (x <= 640 && field_orientation.contains("right"))) && mTabletType.equals("black"))
@@ -1749,6 +1759,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 level2.setBackgroundResource(R.drawable.level_selector_orange);
                 level3.setBackgroundResource(R.drawable.level_selector_orange);
             }
+            //Set coordinates of cargo ship
         } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mTabletType.equals("green"))
                 || (((field_orientation.contains("left") && x > 625 && x < 960) || (field_orientation.contains("right") && x > 170 && x < 505)) && y > 225 && y < 565 && mTabletType.equals("black"))
                 || (((field_orientation.contains("left") && x > 470 && x < 720) || (field_orientation.contains("right") && x > 130 && x < 380)) && y > 165 && y < 350 && mTabletType.equals("fire"))) {
@@ -1883,6 +1894,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     public void initPopup(PopupWindow pw2) {
         if (timerCheck) {
             isPopupOpen = true;
+            //Set coordinates and size of popup based on tablet type
             if (tb_defense.isChecked() && pw && ((((field_orientation.contains("left") && x >= 1445) || (field_orientation.contains("right") && x <= 255)) && mTabletType.equals("green"))
                     || (((field_orientation.contains("left") && x >= 960) || (field_orientation.contains("right") && x <= 170)) && mTabletType.equals("black"))
                     || (((field_orientation.contains("left") && x >= 720) || (field_orientation.contains("right") && x <= 130)) && mTabletType.equals("fire")))){
@@ -1927,6 +1939,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
 
+    //Method to dismiss all popups
     public void dismissPopups() {
         popup.dismiss();
         popup_fail_success.dismiss();
@@ -1947,6 +1960,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_undo.setEnabled(true);
     }
 
+    //Add all lists of climb data into a dictionary and put them in mRealTimeMatchData
     public void recordClimb(float time) {
         compressionDic = new JSONObject();
         try {
@@ -1972,6 +1986,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         btn_cyclesDefended.setText("FAILED PLACEMENTS/DROPS CAUSED - " + InputManager.cyclesDefended);
     }
 
+    //Move to next activity and saves defense data
     public void onClickDataCheck(View v) {
         if(tb_defense.isChecked()) {
             compressionDic = new JSONObject();
@@ -1990,6 +2005,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         open(A2A.class, null, false, true);
     }
 
+    //If user presses android back button, warn them that they will lose data
     public void onBackPressed() {
         final Activity activity = this;
         new AlertDialog.Builder(this)
