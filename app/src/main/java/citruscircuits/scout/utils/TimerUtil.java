@@ -18,11 +18,13 @@ public class TimerUtil {
     public static class MatchTimerThread extends Thread{
 
         @Override
+        //Set timer parameters when run
         public void run() {
             matchTimer = new CountDownTimer(150000, 10) {
                 public void onTick(long millisUntilFinished) {
                     float tempTime = millisUntilFinished/1000f;
                     timestamp = Float.parseFloat(String.format("%.1f", tempTime));
+                    //Adjust time depending on if time is greater than or less than 135 seconds
                     if (tempTime > 135.5f) {
                         displayTime = String.valueOf(Math.round(tempTime) - 135);
                     }
@@ -38,6 +40,7 @@ public class TimerUtil {
             }.start();
         }
 
+        //Start timer
         public void initTimer(){
             run();
         }
