@@ -9,7 +9,6 @@ import org.json.JSONObject;
 
 import citruscircuits.scout.utils.AppUtils;
 
-//Written by the Daemon himself ~ Calvin
 public class AppCc extends Application{
     public static AppCc INSTANCE;
 

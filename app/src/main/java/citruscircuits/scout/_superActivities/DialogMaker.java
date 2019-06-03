@@ -16,7 +16,6 @@ import citruscircuits.scout.R;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout.utils.AppUtils;
 
-//Written by the Daemon himself ~ Calvin
 public class DialogMaker extends AppTc {
 
     public void initOverrideDialog(Activity a) {

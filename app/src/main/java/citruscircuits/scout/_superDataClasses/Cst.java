@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import citruscircuits.scout.Managers.InputManager;
 
-//Written by the Daemon himself ~ Calvin
 public interface Cst {
     String SHARED_PREF = "scout_sp";
 
