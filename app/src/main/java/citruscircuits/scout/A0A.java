@@ -78,7 +78,7 @@ public class A0A extends DialogMaker {
 
     public ListView lv_scoutNames, lv_scoutIds, lv_resendMatch;
 
-    //set user data UI
+    //Set user data UI
     public static EditText et_matchNum;
     public static TextView tv_cycleNum, tv_teamNum, tv_versionNum, tv_assignmentFileTimestamp;
     public static Button btn_triggerResendMatches;
@@ -112,7 +112,7 @@ public class A0A extends DialogMaker {
         InputManager.mRealTimeInputtedData = new JSONObject();
 
 
-        //Retrieve and set assignment file timestamp from assignments.txt.
+        //Retrieve and set assignment file timestamp from assignments.txt
         String filePath = Environment.getExternalStorageDirectory().toString() + "/bluetooth";
         String fileName = "assignments.txt";
 
@@ -130,14 +130,14 @@ public class A0A extends DialogMaker {
             }
         }
 
-        //Set Assignment Mode, QR String, Scout ID, and Final Match Number from stored data.
+        //Set Assignment Mode, QR String, Scout ID, and Final Match Number from stored data
         InputManager.mAssignmentMode = AppCc.getSp("assignmentMode", "");
         InputManager.mQRString = AppCc.getSp("qrString", "");
         InputManager.finalMatchNum = AppCc.getSp("finalMatchNum", 0);
         InputManager.mScoutId = AppCc.getSp("scoutId", 0);
 
         InputManager.getScoutNames();
-        //Calls all Views, Popups, and  Listeners in Main Activity
+        //Calls all Views, Popups, and Listeners in Main Activity
         initViews();
         initPopups();
         initListeners();
@@ -148,13 +148,13 @@ public class A0A extends DialogMaker {
         updateListView();
         listenForResendClick();
 
-        //Display assignment type on assignment system popup button.
+        //Display assignment type on assignment system popup button
         if (!InputManager.mAssignmentMode.equals("")) {
             btn_triggerBackupPopup.setText(InputManager.mAssignmentMode);
         }
     }
 
-    //Set UI text values
+    //Set all UI text values
     public static void updateUserData() {
         setCycleBackgroundColor(InputManager.mAllianceColor);
         et_matchNum.setText(String.valueOf(InputManager.mMatchNum));
@@ -176,7 +176,7 @@ public class A0A extends DialogMaker {
                 break;
         }
     }
-    //Method to set background orientation when button is pressed and to declare any textviews.
+    //Method to set background orientation when button is pressed and to declare any textviews
     public void initViews() {
         btn_mapOrientation = findViewById(R.id.btn_map_orientation);
         if (AppCc.getSp("mapOrientation", 99) != 99) {
@@ -285,7 +285,7 @@ public class A0A extends DialogMaker {
             }
         });
 
-        //declare scout name popup
+        //Declare scout name popup
         sp_triggerScoutNamePopup = (Spinner) findViewById(R.id.btn_triggerScoutNamePopup);
         ArrayAdapter<String> nameAdapter = new ArrayAdapter<String>(this, R.layout.cell_scout_name, Cst.SCOUT_NAMES);
 
@@ -297,7 +297,7 @@ public class A0A extends DialogMaker {
                 AppCc.setSp("scoutName", InputManager.mScoutName);
 
                 if (InputManager.mAssignmentMode.equals("QR")) {
-                    //Update assigned robot based on new scout name.
+                    //Update assigned robot based on new scout name
                     InputManager.getQRAssignment(InputManager.mQRString);
                 }
 
@@ -308,7 +308,7 @@ public class A0A extends DialogMaker {
             }
         });
 
-        //declare Scout ID poopup
+        //Declare Scout ID poopup
         sp_triggerScoutIDPopup = (Spinner) findViewById(R.id.btn_triggerScoutIDPopup);
         ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.cell_scout_id, Cst.SCOUT_IDS);
 
@@ -332,7 +332,7 @@ public class A0A extends DialogMaker {
                     AppCc.setSp("scoutId", InputManager.mScoutId);
 
                     if (InputManager.mAssignmentMode.equals("backup")) {
-                        //Update assigned robot based on new scout ID.
+                        //Update assigned robot based on new scout ID
                         InputManager.getBackupData();
                     }
 
@@ -393,7 +393,7 @@ public class A0A extends DialogMaker {
         pw_backupWindow.dismiss();
     }
 
-    //Updates Resend Dropdown information and formats it.
+    //Updates resend dropdown information and formats it
     public void updateListView() {
         final File dir;
         dir = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
@@ -427,7 +427,7 @@ public class A0A extends DialogMaker {
         mResendMatchesArrayAdapter.notifyDataSetChanged();
     }
 
-    //Opens previous match data when a resend is clicked.
+    //Opens previous match data when a resend is clicked
     public void listenForResendClick() {
         lv_resendMatch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -440,7 +440,7 @@ public class A0A extends DialogMaker {
             }
         });
     }
-    //Create the layout and open a QR dialog.
+    //Create the layout and open a QR dialog
     public void openQRDialog(String qrString) {
         final Dialog qrDialog = new Dialog(this,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         qrDialog.setCanceledOnTouchOutside(false);
@@ -464,7 +464,7 @@ public class A0A extends DialogMaker {
         qrDialog.setContentView(qrDialogLayout);
         qrDialog.show();
     }
-    //Creates dimensions for QR code and opens it.
+    //Creates dimensions for QR code and opens it
     public void displayQR(String qrCode) {
         try {
             //Set size of QR code.
@@ -488,13 +488,13 @@ public class A0A extends DialogMaker {
         }
     }
 
-    //Sets specifications to create the QR code.
+    //Sets specifications to create the QR code
     public void createQRCode(String qrCodeData,String charset, Map hintMap, int qrCodeheight, int qrCodewidth) {
         try {
-            //generating qr code in bitmatrix type
+            //Generates qr code in bitmatrix type
             BitMatrix matrix = new MultiFormatWriter().encode(new String(qrCodeData.getBytes(charset), charset), BarcodeFormat.QR_CODE, qrCodewidth, qrCodeheight, hintMap);
 
-            //converting bitmatrix to bitmap
+            //Converts bitmatrix to bitmap
             int width = matrix.getWidth();
             int height = matrix.getHeight();
             int[] pixels = new int[width * height];
@@ -519,7 +519,7 @@ public class A0A extends DialogMaker {
             Log.e("QrGenerate",er.getMessage());
         }
     }
-    //Button to move to the pregame activity.
+    //Button to move to the pregame activity
     public void onClickStartScouting(View view) {
         Log.i("Scout", InputManager.mAssignmentMode);
         if (InputManager.mTabletType.equals("") || InputManager.mScoutName.equals("unselected") || InputManager.mTabletType.equals("unselected") || InputManager.mMatchNum == 0 || InputManager.mTeamNum == 0 || InputManager.mScoutId == 0) {
