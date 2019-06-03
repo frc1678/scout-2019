@@ -15,7 +15,6 @@ import citruscircuits.scout._superDataClasses.Cst;
 
 import static java.lang.String.valueOf;
 
-//Written by the Daemon himself ~ Calvin
 public class OutputManager extends InputManager{
     private static final int DISCOVER_DURATION = 300;
     private static final int REQUEST_BLU = 1;
