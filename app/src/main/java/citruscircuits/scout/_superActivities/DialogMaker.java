@@ -138,7 +138,7 @@ public class DialogMaker extends AppTc {
 
             btn_done = findViewById(R.id.btn_done);
 
-            //Saves tablet type as one of three tablet types and saves the data.
+            //Saves tablet type as one of three tablet types
             TabletDialog.this.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
