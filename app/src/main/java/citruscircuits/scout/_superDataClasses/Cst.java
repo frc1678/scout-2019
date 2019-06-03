@@ -18,13 +18,13 @@ import citruscircuits.scout.Managers.InputManager;
 public interface Cst {
     String SHARED_PREF = "scout_sp";
 
-    //Saves scout names into shared preferences.
+    //Saves scout names into shared preferences
     List<String> SCOUT_NAMES = InputManager.getScoutNames();
 
-    //Saves scout IDS as 1-18)
+    //Saves scout IDS as 1-18
     List<Integer> SCOUT_IDS = Arrays.asList(1, 2, 3, 4, 5, 6 ,7 , 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
 
-    //stores manual compression keys that aren't separated by commas.
+    //Stores manual compression keys that aren't separated by commas
     Map<String, String> initialCompressKeys = new HashMap<String, String>() {{
         put("startingLevel", "a");
         put("crossedHabLine", "b");
@@ -40,9 +40,8 @@ public interface Cst {
         put("assignmentFileTimestamp", "p");
         put("sandstormEndPosition", "G");
     }};
-    //Compresses specific keys as letters.
+    //Compresses specific keys as letters
     Map<String, String> compressKeys = new HashMap<String, String>() {{
-        //New constants
 
         put("type", "r");
         put("time", "s");
@@ -65,9 +64,8 @@ public interface Cst {
         put("robot2", "F");
     }};
 
-    //Compress possible values as certain letters.
+    //Compress possible values as certain letters
     Map<String, String> compressValues = new HashMap<String, String>() {{
-        //New constants
         put("true", "T");
         put("false", "F");
         put("left", "A");
