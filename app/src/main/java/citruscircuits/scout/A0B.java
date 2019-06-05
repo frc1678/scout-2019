@@ -2,7 +2,6 @@ package citruscircuits.scout;
 
 import citruscircuits.scout._superActivities.DialogMaker;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import citruscircuits.scout.Managers.InputManager;
@@ -58,60 +56,60 @@ public class A0B extends DialogMaker {
         if ( AppCc.getSp("mapOrientation", 99) != 0){
             Log.e("wok", "prer");
             if(mAllianceColor.equals("red")){
-                setContentView(R.layout.activity_pregame_r);
+                setContentView(R.layout.activity_pregame_right);
                 teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
                 teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
-                iv_hab.setImageResource(R.drawable.red_hab_r);
-                layerOneA.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerOneB.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerOneC.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerTwoB.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
+                iv_hab.setImageResource(R.drawable.pregame_hab_red_right);
+                layerOneA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerOneB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerOneC.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerTwoB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
             } else if (mAllianceColor.equals("blue")){
-                setContentView(R.layout.activity_pregame_l);
+                setContentView(R.layout.activity_pregame_left);
                 teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
                 teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
                 Log.e("wok", "bluer");
-                iv_hab.setImageResource(R.drawable.blue_hab_l);
-                layerOneA.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerOneB.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerOneC.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerTwoB.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_blue_selector);
+                iv_hab.setImageResource(R.drawable.pregame_hab_blue_left);
+                layerOneA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerOneB.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerOneC.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerTwoB.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
             }
         }else if ( AppCc.getSp("mapOrientation", 99) == 0){
             Log.e("wok", "prel");
             if(mAllianceColor.equals("red")){
-                setContentView(R.layout.activity_pregame_l);
+                setContentView(R.layout.activity_pregame_left);
                 teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
                 teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
                 Log.e("wok", "redl");
-                iv_hab.setImageResource(R.drawable.red_hab_l);
-                layerOneA.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerOneB.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerOneC.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerTwoB.setBackgroundResource(R.drawable.starting_position_red_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_red_selector);
+                iv_hab.setImageResource(R.drawable.pregame_hab_red_left);
+                layerOneA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerOneB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerOneC.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerTwoB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
             } else if (mAllianceColor.equals("blue")){
-                setContentView(R.layout.activity_pregame_r);
+                setContentView(R.layout.activity_pregame_right);
                 teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
                 teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
 
                 Log.e("wok", "bluel");
-                iv_hab.setImageResource(R.drawable.blue_hab_r);
-                layerOneA.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerOneB.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerOneC.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerTwoB.setBackgroundResource(R.drawable.starting_position_blue_selector);
-                layerTwoA.setBackgroundResource(R.drawable.starting_position_blue_selector);
+                iv_hab.setImageResource(R.drawable.pregame_hab_blue_right);
+                layerOneA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerOneB.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerOneC.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerTwoB.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
+                layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
             }
         }
           preloadNone.setChecked(true);

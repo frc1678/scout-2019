@@ -15,7 +15,7 @@
             android:text="FAIL"
             android:textSize="25dp"
             android:layout_margin="5dp"
-            android:background="@drawable/cargo_ship_fail_selector"
+            android:background="@drawable/map_placement_fail_selector"
             android:button="@null"
             android:textAlignment="center"
             android:onClick="onClickPlacementFail"/>
@@ -27,7 +27,7 @@
             android:textSize="25dp"
             android:layout_margin="5dp"
             android:layout_toEndOf="@+id/fail"
-            android:background="@drawable/cargo_ship_success_selector"
+            android:background="@drawable/map_placement_success_selector"
             android:button="@null"
             android:textAlignment="center"
             android:onClick="onClickPlacementSuccess"/>

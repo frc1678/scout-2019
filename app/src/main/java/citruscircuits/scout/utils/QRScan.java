@@ -190,7 +190,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
     public void alertScout() {
         Log.i("SCOUTNAME", InputManager.mScoutName);
 
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_name_confirmation, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.qr_scan_dropdown_name, null);
         TextView nameView= (TextView) dialogView.findViewById(R.id.nameView);
         nameView.setText(InputManager.mScoutName);
 
