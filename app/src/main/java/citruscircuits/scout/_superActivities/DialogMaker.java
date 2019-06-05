@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import citruscircuits.scout.A0A;
+import citruscircuits.scout.MainActivity;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import citruscircuits.scout._superDataClasses.AppCc;
@@ -65,7 +65,7 @@ public class DialogMaker extends AppTc {
                     }
 
                     InputManager.storeUserData();
-                    A0A.updateUserData();
+                    MainActivity.updateUserData();
                 }
             });
 
@@ -76,7 +76,7 @@ public class DialogMaker extends AppTc {
                 public void onClick(View v) {
                     InputManager.mAssignmentMode = "override";
                     AppCc.setSp("assignmentMode", "override");
-                    A0A.btn_triggerBackupPopup.setText("Override");
+                    MainActivity.btn_triggerBackupPopup.setText("Override");
                     OverrideDialog.this.cancel();
                 }
             });
@@ -125,7 +125,7 @@ public class DialogMaker extends AppTc {
 
                     InputManager.storeUserData();
                     AppCc.setSp("tabletType", InputManager.mTabletType);
-                    A0A.updateUserData();
+                    MainActivity.updateUserData();
                 }
             });
 

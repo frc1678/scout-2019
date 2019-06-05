@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 
-import citruscircuits.scout.A0A;
+import citruscircuits.scout.MainActivity;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import citruscircuits.scout._superActivities.DialogMaker;
@@ -67,7 +67,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         }
 
         AppUtils.makeToast(this, "CAMERA PERMISSIONS WERE DENIED", 50);
-        open(A0A.class, null, true, false);
+        open(MainActivity.class, null, true, false);
     }
 
     //Initiates the camera
@@ -232,7 +232,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
                         //Update assigned robot based on scout name and newly scanned QR.
                         InputManager.getQRAssignment(AppCc.getSp("qrString", ""));
 
-                        open(A0A.class, null, true, false);
+                        open(MainActivity.class, null, true, false);
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -242,6 +242,6 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
     }
 
     public void onBackClick(View v) {
-        open(A0A.class, null, true, false);
+        open(MainActivity.class, null, true, false);
     }
 }

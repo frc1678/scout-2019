@@ -58,7 +58,7 @@ import citruscircuits.scout.utils.QRScan;
 
 import static citruscircuits.scout.utils.AppUtils.readFile;
 
-public class A0A extends DialogMaker {
+public class MainActivity extends DialogMaker {
     public RelativeLayout tabletDialogLayout;
 
     public static Drawable dr_redCycle, dr_blueCycle;
@@ -100,7 +100,7 @@ public class A0A extends DialogMaker {
         map_orientation_rb = getResources().getDrawable(R.drawable.main_map_orientation_rb);
         map_orientation_br = getResources().getDrawable(R.drawable.main_map_orientation_br);
 
-        mLayoutInflater = (LayoutInflater) A0A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater = (LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
         tabletDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.main_dialog_tablet_type, null);
 
@@ -333,7 +333,7 @@ public class A0A extends DialogMaker {
 
                     updateUserData();
 
-                    initTabletTypeDialog(A0A.this);
+                    initTabletTypeDialog(MainActivity.this);
                 }
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -381,7 +381,7 @@ public class A0A extends DialogMaker {
     }
 
     public void onClickOverrideBackup(View view) {
-        initOverrideDialog(A0A.this);
+        initOverrideDialog(MainActivity.this);
         pw_backupWindow.dismiss();
     }
 
@@ -519,7 +519,7 @@ public class A0A extends DialogMaker {
             Toast.makeText(getBaseContext(), "Please Input a Valid Match Number", Toast.LENGTH_SHORT).show();
         }
         else {
-            open(A0B.class, null, false, true);
+            open(PregameActivity.class, null, false, true);
         }
     }
 }
