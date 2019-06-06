@@ -1414,24 +1414,24 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     //Set map drawable based user mode
     public void mapChange() {
         if (element.equals("orange") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
             if (mode.equals("placement")) {
                 Log.e("ahhhhh", "placementorange");
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
                 if (field_orientation.contains("left")) {
-                    iv_field.setImageResource(R.drawable.map_field_placement_orange_left);
+                    iv_field.setImageResource(R.drawable.map_field_placement_cargo_left);
                 } else if (field_orientation.contains("right")) {
-                    iv_field.setImageResource(R.drawable.map_field_placement_orange_right);
+                    iv_field.setImageResource(R.drawable.map_field_placement_cargo_right);
                 }
             }
         } else if (element.equals("lemon") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_lemon));
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
             if (mode.equals("placement")) {
                 Log.e("ahhhhh", "placementlemon");
                 if (field_orientation.contains("left")) {
-                    iv_field.setImageResource(R.drawable.map_field_placement_lemon_left);
+                    iv_field.setImageResource(R.drawable.map_field_placement_panel_left);
                 } else if (field_orientation.contains("right")) {
-                    iv_field.setImageResource(R.drawable.map_field_placement_lemon_right);
+                    iv_field.setImageResource(R.drawable.map_field_placement_panel_right);
                 }
             }
         }
@@ -1466,23 +1466,23 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
             if (element.equals("orange")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
                 if (mode.equals("placement")) {
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
+                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
                     if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.map_field_defense_placement_orange_left);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_cargo_left);
                     } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.map_field_defense_placement_orange_right);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_cargo_right);
                     }
                 }
             }
             if (element.equals("lemon")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_lemon));
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
                 if (mode.equals("placement")) {
                     if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.map_field_defense_placement_lemon_left);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_panel_left);
                     } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.map_field_defense_placement_lemon_right);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_panel_right);
                     }
                 }
             }
@@ -1496,12 +1496,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         //Set cargo image on screen if element is orange
         if(element.equals("orange")) {
             Log.e("wokorange", "showup");
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_orange));
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
             undoDicAdder(x,y,"orange");
 
             //Set hatch panel image on screen if element is lemon
         } else if(element.equals("lemon")) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_lemon));
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
                 Log.e("woklemon", "showupppppp");
                 undoDicAdder(x,y,"lemon");
 
