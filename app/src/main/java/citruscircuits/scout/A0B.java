@@ -209,10 +209,10 @@ public void defineVariables(){
                     InputManager.mHabStartingPositionOrientation="right";
                 }
                 if(preloadCargo.isChecked()){
-                    InputManager.mPreload = "orange";
+                    InputManager.mPreload = "cargo";
 
                 }else if (preloadPanel.isChecked()){
-                    InputManager.mPreload = "lemon";
+                    InputManager.mPreload = "panel";
 
                 }else if (preloadNone.isChecked()){
                     InputManager.mPreload = "none";

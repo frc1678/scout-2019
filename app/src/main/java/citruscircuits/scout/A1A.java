@@ -422,12 +422,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     }
     // onClick methods for preload in sandstorm.
-    public void onClickPreloadLemon(View view) {
-        setPreloadType("lemon");
+    public void onClickPreloadPanel(View view) {
+        setPreloadType("panel");
     }
 
     public void onClickPreloadCargo(View view) {
-        setPreloadType("orange");
+        setPreloadType("cargo");
     }
 
     public void onClickPreloadNone(View view) {
@@ -506,7 +506,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_hab_run.setEnabled(true);
             tb_incap.setEnabled(true);
             btn_foul.setEnabled(true);
-            if(InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")){
+            if(InputManager.mPreload.equals("cargo")|| InputManager.mPreload.equals("panel")){
                 btn_drop.setEnabled(true);
             }
             InputManager.mTimerStarted= (int)(System.currentTimeMillis()/1000);
@@ -586,7 +586,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
             final Button defendedButton= (Button) layoutInflater.inflate(R.layout.map_popup_drop_defense, null).findViewById(R.id.dropDefended);
 
-            if (element.equals("lemon")){
+            if (element.equals("panel")){
                 defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
             }
             else {
@@ -703,7 +703,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                 Log.e("wok", actionDic.get(actionCount).get(3).toString());
 
-                if (actionDic.get(actionCount).get(3).equals("orange")) {
+                if (actionDic.get(actionCount).get(3).equals("cargo")) {
                     Log.e("wokDicInner1",String.valueOf(actionDic));
                     element = String.valueOf(actionDic.get(actionCount).get(3));
                     if(actionDic.get(actionCount).get(2).equals("intake")){
@@ -713,7 +713,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                         Log.e("wokInner2", String.valueOf(actionCount));
                         undoGeneric(false, true, "intake");
                     }
-                } else if (actionDic.get(actionCount).get(3).equals("lemon")) {
+                } else if (actionDic.get(actionCount).get(3).equals("panel")) {
                     Log.e("wokDicInner2", String.valueOf(actionDic));
                     element = String.valueOf(actionDic.get(actionCount).get(3));
                     if(actionDic.get(actionCount).get(2).equals("intake")){
@@ -1270,16 +1270,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         });
     }
 
-    public void onClickOrange(View view) {
-        initIntake("orange");
+    public void onClickCargo(View view) {
+        initIntake("cargo");
         // Make preload disabled after intaking
         if (!tele) {
           preloadEnabled(false);
         }
     }
 
-    public void onClickLemon(View view) {
-        initIntake("lemon");
+    public void onClickPanel(View view) {
+        initIntake("panel");
         // Make preload disabled after intaking
         if (!tele) {
           preloadEnabled(false);
@@ -1384,7 +1384,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             compressionDic.put("wasDefended", wasDefended);
             compressionDic.put("structure", structure);
 
-            if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
+            if((structure.contains("Rocket") && element.equals("panel")) || structure.equals("cargoShip")) {
                 compressionDic.put("side", side);
             }
             //Record different levels of rocket
@@ -1413,10 +1413,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     //Set map drawable based user mode
     public void mapChange() {
-        if (element.equals("orange") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
+        if (element.equals("cargo") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
             if (mode.equals("placement")) {
-                Log.e("ahhhhh", "placementorange");
+                Log.e("ahhhhh", "placementcargo");
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
                 if (field_orientation.contains("left")) {
                     iv_field.setImageResource(R.drawable.map_field_placement_cargo_left);
@@ -1424,10 +1424,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.map_field_placement_cargo_right);
                 }
             }
-        } else if (element.equals("lemon") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
+        } else if (element.equals("panel") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
             if (mode.equals("placement")) {
-                Log.e("ahhhhh", "placementlemon");
+                Log.e("ahhhhh", "placementpanel");
                 if (field_orientation.contains("left")) {
                     iv_field.setImageResource(R.drawable.map_field_placement_panel_left);
                 } else if (field_orientation.contains("right")) {
@@ -1465,7 +1465,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     iv_field.setImageResource(R.drawable.map_field_defense_red_right);
                 }
             }
-            if (element.equals("orange")) {
+            if (element.equals("cargo")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
                 if (mode.equals("placement")) {
                     iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
@@ -1476,7 +1476,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
                 }
             }
-            if (element.equals("lemon")) {
+            if (element.equals("panel")) {
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
                 if (mode.equals("placement")) {
                     if (field_orientation.contains("left")) {
@@ -1493,17 +1493,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
         overallLayout.removeView(iv_game_element);
 
-        //Set cargo image on screen if element is orange
-        if(element.equals("orange")) {
-            Log.e("wokorange", "showup");
+        //Set cargo image on screen if element is cargo
+        if(element.equals("cargo")) {
+            Log.e("wokcargo", "showup");
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
-            undoDicAdder(x,y,"orange");
+            undoDicAdder(x,y,"cargo");
 
-            //Set hatch panel image on screen if element is lemon
-        } else if(element.equals("lemon")) {
+            //Set hatch panel image on screen if element is panel
+        } else if(element.equals("panel")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
-                Log.e("woklemon", "showupppppp");
-                undoDicAdder(x,y,"lemon");
+                Log.e("wokpanel", "showupppppp");
+                undoDicAdder(x,y,"panel");
 
         }
         Log.e("ahhhh1",String.valueOf(actionDic));
@@ -1608,7 +1608,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
 
-            if(givenElement.equals("orange") || givenElement.equals("lemon")) {
+            if(givenElement.equals("cargo") || givenElement.equals("panel")) {
                 mode = "placement";
                 modeIsIntake=false;
                 btn_drop.setEnabled(true);
@@ -1634,7 +1634,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
     public void preload(){
         Log.e("preloadWok", "preloadWok");
-        if (InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")) {
+        if (InputManager.mPreload.equals("cargo")|| InputManager.mPreload.equals("panel")) {
             Log.e("woooooook", "preloadWokinput");
 
             //Set whether drop is enabled based on whether or not incap is checked
@@ -1646,11 +1646,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_drop.setEnabled(true);
                 }
             }
-            if (InputManager.mPreload.equals("orange")) {
-                element ="orange";
+            if (InputManager.mPreload.equals("cargo")) {
+                element ="cargo";
             }
-            else if (InputManager.mPreload.equals("lemon")) {
-                element ="lemon";
+            else if (InputManager.mPreload.equals("panel")) {
+                element ="panel";
             }
             Log.e("preloadWok1", element);
             mode ="placement";
@@ -1725,8 +1725,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (y < 4.5 * x - 1207.5 && y < -4.5 * x + 2122.5 && y < 165 && field_orientation.contains("left") && mTabletType.equals("fire"))) {
                 structure = "leftRocket";
             }
-            //If element is lemon, add different coordinates for different sides of each rocket
-            if(element.equals("lemon")) {
+            //If element is panel, add different coordinates for different sides of each rocket
+            if(element.equals("panel")) {
                 if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mTabletType.equals("green"))
                         || (((x >= 493 && field_orientation.contains("left")) || (x <= 640 && field_orientation.contains("right"))) && mTabletType.equals("black"))
                         || (((x >= 370 && field_orientation.contains("left")) || (x <= 480 && field_orientation.contains("right"))) && mTabletType.equals("fire"))) {
@@ -1745,18 +1745,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             level2 = placementDialogLayout.findViewById(R.id.radio_2);
             level3 = placementDialogLayout.findViewById(R.id.radio_1);
 
-            if(element.equals("lemon")) {
+            if(element.equals("panel")) {
                 tb_shotOutOfField.setVisibility(View.INVISIBLE);
 
-                level1.setBackgroundResource(R.drawable.map_placement_level_selector_lemon);
-                level2.setBackgroundResource(R.drawable.map_placement_level_selector_lemon);
-                level3.setBackgroundResource(R.drawable.map_placement_level_selector_lemon);
-            } else if(element.equals("orange")) {
-                tb_shotOutOfField.setBackgroundResource(R.drawable.map_placement_orange_toggle_selector);
+                level1.setBackgroundResource(R.drawable.map_placement_level_selector_panel);
+                level2.setBackgroundResource(R.drawable.map_placement_level_selector_panel);
+                level3.setBackgroundResource(R.drawable.map_placement_level_selector_panel);
+            } else if(element.equals("cargo")) {
+                tb_shotOutOfField.setBackgroundResource(R.drawable.map_placement_cargo_toggle_selector);
 
-                level1.setBackgroundResource(R.drawable.map_placement_level_selector_orange);
-                level2.setBackgroundResource(R.drawable.map_placement_level_selector_orange);
-                level3.setBackgroundResource(R.drawable.map_placement_level_selector_orange);
+                level1.setBackgroundResource(R.drawable.map_placement_level_selector_cargo);
+                level2.setBackgroundResource(R.drawable.map_placement_level_selector_cargo);
+                level3.setBackgroundResource(R.drawable.map_placement_level_selector_cargo);
             }
             //Set coordinates of cargo ship
         } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mTabletType.equals("green"))
@@ -1783,10 +1783,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         tb_wasDefended = placementDialogLayout.findViewById(R.id.wasDefended);
 
-        if(element.equals("lemon")) {
-            tb_wasDefended.setBackgroundResource(R.drawable.map_placement_lemon_toggle_selector);
-        } else if(element.equals("orange")) {
-            tb_wasDefended.setBackgroundResource(R.drawable.map_placement_orange_toggle_selector);
+        if(element.equals("panel")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.map_placement_panel_toggle_selector);
+        } else if(element.equals("cargo")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.map_placement_cargo_toggle_selector);
         }
         if (tele){
             tb_wasDefended.setEnabled(true);
@@ -1834,12 +1834,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
-                if (element.equals("orange")) {
-                    Log.e("wokorange", "showup");
-                    undoDicAdder(x,y,"orange");
-                } else if(element.equals("lemon")) {
-                    Log.e("woklemon", "showupppppp");
-                    undoDicAdder(x, y, "lemon");
+                if (element.equals("cargo")) {
+                    Log.e("wokcargo", "showup");
+                    undoDicAdder(x,y,"cargo");
+                } else if(element.equals("panel")) {
+                    Log.e("wokpanel", "showupppppp");
+                    undoDicAdder(x, y, "panel");
                 }
             }
             placementDialogOpen = false;
@@ -1873,13 +1873,13 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
-                if (element.equals("orange")) {
-                    Log.e("wokorange", "showup");
-                    undoDicAdder(x,y,"orange");
+                if (element.equals("cargo")) {
+                    Log.e("wokcargo", "showup");
+                    undoDicAdder(x,y,"cargo");
 
-                } else if(element.equals("lemon")) {
-                    Log.e("woklemon", "showupppppp");
-                    undoDicAdder(x, y, "lemon");
+                } else if(element.equals("panel")) {
+                    Log.e("wokpanel", "showupppppp");
+                    undoDicAdder(x, y, "panel");
                 }
             }
             placementDialogOpen = false;

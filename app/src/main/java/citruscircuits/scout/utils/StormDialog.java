@@ -46,10 +46,10 @@ public class StormDialog extends Fragment {
         preloadNone2 = (RadioButton) view.findViewById(R.id.preloadNone2);
 
         //Make preload buttons start the same as previous screen.
-        if (InputManager.mPreload.equals("orange")) {
+        if (InputManager.mPreload.equals("cargo")) {
             preloadCargo2.setChecked(true);
         }
-        else if (InputManager.mPreload.equals("lemon")) {
+        else if (InputManager.mPreload.equals("panel")) {
             preloadPanel2.setChecked(true);
         }
         else if (InputManager.mPreload.equals("none")) {

@@ -71,8 +71,8 @@ public interface Cst {
         put("mid", "B");
         put("right", "C");
         put("far", "D");
-        put("orange", "E");
-        put("lemon", "G");
+        put("cargo", "E");
+        put("panel", "G");
         put("none", "H");
         put("QR", "J");
         put("backup", "K");
