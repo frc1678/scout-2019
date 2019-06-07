@@ -236,7 +236,7 @@ public class A0A extends DialogMaker {
                 //Do nothing, necessary for TextChangedListeners.
             }
 
-            //Update data after altered
+            //Updates match number after altered
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().equals("")) {
