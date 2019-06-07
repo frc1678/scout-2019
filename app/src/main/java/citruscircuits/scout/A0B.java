@@ -183,7 +183,7 @@ public void defineVariables(){
         Log.e("wokkkkkk", "layer2");
         habSub1.clearCheck();
     }
-    //Records what starting position and level robot started at. Moves to either map activity or final data activity depending on if robot showed up.
+    //Saves what starting position and level robot started at. Moves to either map activity or final data activity depending on if robot showed up.
     public void onClickDataCheck(View v) {
         if (!showUp.isChecked()){
             if((!layerOneA.isChecked() && !layerOneB.isChecked() && !layerOneC.isChecked()&& !layerTwoA.isChecked()
