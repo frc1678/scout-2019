@@ -440,7 +440,7 @@ public class A0A extends DialogMaker {
             }
         });
     }
-    //Create the layout and open a QR dialog
+    //Creates the layout and open a QR dialog
     public void openQRDialog(String qrString) {
         final Dialog qrDialog = new Dialog(this,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         qrDialog.setCanceledOnTouchOutside(false);
