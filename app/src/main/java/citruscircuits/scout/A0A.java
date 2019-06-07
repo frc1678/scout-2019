@@ -387,7 +387,7 @@ public class A0A extends DialogMaker {
         btn_triggerBackupPopup.setText("Backup");
     }
 
-    //Open override dialog when pressed
+    //Opens override dialog when pressed
     public void onClickOverrideBackup(View view) {
         initOverrideDialog(A0A.this);
         pw_backupWindow.dismiss();
@@ -440,7 +440,7 @@ public class A0A extends DialogMaker {
             }
         });
     }
-    //Creates the layout and open a QR dialog
+    //Creates the layout and opens a QR dialog
     public void openQRDialog(String qrString) {
         final Dialog qrDialog = new Dialog(this,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         qrDialog.setCanceledOnTouchOutside(false);
