@@ -158,7 +158,7 @@ public void defineVariables(){
     preloadNone= findViewById(R.id.preloadNone);
     showUp= findViewById(R.id.showedUp);
     }
-    //Records which levels the scout begins at
+    //Records which level the robot begins at
     public void onClickHabOneA(View v){
         Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
