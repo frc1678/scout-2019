@@ -232,32 +232,32 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (AppCc.getSp("mapOrientation", 99) != 99) {
             if (AppCc.getSp("mapOrientation", 99) == 0) {
                 if(mAllianceColor.equals("blue")) {
-                    iv_field.setImageResource(R.drawable.field_intake_blue_right);
+                    iv_field.setImageResource(R.drawable.map_field_intake_blue_right);
                     field_orientation = "blue_right";
                     isMapLeft = false;
                 } else if(mAllianceColor.equals("red")) {
-                    iv_field.setImageResource(R.drawable.field_intake_red_left);
+                    iv_field.setImageResource(R.drawable.map_field_intake_red_left);
                     field_orientation = "red_left";
                     isMapLeft = true;
                 }
             } else {
                 if(mAllianceColor.equals("blue")) {
-                    iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                    iv_field.setImageResource(R.drawable.map_field_intake_blue_left);
                     field_orientation = "blue_left";
                     isMapLeft = true;
                 } else if(mAllianceColor.equals("red")) {
-                    iv_field.setImageResource(R.drawable.field_intake_red_right);
+                    iv_field.setImageResource(R.drawable.map_field_intake_red_right);
                     field_orientation = "red_right";
                     isMapLeft = false;
                 }
             }
         } else {
             if(mAllianceColor.equals("blue")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                iv_field.setImageResource(R.drawable.map_field_intake_blue_left);
                 field_orientation = "blue_left";
                 isMapLeft = true;
             } else if(mAllianceColor.equals("red")) {
-                iv_field.setImageResource(R.drawable.field_intake_red_right);
+                iv_field.setImageResource(R.drawable.map_field_intake_red_right);
                 field_orientation = "red_right";
                 isMapLeft = false;
             }
@@ -267,33 +267,33 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
 //Set how big popups are for each tablet type
         if(mTabletType.equals("green")) {
-            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 620, 450, false);
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_intake, null), 620, 450, false);
         } else if(mTabletType.equals("black")) {
-            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 410, 300, false);
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_intake, null), 410, 300, false);
         } else if(mTabletType.equals("fire")) {
-            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_intake, null), 310, 250, false);
+            popup = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_intake, null), 310, 250, false);
         }
         popup.setOutsideTouchable(false);
         popup.setFocusable(false);
 
         if(mTabletType.equals("green")) {
-            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 620, 450, false);
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_fail_success_loading_station, null), 620, 450, false);
         } else if(mTabletType.equals("black")) {
-            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 410, 300, false);
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_fail_success_loading_station, null), 410, 300, false);
         } else if(mTabletType.equals("fire")) {
-            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_fail_success, null), 310, 250, false);
+            popup_fail_success = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_fail_success_loading_station, null), 310, 250, false);
         }
         popup_fail_success.setOutsideTouchable(false);
         popup_fail_success.setFocusable(false);
 
         if (mTabletType.equals("green")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 620, 450, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_drop_defense, null), 620, 450, false);
         }
         else if (mTabletType.equals("black")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 410, 300, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_drop_defense, null), 410, 300, false);
         }
         else if (mTabletType.equals("fire")) {
-            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.pw_drop, null), 310, 250, false);
+            popup_drop_defense = new PopupWindow((RelativeLayout) layoutInflater.inflate(R.layout.map_popup_drop_defense, null), 310, 250, false);
         }
         popup_drop_defense.setOutsideTouchable(false);
         popup_drop_defense.setFocusable(false);
@@ -421,12 +421,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     }
     // onClick methods for preload in sandstorm.
-    public void onClickPreloadLemon(View view) {
-        setPreloadType("lemon");
+    public void onClickPreloadPanel(View view) {
+        setPreloadType("panel");
     }
 
     public void onClickPreloadCargo(View view) {
-        setPreloadType("orange");
+        setPreloadType("cargo");
     }
 
     public void onClickPreloadNone(View view) {
@@ -504,14 +504,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             tb_hab_run.setEnabled(true);
             tb_incap.setEnabled(true);
             btn_foul.setEnabled(true);
-            if(InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")){
+            if(InputManager.mPreload.equals("cargo")|| InputManager.mPreload.equals("panel")){
                 btn_drop.setEnabled(true);
             }
             InputManager.mTimerStarted= (int)(System.currentTimeMillis()/1000);
             if (InputManager.mAllianceColor.equals("red")) {
-                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_red_selector);
+                btn_startTimer.setBackgroundResource(R.drawable.map_storm_reset_red_selector);
             } else if (InputManager.mAllianceColor.equals("blue")) {
-                btn_startTimer.setBackgroundResource(R.drawable.storm_reset_blue_selector);
+                btn_startTimer.setBackgroundResource(R.drawable.pregame_storm_reset_blue_selector);
             }
 
         } else if (!startTimer) {
@@ -546,9 +546,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             preloadEnabled(true);
 
             if (InputManager.mAllianceColor.equals("red")) {
-                btn_startTimer.setBackgroundResource(R.drawable.storm_red_selector);
+                btn_startTimer.setBackgroundResource(R.drawable.map_storm_btn_red_selector);
             } else if (InputManager.mAllianceColor.equals("blue")) {
-                btn_startTimer.setBackgroundResource(R.drawable.storm_blue_selector);
+                btn_startTimer.setBackgroundResource(R.drawable.map_storm_btn_blue_selector);
             }
             mapChange();
         }
@@ -581,9 +581,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (tele) {
             initPopup(popup_drop_defense);
 
-            final Button defendedButton= (Button) layoutInflater.inflate(R.layout.pw_drop, null).findViewById(R.id.dropDefended);
+            final Button defendedButton= (Button) layoutInflater.inflate(R.layout.map_popup_drop_defense, null).findViewById(R.id.dropDefended);
 
-            if (element.equals("lemon")){
+            if (element.equals("panel")){
                 defendedButton.setBackgroundColor(Color.parseColor("#fffa00"));
             }
             else {
@@ -693,7 +693,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                 actionCount = actionCount - 1;
 
-                if (actionDic.get(actionCount).get(3).equals("orange")) {
+                Log.e("wok", actionDic.get(actionCount).get(3).toString());
+
+                if (actionDic.get(actionCount).get(3).equals("cargo")) {
+                    Log.e("wokDicInner1",String.valueOf(actionDic));
+
                     element = String.valueOf(actionDic.get(actionCount).get(3));
                     if(actionDic.get(actionCount).get(2).equals("intake")){
                         undoGeneric(true, false,"placement");
@@ -701,7 +705,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     } else if(actionDic.get(actionCount).get(2).equals("placement")){
                         undoGeneric(false, true, "intake");
                     }
-                } else if (actionDic.get(actionCount).get(3).equals("lemon")) {
+
+                } else if (actionDic.get(actionCount).get(3).equals("panel")) {
+                    Log.e("wokDicInner2", String.valueOf(actionDic));
                     element = String.valueOf(actionDic.get(actionCount).get(3));
                     if(actionDic.get(actionCount).get(2).equals("intake")){
                         undoGeneric(true, false, "placement");
@@ -813,10 +819,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         final Dialog climbDialog = new Dialog(this);
         climbDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (isMapLeft){
-            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.climb_dialog_l, null);
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.map_dialog_climb_left, null);
         }
         else {
-            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.climb_dialog_r, null);
+            dialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.main_dialog_climb_right, null);
         }
        climbDialog.setCanceledOnTouchOutside(false);
        climbDialog.setCancelable(false);
@@ -1238,16 +1244,16 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         });
     }
 
-    public void onClickOrange(View view) {
-        initIntake("orange");
+    public void onClickCargo(View view) {
+        initIntake("cargo");
         // Make preload disabled after intaking
         if (!tele) {
           preloadEnabled(false);
         }
     }
 
-    public void onClickLemon(View view) {
-        initIntake("lemon");
+    public void onClickPanel(View view) {
+        initIntake("panel");
         // Make preload disabled after intaking
         if (!tele) {
           preloadEnabled(false);
@@ -1351,7 +1357,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             compressionDic.put("wasDefended", wasDefended);
             compressionDic.put("structure", structure);
 
-            if((structure.contains("Rocket") && element.equals("lemon")) || structure.equals("cargoShip")) {
+            if((structure.contains("Rocket") && element.equals("panel")) || structure.equals("cargoShip")) {
                 compressionDic.put("side", side);
             }
             //Record different levels of rocket
@@ -1380,74 +1386,76 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
     //Set map drawable based user mode
     public void mapChange() {
-        if (element.equals("orange") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+        if (element.equals("cargo") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
             if (mode.equals("placement")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                Log.e("ahhhhh", "placementcargo");
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
+
                 if (field_orientation.contains("left")) {
-                    iv_field.setImageResource(R.drawable.field_placement_orange_left);
+                    iv_field.setImageResource(R.drawable.map_field_placement_cargo_left);
                 } else if (field_orientation.contains("right")) {
-                    iv_field.setImageResource(R.drawable.field_placement_orange_right);
+                    iv_field.setImageResource(R.drawable.map_field_placement_cargo_right);
                 }
             }
-        } else if (element.equals("lemon") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+        } else if (element.equals("panel") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
             if (mode.equals("placement")) {
                 if (field_orientation.contains("left")) {
-                    iv_field.setImageResource(R.drawable.field_placement_lemon_left);
+                    iv_field.setImageResource(R.drawable.map_field_placement_panel_left);
                 } else if (field_orientation.contains("right")) {
-                    iv_field.setImageResource(R.drawable.field_placement_lemon_right);
+                    iv_field.setImageResource(R.drawable.map_field_placement_panel_right);
                 }
             }
         }
         if (mode.equals("intake") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             btn_drop.setEnabled(false);
             if (field_orientation.equals("blue_left")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_left);
+                iv_field.setImageResource(R.drawable.map_field_intake_blue_left);
             } else if (field_orientation.equals("blue_right")) {
-                iv_field.setImageResource(R.drawable.field_intake_blue_right);
+                iv_field.setImageResource(R.drawable.map_field_intake_blue_right);
             } else if (field_orientation.equals("red_left")) {
-                iv_field.setImageResource(R.drawable.field_intake_red_left);
+                iv_field.setImageResource(R.drawable.map_field_intake_red_left);
             } else if (field_orientation.equals("red_right")) {
-                iv_field.setImageResource(R.drawable.field_intake_red_right);
+                iv_field.setImageResource(R.drawable.map_field_intake_red_right);
             }
         }
         if (tb_incap.isChecked()) {
             if (field_orientation.contains("right")) {
-                iv_field.setImageResource(R.drawable.gray_field_right);
+                iv_field.setImageResource(R.drawable.map_field_incap_right);
             } else if (field_orientation.contains("left")) {
-                iv_field.setImageResource(R.drawable.gray_field_left);
+                iv_field.setImageResource(R.drawable.map_field_incap_left);
             }
         } else if (tb_defense.isChecked()) {
             if (mode.equals("intake")) {
                 if (field_orientation.equals("blue_left")) {
-                    iv_field.setImageResource(R.drawable.defense_field_blue_left);
+                    iv_field.setImageResource(R.drawable.map_field_defense_blue_left);
                 } else if (field_orientation.equals("blue_right")) {
-                    iv_field.setImageResource(R.drawable.defense_field_blue_right);
+                    iv_field.setImageResource(R.drawable.map_field_defense_blue_right);
                 } else if (field_orientation.equals("red_left")) {
-                    iv_field.setImageResource(R.drawable.defense_field_red_left);
+                    iv_field.setImageResource(R.drawable.map_field_defense_red_left);
                 } else if (field_orientation.equals("red_right")) {
-                    iv_field.setImageResource(R.drawable.defense_field_red_right);
+                    iv_field.setImageResource(R.drawable.map_field_defense_red_right);
                 }
             }
-            if (element.equals("orange")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+            if (element.equals("cargo")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
                 if (mode.equals("placement")) {
-                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
+                    iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
                     if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.defense_placement_orange_left);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_cargo_left);
                     } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.defense_placement_orange_right);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_cargo_right);
                     }
                 }
             }
-            if (element.equals("lemon")) {
-                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
+            if (element.equals("panel")) {
+                iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
                 if (mode.equals("placement")) {
                     if (field_orientation.contains("left")) {
-                        iv_field.setImageResource(R.drawable.defense_placement_lemon_left);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_panel_left);
                     } else if (field_orientation.contains("right")) {
-                        iv_field.setImageResource(R.drawable.defense_placement_lemon_right);
+                        iv_field.setImageResource(R.drawable.map_field_defense_placement_panel_right);
                     }
                 }
             }
@@ -1458,15 +1466,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         pw = true;
         overallLayout.removeView(iv_game_element);
 
-        //Set cargo image on screen if element is orange
-        if(element.equals("orange")) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.orange));
-            undoDicAdder(x,y,"orange");
+        //Set cargo image on screen if element is cargo
+        if(element.equals("cargo")) {
+            Log.e("wokcargo", "showup");
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
+            undoDicAdder(x,y,"cargo");
 
-            //Set hatch panel image on screen if element is lemon
-        } else if(element.equals("lemon")) {
-            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.lemon));
-                undoDicAdder(x,y,"lemon");
+            //Set hatch panel image on screen if element is panel
+        } else if(element.equals("panel")) {
+            iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
+                Log.e("wokpanel", "showupppppp");
+                undoDicAdder(x,y,"panel");
 
         }
 
@@ -1566,7 +1576,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 }
             }
 
-            if(givenElement.equals("orange") || givenElement.equals("lemon")) {
+            if(givenElement.equals("cargo") || givenElement.equals("panel")) {
                 mode = "placement";
                 modeIsIntake=false;
                 btn_drop.setEnabled(true);
@@ -1591,7 +1601,10 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         }
     }
     public void preload(){
-        if (InputManager.mPreload.equals("orange")|| InputManager.mPreload.equals("lemon")) {
+
+        Log.e("preloadWok", "preloadWok");
+        if (InputManager.mPreload.equals("cargo")|| InputManager.mPreload.equals("panel")) {
+            Log.e("woooooook", "preloadWokinput");
 
             //Set whether drop is enabled based on whether or not incap is checked
 
@@ -1603,11 +1616,11 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     btn_drop.setEnabled(true);
                 }
             }
-            if (InputManager.mPreload.equals("orange")) {
-                element ="orange";
+            if (InputManager.mPreload.equals("cargo")) {
+                element ="cargo";
             }
-            else if (InputManager.mPreload.equals("lemon")) {
-                element ="lemon";
+            else if (InputManager.mPreload.equals("panel")) {
+                element ="panel";
             }
             mode ="placement";
             modeIsIntake=false;
@@ -1676,8 +1689,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (y < 4.5 * x - 1207.5 && y < -4.5 * x + 2122.5 && y < 165 && field_orientation.contains("left") && mTabletType.equals("fire"))) {
                 structure = "leftRocket";
             }
-            //If element is lemon, add different coordinates for different sides of each rocket
-            if(element.equals("lemon")) {
+            //If element is panel, add different coordinates for different sides of each rocket
+            if(element.equals("panel")) {
                 if((((x >= 740 && field_orientation.contains("left")) || (x <= 960 && field_orientation.contains("right"))) && mTabletType.equals("green"))
                         || (((x >= 493 && field_orientation.contains("left")) || (x <= 640 && field_orientation.contains("right"))) && mTabletType.equals("black"))
                         || (((x >= 370 && field_orientation.contains("left")) || (x <= 480 && field_orientation.contains("right"))) && mTabletType.equals("fire"))) {
@@ -1688,7 +1701,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     side = "near";
                 }
             }
-            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_rocket, null);
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.map_placement_dialog_rocket, null);
 
             tb_shotOutOfField = placementDialogLayout.findViewById(R.id.shotOutOfField);
 
@@ -1696,18 +1709,18 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             level2 = placementDialogLayout.findViewById(R.id.radio_2);
             level3 = placementDialogLayout.findViewById(R.id.radio_1);
 
-            if(element.equals("lemon")) {
+            if(element.equals("panel")) {
                 tb_shotOutOfField.setVisibility(View.INVISIBLE);
 
-                level1.setBackgroundResource(R.drawable.level_selector_lemon);
-                level2.setBackgroundResource(R.drawable.level_selector_lemon);
-                level3.setBackgroundResource(R.drawable.level_selector_lemon);
-            } else if(element.equals("orange")) {
-                tb_shotOutOfField.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
+                level1.setBackgroundResource(R.drawable.map_placement_level_selector_panel);
+                level2.setBackgroundResource(R.drawable.map_placement_level_selector_panel);
+                level3.setBackgroundResource(R.drawable.map_placement_level_selector_panel);
+            } else if(element.equals("cargo")) {
+                tb_shotOutOfField.setBackgroundResource(R.drawable.map_placement_cargo_toggle_selector);
 
-                level1.setBackgroundResource(R.drawable.level_selector_orange);
-                level2.setBackgroundResource(R.drawable.level_selector_orange);
-                level3.setBackgroundResource(R.drawable.level_selector_orange);
+                level1.setBackgroundResource(R.drawable.map_placement_level_selector_cargo);
+                level2.setBackgroundResource(R.drawable.map_placement_level_selector_cargo);
+                level3.setBackgroundResource(R.drawable.map_placement_level_selector_cargo);
             }
             //Set coordinates of cargo ship
         } else if((((field_orientation.contains("left") && x > 950 && x < 1445) || (field_orientation.contains("right") && x > 255 && x < 760)) && y > 335 && y < 700 && mTabletType.equals("green"))
@@ -1727,17 +1740,17 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     || (((field_orientation.contains("left") && y >= 260) || (field_orientation.contains("right") && y <= 260)) && mTabletType.equals("fire"))){
                 side = "right";
             }
-            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.pw_cargo_ship, null);
+            placementDialogLayout = (RelativeLayout) this.getLayoutInflater().inflate(R.layout.map_placement_dialog_cargo_ship, null);
         }
         fail = placementDialogLayout.findViewById(R.id.fail);
         success = placementDialogLayout.findViewById(R.id.success);
 
         tb_wasDefended = placementDialogLayout.findViewById(R.id.wasDefended);
 
-        if(element.equals("lemon")) {
-            tb_wasDefended.setBackgroundResource(R.drawable.placement_lemon_toggle_selector);
-        } else if(element.equals("orange")) {
-            tb_wasDefended.setBackgroundResource(R.drawable.placement_orange_toggle_selector);
+        if(element.equals("panel")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.map_placement_panel_toggle_selector);
+        } else if(element.equals("cargo")) {
+            tb_wasDefended.setBackgroundResource(R.drawable.map_placement_cargo_toggle_selector);
         }
         if (tele){
             tb_wasDefended.setEnabled(true);
@@ -1785,10 +1798,14 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
-                if (element.equals("orange")) {
-                    undoDicAdder(x,y,"orange");
-                } else if(element.equals("lemon")) {
-                    undoDicAdder(x, y, "lemon");
+
+                if (element.equals("cargo")) {
+                    Log.e("wokcargo", "showup");
+                    undoDicAdder(x,y,"cargo");
+                } else if(element.equals("panel")) {
+                    Log.e("wokpanel", "showupppppp");
+                    undoDicAdder(x, y, "panel");
+
                 }
             }
             placementDialogOpen = false;
@@ -1822,11 +1839,15 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 overallLayout.removeView(iv_game_element);
                 pw = true;
                 mapChange();
-                if (element.equals("orange")) {
-                    undoDicAdder(x,y,"orange");
 
-                } else if(element.equals("lemon")) {
-                    undoDicAdder(x, y, "lemon");
+                if (element.equals("cargo")) {
+                    Log.e("wokcargo", "showup");
+                    undoDicAdder(x,y,"cargo");
+
+                } else if(element.equals("panel")) {
+                    Log.e("wokpanel", "showupppppp");
+                    undoDicAdder(x, y, "panel");
+
                 }
             }
             placementDialogOpen = false;

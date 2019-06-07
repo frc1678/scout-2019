@@ -2,12 +2,10 @@ package citruscircuits.scout.utils;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import citruscircuits.scout.A1A;
 import citruscircuits.scout.Managers.InputManager;
 import citruscircuits.scout.R;
 import android.widget.Button;
@@ -30,13 +28,13 @@ public class StormDialog extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         InputManager.mSandstormEndPosition = "";
         if(InputManager.mAllianceColor.equals("red")) {
-            view = inflater.inflate(R.layout.activity_storm_red, container, false);
+            view = inflater.inflate(R.layout.map_storm_red, container, false);
             btn_startTimer = view.findViewById(R.id.btn_timer);
             tb_hab_run = view.findViewById(R.id.tgbtn_storm_run);
             teleButton =view.findViewById(R.id.btn_to_teleop);
         }
         else if(InputManager.mAllianceColor.equals("blue")) {
-            view = inflater.inflate(R.layout.activity_storm_blue, container, false);
+            view = inflater.inflate(R.layout.map_storm_blue, container, false);
             btn_startTimer = view.findViewById(R.id.btn_timer);
             tb_hab_run = view.findViewById(R.id.tgbtn_storm_run);
             teleButton =view.findViewById(R.id.btn_to_teleop);
@@ -48,10 +46,10 @@ public class StormDialog extends Fragment {
         preloadNone2 = (RadioButton) view.findViewById(R.id.preloadNone2);
 
         //Make preload buttons start the same as previous screen.
-        if (InputManager.mPreload.equals("orange")) {
+        if (InputManager.mPreload.equals("cargo")) {
             preloadCargo2.setChecked(true);
         }
-        else if (InputManager.mPreload.equals("lemon")) {
+        else if (InputManager.mPreload.equals("panel")) {
             preloadPanel2.setChecked(true);
         }
         else if (InputManager.mPreload.equals("none")) {

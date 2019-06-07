@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/storm_blue_background_selector">
+    android:background="@drawable/map_storm_background_blue_selector">
 
     <RelativeLayout
         android:layout_width="130dp"
@@ -18,7 +18,7 @@
             android:textSize="20dp"
             android:layout_marginBottom="15dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/storm_blue_selector"
+            android:background="@drawable/map_storm_btn_blue_selector"
             android:onClick="onClickStartTimer"/>
         <ToggleButton
             android:layout_width="130dp"
@@ -31,7 +31,7 @@
             android:textOff="HAB LINE CROSSED"
             android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/storm_blue_selector"
+            android:background="@drawable/map_storm_btn_blue_selector"
             android:enabled="false"/>
 
         <RadioGroup
@@ -46,7 +46,7 @@
                 android:id="@+id/preloadCargo2"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/cargo_selector"
+                android:background="@drawable/map_placement_cargo_selector"
                 android:button="@null"
                 android:text="Cargo"
                 android:textAlignment="center"
@@ -59,12 +59,12 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/panel_selector"
+                android:background="@drawable/map_placement_panel_selector"
                 android:button="@null"
                 android:text="Panel"
                 android:textAlignment="center"
                 android:textSize="25sp"
-                android:onClick="onClickPreloadLemon"
+                android:onClick="onClickPreloadPanel"
                 android:layout_marginBottom="15dp"/>
 
             <RadioButton
@@ -72,7 +72,7 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/no_preload_selector"
+                android:background="@drawable/pregame_preload_none_selector"
                 android:button="@null"
                 android:text="None"
                 android:textAlignment="center"
@@ -93,5 +93,5 @@
         android:layout_marginBottom="15dp"
         android:enabled="false"
         android:onClick="onClickTeleop"
-        android:background="@drawable/storm_blue_selector" />
+        android:background="@drawable/map_storm_btn_blue_selector" />
 </RelativeLayout>

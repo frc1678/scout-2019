@@ -33,7 +33,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:text="none"
-            android:background="@drawable/button_border_dash"
+            android:background="@drawable/main_start_border_dash"
             android:textSize="15sp"
             android:onClick="onClicknoneI"
             />
@@ -111,7 +111,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text=" "
-            android:background="@drawable/button_border_line"
+            android:background="@drawable/main_start_border_line"
             android:textSize="20sp"
             android:onClick="onClickspaceOneI"
             />
@@ -122,7 +122,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text=" "
-            android:background="@drawable/button_border_line"
+            android:background="@drawable/main_start_border_line"
             android:textSize="20sp"
             android:onClick="onClickspaceTwoI"
             />
@@ -133,7 +133,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text=" "
-            android:background="@drawable/button_border_line"
+            android:background="@drawable/main_start_border_line"
             android:onClick="onClickspaceThreeI"
             android:textSize="20sp" />
 
@@ -198,7 +198,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:text="none"
-            android:background="@drawable/button_border_dash"
+            android:background="@drawable/main_start_border_dash"
             android:textSize="15sp"
             android:onClick="onClicknoneII"
             />
@@ -266,7 +266,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text=" "
-            android:background="@drawable/button_border_line"
+            android:background="@drawable/main_start_border_line"
             android:textSize="20sp"
             android:onClick="onClickspaceOneII"
 
@@ -278,7 +278,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text=" "
-            android:background="@drawable/button_border_line"
+            android:background="@drawable/main_start_border_line"
             android:onClick="onClickspaceTwoII"
             android:textSize="20sp" />
         <Button
@@ -289,7 +289,7 @@
             android:layout_centerVertical="true"
             android:text=" "
             android:onClick="onClickspaceThreeII"
-            android:background="@drawable/button_border_line"
+            android:background="@drawable/main_start_border_line"
             android:textSize="20sp" />
     </LinearLayout>
     <LinearLayout
