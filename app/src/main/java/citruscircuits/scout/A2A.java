@@ -35,13 +35,15 @@ public class A2A extends DialogMaker {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_datacheck);
         context = this;
-
+        //Declare team and match variables
         et_matchNum = findViewById(R.id.matchET);
         et_teamNum = findViewById(R.id.teamET);
 
         et_matchNum.setText(valueOf(InputManager.mMatchNum));
         et_teamNum.setText(valueOf(InputManager.mTeamNum));
 
+
+        //Declare name spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.datacheck_dropdown_name, Cst.SCOUT_NAMES);
         name_spinner = (Spinner) findViewById(R.id.spinner_name);
 
@@ -58,15 +60,16 @@ public class A2A extends DialogMaker {
             }
         });
     }
-
+    //Records match data and saves it as a QR
     public void onClickToQR(View view) {
+        //If anything is empty in the activity, it will prevent the user from entering the QR activity. Otherwise, save data and go to QR activity
         if(et_teamNum.getText().toString().equals("") || Integer.valueOf(et_teamNum.getText().toString()) == 0 || et_matchNum.getText().toString().equals("") || Integer.valueOf(et_matchNum.getText().toString()) == 0) {
             Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
         } else {
             InputManager.mTeamNum = AppUtils.StringToInt(et_teamNum.getText().toString());
             InputManager.mMatchNum = AppUtils.StringToInt(et_matchNum.getText().toString());
 
-            //Put all OneTimeMatchData in mOneTimeMatchData to compress into header.
+            //Records all match data. Put all OneTimeMatchData in mOneTimeMatchData to compress into header.
             try {
                 InputManager.mOneTimeMatchData.put("startingLevel", InputManager.mHabStartingPositionLevel);
                 InputManager.mOneTimeMatchData.put("crossedHabLine", InputManager.mCrossedHabLine);
@@ -88,7 +91,7 @@ public class A2A extends DialogMaker {
             open(A3A.class, null, false, false);
         }
     }
-
+    //If android back button is pressed, warns the user that they will lose information.
     public void onBackPressed() {
         final Activity activity = this;
         new AlertDialog.Builder(this)
