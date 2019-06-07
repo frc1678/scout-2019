@@ -42,12 +42,13 @@ public class A3A extends DialogMaker {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr_display);
 
+        setContentView(R.layout.activity_qr_display);
+        //Records match information.
         InputManager.initMatchKey();
 
         tQRView = findViewById(R.id.QRCode_Display);
-
+        //Resets data inputted and fills with match information
         InputManager.mRealTimeInputtedData = new JSONObject();
         try {
             InputManager.mRealTimeInputtedData.put(InputManager.matchKey, (InputManager.mRealTimeMatchData));
@@ -56,17 +57,20 @@ public class A3A extends DialogMaker {
         }
         Log.e("Match DATA before COMP", InputManager.mRealTimeMatchData.toString());
         Log.e("Input DATA before COMP", InputManager.mRealTimeInputtedData.toString());
+
         String qrScoutData = OutputManager.compressMatchData(InputManager.mRealTimeInputtedData);
         showMatchQR(qrScoutData);
 
         writeFileOnInternalStorage(("Q" + InputManager.mMatchNum + "_" + new SimpleDateFormat("MM-dd-yyyy-H:mm:ss").format(new Date())), qrScoutData);
     }
 
+    //Calls displayQR to display the QR.
     public void showMatchQR(String qrString){
         tQRView = (ImageView) findViewById(R.id.QRCode_Display);
         displayQR(qrString);
     }
 
+    //Set QR code parameters and show QR code to send data
     public void displayQR(String qrCode){
         try {
             //setting size of qr code
@@ -86,7 +90,7 @@ public class A3A extends DialogMaker {
             Log.e("QrGenerate",ex.getMessage());
         }
     }
-
+    //Creates QR code dimensions
     public void createQRCode(String qrCodeData,String charset, Map hintMap, int qrCodeheight, int qrCodewidth){
 
         try {
@@ -114,6 +118,7 @@ public class A3A extends DialogMaker {
         }
     }
 
+    //Saves scout data as text file in tablet internal storage
     public void writeFileOnInternalStorage(String sFileName, String sBody){
         File file = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
         if(!file.exists()){
@@ -128,7 +133,7 @@ public class A3A extends DialogMaker {
             e.printStackTrace();
         }
     }
-
+    //Takes scout back to Main Activity and increases the match number by 1.
     public void onClickEndScouting(View view) {
         InputManager.mMatchNum ++;
         AppCc.setSp("matchNum", InputManager.mMatchNum);
