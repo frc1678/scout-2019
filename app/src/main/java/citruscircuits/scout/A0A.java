@@ -308,7 +308,7 @@ public class A0A extends DialogMaker {
             }
         });
 
-        //Declare Scout ID poopup
+        //Declare Scout ID popup
         sp_triggerScoutIDPopup = (Spinner) findViewById(R.id.btn_triggerScoutIDPopup);
         ArrayAdapter<Integer> idAdapter = new ArrayAdapter<Integer>(this, R.layout.cell_scout_id, Cst.SCOUT_IDS);
 
