@@ -2,45 +2,18 @@ package citruscircuits.scout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import citruscircuits.scout.Managers.InputManager;
-import citruscircuits.scout.Managers.OutputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
 import citruscircuits.scout._superDataClasses.Cst;
@@ -69,8 +42,9 @@ public class A2A extends DialogMaker {
         et_matchNum.setText(valueOf(InputManager.mMatchNum));
         et_teamNum.setText(valueOf(InputManager.mTeamNum));
 
+
         //Declare name spinner
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, Cst.SCOUT_NAMES);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.datacheck_dropdown_name, Cst.SCOUT_NAMES);
         name_spinner = (Spinner) findViewById(R.id.spinner_name);
 
         name_spinner.setAdapter(spinnerAdapter);

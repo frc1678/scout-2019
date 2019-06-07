@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/background" />
+        android:background="@drawable/main_background" />
 
     <Button
         android:id="@+id/btn_accessData"
@@ -22,7 +22,7 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/btn_normal_selector"
+        android:background="@drawable/main_popup_header_selector"
         android:text="Resend"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="28sp" />
@@ -33,7 +33,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/btn_normal_selector"
+        android:background="@drawable/main_popup_header_selector"
         android:text="Assignment System"
         android:textColor="@color/normalButtonTextColor"
         android:textSize="20sp" />
@@ -62,7 +62,7 @@
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/cycle_nocolor_dashed_background"
+        android:background="@drawable/main_cycle_yellow"
         android:contentDescription="@string/imgv_cycleNumContentDescription" />
 
     <TextView
@@ -92,7 +92,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:contentDescription="Drag to Scout"
-        android:background="@drawable/dashed_background_enterscout" />
+        android:background="@drawable/main_start_dashed_background" />
 
     <ImageButton
         android:id="@+id/imgbtn_enterScoutDragFill"
@@ -102,7 +102,7 @@
         android:layout_alignParentEnd="true"
         android:contentDescription="Drag to Scout"
         android:onClick="onClickStartScouting"
-        android:background="@drawable/expandable_greenselector" />
+        android:background="@drawable/main_start_green_selector" />
 
     <TextView
         android:id="@+id/tv_announceTeamNum"
