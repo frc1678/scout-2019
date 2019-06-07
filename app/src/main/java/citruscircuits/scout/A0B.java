@@ -52,7 +52,7 @@ public class A0B extends DialogMaker {
         arrowNext= findViewById(R.id.btn_arrow);
         InputManager.mOneTimeMatchData = new JSONObject();
 
-
+        //Declare UI of pregame map depending on map orientation and alliance color
         if ( AppCc.getSp("mapOrientation", 99) != 0){
             Log.e("wok", "prer");
             if(mAllianceColor.equals("red")){
@@ -114,8 +114,9 @@ public class A0B extends DialogMaker {
         }
           preloadNone.setChecked(true);
     }
-
+//Records if a robot showed up
 public void onClickShowUp(View view){
+        //If the show up button is already checked, disables map based buttons
         if (showUp.isChecked()){
             layerOneA.setEnabled(false);
             layerOneB.setEnabled(false);
@@ -138,6 +139,7 @@ public void onClickShowUp(View view){
         }
 
 }
+//Defines views and buttons in the pregame screen
 public void defineVariables(){
     iv_hab = findViewById(R.id.imageView);
     hab= findViewById(R.id.hab);
@@ -154,6 +156,7 @@ public void defineVariables(){
     preloadNone= findViewById(R.id.preloadNone);
     showUp= findViewById(R.id.showedUp);
     }
+    //Records which level the robot begins at
     public void onClickHabOneA(View v){
         Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
@@ -178,10 +181,8 @@ public void defineVariables(){
         Log.e("wokkkkkk", "layer2");
         habSub1.clearCheck();
     }
-
+    //Saves what starting position and level robot started at. Moves to either map activity or final data activity depending on if robot showed up.
     public void onClickDataCheck(View v) {
-        //record data
-
         if (!showUp.isChecked()){
             if((!layerOneA.isChecked() && !layerOneB.isChecked() && !layerOneC.isChecked()&& !layerTwoA.isChecked()
                         && !layerTwoB.isChecked())
@@ -223,7 +224,7 @@ public void defineVariables(){
 
             }
         }
-        //go to next activity
+        //Go to next activity
         else if(showUp.isChecked()){
             InputManager.isNoShow=true;
 
