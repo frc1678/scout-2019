@@ -693,11 +693,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
                 actionCount = actionCount - 1;
 
-                Log.e("wok", actionDic.get(actionCount).get(3).toString());
-
                 if (actionDic.get(actionCount).get(3).equals("cargo")) {
-                    Log.e("wokDicInner1",String.valueOf(actionDic));
-
                     element = String.valueOf(actionDic.get(actionCount).get(3));
                     if(actionDic.get(actionCount).get(2).equals("intake")){
                         undoGeneric(true, false,"placement");
@@ -707,7 +703,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                     }
 
                 } else if (actionDic.get(actionCount).get(3).equals("panel")) {
-                    Log.e("wokDicInner2", String.valueOf(actionDic));
                     element = String.valueOf(actionDic.get(actionCount).get(3));
                     if(actionDic.get(actionCount).get(2).equals("intake")){
                         undoGeneric(true, false, "placement");
@@ -1389,7 +1384,6 @@ public class A1A extends DialogMaker implements View.OnClickListener {
         if (element.equals("cargo") && !tb_incap.isChecked() && !tb_defense.isChecked()) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
             if (mode.equals("placement")) {
-                Log.e("ahhhhh", "placementcargo");
                 iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
 
                 if (field_orientation.contains("left")) {
@@ -1468,14 +1462,12 @@ public class A1A extends DialogMaker implements View.OnClickListener {
 
         //Set cargo image on screen if element is cargo
         if(element.equals("cargo")) {
-            Log.e("wokcargo", "showup");
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_cargo));
             undoDicAdder(x,y,"cargo");
 
             //Set hatch panel image on screen if element is panel
         } else if(element.equals("panel")) {
             iv_game_element.setImageDrawable(getResources().getDrawable(R.drawable.map_indicator_panel));
-                Log.e("wokpanel", "showupppppp");
                 undoDicAdder(x,y,"panel");
 
         }
@@ -1602,9 +1594,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
     }
     public void preload(){
 
-        Log.e("preloadWok", "preloadWok");
         if (InputManager.mPreload.equals("cargo")|| InputManager.mPreload.equals("panel")) {
-            Log.e("woooooook", "preloadWokinput");
 
             //Set whether drop is enabled based on whether or not incap is checked
 
@@ -1800,10 +1790,8 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 mapChange();
 
                 if (element.equals("cargo")) {
-                    Log.e("wokcargo", "showup");
                     undoDicAdder(x,y,"cargo");
                 } else if(element.equals("panel")) {
-                    Log.e("wokpanel", "showupppppp");
                     undoDicAdder(x, y, "panel");
 
                 }
@@ -1841,11 +1829,9 @@ public class A1A extends DialogMaker implements View.OnClickListener {
                 mapChange();
 
                 if (element.equals("cargo")) {
-                    Log.e("wokcargo", "showup");
                     undoDicAdder(x,y,"cargo");
 
                 } else if(element.equals("panel")) {
-                    Log.e("wokpanel", "showupppppp");
                     undoDicAdder(x, y, "panel");
 
                 }
