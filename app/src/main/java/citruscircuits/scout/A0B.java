@@ -54,7 +54,6 @@ public class A0B extends DialogMaker {
 
         //Declare UI of pregame map depending on map orientation and alliance color
         if ( AppCc.getSp("mapOrientation", 99) != 0){
-            Log.e("wok", "prer");
             if(mAllianceColor.equals("red")){
                 setContentView(R.layout.activity_pregame_right);
                 teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
@@ -72,7 +71,7 @@ public class A0B extends DialogMaker {
                 teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
                 teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
-                Log.e("wok", "bluer");
+
                 iv_hab.setImageResource(R.drawable.pregame_hab_blue_left);
                 layerOneA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
                 layerOneB.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
@@ -82,13 +81,11 @@ public class A0B extends DialogMaker {
                 layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
             }
         }else if ( AppCc.getSp("mapOrientation", 99) == 0){
-            Log.e("wok", "prel");
             if(mAllianceColor.equals("red")){
                 setContentView(R.layout.activity_pregame_left);
                 teamNumTextView2 = (TextView) findViewById(R.id.teamTextView2);
                 teamNumTextView2.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
-                Log.e("wok", "redl");
                 iv_hab.setImageResource(R.drawable.pregame_hab_red_left);
                 layerOneA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
                 layerOneB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
@@ -96,13 +93,13 @@ public class A0B extends DialogMaker {
                 layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
                 layerTwoB.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
                 layerTwoA.setBackgroundResource(R.drawable.pregame_starting_position_red_selector);
+
             } else if (mAllianceColor.equals("blue")){
                 setContentView(R.layout.activity_pregame_right);
                 teamNumTextView1 = (TextView) findViewById(R.id.teamTextView1);
                 teamNumTextView1.setText(String.valueOf(InputManager.mTeamNum));
                 defineVariables();
 
-                Log.e("wok", "bluel");
                 iv_hab.setImageResource(R.drawable.pregame_hab_blue_right);
                 layerOneA.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
                 layerOneB.setBackgroundResource(R.drawable.pregame_starting_position_blue_selector);
@@ -158,27 +155,22 @@ public void defineVariables(){
     }
     //Records which level the robot begins at
     public void onClickHabOneA(View v){
-        Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
     }
     
     public void onClickHabOneB(View v){
-        Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
     }
     
     public void onClickHabOneC(View v){
-        Log.e("wokkkkkk", "layer1");
         habSub2.clearCheck();
     }
     
     public void onClickHabTwoA(View v){
-        Log.e("wokkkkkk", "layer2");
         habSub1.clearCheck();
     }
     
     public void onClickHabTwoB(View v){
-        Log.e("wokkkkkk", "layer2");
         habSub1.clearCheck();
     }
     //Saves what starting position and level robot started at. Moves to either map activity or final data activity depending on if robot showed up.

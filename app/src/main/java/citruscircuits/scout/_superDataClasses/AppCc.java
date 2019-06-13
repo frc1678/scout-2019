@@ -15,12 +15,12 @@ public class AppCc extends Application{
     public void onCreate(){
         super.onCreate();
         INSTANCE = AppCc.this;
-        Log.e("INSTANCE REF", INSTANCE.toString());
+        Log.e("INSTANCE REF Checker", INSTANCE.toString());
     }
 
     //Gets any value saved into shared preferences.
     public final static SharedPreferences getSp(){
-        Log.e("INSTANCE REF", INSTANCE.toString());
+        Log.e("INSTANCE REF SharePref", INSTANCE.toString());
         return INSTANCE.getSharedPreferences(Cst.SHARED_PREF, Activity.MODE_PRIVATE);
     }
 
