@@ -59,7 +59,7 @@ import static citruscircuits.scout.Managers.InputManager.mTabletType;
 import static citruscircuits.scout.utils.StormDialog.teleButton;
 import static java.lang.String.valueOf;
 
-public class A1A extends DialogMaker implements View.OnClickListener {
+public class MapActivity extends DialogMaker implements View.OnClickListener {
 
     final Activity activity = this;
 
@@ -263,7 +263,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             }
         }
 
-        layoutInflater = (LayoutInflater) A1A.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) MapActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
 
 //Set how big popups are for each tablet type
         if(mTabletType.equals("green")) {
@@ -1950,7 +1950,7 @@ public class A1A extends DialogMaker implements View.OnClickListener {
             mRealTimeMatchData.put(compressionDic);
         }
 
-        open(A2A.class, null, false, true);
+        open(DataCheckActivity.class, null, false, true);
     }
 
     //If user presses android back button, warn them that they will lose data
