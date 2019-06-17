@@ -75,6 +75,7 @@ public class InputManager {
     public static String mDatabaseURL;
     public static String mSandstormEndPosition = "";
 
+    //Store user and current match data in shared preferences
     public static void storeUserData() {
         AppCc.setSp("allianceColor", mAllianceColor);
         AppCc.setSp("scoutName", mScoutName);
@@ -86,7 +87,7 @@ public class InputManager {
         AppCc.setSp("assignmentMode", mAssignmentMode);
     }
 
-    //when storing User DAta dont use variables - just use SP
+    //Recover user and current match data from shared preferences
     public static void recoverUserData() {
         mAllianceColor = AppCc.getSp("allianceColor", "");
         mScoutName = AppCc.getSp("scoutName", "unselected");
@@ -127,6 +128,7 @@ public class InputManager {
         }
     }
 
+    //Populate finalNamesList
     public static ArrayList<String> getScoutNames() {
         String sortL1key = "letters";
         ArrayList<String> finalNamesList = new ArrayList<String>();
@@ -138,6 +140,7 @@ public class InputManager {
 
         Log.i("doesFileExist", f.exists() + "");
 
+        //Retrieve names from text file in internal storage
         if (f.exists()) {
             try {
                 JSONObject names = new JSONObject(AppUtils.retrieveSDCardFile("assignments.txt"));
@@ -151,6 +154,7 @@ public class InputManager {
                     finalNamesList.add(finalNames);
                 }
 
+                //Alphabetically sort names with Backups at the end
                 Collections.sort(finalNamesList, String.CASE_INSENSITIVE_ORDER);
 
                 for (int i = finalNamesList.size() - 1; i >= 0; i--) {
@@ -177,7 +181,7 @@ public class InputManager {
             }
         }
         else if (!f.exists()) {
-
+            //Populate finalNamesList with 52 Backups
             for (int i = 1; i <= 52; i++) {
                 finalNamesList.add("Backup " + i);
             }
@@ -328,6 +332,7 @@ public class InputManager {
         }
     }
 
+    //Generate match key with specific match information
     public static void initMatchKey() {
         matchKey = mTeamNum + "Q" + mMatchNum + "-" + mScoutId;
     }
