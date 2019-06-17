@@ -9,6 +9,7 @@ import citruscircuits.scout.R;
 
 public class AppTc extends AppCompatActivity{
 
+    //Used to open a new activity
     public void open(Class<? extends Activity> a, Context c, boolean finish, boolean animate){
         Intent intent = new Intent();
 
@@ -28,6 +29,7 @@ public class AppTc extends AppCompatActivity{
         }
     }
 
+    //Used to do slide transitions when opening a new activity
     public void openTransition() {
         this.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
