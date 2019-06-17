@@ -1,6 +1,5 @@
 package citruscircuits.scout;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -21,10 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +31,7 @@ import citruscircuits.scout.Managers.OutputManager;
 import citruscircuits.scout._superActivities.DialogMaker;
 import citruscircuits.scout._superDataClasses.AppCc;
 
-public class A3A extends DialogMaker {
+public class QRDisplayActivity extends DialogMaker {
 
     ImageView tQRView;
 
@@ -137,6 +133,6 @@ public class A3A extends DialogMaker {
     public void onClickEndScouting(View view) {
         InputManager.mMatchNum ++;
         AppCc.setSp("matchNum", InputManager.mMatchNum);
-        open(A0A.class, null, false, false);
+        open(MainActivity.class, null, false, false);
     }
 }

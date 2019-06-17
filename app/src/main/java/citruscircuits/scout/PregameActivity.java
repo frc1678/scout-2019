@@ -3,7 +3,6 @@ package citruscircuits.scout;
 import citruscircuits.scout._superActivities.DialogMaker;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,7 +23,7 @@ import static citruscircuits.scout.Managers.InputManager.mAllianceColor;
 import static java.lang.String.valueOf;
 
 
-public class A0B extends DialogMaker {
+public class PregameActivity extends DialogMaker {
     public RadioGroup hab;
     public RadioGroup habSub1;
     public RadioGroup habSub2;
@@ -212,7 +211,7 @@ public void defineVariables(){
                 }
                 InputManager.isNoShow=false;
 
-                open(A1A.class, null, false, true);
+                open(MapActivity.class, null, false, true);
 
             }
         }
@@ -220,10 +219,10 @@ public void defineVariables(){
         else if(showUp.isChecked()){
             InputManager.isNoShow=true;
 
-            open(A2A.class, null, false, true);
+            open(DataCheckActivity.class, null, false, true);
         }
-        A1A.startTimer=true;
-        A1A.timerCheck=false;
+        MapActivity.startTimer=true;
+        MapActivity.timerCheck=false;
     }
 
 }

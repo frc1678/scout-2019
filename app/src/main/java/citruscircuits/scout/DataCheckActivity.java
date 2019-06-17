@@ -21,7 +21,7 @@ import citruscircuits.scout.utils.AppUtils;
 
 import static java.lang.String.valueOf;
 
-public class A2A extends DialogMaker {
+public class DataCheckActivity extends DialogMaker {
 
     EditText et_matchNum;
     EditText et_teamNum;
@@ -88,7 +88,7 @@ public class A2A extends DialogMaker {
                 e.printStackTrace();
             }
 
-            open(A3A.class, null, false, false);
+            open(QRDisplayActivity.class, null, false, false);
         }
     }
     //If android back button is pressed, warns the user that they will lose information.
