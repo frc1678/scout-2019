@@ -27,12 +27,15 @@ public class OutputManager extends InputManager{
         activity.startActivityForResult(discoveryIntent, REQUEST_BLU);
     }
 
+    //Compress match data to its corresponding letters for QR generation
     public static String compressMatchData(JSONObject pMatchData) {
+        //Get compressed scout name letter
         getScoutLetter();
 
         String compressedData = InputManager.matchKey + "|";
 
         try {
+            //Compress specific match header (scout name, match number, etc.)
             JSONArray timeStampData = pMatchData.getJSONArray(InputManager.matchKey);
             Iterator<?> uncompressedKeys = InputManager.mOneTimeMatchData.keys();
 
@@ -52,6 +55,8 @@ public class OutputManager extends InputManager{
             compressedData = compressedData + "_";
 
             for (int i = 0; i < timeStampData.length(); i++) {
+                //Compress game data for the specific match (intakes, placements, etc.)
+
                 JSONObject tData = timeStampData.getJSONObject(i);
 
                 String compressedDic = "";
