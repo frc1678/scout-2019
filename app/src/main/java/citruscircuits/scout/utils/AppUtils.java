@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class AppUtils {
+    //Declare bluetooth file path to retrieve files
     public static File bluetoothDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile()+"/bluetooth");
 
+    //Change a string to a JSONObject
     public static JSONObject toJSONObject(String data){
         if(data.isEmpty()){
             return new JSONObject();
@@ -31,10 +33,12 @@ public class AppUtils {
         }
     }
 
+    //Change a string to an int
     public static int StringToInt(String s){
         return Integer.parseInt(s);
     }
 
+    //Make simple toast
     public static void makeToast(Context context, String text, int size){
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 50);
@@ -42,12 +46,14 @@ public class AppUtils {
         toast.show();
     }
 
+    //Set toast size
     public static void setToastSize(Toast toast, int size){
         ViewGroup vGroup = (ViewGroup) toast.getView();
         TextView toastTxt = (TextView) vGroup.getChildAt(0);
         toastTxt.setTextSize(size);
     }
 
+    //Retrieve specific file from internal storage
     public static String retrieveSDCardFile(String pFileName){
         Log.e("Retrieve File", pFileName);
 
@@ -84,7 +90,7 @@ public class AppUtils {
         String dataOfFile = "";
         String buf;
         try {
-            //adds the content till all of it is added
+            //Add the content of the file
             while ((buf = bReader.readLine()) != null) {
                 dataOfFile = dataOfFile.concat(buf + "\n");
             }
