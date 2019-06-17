@@ -45,6 +45,7 @@ public class QRScan extends DialogMaker implements QRCodeReaderView.OnQRCodeRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
 
+        //Check camera permissions and initiate camera
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 300);
         }
