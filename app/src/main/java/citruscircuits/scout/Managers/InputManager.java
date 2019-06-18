@@ -63,9 +63,9 @@ public class InputManager {
 
     //Map-Scouting Variables
     public static String mHabStartingPositionOrientation = "";
-    public static Integer mHabStartingPositionLevel= 0;
+    public static Integer mHabStartingPositionLevel = 0;
     public static String mPreload = "";
-    public static boolean isNoShow= false;
+    public static boolean isNoShow = false;
     public static Integer mTimerStarted = 0;
     public static boolean mCrossedHabLine = false;
 
@@ -106,19 +106,17 @@ public class InputManager {
 
         if (mMatchNum > 0) {
             final HashMap<Integer, Integer> referenceDictionary = new HashMap<>();
-              Integer referenceEvenInteger = 1;
-              Integer referenceOddInteger = 1;
+            Integer referenceEvenInteger = 1;
+            Integer referenceOddInteger = 1;
 
             for (int i = 1; i <= 18; i++) {
                 if (i <= 6) {
-                    referenceDictionary.put(i,i);
-                }
-                else if (i > 6) {
+                    referenceDictionary.put(i, i);
+                } else if (i > 6) {
                     if ((i) % 2 == 0) {
                         referenceDictionary.put(i, referenceEvenInteger);
                         referenceEvenInteger++;
-                    }
-                    else if ((i) % 2 == 1) {
+                    } else if ((i) % 2 == 1) {
                         referenceDictionary.put(i, referenceOddInteger);
                         referenceOddInteger++;
                     }
@@ -175,12 +173,10 @@ public class InputManager {
 
                 Log.i("scoutNames", finalNamesList.toString());
 
-            }
-            catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        else if (!f.exists()) {
+        } else if (!f.exists()) {
             //Populate finalNamesList with 52 Backups
             for (int i = 1; i <= 52; i++) {
                 finalNamesList.add("Backup " + i);
@@ -222,13 +218,11 @@ public class InputManager {
             initialSPR = 1;
             //Change below if fewer than 6 scouts are scouting
             groupSize = 6;
-        }
-        else if (mSPRRanking < group3InitialSPR) {
+        } else if (mSPRRanking < group3InitialSPR) {
             groupNumber = 2;
             initialSPR = 7;
             groupSize = group3InitialSPR - 7;
-        }
-        else {
+        } else {
             groupNumber = 3;
             initialSPR = group3InitialSPR;
             groupSize = numScouts - (group3InitialSPR - 1);
@@ -262,17 +256,14 @@ public class InputManager {
                     if (mQRStringFinal.contains(mScoutLetter)) {
                         mPrevScoutLetter = mScoutLetter;
                         AppCc.setSp("prevScoutLetter", mPrevScoutLetter);
-                    }
-                    else {
+                    } else {
                         mPrevScoutLetter = AppCc.getSp("prevScoutLetter", "");
                     }
                 }
-            }
-            catch (JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        else if (!f.exists()) {
+        } else if (!f.exists()) {
             String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             int nameIndex = SCOUT_NAMES.indexOf(mScoutName);
             char scoutLetter = alphabet.charAt(nameIndex);

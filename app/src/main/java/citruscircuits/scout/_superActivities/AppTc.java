@@ -7,24 +7,24 @@ import android.support.v7.app.AppCompatActivity;
 
 import citruscircuits.scout.R;
 
-public class AppTc extends AppCompatActivity{
+public class AppTc extends AppCompatActivity {
 
     //Used to open a new activity
-    public void open(Class<? extends Activity> a, Context c, boolean finish, boolean animate){
+    public void open(Class<? extends Activity> a, Context c, boolean finish, boolean animate) {
         Intent intent = new Intent();
 
-        if(c != null){
+        if (c != null) {
             intent.setClass(c, a);
-        }else{
+        } else {
             intent.setClass(this, a);
         }
         startActivity(intent);
 
-        if(finish){
+        if (finish) {
             finish();
         }
 
-        if(animate){
+        if (animate) {
             openTransition();
         }
     }
@@ -34,7 +34,7 @@ public class AppTc extends AppCompatActivity{
         this.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
-    public void finish(){
+    public void finish() {
         super.finish();
     }
 }

@@ -23,6 +23,7 @@ public class DialogMaker extends AppTc {
         OverrideDialog mOverrideDialog = new OverrideDialog(a);
         mOverrideDialog.show();
     }
+
     //Shows the tablet type dialog
     public void initTabletTypeDialog(Activity a) {
         TabletDialog mTabletDialog = new TabletDialog(a);
@@ -63,9 +64,9 @@ public class DialogMaker extends AppTc {
                     }
 
                     //Sets team color to whatever is selected in override
-                    if(rb_red.isChecked()){
+                    if (rb_red.isChecked()) {
                         InputManager.mAllianceColor = "red";
-                    }else if(rb_blue.isChecked()){
+                    } else if (rb_blue.isChecked()) {
                         InputManager.mAllianceColor = "blue";
                     }
 
@@ -87,6 +88,7 @@ public class DialogMaker extends AppTc {
                 }
             });
         }
+
         //Format for all views in override dialog
         public void initViews() {
             et_overrideTeamNum = findViewById(R.id.et_overrideTeamNum);
@@ -123,11 +125,11 @@ public class DialogMaker extends AppTc {
             TabletDialog.this.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
-                    if(rb_blackTablet.isChecked()){
+                    if (rb_blackTablet.isChecked()) {
                         InputManager.mTabletType = "black";
-                    }else if(rb_greenTablet.isChecked()){
+                    } else if (rb_greenTablet.isChecked()) {
                         InputManager.mTabletType = "green";
-                    }else if(rb_fireTablet.isChecked()){
+                    } else if (rb_fireTablet.isChecked()) {
                         InputManager.mTabletType = "fire";
                     }
 
@@ -141,10 +143,12 @@ public class DialogMaker extends AppTc {
 
             btn_done.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {TabletDialog.this.cancel();
+                public void onClick(View v) {
+                    TabletDialog.this.cancel();
                 }
             });
         }
+
         //Creates buttons for green, black, and fire tablet in tabletDialog
         public void initViews() {
             rb_greenTablet = findViewById(R.id.green_tablet);
