@@ -61,13 +61,13 @@ public class QRDisplayActivity extends DialogMaker {
     }
 
     //Calls displayQR to display the QR.
-    public void showMatchQR(String qrString){
+    public void showMatchQR(String qrString) {
         tQRView = (ImageView) findViewById(R.id.QRCode_Display);
         displayQR(qrString);
     }
 
     //Set QR code parameters and show QR code to send data
-    public void displayQR(String qrCode){
+    public void displayQR(String qrCode) {
         try {
             //setting size of qr code
             WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -79,15 +79,16 @@ public class QRDisplayActivity extends DialogMaker {
             int smallestDimension = width < height ? width : height;
             //setting parameters for qr code
             String charset = "UTF-8"; // or "ISO-8859-1"
-            Map<EncodeHintType, ErrorCorrectionLevel> hintMap =new HashMap<EncodeHintType, ErrorCorrectionLevel>();
+            Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
             hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             createQRCode(qrCode, charset, hintMap, smallestDimension, smallestDimension);
         } catch (Exception ex) {
-            Log.e("QrGenerate",ex.getMessage());
+            Log.e("QrGenerate", ex.getMessage());
         }
     }
+
     //Creates QR code dimensions
-    public void createQRCode(String qrCodeData,String charset, Map hintMap, int qrCodeheight, int qrCodewidth){
+    public void createQRCode(String qrCodeData, String charset, Map hintMap, int qrCodeheight, int qrCodewidth) {
 
         try {
             //generating qr code in bitmatrix type
@@ -109,29 +110,31 @@ public class QRDisplayActivity extends DialogMaker {
             //setting bitmap to image view
             tQRView.setImageBitmap(null);
             tQRView.setImageBitmap(bitmap);
-        }catch (Exception er){
-            Log.e("QrGenerate",er.getMessage());
+        } catch (Exception er) {
+            Log.e("QrGenerate", er.getMessage());
         }
     }
 
     //Saves scout data as text file in tablet internal storage
-    public void writeFileOnInternalStorage(String sFileName, String sBody){
+    public void writeFileOnInternalStorage(String sFileName, String sBody) {
         File file = new File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/scout_data");
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdir();
-        } try {
+        }
+        try {
             File gpxfile = new File(file, sFileName);
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(sBody);
             writer.flush();
             writer.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     //Takes scout back to Main Activity and increases the match number by 1.
     public void onClickEndScouting(View view) {
-        InputManager.mMatchNum ++;
+        InputManager.mMatchNum++;
         AppCc.setSp("matchNum", InputManager.mMatchNum);
         open(MainActivity.class, null, false, false);
     }

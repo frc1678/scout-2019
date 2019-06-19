@@ -48,22 +48,24 @@ public class DataCheckActivity extends DialogMaker {
         name_spinner = (Spinner) findViewById(R.id.spinner_name);
 
         name_spinner.setAdapter(spinnerAdapter);
-        name_spinner.setSelection(((ArrayAdapter<String>)name_spinner.getAdapter()).getPosition(InputManager.mScoutName));
+        name_spinner.setSelection(((ArrayAdapter<String>) name_spinner.getAdapter()).getPosition(InputManager.mScoutName));
 
         name_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3) {
                 InputManager.mScoutName = name_spinner.getSelectedItem().toString();
                 AppCc.setSp("scoutName", InputManager.mScoutName);
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
                 //Do nothing, but necessary for spinner
             }
         });
     }
+
     //Records match data and saves it as a QR
     public void onClickToQR(View view) {
         //If anything is empty in the activity, it will prevent the user from entering the QR activity. Otherwise, save data and go to QR activity
-        if(et_teamNum.getText().toString().equals("") || Integer.valueOf(et_teamNum.getText().toString()) == 0 || et_matchNum.getText().toString().equals("") || Integer.valueOf(et_matchNum.getText().toString()) == 0) {
+        if (et_teamNum.getText().toString().equals("") || Integer.valueOf(et_teamNum.getText().toString()) == 0 || et_matchNum.getText().toString().equals("") || Integer.valueOf(et_matchNum.getText().toString()) == 0) {
             Toast.makeText(getBaseContext(), "There is null information!", Toast.LENGTH_SHORT).show();
         } else {
             InputManager.mTeamNum = AppUtils.StringToInt(et_teamNum.getText().toString());
@@ -91,6 +93,7 @@ public class DataCheckActivity extends DialogMaker {
             open(QRDisplayActivity.class, null, false, false);
         }
     }
+
     //If android back button is pressed, warns the user that they will lose information.
     public void onBackPressed() {
         final Activity activity = this;
